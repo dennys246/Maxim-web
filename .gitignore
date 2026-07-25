@@ -6,6 +6,11 @@ dist/
 # dependencies
 node_modules/
 
+# Local-only: pnpm 11 writes this to approve esbuild/sharp build scripts, but a
+# settings-only workspace file breaks pnpm 10 in CI (Cloudflare). Build-script
+# approval for CI lives in package.json (pnpm.onlyBuiltDependencies) instead.
+pnpm-workspace.yaml
+
 # logs
 npm-debug.log*
 yarn-debug.log*
