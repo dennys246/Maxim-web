@@ -1,0 +1,32 @@
+---
+title: Experiments
+description: Maxim's lab notebook — every experiment, newest first, with links to raw data and reproduction in the pymaxim repo.
+---
+
+import ExperimentsIndex from '../../../../components/ExperimentsIndex.astro';
+
+Maxim is developed as a falsification-oriented research project: features earn their
+place through pre-registered experiments, and results that don't hold up are marked
+**superseded** or **invalidated** rather than quietly removed. This page is the readable
+front door to that lab notebook.
+
+The full record — hypotheses, methodology, raw JSON, and copy-paste reproduction
+commands, each pinned to a git hash — lives in the
+[pymaxim repo](https://github.com/dennys246/Maxim/tree/main/docs/experiments). The
+milestone clusters below have a guided walkthrough on this site; everything else links
+straight to its notebook entry.
+
+<ExperimentsIndex />
+
+## Milestone walkthroughs
+
+- [The Roy harness](/research/experiments/roy-harness/) — the three-arm method for telling substrate transfer apart from LLM priors
+- [Substrate-primary evidence](/research/experiments/substrate-primary-evidence/) — where carried substrate changed behavior, and where priors won
+- [Cross-session learning](/research/experiments/cross-session-learning/) — evidence for the headline claim, stated precisely
+
+## A note on reading results
+
+Sample sizes are often small (N in the single or low double digits), and the recurring
+1.0 finding is sobering: a strong LLM's prior frequently dominates whatever the carried
+substrate contributes. Treat each entry as one data point with its stated scope, not a
+settled conclusion.

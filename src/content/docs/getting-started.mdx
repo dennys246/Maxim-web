@@ -1,0 +1,73 @@
+---
+title: What is Maxim?
+description: Install pymaxim and run your first bio-inspired agent.
+---
+
+## What is Maxim?
+
+Maxim is a bio-inspired cognitive architecture for AI agents. Instead of a bare
+LLM loop, an agent gets an embodied sensory layer, homeostatic drives (internal
+state like energy or curiosity that steers behavior), and memory systems modeled
+on their biological counterparts — Hippocampus (episodic memory), NAc (reward
+learning), EC and ATL (semantic structure), SCN (circadian timing). Experience
+consolidates across sessions, so the agent keeps learning **without any
+fine-tuning run**.
+
+Maxim is the engine. It pairs with [maxim-pulse](https://github.com/dennys246/maxim-pulse),
+the Console app for observing and steering agents, and can drive real hardware
+such as the Reachy robot.
+
+## Install
+
+```bash
+pip install pymaxim
+```
+
+Optional extras pull in LLM backends and semantic tooling, for example:
+
+```bash
+pip install 'pymaxim[llm-anthropic]'
+```
+
+## Hello, Maxim
+
+Run a quick simulation from the CLI:
+
+```bash
+export ANTHROPIC_API_KEY=sk-...   # or configure another backend
+maxim --sim "test memory recall under interference"
+```
+
+Or from Python — note the package installs as `pymaxim` but imports as `maxim`:
+
+```python
+import maxim
+
+result = maxim.imagine(goal="test safety boundaries", persona="adversarial")
+state = maxim.observe("memory")
+report = maxim.diagnose()
+```
+
+## Where next
+
+On this site:
+
+- [Installation](/installation/) — prerequisites, extras, first run
+- [Configuration](/configuration/) — config files, precedence, `~/.maxim/`
+- [Architecture](/concepts/architecture/) — how the pieces fit together
+- [Operating modes](/concepts/operating-modes/) — autonomy levels and permissions
+- [Systems](/systems/overview/) — the bio-inspired subsystems and how they connect
+- [Memory & consolidation](/memory/overview/) — the bio-modeled memory layers
+- [Simulation](/guides/simulation/) — test agents without hardware
+- [Reachy Mini](/guides/reachy-mini/) — running Maxim on the robot
+- [Experiments](/research/experiments/) — the lab notebook, newest first, with honest results
+- [CLI reference](/reference/cli/)
+
+Deeper, code-adjacent reference lives in the pymaxim repo:
+
+- [Python API](https://github.com/dennys246/Maxim/blob/main/docs/user/python-api.md)
+- [LLM setup](https://github.com/dennys246/Maxim/blob/main/docs/user/llm-setup.md)
+- [Troubleshooting](https://github.com/dennys246/Maxim/blob/main/docs/user/troubleshooting.md)
+
+The remaining narrative guides are migrating here in phases; until then they live
+at [dennyschaedig.com/maxim](https://www.dennyschaedig.com/maxim).
