@@ -21,6 +21,19 @@ export default defineConfig({
 			],
 			customCss: ['./src/styles/experiments.css'],
 			head: [
+				// Default social-share image for all docs pages (Starlight emits the rest of
+				// the OG/Twitter tags but no image). Absolute URLs required by scrapers.
+				{ tag: 'meta', attrs: { property: 'og:image', content: 'https://pymaxim.bio/og.png' } },
+				{ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
+				{ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
+				{
+					tag: 'meta',
+					attrs: {
+						property: 'og:image:alt',
+						content: 'Maxim — bio-inspired cognitive architecture for AI agents',
+					},
+				},
+				{ tag: 'meta', attrs: { name: 'twitter:image', content: 'https://pymaxim.bio/og.png' } },
 				{
 					tag: 'script',
 					content: `(function(){try{var seen=localStorage.getItem('maxim:experimentsSeen');if(seen&&seen>=${JSON.stringify(newestExperiment.date)}){document.documentElement.setAttribute('data-exp-seen','');}}catch(e){}})();`,
