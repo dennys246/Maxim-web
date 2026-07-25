@@ -1,0 +1,12 @@
+{
+	// Static-assets deploy for Cloudflare Workers Builds.
+	// Astro builds to ./dist; this uploads it as static assets (no Worker script).
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "maxim-web",
+	"compatibility_date": "2025-06-01",
+	"assets": {
+		"directory": "./dist",
+		// Serve Astro's generated 404 page on unknown paths.
+		"not_found_handling": "404-page"
+	}
+}

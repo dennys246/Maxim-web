@@ -1,0 +1,6 @@
+/* Hide the sidebar "New" badge once the visitor has seen the newest experiment.
+   The head script sets data-exp-seen on <html> synchronously to avoid a flash. */
+:root[data-exp-seen] a[data-experiments-link] .sl-badge,
+:root[data-exp-seen] a[data-experiments-link] .badge {
+	display: none;
+}

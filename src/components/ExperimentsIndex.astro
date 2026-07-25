@@ -1,0 +1,217 @@
+---
+// Reverse-chronological index of Maxim experiments.
+// Data comes from the build-time manifest at src/data/experiments.json
+// (generated from the pymaxim repo's experiments/README.md lab notebook).
+import data from '../data/experiments.json';
+
+// Milestone clusters have a full walkthrough page on this site; everything else
+// links out to its entry in the repo.
+const MILESTONE = {
+	roy: '/research/experiments/roy-harness/',
+	substrate: '/research/experiments/substrate-primary-evidence/',
+	'cross-session': '/research/experiments/cross-session-learning/',
+	cradle: '/research/cradle/',
+};
+
+const experiments = [...(data.experiments ?? [])].sort(
+	(a, b) =>
+		(b.date ?? '').localeCompare(a.date ?? '') ||
+		String(b.id).localeCompare(String(a.id)),
+);
+
+const newest = experiments.find((e) => e.date)?.date ?? '';
+const latest = experiments.slice(0, 3);
+const rest = experiments.slice(3);
+
+// Status values that mean "don't read this as a current finding".
+const STALE = new Set(['superseded', 'invalidated', 'archived']);
+
+const rows = experiments.map((e) => ({
+	...e,
+	href: MILESTONE[e.cluster] ?? e.repo_href,
+	local: Boolean(MILESTONE[e.cluster]),
+	stale: STALE.has(e.status),
+	inLatest: latest.includes(e),
+}));
+---
+
+<div class="exp-index" data-newest={newest}>
+	<p class="exp-count">
+		{experiments.length} experiments · newest first · raw data and reproduction live in the
+		<a href="https://github.com/dennys246/Maxim/tree/main/docs/experiments" rel="noopener"
+			>pymaxim repo</a
+		>.
+	</p>
+
+	<ul class="exp-list">
+		{
+			rows
+				.filter((e) => e.inLatest)
+				.map((e) => (
+					<li class="exp-row" data-date={e.date ?? ''}>
+						<div class="exp-head">
+							<span class="exp-title">
+								<a href={e.href} rel={e.local ? null : 'noopener'}>
+									{e.title}
+								</a>
+							</span>
+							<span class={`exp-status exp-status--${e.status}`}>{e.status}</span>
+						</div>
+						<div class="exp-meta">
+							<span class="exp-id">{e.id}</span>
+							{e.date && <span class="exp-date">{e.date}</span>}
+							{e.local && <span class="exp-badge">walkthrough</span>}
+						</div>
+						{e.finding && <p class={e.stale ? 'exp-finding exp-finding--stale' : 'exp-finding'}>{e.finding}</p>}
+					</li>
+				))
+		}
+	</ul>
+
+	{
+		rest.length > 0 && (
+			<details class="exp-more">
+				<summary>Show all {experiments.length} experiments</summary>
+				<ul class="exp-list">
+					{rows
+						.filter((e) => !e.inLatest)
+						.map((e) => (
+							<li class="exp-row" data-date={e.date ?? ''}>
+								<div class="exp-head">
+									<span class="exp-title">
+										<a href={e.href} rel={e.local ? null : 'noopener'}>
+											{e.title}
+										</a>
+									</span>
+									<span class={`exp-status exp-status--${e.status}`}>{e.status}</span>
+								</div>
+								<div class="exp-meta">
+									<span class="exp-id">{e.id}</span>
+									{e.date && <span class="exp-date">{e.date}</span>}
+									{e.local && <span class="exp-badge">walkthrough</span>}
+								</div>
+								{e.finding && (
+									<p class={e.stale ? 'exp-finding exp-finding--stale' : 'exp-finding'}>
+										{e.finding}
+									</p>
+								)}
+							</li>
+						))}
+				</ul>
+			</details>
+		)
+	}
+</div>
+
+<script>
+	// Per-visitor "New" badges. Progressive enhancement: with JS off, no badges
+	// appear but every experiment is still listed and linkable.
+	const KEY = 'maxim:experimentsSeen';
+	const root = document.querySelector('.exp-index');
+	if (root) {
+		const newest = root.getAttribute('data-newest') || '';
+		let seen = '';
+		try {
+			seen = localStorage.getItem(KEY) || '';
+		} catch {}
+		if (seen && seen < newest) {
+			root.querySelectorAll('.exp-row').forEach((row) => {
+				const d = row.getAttribute('data-date') || '';
+				if (d && d > seen) {
+					const b = document.createElement('span');
+					b.className = 'exp-new';
+					b.textContent = 'New';
+					const titleEl = row.querySelector('.exp-title');
+					if (titleEl) titleEl.appendChild(b);
+					const details = row.closest('details');
+					if (details) details.open = true;
+				}
+			});
+		}
+		try {
+			if (newest) localStorage.setItem(KEY, newest);
+		} catch {}
+	}
+</script>
+
+<style>
+	.exp-count {
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+	.exp-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 0.75rem;
+	}
+	.exp-row {
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.5rem;
+		padding: 0.75rem 1rem;
+	}
+	.exp-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.75rem;
+	}
+	.exp-title {
+		font-weight: 600;
+	}
+	.exp-title a {
+		text-decoration: none;
+	}
+	.exp-meta {
+		margin-top: 0.15rem;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+	}
+	.exp-id {
+		font-family: var(--sl-font-mono, monospace);
+	}
+	.exp-badge {
+		color: var(--sl-color-accent-high);
+	}
+	.exp-finding {
+		margin: 0.4rem 0 0;
+		font-size: var(--sl-text-sm);
+	}
+	.exp-finding--stale {
+		color: var(--sl-color-gray-3);
+	}
+	.exp-status {
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		padding: 0.05em 0.45em;
+		border-radius: 999px;
+		border: 1px solid var(--sl-color-gray-5);
+		color: var(--sl-color-gray-2);
+		white-space: nowrap;
+	}
+	.exp-status--recorded {
+		border-color: var(--sl-color-accent);
+		color: var(--sl-color-accent-high);
+	}
+	.exp-status--superseded,
+	.exp-status--invalidated,
+	.exp-status--archived {
+		opacity: 0.7;
+	}
+	.exp-new {
+		display: inline-block;
+		margin-left: 0.5rem;
+		padding: 0.05em 0.45em;
+		font-size: 0.7rem;
+		font-weight: 700;
+		border-radius: 999px;
+		background: var(--sl-color-accent);
+		color: var(--sl-color-black);
+		vertical-align: middle;
+	}
+</style>
