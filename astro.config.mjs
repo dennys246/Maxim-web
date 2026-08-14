@@ -132,6 +132,7 @@ export default defineConfig({
 				{
 					label: 'More',
 					items: [
+						{ label: 'About the developer', slug: 'about' },
 						{
 							label: 'All original guides',
 							link: 'https://www.dennyschaedig.com/maxim',
