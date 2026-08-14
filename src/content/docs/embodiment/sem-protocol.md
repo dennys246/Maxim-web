@@ -354,6 +354,86 @@ mechanically, the same kind of event as overextending a joint: an affordance tha
 drives a sensor toward a failure threshold and teaches the agent to expect the
 consequence.
 
+## Imagination: SEM specs the LLM writes mid-simulation
+
+Hand-authored YAML and the [component library](/embodiment/component-library/)
+only cover what someone bothered to write down. A simulation does not stay
+inside that boundary — the narrator mentions a rusty iron gate, and no
+`environments/rusty_iron_gate` exists. The **imagination system**
+(`maxim/imagination/`) closes that gap: when the agent keeps encountering an
+entity that has no SEM component, a language model designs one on the spot,
+and it enters the scene as a live, session-scoped SEM entity — same sensors,
+affordances, and failure modes as anything you would have written by hand.
+
+### The trigger pipeline
+
+`ImaginationTrigger.process_percept()` runs in the agent loop after each state
+update, on every percept the agent receives:
+
+1. **Extract.** Lightweight noun-phrase heuristics (regex patterns like *"you
+   see a …"* / *"a … blocks"*, plus an indicator-word scan — no spaCy) pull
+   SEM-relevant phrases out of the narration. Abstract concepts, body parts,
+   and clothing are filtered out; only things that could plausibly be entities
+   survive — creatures, weapons, items, vehicles, NPCs, environmental features.
+2. **Recognize.** Each phrase is checked against the session's
+   `ImaginationCache`, then the `ComponentIndex` (alias and embedding lookup).
+   A match on an existing component doesn't design anything — it *instantiates*
+   that component as a live **scene entity**: observable through `sense` /
+   `sense_presence`, but exposing no affordance tools of its own. The agent
+   acts on scene entities with its own body's tools.
+3. **Accumulate.** A truly novel phrase has to earn its design call. Mentions
+   are counted by head noun — "fire-breathing dragon", "large dragon", and
+   "the dragon" all accumulate under *dragon* — and imagination fires only
+   once the phrase crosses the mention threshold (two by default).
+4. **Gate.** Two checks stand before the LLM call. The default network's
+   arousal gate allows imagination only during low-arousal idle states — the
+   bio-metaphor in the code is blunt: *you don't daydream while fighting*. And
+   the energy budget is consulted — if LLM energy is critical, the design is
+   skipped.
+5. **Design.** `ImaginationDesigner.imagine()` infers an entity type and a body
+   **archetype** (quadruped, serpentine, avian, humanoid, machine, vehicle,
+   environmental) from the phrase, then calls the `EntityDesigner` — an LLM
+   whose system prompt teaches the full SEM JSON schema: sensors with
+   `unit`/`range`/`initial`, modulators grouping typed affordances, failure
+   modes with pain intensities, and a list of synonyms for future lookups. The
+   archetype provides a body-part scaffold the generated spec inherits when the
+   LLM leaves structure out. The result gets *quick validation only* — schema
+   and sensor sanity checks, not the full foundry gauntlet, which is too slow
+   for real time — plus a dedup check against the index (a near-duplicate at
+   ≥ 0.80 similarity reuses the existing component instead).
+6. **Register.** A validated spec is registered as an **ephemeral component**
+   with `provenance: "imagined"`, added to the `ComponentIndex` under its
+   synonyms, and placed in the entity map as an observe-only scene entity. Its
+   affordance names are decomposed into concepts (`fire_breath` → *fire*,
+   *breath*) and encoded through the EC → ATL →
+   [NAc](/systems/nucleus-accumbens/) substrate, so what the agent learns about
+   one entity's *fire* can transfer to another's.
+
+### Scene manifests: imagination before turn one
+
+The [simulation](/guides/simulation/) orchestrator also uses the pipeline
+proactively. Before the first sim turn, it hands the scene manifest — the
+natural-language description of the setting — to `process_manifest()`, which
+resolves every entity it names. Because pre-triggering is a deliberate
+orchestrator action rather than a reactive mid-sim response, it bypasses the
+mention threshold and both gates; known components resolve instantly from the
+index, and truly novel ones draw from a capped budget (at most 5 LLM designs,
+8 entities total). The agent wakes up in a scene that is already populated.
+
+### Imagined provenance
+
+Imagined entities are session-scoped, and the learning they produce is marked
+as such. The trigger tracks every imagined ref, and at session end the
+[nucleus accumbens](/systems/nucleus-accumbens/) retroactively tags causal
+links involving those entities with `imagined=True`, then halves their
+confidence. The agent keeps what it learned from an imagined dragon — just at
+reduced weight compared to links earned against real (or hand-authored)
+entities.
+
+The whole system sits behind one master switch: set
+`MAXIM_DISABLE_IMAGINATION=1` to turn off every imagination surface, including
+the manifest pre-trigger.
+
 ## Running a body
 
 For a single entity that already exists in the component library, one CLI flag
