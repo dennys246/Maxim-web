@@ -241,7 +241,7 @@ Maxim normalizes it to `azimuth = (doa − π/2)/(π/2)` so left = −1, front =
 
 The limits are geometry and silicon, not software:
 
-| | Reachy Mini | Why |
+| Capability | Reachy Mini | Why |
 | --- | --- | --- |
 | Azimuth (left ↔ right) | Yes, 180° | On-chip DoA |
 | Elevation (up ↕ down) | **No** | Linear, coplanar mic array — no vertical baseline |

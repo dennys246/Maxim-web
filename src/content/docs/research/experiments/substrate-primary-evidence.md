@@ -51,7 +51,8 @@ unless noted. "SD" is the pre-registered standard-deviation shift `(B − A) / A
 
 | ID | Date | Status | Result |
 |----|------|--------|--------|
-| [42 — substrate-primary preference](https://github.com/dennys246/Maxim/blob/main/docs/experiments/42_substrate_primary_preference.md) | draft (not frozen) | GRADUATE #6 | Unmasked substrate learns safe-vs-harmful preference from embodied pain |
+| [42 — substrate-primary preference](https://github.com/dennys246/Maxim/blob/main/docs/experiments/42_substrate_primary_preference.md) | 2026-06-23 | GRADUATE #6 (result frozen; maintained 2026-07-29) | Unmasked substrate learns safe-vs-harmful preference from embodied pain |
+| [42b — re-validation after the drive-pain fold](https://github.com/dennys246/Maxim/blob/main/docs/experiments/42b_drive_pain_fold_revalidation.md) | 2026-07-29 | FIRED | Graduation holds post-refactor across 40 sub-sims; metric saturated, so it detects breakage but not degradation |
 | [41 — substrate-primary exploration](https://github.com/dennys246/Maxim/blob/main/docs/experiments/41_substrate_primary_exploration.md) | 2026-06-19 | VOID (exit 4) | Mechanism real, design inconclusive — harmful action never tempting |
 | [40 — counter-prior goldilocks](https://github.com/dennys246/Maxim/blob/main/docs/experiments/40_counter_prior_goldilocks.md) | 2026-06-16 | FIRED | Dominance replicates in the goldilocks zone; substrate signal vanishes under counter-prior |
 | [38 — counter-prior substrate](https://github.com/dennys246/Maxim/blob/main/docs/experiments/38_counter_prior_substrate.md) | 2026-06-11 → 06-16 | FIRED | Prior dominance across all five models tested |
@@ -185,8 +186,16 @@ identity. But the graduation carries its own correction: the gating-OFF ablation
 graduated *identically*, which **refutes** the pre-registered hypothesis that
 drive-gating (B7) was the load-bearing mechanism. The result is actually carried
 by delta-attribution (B8) plus pre-existing drive-affinity. B7 is marked dormant;
-B8 becomes the priority follow-up. Because Exp 42 is a draft, treat these numbers
-as provisional until the record is frozen.
+B8 becomes the priority follow-up.
+
+The result is frozen, and it was re-validated on 2026-07-29 after the channel-split
+drive-pain fold ([Exp 42b](https://github.com/dennys246/Maxim/blob/main/docs/experiments/42b_drive_pain_fold_revalidation.md)):
+40 sub-sims, none failed, discrimination reproduced identically. One caveat travels
+with it — the preference metric is saturated at 0.98–1.00 with a standard deviation
+of 0.000 across every arm and configuration, so a green re-run demonstrates "not
+broken" and cannot detect a moderate regression. A sensitivity-graded degradation arm
+is the tracked follow-up. This limit is recorded as L4 in the project's
+[measurement-limits ledger](https://github.com/dennys246/Maxim/blob/main/docs/limits/README.md).
 
 **Exp 39** — the substrate-primary version of the counter-prior test — is
 **pre-registered** (`cradle_prelinguistic_deceptive` arc, N ≥ 5 seeds per arm,
@@ -230,8 +239,10 @@ production."
 - **VOID:** Exp 41 — mechanism confirmed real, design could not adjudicate the
   claim (harmful action never tempting). Superseded by Exp 42's terminal-
   preference design.
-- **Draft, not frozen:** Exp 42 — GRADUATE #6, but numbers provisional and the
-  load-bearing mechanism reassigned from B7 to B8 by its own ablation.
+- **Graduated and maintained:** Exp 42 — GRADUATE #6, frozen and re-validated by
+  Exp 42b (2026-07-29). Its own ablation reassigned the load-bearing mechanism
+  from B7 to B8, and its metric is saturated, so re-runs detect breakage rather
+  than degradation.
 - **Pending:** Exp 39 — pre-registered, unexecuted, no results.
 - **PARTIAL:** Exp 37 — behavioral delta gated by the Arm C confound; the
   `sharp_rock` scenario is structurally degenerate (zero engagement across all

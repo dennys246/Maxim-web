@@ -4,3 +4,31 @@
 :root[data-exp-seen] a[data-experiments-link] .badge {
 	display: none;
 }
+
+/* Wide reference tables scroll inside their own container rather than making
+   the page scroll sideways on a phone. The wrapper is a tab stop (set at build
+   time in astro.config.mjs) so the overflow is reachable by keyboard; give it a
+   visible focus ring like any other focusable element. */
+.table-wrap {
+	overflow-x: auto;
+	max-width: 100%;
+	/* Hint that the region is scrollable and pannable by touch. */
+	-webkit-overflow-scrolling: touch;
+}
+.table-wrap:focus-visible {
+	outline: 2px solid var(--sl-color-accent-high);
+	outline-offset: 2px;
+}
+/* Starlight makes the <table> itself the scroll container (display:block;
+   overflow-x:auto), which leaves the overflow unreachable by keyboard because
+   the table is not focusable. Hand scrolling back to the focusable wrapper so
+   there is exactly one scroll container and it is a tab stop. */
+.table-wrap > table {
+	display: table;
+	overflow: visible;
+	margin-block: 0;
+	/* Without this the table shrinks to the wrapper instead of overflowing it,
+	   which would silently re-introduce cramped columns on narrow screens. */
+	width: auto;
+	min-width: 100%;
+}

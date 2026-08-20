@@ -1,7 +1,10 @@
 ---
 const title = 'Maxim';
+// Positioning is deliberately scoped: a harness around an LLM, not a claim of
+// biological fidelity, and not a claim that the substrate overrides the model.
+// See docs/announcements/pymaxim_bio_update_suggestions.md in the pymaxim repo.
 const tagline =
-	'A bio-inspired cognitive architecture for AI agents — embodied sensation, homeostatic drives, and brain-modeled memory that learns across sessions without fine-tuning.';
+	'A bio-inspired LLM harness that carries experience-grounded memory, causal links, drives, and valence across sessions — without fine-tuning model weights.';
 const description = tagline;
 const ogImage = new URL('/og.png', Astro.site);
 ---
@@ -10,7 +13,7 @@ const ogImage = new URL('/og.png', Astro.site);
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>{title} — bio-inspired cognitive architecture for AI agents</title>
+		<title>{title} — a bio-inspired LLM harness with persistent memory</title>
 		<meta name="description" content={description} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="canonical" href={Astro.site} />
@@ -22,7 +25,8 @@ const ogImage = new URL('/og.png', Astro.site);
 		<meta name="twitter:card" content="summary_large_image" />
 	</head>
 	<body>
-		<main data-pagefind-body>
+		<a class="skip-link" href="#main">Skip to content</a>
+		<main id="main" data-pagefind-body>
 			<section class="hero">
 				<h1>Maxim</h1>
 				<p class="tagline">{tagline}</p>
@@ -59,12 +63,75 @@ const ogImage = new URL('/og.png', Astro.site);
 					<li>
 						<h3>Brain-modeled memory</h3>
 						<p>
-							Memory systems modeled on their biological counterparts (Hippocampus, NAc, EC, ATL,
-							SCN) consolidate experience so an agent learns across sessions — no fine-tuning run
-							required.
+							Memory systems named after their biological counterparts (Hippocampus, NAc, EC, ATL,
+							SCN) consolidate experience into a substrate that persists across sessions — no
+							fine-tuning run required. The naming is design inspiration, not a claim of
+							biological fidelity.
 						</p>
 					</li>
 				</ul>
+				<p class="scope">
+					In the default path the LLM still decides. The substrate supplies
+					experience-grounded context to that decision; it does not generally override the
+					model's priors, and where it was tested against a deliberately wrong prior, the
+					prior won. <a href="/research/experiments/substrate-primary-evidence/">What the
+					evidence actually shows →</a>
+				</p>
+			</section>
+
+			<section class="what" aria-labelledby="evidence-heading">
+				<h2 id="evidence-heading">What's been demonstrated</h2>
+				<p class="scope">
+					Maxim is developed as a falsification-oriented research project. These are
+					mechanism demonstrations at modest N, not competitive benchmarks. The
+					<a href="/research/evidence/">evidence page</a> gives each result with the caveat
+					that bounds it.
+				</p>
+				<ul>
+					<li>
+						<h3>Sensorimotor learning on real hardware</h3>
+						<p>
+							On a Reachy Mini, the substrate learned a closed-loop sound-orienting policy from
+							scratch in about ten trials with no LLM in the action path, carried it across
+							sessions, and merged two independently trained substrates into a working combined
+							policy. Later arms extended this to <em>how far</em> to turn, not just which way.
+							Magnitude claims from the pre-repair robot are provisional pending re-validation on
+							healthy hardware.
+							<a href="https://github.com/dennys246/Maxim/blob/main/docs/experiments/45_reachy_orient_live.md" rel="noopener">Exp 45 series →</a>
+						</p>
+					</li>
+					<li>
+						<h3>Safe-vs-harmful discrimination without the LLM</h3>
+						<p>
+							With the language model removed from the action path entirely, the substrate learned
+							from embodied pain to prefer a safe warmth source over a harmful one, and tracked the
+							contingency when the two were swapped. Re-validated after a later refactor. The
+							metric is saturated, so a passing re-run shows "not broken" rather than "not
+							degraded".
+							<a href="https://github.com/dennys246/Maxim/blob/main/docs/experiments/42_substrate_primary_preference.md" rel="noopener">Exp 42 →</a>
+						</p>
+					</li>
+					<li>
+						<h3>Where it didn't hold up</h3>
+						<p>
+							Carried substrate does <em>not</em> override a strong contrary LLM prior — tested
+							across four frontier models and dominated in all of them. And the embodied
+							operant-orienting result was re-baselined onto a corrected apparatus: the caregiver
+							effect survived, the learning gate did not, and the metric turned out to track phase
+							alignment rather than skill.
+							<a href="/research/cradle/">Exp 48, corrected →</a>
+						</p>
+					</li>
+				</ul>
+				<p class="scope">
+					The project keeps public ledgers of what is broken and what its instruments
+					cannot resolve:
+					<a href="https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md" rel="noopener">known defects</a>,
+					<a href="https://github.com/dennys246/Maxim/blob/main/docs/limits/README.md" rel="noopener">measurement limits</a>,
+					and the
+					<a href="https://github.com/dennys246/Maxim/blob/main/docs/plans/behavioral_graduation_candidates.md" rel="noopener">behavioral-claim ledger</a>.
+					Every experiment is indexed on the <a href="/research/experiments/">experiments page</a>.
+				</p>
 			</section>
 		</main>
 		<footer>
@@ -109,6 +176,24 @@ const ogImage = new URL('/og.png', Astro.site);
 			}
 			* {
 				box-sizing: border-box;
+			}
+			/* Keyboard users land here first and can jump the header links.
+			   Visually hidden until focused, matching the docs pages' behavior. */
+			.skip-link {
+				position: absolute;
+				left: 0.5rem;
+				top: -3rem;
+				z-index: 10;
+				padding: 0.5rem 0.85rem;
+				background: var(--surface);
+				color: var(--accent);
+				border: 1px solid var(--border);
+				border-radius: 0.375rem;
+				text-decoration: none;
+				transition: top 0.15s ease-in-out;
+			}
+			.skip-link:focus {
+				top: 0.5rem;
 			}
 			body {
 				margin: 0;
@@ -194,6 +279,13 @@ const ogImage = new URL('/og.png', Astro.site);
 			.what h3 {
 				margin: 0 0 0.25rem;
 				font-size: 1.05rem;
+			}
+			.scope {
+				color: var(--muted);
+				font-size: 0.95rem;
+			}
+			.what a {
+				color: var(--accent);
 			}
 			.what p {
 				margin: 0;

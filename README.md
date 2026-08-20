@@ -56,19 +56,23 @@ existing guides. Migrate/curate the real guides as a follow-up once the shell is
 ## Homepage hero (seed copy — refine, don't overclaim; the project values honesty)
 
 - **Name:** Maxim
-- **Tagline:** *A bio-inspired cognitive architecture for AI agents — embodied sensation,
-  homeostatic drives, and brain-modeled memory that learns across sessions without fine-tuning.*
+- **Tagline:** *A bio-inspired LLM harness that carries experience-grounded memory, causal
+  links, drives, and valence across sessions — without fine-tuning model weights.*
 - **Install:** `pip install pymaxim`
 - **Primary links:** GitHub (`github.com/dennys246/Maxim`) · PyPI (`pypi.org/project/pymaxim`)
-  · Docs (`docs.pymaxim.bio`) · (later) the Reachy app on Hugging Face.
+  · Docs (`pymaxim.bio/getting-started/`) · (later) the Reachy app on Hugging Face.
 - **Voice:** honest and specific over hype. Maxim's differentiator is *cross-session learning
   without fine-tuning* + embodiment — say that plainly; don't inflate it.
+- **Scope discipline:** the substrate augments the LLM's context in the default path; it does
+  not generally override the model's priors. Claims on the site are bounded by the pymaxim
+  repo's experiment, defect, limits, and graduation ledgers — those win over anything here.
 
 ## Deploy (Cloudflare Workers Builds)
 
 New Cloudflare Git projects route through **Workers Builds** (the Pages creation flow is
 being retired for new connections). This repo ships a `wrangler.jsonc` that deploys the
-static `dist/` as Worker assets — no Worker script, no Astro adapter needed.
+static `dist/` as Worker assets. No Astro adapter is needed; there is a small Worker
+script (`worker/index.js`) whose only job is the `docs.pymaxim.bio` redirect below.
 
 1. `pnpm build` → `dist/`.
 2. Cloudflare → Workers & Pages → create a Worker from this repo. Build command
@@ -78,9 +82,15 @@ static `dist/` as Worker assets — no Worker script, no Astro adapter needed.
 4. If the build errors on Node version, set `NODE_VERSION=22` as a build environment
    variable (the repo has no `.nvmrc`/`engines` pin).
 
-Note: one Worker serves both domains from the same `dist/`, so `docs.pymaxim.bio` currently
-shows the same site rooted at the landing page. Splitting the docs onto their own root
-(or redirecting `docs.` → `/getting-started/`) is a follow-up when the docs outgrow this.
+One Worker serves both domains. `pymaxim.bio` is canonical and serves the site;
+`docs.pymaxim.bio` is a legacy alias that now **308-redirects path-preservingly** to the
+canonical host, with `/` landing on `/getting-started/`. Previously both domains served
+the same `dist/` from the landing page, which meant the alias published a duplicate
+homepage declaring a canonical URL it did not itself serve.
+
+The redirect lives in `worker/index.js` and depends on `"run_worker_first": true` in
+`wrangler.jsonc` — without it the asset server answers before the Worker ever sees the
+`Host` header, and the alias silently keeps serving duplicates.
 
 ## Standards
 

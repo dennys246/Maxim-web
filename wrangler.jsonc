@@ -1,11 +1,24 @@
 {
-	// Static-assets deploy for Cloudflare Workers Builds.
-	// Astro builds to ./dist; this uploads it as static assets (no Worker script).
+	// Cloudflare Workers Builds deploy. Astro builds the static site to ./dist,
+	// which is uploaded as static assets and served through the Worker's ASSETS
+	// binding.
+	//
+	// The Worker itself does almost nothing: it exists so the legacy
+	// docs.pymaxim.bio hostname can be redirected path-preservingly to the
+	// canonical host instead of serving a duplicate of the homepage. See
+	// worker/index.ts.
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "maxim-web",
+	"main": "worker/index.js",
 	"compatibility_date": "2025-06-01",
 	"assets": {
 		"directory": "./dist",
+		"binding": "ASSETS",
+		// The redirect is keyed on the request Host, so the Worker has to see
+		// the request before the asset server answers it. Without this, a hit
+		// like docs.pymaxim.bio/getting-started/ would be served straight from
+		// assets and never reach the redirect.
+		"run_worker_first": true,
 		// Serve Astro's generated 404 page on unknown paths.
 		"not_found_handling": "404-page"
 	}

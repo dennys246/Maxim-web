@@ -7,8 +7,15 @@ import ExperimentsIndex from '../../../../components/ExperimentsIndex.astro';
 
 Maxim is developed as a falsification-oriented research project: features earn their
 place through pre-registered experiments, and results that don't hold up are marked
-**superseded** or **invalidated** rather than quietly removed. This page is the readable
-front door to that lab notebook.
+rather than quietly removed. This page is the readable front door to that lab notebook.
+
+The status on each entry is load-bearing. **Recorded** means the run completed and its
+pre-registered gates were met. **Partial** means it ran and some gates failed —
+Exp 48 is the current example, re-baselined onto a corrected apparatus with its earlier
+headline numbers retired. **Exploratory** and **pilot** mean the instrument ran but the
+campaign was never frozen, so the numbers are not a result. **Pre-registered** means the
+design is committed and published but no data exists yet. **Superseded**, **invalidated**,
+and **archived** mark work that was withdrawn or replaced.
 
 The full record — hypotheses, methodology, raw JSON, and copy-paste reproduction
 commands, each pinned to a git hash — lives in the

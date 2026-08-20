@@ -197,10 +197,39 @@ proactive rather than purely reactive decision-making.
 
 **Entorhinal Cortex — similarity matching.** The EC enables similarity queries
 ("find memories similar to this situation"), which matters because exact matches
-are rare. It uses Locality-Sensitive Hashing to group similar items into the same
-bucket, giving approximate nearest-neighbor search in roughly constant time
-(~10ms regardless of memory size). Optional neural embeddings provide richer
-semantic similarity.
+are rare. Two different mechanisms sit behind that, and they have very different
+performance characteristics — it's worth knowing which one you are on.
+
+*Indexed signature lookup.* Situation signatures are indexed with
+Locality-Sensitive Hashing: query and stored items hash into shared buckets, so a
+lookup collects candidates from a handful of bucket probes and rescores only
+those. This part is approximately constant in the number of stored items, which
+is the property LSH is there to buy.
+
+*Substrate pattern completion.* The hot path that assigns a percept to a concept
+cluster — the one that runs per tick — does **not** use that index. It is an
+exact, same-modality scan over cluster centroids: every centroid of the matching
+modality is compared by full cosine similarity, in pure Python, with no early
+termination. That is **O(N·d)** per call, where *N* is the number of
+same-modality substrate nodes (concept clusters, not episodic memories) and *d*
+is the embedding dimension — 768 with sentence-transformers installed, 384 on the
+bag-of-words fallback. It is exact rather than approximate, and it scales
+linearly with the number of clusters.
+
+:::note[On the retired "~10ms regardless of memory size" figure]
+This page previously claimed roughly constant-time recall at about 10ms
+irrespective of memory size. That conflated the two mechanisms above and is
+withdrawn. The underlying ~10ms measurement is a GPU sentence-transformer query
+benchmark at roughly 10K memories — largely the embedding forward pass, not the
+search — and no benchmark in the repo varies memory size, so nothing measured
+supports "regardless of memory size." The substrate centroid scan has no
+published latency figure at all. If retrieval latency matters for your workload,
+measure it on your own data and hardware.
+:::
+
+Optional neural embeddings provide richer semantic similarity; note that the
+semantic search path is likewise an exact scan over stored embeddings rather than
+an LSH-bucketed one.
 
 ## Worked example: spreading activation
 

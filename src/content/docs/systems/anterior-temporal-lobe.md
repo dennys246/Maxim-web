@@ -258,5 +258,5 @@ Clear the layer with `maxim --clear-memory atl`.
 - [`docs/user/cross-session-learning.md`](https://github.com/dennys246/Maxim/blob/main/docs/user/cross-session-learning.md) —
   the end-to-end walkthrough, including `maxim roy diff` and how to read the
   signals honestly.
-- [`docs/concept-decomposition.md`](https://github.com/dennys246/Maxim/blob/main/docs/concept-decomposition.md) —
+- [`docs/user/concept-decomposition.md`](https://github.com/dennys246/Maxim/blob/main/docs/user/concept-decomposition.md) —
   finer-grained concepts for better cross-session matching.

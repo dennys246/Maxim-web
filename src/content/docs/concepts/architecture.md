@@ -7,7 +7,7 @@ Maxim's cognitive components don't exist in isolation. They're woven into a bio-
 
 ## The Layered Architecture
 
-Maxim enforces strict one-way dependencies. Higher layers can call lower layers, but never the reverse. This prevents circular reasoning and ensures clean separation of concerns:
+Maxim's intended dependency contract is one-way: higher layers may call lower layers, never the reverse. The point is to prevent circular reasoning and keep separation of concerns enforceable:
 
 ```
 Agents        Goal reasoning, intent generation (NO side effects)
@@ -24,6 +24,32 @@ Environment   World observation (NO side effects)
    ↓
 Memory        Storage and retrieval (NO decision making)
 ```
+
+:::caution[This is the contract, not a verified property of the codebase]
+The boundary above is an architectural contract with known debt, not something CI
+currently guarantees. Maxim ships an AST-based import validator —
+`maxim --audit-architecture`, which exits non-zero on violations — and on the current
+release candidate it reports **33 findings**, mostly reverse imports across the
+`agents`, `tools`, `memory`, and `bridges` boundaries.
+
+Those 33 have **not** yet been triaged. Some are likely typing-only imports or
+deliberate accepted debt, but no reviewed baseline distinguishes those from real
+violations. CI does not run the audit today, and the one unit test covering it asserts
+only that the audit returns a list — so it passes at 33 findings and cannot detect a
+regression.
+
+Classifying the findings, storing a reviewed accepted-debt baseline, and failing CI on
+any unreviewed addition is a **1.1 release gate**; burning the baseline to zero is
+tracked separately for 1.1.x. Tracked as
+[D19](https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md) in the defect
+ledger. Treat the layering as the direction the code is held to under review, and
+verify it yourself with the audit command if you depend on it.
+:::
+
+One nuance if you run the audit: the prose chain above and the validator's rule table
+are not identical. The validator enforces a per-layer list of forbidden imports across
+`agents`, `planning`, `environment`, `tools`, `memory`, `runtime`, `skills`, and
+`bridges` — a stricter mutual-isolation set than a plain top-to-bottom reading suggests.
 
 ## The Agent Pipeline
 
@@ -231,7 +257,7 @@ Energy signals flow to the NAc, creating associations between actions and their 
 
 ## Design Principles
 
-- **Layered Separation** — One-way dependencies prevent circular reasoning
+- **Layered Separation** — one-way dependencies are the contract that prevents circular reasoning (with [33 open audit findings](#the-layered-architecture) and CI enforcement gated on 1.1)
 - **Biological Plausibility** — Core systems mirror neuroscience mechanisms
 - **Learning Over Tuning** — Systems adapt rather than requiring manual configuration
 - **Safety First** — Multi-tier harm detection before and during execution

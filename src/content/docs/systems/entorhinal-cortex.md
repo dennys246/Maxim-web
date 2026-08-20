@@ -38,8 +38,12 @@ keeps running with less recall rather than failing.
 
 ### Structural similarity: MinHash + LSH
 
-Two `SimilarityIndex` instances (`maxim/memory/context_index.py`) provide O(1)
-approximate similarity lookup:
+Two `SimilarityIndex` instances (`maxim/memory/context_index.py`) provide
+approximate similarity lookup that is roughly constant in the number of stored
+items — bucket probes gather candidates, and only those candidates are rescored.
+Read "O(1)" here as "does not scale with store size", not as free: hashing the
+query and rescoring candidates both carry real constants, and hot buckets
+degrade it.
 
 | Index | Purpose | Used by |
 | --- | --- | --- |
@@ -124,6 +128,19 @@ benchmark table records a P99 query-latency target of under 50 ms met at
 memories, model load ~2–3 s against a 5 s target, and ~200 MB of GPU memory
 against a 4 GB budget.
 
+:::note[What that benchmark does and doesn't cover]
+These figures are for the neural sentence-transformer path, and the ~10 ms is
+largely the embedding forward pass rather than the search. They were taken at a
+single memory-set size (~10K); no benchmark in the repo varies memory size, so
+none of them establishes latency independent of how much is stored.
+
+They also do not describe the substrate hot path. Assigning a percept to a
+concept cluster is an exact same-modality centroid scan — O(N·d) in the number
+of same-modality clusters — which bypasses the hash index entirely and has no
+published latency figure. See [memory & consolidation](/memory/overview/) for
+the split.
+:::
+
 Footprint, as documented: ~80 MB for the MiniLM model, ~384 bytes per embedding
 (float32), ~4 MB of embeddings at 10K memories, and ~2 bytes of hash bits per
 memory.
@@ -174,7 +191,7 @@ substrate path's `LinguisticEncoder` (`maxim/similarity/encoder.py`) performs
 substrate already holds or a genuinely new one, via
 `ec.pattern_complete_or_separate(embedding, modality)`.
 
-| | Phase 4 (`NeuralSemanticLSH`) | Substrate (`LinguisticEncoder`) |
+| Aspect | Phase 4 (`NeuralSemanticLSH`) | Substrate (`LinguisticEncoder`) |
 | --- | --- | --- |
 | Purpose | Semantic search over memories | Pattern completion for concept recognition |
 | Model | `all-MiniLM-L6-v2` | `paraphrase-mpnet-base-v2` |
