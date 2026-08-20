@@ -24,3 +24,6 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# Wrangler local dev cache + state (created by `wrangler dev`).
+.wrangler/
