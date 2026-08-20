@@ -164,7 +164,7 @@ All voice commands begin with the wake word *"Maxim"*:
 | "Maxim passive" / "active" / "singularity" | Switch operational mode |
 | "Maxim shutdown" | Clean shutdown |
 
-See the [Operating Modes](/concepts/operating-modes/#switching) page for the full list. Custom voice commands can be added in `~/.maxim/util/phrase_responses.json`.
+See the [Operating Modes](/concepts/operating-modes/#switching-modes-at-runtime) page for the full list. Custom voice commands can be added in `~/.maxim/util/phrase_responses.json`.
 
 ## Keyboard Controls
 

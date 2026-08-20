@@ -28,8 +28,12 @@ about which is which:
 
 - **Built and validated (scripted):** operant-orient learning and crèche
   federation on a deterministic substrate ([exp 46](#46--operant-orient-a-mother-teaches-a-creche-pools)),
-  habituation as novelty-detection in noise ([exp 47](#47--habituation-a-novel-sound-in-a-wall-of-noise)),
-  and the embodied seam graduation ([exp 48](#48--cradle-mother-seam-the-embodied-infant)).
+  and habituation as novelty-detection in noise ([exp 47](#47--habituation-a-novel-sound-in-a-wall-of-noise)).
+- **Built, embodied, and PARTIAL:** the extero/intero seam on the embodied
+  infant ([exp 48](#48--cradle-mother-seam-the-embodied-infant)). The mother
+  effect is re-earned on the corrected apparatus, but the learning gate is not
+  met and the result reads as attractor selection rather than graded skill.
+  Read it as a case study in apparatus correction, not a graduation.
 - **Built infrastructure, not a behavioral claim:** the generative cradle
   simulator that narrates developmental scenes ([exp 11](#11--cradle-sensorimotor-poc)),
   and the Phase 0 harness smoke test.
@@ -50,7 +54,7 @@ one slice of the idea.
 
 | ID | Experiment | Date | Status | Headline result |
 |----|-----------|------|--------|-----------------|
-| 48 | [cradle-mother seam (embodied)](#48--cradle-mother-seam-the-embodied-infant) | 2026-07-23 | PASS / graduate | Embodied taught 0.875 vs no-feed 0.448 (rise +0.211) |
+| 48 | [cradle-mother seam (embodied)](#48--cradle-mother-seam-the-embodied-infant) | re-baselined 2026-08-14, sweep completed 2026-08-18 | **COMPLETE — not graduated** | Mother effect re-earned on apparatus v2 — taught 0.649 vs no-feed 0.167 (+0.482) — but LEARNED-v2 missed and the sweep attributes the gap to phase-locked attractor selection |
 | 47 | [habituation, novel sound in noise](#47--habituation-a-novel-sound-in-a-wall-of-noise) | 2026-07-22 | Complete (scripted) | Habituating 1.00 catch-rate vs 0.04 control at 40-noise density |
 | 46 | [operant orient / crèche](#46--operant-orient-a-mother-teaches-a-creche-pools) | 2026-07-22 | Complete (scripted) | Taught 0.90 vs none 0.50; 12 merged infants reach 1.00 |
 | 13 | phase0 harness smoke | 2026-05-09 | Recorded | Phase 0 harness clears success criterion; no behavioral claim |
@@ -102,30 +106,91 @@ background noise varied across 1, 5, 10, 20, and 40 concurrent sounds.
 
 ### 48 — cradle-mother seam: the embodied infant
 
-The most recent run, and the one that changes the story of the plan doc.
 Experiment 46 proved the mechanism on a *scripted* substrate, but the
 **embodied** `cradle_mother` simulator was still measuring at chance —
 perception and interoception were diluting the operant signal. Experiment 48
 introduces an **extero/intero seam** (a structural separation of the perception
 channels) and asks whether that fix carries to the embodied instrument.
 
-- **N:** 12 seeds per arm, 24 runs total. Arms: *taught* (mother feeds +
-  credits toward-turns) vs. *no_feed* (control, no contingent care).
+:::caution[The 2026-07-23 result has been retired]
+Exp 48 originally reported a much larger taught-vs-control gap and a GRADUATE
+verdict. A 2026-08-11 contest found those magnitudes did not reproduce and that
+the mechanism conflicted with how the apparatus behaved. The experiment was
+**re-baselined on a fixed apparatus (v2) against a gate re-frozen before the
+data (gate v2)**. The v1 magnitudes are retired as **v1-apparatus artifacts** —
+not comparable, and not a target. Everything below is the apparatus-v2 record.
+:::
+
+**Current disposition: COMPLETE — not graduated**, landing on the experiment's own
+pre-registered PARTIAL branch. Re-baselined 2026-08-14; the explore-weight sweep
+completed 2026-08-18. The experiment ran to completion and answered its question;
+what it did not do is clear the bar it set for itself in advance.
+
+- **N:** 12 seeds per arm, 24 runs, 0 failed. Exposure-matched at 48 turns per
+  seed in both arms — the v1 arms were *not* exposure-matched, which was one of
+  the contested confounds.
 - Environment: `bodies/infant_operant` with `MAXIM_OPERANT_ONLY_CREDIT=1`,
-  explore bonus 1.5, turn-only toolset. Metric: **directedness** (fraction of
-  turns that move the infant toward the sound).
+  a turn-scoped action budget (`MAXIM_SUBSTRATE_ACTIONS_PER_TURN=6`), explore
+  weight 1.5, turn-only toolset, mistral-7b narrator in a deterministic greedy
+  regime. Metric: **directedness** (fraction of turns that move the infant
+  toward the sound). Runs pinned at `executed_git_hash a9ea66fe`.
 
-| Arm | Early | Late | Rise |
-|-----|-------|------|------|
-| taught | 0.664 | **0.875** | **+0.211** |
-| no_feed | — | 0.448 | — |
+| Arm | act1 | act2 | act3 | act4 | Late bin |
+|-----|------|------|------|------|----------|
+| taught | 0.55 | 0.58 | 0.63 | 0.67 | **0.649** |
+| no_feed | 0.18 | 0.17 | 0.17 | 0.17 | **0.167** |
 
-Both graduation criteria ("late ≥ 0.65 and rose ≥ 0.15") were met, and the
-taught-vs-control margin, 0.875 − 0.448 = **+0.427**, cleared the required 0.20
-by more than twofold. Verdict: **PASS / graduate** — the embodied infant is "no
-longer at chance," with the mother's teaching isolated as the causal factor.
-This updated experiment 46's dormant status and qualified `cradle_mother.py` as
-a behavioral-graduation candidate.
+Against the two pre-registered gates:
+
+- **MOTHER-TAUGHT: PASS, decisively.** Taught 0.649 vs no_feed 0.167 is
+  **+0.482** against a required margin of 0.20. The mother's operant teaching
+  is the difference, re-confirmed on the fixed apparatus.
+- **LEARNED-v2: FAIL.** Late 0.649 against the 0.65 level is a **0.001 miss**
+  — recorded and deliberately *not* retuned, per the discipline the gate was
+  frozen under — and the rise of **+0.104 against 0.15** from the act1-only
+  early bin is the substantive miss.
+
+**What the completed sweep showed.** Re-running across explore weights was
+meant to find the ceiling; it found something more informative. Every cell came
+out an exact, seed-invariant twelfth:
+
+| Explore weight | taught late | no_feed late |
+|---|---|---|
+| 1.5 | 8/12 = 0.667 | 2/12 = 0.167 |
+| 1.0 | 8/12 = 0.667 | 2/12 = 0.167 |
+| 0.75 | 4/12 = 0.333 | 6/12 = 0.500 |
+
+These twelfths are the seeds landing in the directed attractor, which is why they
+differ slightly from the 0.649 late-bin average quoted above: the plateau is
+*exactly* 8/12 at both of the higher weights — a structural ceiling that does not
+move with the exploration share — while the late-bin figure averages across the
+final two acts. At explore weight 1.0 the level criterion actually recovers
+(0.667 clears 0.65) and the gate still fails on rise, which is what identified the
+wall as structural rather than a tuning problem.
+
+At 0.75 **the arms invert**, and the control moves with zero teaching involved.
+The experiment's own reading: on this deterministic apparatus — greedy narrator,
+cycling stimulus, alternating explorer — directedness measures **phase alignment
+between the turn cycle and the stimulus cycle**. The explore weight selects
+which phase-locked attractor each arm falls into, and the operant credit tips
+the taught arm between attractors.
+
+That qualifies the mother effect rather than erasing it: the +0.482 gap is real
+and causally the mother's credit, but the honest description is **credit-tipped
+attractor selection, not graded orienting skill** — were it graded skill,
+lowering exploration would not invert the arms. The result is **not retracted,
+and it is not a code regression**; a matched re-run at the original graduation
+commit reproduced the same behavior.
+
+The sweep dimension is now considered exhausted. The sanctioned next step is the
+contest's other pre-registered control — **randomised stimulus order**, which
+breaks the phase-locking so directedness becomes a meaningful measure again —
+plus a **v3 gate frozen on the randomised apparatus before the data**.
+
+This phase-locking finding was general enough to be promoted into the repo's
+[measurement-limits ledger](https://github.com/dennys246/Maxim/blob/main/docs/limits/README.md)
+as L2: a graded-learning claim on a deterministic apparatus needs a dither
+source, or the metric measures phase geometry rather than skill.
 
 ### 11 — cradle sensorimotor PoC
 
@@ -192,22 +257,26 @@ claims of *different strength*:
 - **Validated, scripted:** exp 46 (operant orient + federation) and exp 47
   (habituation) are the solid ground. They are deterministic and do not depend
   on the embodied simulator's artifacts.
-- **Validated, embodied, recent:** exp 48 graduated the embodied infant on
-  2026-07-23 with N=12 per arm. It is a single passing run of a newly
-  seam-fixed instrument; read it as a graduation candidate, not a long-settled
-  result.
+- **PARTIAL, embodied:** exp 48 is *not* a graduation. On the corrected
+  apparatus the mother effect is real and causal (+0.482), but the learning
+  gate failed and the completed sweep showed the metric tracking phase
+  alignment rather than orienting skill. Treat it as evidence that contingent
+  care changes embodied behavior, and as an open question about what the
+  embodied metric can actually resolve.
 - **Superseded / invalidated:** the *original* cradle-mother design included an
   intrinsic "centeredness drive (azimuth homeostatic set_point 0)." Probes
   showed the infant oriented at contingent **1.000 vs ~0.50 chance even with no
   mother anywhere** — proving the intrinsic drive, not maternal teaching, drove
   the learning. That design was **superseded**; the current design gives the
   infant *no* innate orient drive and exteroceptive perception only.
-- **Stale plan doc:** the
+- **Read the experiment record, not the plan doc:** the
   [`cradle_mother.md`](https://github.com/dennys246/Maxim/blob/main/docs/plans/cradle_mother.md)
-  design/status still reads **SUPERSEDED / DORMANT (2026-07-22)** — "measured
-  at chance," resurrection pending a credit-attribution fix. Experiment 48
-  (2026-07-23) *is* that fix, and it passed, so the plan doc lags the latest
-  result. If the two disagree, exp 48 is newer.
+  design doc is a plan and post-mortem that lags the experiment record. The
+  authoritative dispositions live in
+  [`48_cradle_mother_seam.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/48_cradle_mother_seam.md)
+  and the
+  [behavioral-graduation ledger](https://github.com/dennys246/Maxim/blob/main/docs/plans/behavioral_graduation_candidates.md).
+  Where any two disagree, the experiment record and the ledger win.
 - **Planned, not shipped:** the cradle harness wired end-to-end into
   substrate-primary mode. Per the NAc page this is Phase 0 of a multi-phase
   roadmap, with `--aut-mode substrate-primary` opt-in and slated for v1.1;

@@ -3,6 +3,37 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import experimentsData from './src/data/experiments.json' with { type: 'json' };
 
+/**
+ * Wrap every Markdown table in a horizontally scrollable, focusable container.
+ *
+ * Reference tables here are wide enough to overflow a phone viewport. Without a
+ * wrapper the page itself scrolls sideways; with an unfocusable wrapper the
+ * overflow is unreachable by keyboard (axe `scrollable-region-focusable`, and
+ * WCAG 2.1.1). `tabindex="0"` makes the scroll container a tab stop so arrow
+ * keys can pan it. Deliberately no `role="region"` — that would add an unnamed
+ * landmark per table and trip `landmark-unique` instead.
+ *
+ * Build-time rather than client-side so keyboard access does not depend on JS.
+ */
+function rehypeScrollableTables() {
+	const walk = (node) => {
+		if (!node || !Array.isArray(node.children)) return;
+		node.children = node.children.map((child) => {
+			walk(child);
+			if (child.type === 'element' && child.tagName === 'table') {
+				return {
+					type: 'element',
+					tagName: 'div',
+					properties: { className: ['table-wrap'], tabIndex: 0 },
+					children: [child],
+				};
+			}
+			return child;
+		});
+	};
+	return (tree) => walk(tree);
+}
+
 // The newest experiment drives the sidebar note + the per-visitor "New" marker.
 const newestExperiment = [...experimentsData.experiments]
 	.filter((e) => e.date)
@@ -11,11 +42,14 @@ const newestExperiment = [...experimentsData.experiments]
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://pymaxim.bio',
+	markdown: {
+		rehypePlugins: [rehypeScrollableTables],
+	},
 	integrations: [
 		starlight({
 			title: 'Maxim',
 			description:
-				'A bio-inspired cognitive architecture for AI agents — embodied sensation, homeostatic drives, and brain-modeled memory that learns across sessions without fine-tuning.',
+				'A bio-inspired LLM harness that carries experience-grounded memory, causal links, drives, and valence across sessions — without fine-tuning model weights.',
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/dennys246/Maxim' },
 			],
@@ -37,6 +71,18 @@ export default defineConfig({
 				{
 					tag: 'script',
 					content: `(function(){try{var seen=localStorage.getItem('maxim:experimentsSeen');if(seen&&seen>=${JSON.stringify(newestExperiment.date)}){document.documentElement.setAttribute('data-exp-seen','');}}catch(e){}})();`,
+				},
+				{
+					// Starlight makes overflowing code blocks keyboard-scrollable at
+					// runtime by setting role="region" + tabindex on <pre>. That is the
+					// right call for keyboard access, but several unnamed regions on one
+					// page are indistinguishable to a screen-reader user browsing
+					// landmarks (axe `landmark-unique`). Name each one after its language
+					// and position. Done at runtime because the role is added at runtime;
+					// labelling the <pre> at build time would put aria-label on an element
+					// with no role, which is its own violation.
+					tag: 'script',
+					content: `(function(){function label(){var all=document.getElementsByTagName('pre');for(var i=0;i<all.length;i++){var e=all[i];if(e.getAttribute('role')!=='region')continue;if(e.getAttribute('aria-label'))continue;var l=e.getAttribute('data-language')||'code';e.setAttribute('aria-label',l+' code block '+(i+1));}}function start(){label();try{new MutationObserver(label).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['role']});}catch(e){}}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}})();`,
 				},
 			],
 			sidebar: [
@@ -93,6 +139,7 @@ export default defineConfig({
 				{
 					label: 'Research',
 					items: [
+						{ label: 'Evidence', slug: 'research/evidence' },
 						{
 							label: 'Experiments',
 							items: [

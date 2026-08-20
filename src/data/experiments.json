@@ -2,15 +2,81 @@
   "note": "Generated index of Maxim experiments. Raw data + reproduction live in the pymaxim repo.",
   "experiments": [
     {
+      "id": "50",
+      "file": "50_readaptation_after_plant_change.md",
+      "title": "Re-adaptation after plant change (savings + learned non-use)",
+      "date": "2026-08-07",
+      "status": "pre-registered",
+      "phase": null,
+      "cluster": "reachy",
+      "finding": "Pre-registered, no results yet: asks whether an orient policy trained on the pre-repair robot shows motor-adaptation-style savings on replaced hardware. Runs strictly after the healthy-hardware H1 baseline, whose measured constants filled the single permitted amendment slot.",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/50_readaptation_after_plant_change.md"
+    },
+    {
+      "id": "49",
+      "file": "49_two_joint_centering.md",
+      "title": "Two-joint centering: does the runtime use body turns appropriately?",
+      "date": "2026-08-04",
+      "status": "recorded",
+      "phase": null,
+      "cluster": "reachy",
+      "finding": "COMPLETE, all three hypotheses met: a head-only agent cannot center sounds past the neck limit (0/10) while motor-bound agents can, the LLM chose a direction-correct first body turn in 10/10 trials, and measured relief credit matched true direction-progress on both arms (1.00 LLM, 0.969 substrate). The front/back fold splits the two intelligences — the LLM crosses it, the substrate is ~20x faster where its policy applies.",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/49_two_joint_centering.md"
+    },
+    {
       "id": "48",
       "file": "48_cradle_mother_seam.md",
       "title": "Cradle-mother seam",
-      "date": "2026-07-23",
-      "status": "pre-registered",
+      "date": "2026-08-18",
+      "status": "partial",
       "phase": null,
       "cluster": "cradle",
-      "finding": "Tests whether the extero/intero perceptual seam makes the embodied cradle_mother infant orient; the taught arm reaches 0.875 directedness versus 0.448 for control, lifting the instrument off its previous chance-level baseline.",
+      "finding": "COMPLETE but not graduated, landing on the pre-registered PARTIAL branch after a re-baseline on a corrected apparatus (v2) against a gate re-frozen before the data. The mother effect was re-earned decisively (taught 0.649 vs control 0.167, +0.482), but the learning gate missed (0.001 under the level, +0.104 rise against 0.15) and the completed explore-weight sweep showed the arms inverting — directedness measures phase alignment, so the effect is credit-tipped attractor selection rather than graded orienting skill. The earlier v1 headline magnitudes are retired as apparatus artifacts.",
       "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/48_cradle_mother_seam.md"
+    },
+    {
+      "id": "44b",
+      "file": "44b_pilot.md",
+      "title": "Substrate counterfactual: pilot shakedown",
+      "date": "2026-08-11",
+      "status": "pilot",
+      "phase": null,
+      "cluster": "substrate",
+      "finding": "PILOT, explicitly not a result — one seed per arm. The shakedown found the transplant control is name-mismatched and that the two reported axes encode the same entity/affordance pair rather than independent effects, so the Exp 44 confirmatory campaign is not frozen.",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/44b_pilot.md"
+    },
+    {
+      "id": "42b",
+      "file": "42b_drive_pain_fold_revalidation.md",
+      "title": "Substrate-primary preference: re-validation after the drive-pain fold",
+      "date": "2026-07-29",
+      "status": "recorded",
+      "phase": null,
+      "cluster": "substrate",
+      "finding": "The Exp 42 graduation holds after the channel-split drive-pain fold: 40 sub-sims, 0 failed, discrimination reproduced identically. Caveat carried forward — the preference metric is saturated (SD 0.000), so a green re-run means 'not broken' and cannot detect a moderate regression.",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/42b_drive_pain_fold_revalidation.md"
+    },
+    {
+      "id": "44",
+      "file": "44_substrate_counterfactual.md",
+      "title": "Does a learned substrate steer the LLM? (trajectory-matched counterfactual)",
+      "date": "2026-07-28",
+      "status": "exploratory",
+      "phase": null,
+      "cluster": "substrate",
+      "finding": "EXPLORATORY, not a graduated result. Arm A and the counterbalance completed, but modest N and residual-color caveats stand, and the 44b pilot later found a name-mismatched transplant control and non-independent axes. Read alongside 44b; the confirmatory campaign is not frozen.",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/44_substrate_counterfactual.md"
+    },
+    {
+      "id": "45e",
+      "file": "45e_orient_s4_population_readout.md",
+      "title": "Orient magnitude S4: population-vector readout",
+      "date": "2026-07-27",
+      "status": "recorded",
+      "phase": "S4",
+      "cluster": "reachy",
+      "finding": "COMPLETE on live Reachy Mini with no LLM in the action path: a population-vector readout resolves the single-far-bin cell-starvation ceiling that 45d characterized. The fix is readout-independent — it bootstraps exploration into the starved cell, after which plain argmax reads the correct magnitude. n=1 (seed 3); multi-seed replication outstanding.",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/45e_orient_s4_population_readout.md"
     },
     {
       "id": "45d",
@@ -819,11 +885,11 @@
       "id": "42",
       "file": "42_substrate_primary_preference.md",
       "title": "Substrate-primary preference",
-      "date": null,
-      "status": "pre-registered",
+      "date": "2026-06-23",
+      "status": "recorded",
       "phase": null,
       "cluster": "substrate",
-      "finding": "Draft, not yet fired: tests whether the unmasked substrate learns to prefer the safe warmth source over the harmful one using terminal preference as the dependent variable.",
+      "finding": "GRADUATE, and the strongest substrate-primary result in the set: with no LLM in the action path, the substrate learns from embodied pain to prefer the safe warmth source (0.984 / 0.975 across 10 seeds per arm) and tracks the contingency when the counterbalance swaps which source is safe. The gating-OFF ablation graduated identically, which attributes the effect to per-source credit assignment rather than the drive-gating heuristic. Scope: mechanism-level, near-deterministic.",
       "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/42_substrate_primary_preference.md"
     },
     {

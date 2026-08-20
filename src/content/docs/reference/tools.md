@@ -3,7 +3,7 @@ title: Tools
 description: Reference for Maxim's tool system — the catalog the agent can call, how tools are selected and injected, the side-effects contract, and registering custom tools.
 ---
 
-Tools are the action surface of Maxim's [bio-inspired cognitive architecture](/concepts/architecture/). In agentic mode the LLM agent proposes tool calls, and tools are the *only* way the agent produces side effects — everything the agent does to the robot, the filesystem, external services, or its own runtime state passes through a tool. Every proposed call is reviewed by the [fear circuit](/systems/fear-circuit/) before it runs.
+Tools are the action surface of Maxim's [bio-inspired cognitive architecture](/concepts/architecture/). In agentic mode the LLM agent proposes tool calls, and tools are the *only* way the agent produces side effects — everything the agent does to the robot, the filesystem, external services, or its own runtime state passes through a tool. Whether those calls are also screened by the [fear circuit](/systems/fear-circuit/) depends on how the agent was constructed — see [tool safety](#tool-safety), and do not assume the gate is on.
 
 This page is a reference for the tool catalog, how tools get into the prompt, the `side_effects` contract, and how to register your own. For the command-line flags that gate many of these tools (`--tts`, `--comms`, `--internet-access`, `--embodiment`, `--sim`), see the [CLI reference](/reference/cli/).
 
@@ -79,7 +79,7 @@ Subject to filesystem policy (sandboxed paths).
 | `ExecuteFileTool` | Execute a file (Python / shell scripts) | Safety-reviewed |
 | `GlobTool` | Find files matching glob patterns | |
 | `RequestDirectoryChangeTool` | Change the working directory for file ops | |
-| `BashTool` | Execute arbitrary bash commands | High-risk; always fear-reviewed |
+| `BashTool` | Execute arbitrary bash commands | High-risk; fear-reviewed **when the gate is active** |
 
 ### Code and Git
 
@@ -138,7 +138,7 @@ Change the agent's own runtime disposition. See [operating modes](/concepts/oper
 
 ### Introspection (biological self-awareness)
 
-Read-only queries into the agent's own biological subsystems. None modifies agent state, so these bypass the fear circuit.
+Read-only queries into the agent's own biological subsystems. None modifies agent state. They are not singled out for exemption by the fear gate — when the gate is active it reviews them like any other call and, being read-only, they classify as low-risk and pass.
 
 | Tool (`name`) | Does | Notable parameters |
 |---|---|---|
@@ -231,8 +231,9 @@ class WeatherTool(Tool):
         return ToolOutput(success=True, output=f"Sunny in {city}, 72F")
 
 
-maxim.register_tool(WeatherTool())
-maxim.run(model="mistral-7b")  # WeatherTool is now available to the agent
+maxim.register_tool(WeatherTool())  # must happen before run()
+maxim.run(model="mistral-7b", goal="Report the current weather in Denver.")
+# Blocks here. Ctrl+C to stop.
 ```
 
 **Decorator** — the fast path; `input_schema` is inferred from type hints and exported as JSONSchema:
@@ -247,12 +248,29 @@ def get_weather(city: str) -> str:
     return f"Sunny in {city}, 72F"
 
 
-maxim.run(model="mistral-7b")
+maxim.run(model="mistral-7b", goal="Report the current weather in Denver.")
+# Blocks here. Ctrl+C to stop.
 ```
+
+:::caution[`maxim.run()` is a blocking service loop]
+`run()` returns `None` and does not return until you interrupt it — normally
+Ctrl+C — or the runtime shuts down. **Completing the goal does not stop it.**
+
+`goal` is delivered once, through the runtime's canonical input path, as the loop's
+initial input. It defaults to `None`, and `goal=None` starts the loop **idle**: this
+Python facade installs no terminal-input reader, so nothing you type reaches the agent
+and it will sit idle until interrupted. Pass a non-empty `goal` in any example you
+expect to do something. A whitespace-only `goal` raises `ConfigurationError`.
+
+Two more contract facts worth knowing: only one `maxim.run()` may be active per
+process, and `robot=` requires `headless=False` — connecting hardware from headless
+mode raises rather than silently skipping the robot.
+:::
 
 A few things worth knowing, all of which are code-adjacent and may drift with the source — confirm against the repo before pinning:
 
 - To make the LLM actually *use* a custom tool, remember the two-tier description resolution above: a terse `description` + bare `input_schema` may need enriching.
+- **`register_tool()` is currently one-shot.** Registered tools go on a pending list that `run()` drains and then clears, while each API invocation builds a fresh registry — so a tool registered once is *not* re-registered for a later `run()`, `imagine()`, or `campaign()` call in the same process. Re-register before each call. Whether this becomes persistent registration or an explicitly one-shot contract is an open 1.1 decision, tracked as [D18](https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md).
 - `Tool.cancel()` is a non-abstract no-op on the ABC, reserved for 1.1+ MCP/async-cancel work. No 1.0 dispatch path calls it; heavy tools (HTTP fetch, web search) override it to set a `threading.Event` for cooperative cancellation.
 - For long campaigns, register scene tools with `registry.register_scene_tools(tools, scene_id=...)` so they participate in the 20-tool active window rather than permanently inflating the prompt.
 - If your tool feeds the bio pipeline, emit the documented `side_effects` keys rather than inventing your own — that is what makes it interoperate with NAc learning and the pain pathway.
@@ -261,7 +279,25 @@ Related stable extension points on the same page — custom robot drivers, LLM b
 
 ## Tool safety
 
-Every non-introspection tool call passes through the fear circuit before execution: deterministic pattern matching for known-dangerous patterns, optional LLM review for ambiguous cases, and an NAc prediction gate (AdaptivePolicy blocks actions with high-confidence negative predictions — confidence > 0.85, value < 0.1), with configurable strictness. Side-effecting tools (filesystem writes, bash, git commits) get extra scrutiny; introspection tools bypass the gate because they are read-only. The agent can be constrained further with `--autonomy`. See the [fear circuit](/systems/fear-circuit/) for the full gating model.
+**Fear gating is conditional. It is not a guarantee the runtime makes on your behalf, and the stable Python API does not turn it on.**
+
+The gate is a wrapper — `FearGatedExecutor` — placed around the executor at construction time. Whether it exists depends on the entry point:
+
+| Entry point | Fear gate on the tool path? |
+|---|---|
+| `maxim` CLI, non-sim runs | Yes — the CLI opts in explicitly |
+| Simulation orchestrator | Yes, wired separately so it wraps after the pain interceptor |
+| Stable `maxim.run()` | **No.** It builds its agent without requesting the gate |
+| `AgentConfig(...)` you construct | Only if you pass `with_fear_gate=True`; the field defaults to `False` |
+
+Two further caveats matter if you are relying on this for safety:
+
+- **Construction can fail open.** If wrapping the executor raises, the failure is logged as a warning and the agent continues with the *unwrapped* executor. The startup log line reports the gate as requested rather than as successfully installed, so it is not evidence the gate is live.
+- **Not every reviewed call is meaningfully screened.** When the gate is active it reviews calls and classifies them, but substantive checks apply to shell execution, filesystem writes, and network requests, plus any call carrying extractable code content. Other tools are reviewed and allowed unless a tool-pain bridge is attached. Introspection tools are *not* exempted by the gate itself — a separate introspection filter exists, but it governs substrate-primary action proposal, not safety.
+
+When the gate is active and the call falls in a checked category, screening is deterministic pattern matching for known-dangerous patterns, optional LLM review for ambiguous cases, and an NAc prediction gate (AdaptivePolicy blocks actions with high-confidence negative predictions — confidence > 0.85, value < 0.1), with configurable strictness. The agent can be constrained further with `--autonomy`. See the [fear circuit](/systems/fear-circuit/) for the gating model itself.
+
+If you need every side-effecting call screened, construct the agent yourself with `with_fear_gate=True`, confirm no wrap-failure warning appears at startup, and sandbox anyway.
 
 ## Going deeper
 

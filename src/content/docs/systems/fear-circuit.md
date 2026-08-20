@@ -74,9 +74,27 @@ default policy blocks `HIGH` and `CRITICAL` risk and allows the rest — lower
 severities pass with a warning logged. The `RiskLevel` is exposed to upstream
 agents so they have context even when the action is allowed.
 
-`FearGatedExecutor` is an optional executor wrapper (enabled with
-`with_fear_gate=True`) that runs this review on *every* tool call — in robot,
-headless, or simulation mode — independently of any robot connection.
+`FearGatedExecutor` is an optional executor wrapper that, once installed, routes
+every tool call through this review — in robot, headless, or simulation mode,
+independently of any robot connection. Introspection tools are not exempted by
+the wrapper; being read-only, they classify as low-risk and pass.
+
+Three things to know before relying on it:
+
+- **`with_fear_gate` defaults to `False`.** The gate is opt-in. The `maxim` CLI
+  enables it for non-sim runs and the simulation orchestrator wires it
+  separately, but the stable `maxim.run()` API does **not** — see
+  [tool safety](/reference/tools/#tool-safety) for the per-entry-point table.
+- **Construction fails open.** If wrapping the executor raises, the failure is
+  logged as a warning and the agent runs with the *unwrapped* executor. The
+  startup log reports the gate as requested rather than as installed, so it is
+  not proof the gate is live.
+- **Not every call gets a substantive verdict.** Shell execution, filesystem
+  writes, network requests, and calls carrying extractable code content are
+  meaningfully analyzed. Other tools are reviewed and allowed unless a tool-pain
+  bridge is attached.
+
+Treat the fear circuit as defense in depth, not a sandbox.
 
 ### Two-tier harm detection
 
