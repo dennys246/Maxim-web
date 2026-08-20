@@ -236,6 +236,101 @@ and `PainInterceptorExecutor` fires the ground-truth `EXTERNAL_SIGNAL` *after*.
 The anticipated signal reaches the agent's next LLM context, so it can reason
 "I anticipate 0.95 pain from reading `/etc/shadow` — I should refuse."
 
+## Teaching fear in simulation
+
+Nothing in the circuit above is scripted per-danger — there is no
+`fear_of_fire: true` flag. Fear is *taught*, and the way you teach it is the
+same in [simulation](/guides/simulation/) as on hardware: author a world where
+a specific action causes pain, let the agent act, and the cascade does the
+rest. Maxim's own fire experiments are the canonical example.
+
+### The recipe: make the world bite
+
+Teaching an agent that fire is dangerous takes one
+[SEM entity](/embodiment/sem-protocol/) whose affordance hurts. This is the
+actual fire pit from Maxim's cradle experiments (trimmed from
+`_data/components/items/cradle_fire_pit.yaml`):
+
+```yaml
+entity:
+  name: fire_pit
+  entity_type: hazard
+  sensors:
+    heat_output: {unit: celsius_norm, range: [0, 1], initial: 0.9}
+  modulators:
+    flame:
+      abstract: true
+      affordances:
+        observe:
+          params: {}
+          description: "Look at the fire pit from a safe distance"
+        warm_self:
+          description: "Stand close to feel the radiated heat without touching it"
+          self_effect:
+            core_temperature: 0.2
+            arms.thermal: 0.2      # inside the arms' comfort band — safe
+        touch:
+          description: "Reach toward the fire pit to feel the heat"
+          self_effect:
+            arms.thermal: 0.6      # breaches the comfort band — pain
+```
+
+The design detail that matters is the *contrast*. `observe` is free.
+`warm_self` nudges the agent's thermal sensors by `+0.2` — inside the body's
+comfort band, so approaching fire feels good and restores a cold body's
+homeostasis. `touch` writes `+0.6`, past the band. Nothing in any description
+says "dangerous"; the harm lives in the world's physics, not the words. When
+the agent touches the fire, the cascade documented above runs exactly as it
+would for an overextended joint: the breach fires a `thermal_contact` failure,
+`PainBus` publishes the signal with full context (entity, failure mode, sensor
+readings), the [NAc](/systems/nucleus-accumbens/) attributes it to the pending
+`touch` action and forms a negative causal link, and the
+[Hippocampus](/systems/hippocampus/) keeps the burn as a valenced episode. Next
+time, `should_gate_action()` and the anticipated-pain assessor see fire
+differently.
+
+That end-to-end chain — affordance → sensor breach → pain → causal link →
+changed action choice — is validated as the
+[SEM pain cascade PoC](https://github.com/dennys246/Maxim/blob/main/docs/experiments/p2_sem_pain_cascade.md):
+after one pain-learning cycle on a shattering sword, the agent's policy flips
+from `slash` (predicted negative, confidence ~0.55) to `drop_weapon`, and
+repeated pain strengthens the link monotonically (0.55 → 0.64 → 0.67).
+
+### What the fire experiment showed — and didn't
+
+The full fire study is
+[Experiment 37](https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_session_graduation.md),
+a pre-registered, paired fresh-vs-resume design: Arm A meets the fire for the
+first time, Arm B resumes carrying a prior session's burn, Arm C resumes from a
+peaceful prior session as the confound control. The taught fear demonstrably
+*persists* — the burn memory reloads and resurfaces in later sessions — but the
+behavioral verdict is deliberately kept honest on the
+[cross-session learning](/research/experiments/cross-session-learning/) page:
+the fresh-vs-resume behavioral delta appeared only at larger model scale, and
+the confound arm failed isolation. And the
+[deceptive-hearth variant](https://github.com/dennys246/Maxim/blob/main/docs/experiments/38_counter_prior_substrate.md)
+— a hearth identical in description but whose `warm_self` secretly burns —
+showed the sharpest limit: when taught fear contradicts an LLM's baked-in
+`fire → warm` prior, the prior often wins. Teaching fear works; guaranteeing
+the agent *acts* on it against its own priors is the open problem, and the
+motivation for [substrate-primary mode](/concepts/operating-modes/).
+
+### Run it yourself
+
+Any scenario with a pain-wired entity teaches the same way. The fire lesson
+runs inside the cradle arc — the developmental simulation whose phases activate
+world entities like the fire pit around an infant body:
+
+```bash
+maxim --sim cradle --embodiment bodies/infant_humanoid --sim-max-turns 25
+```
+
+Then resume the same agent and watch the recall: the
+[simulation guide](/guides/simulation/) covers test sequences that drive
+sensors past thresholds deterministically, and
+`MAXIM_LANE_TRACE=1` surfaces `pain_published` events live so you can watch
+the burn become a causal link as it happens.
+
 ## Preemption
 
 Prediction and pain gate *proposed* actions. The preemption circuit interrupts
