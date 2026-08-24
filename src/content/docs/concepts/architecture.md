@@ -25,25 +25,24 @@ Environment   World observation (NO side effects)
 Memory        Storage and retrieval (NO decision making)
 ```
 
-:::caution[This is the contract, not a verified property of the codebase]
-The boundary above is an architectural contract with known debt, not something CI
-currently guarantees. Maxim ships an AST-based import validator —
-`maxim --audit-architecture`, which exits non-zero on violations — and on the current
-release candidate it reports **33 findings**, mostly reverse imports across the
-`agents`, `tools`, `memory`, and `bridges` boundaries.
+:::note[This is the contract, enforced against a reviewed accepted-debt baseline]
+The boundary above is an architectural contract with known, *reviewed* debt. Maxim ships
+an AST-based import validator — `maxim --audit-architecture` — and the repository
+ships a reviewed accepted-debt baseline next to it
+(`maxim/utils/architecture_baseline.json`, packaged with the wheel from 1.1 on). Every finding in that baseline is
+classified — typing-only imports under `if TYPE_CHECKING:`, function-local lazy
+imports (none of which breaks an import cycle), or module-level dependency
+inversions — and carries a rationale and the symbols it accepts.
 
-Those 33 have **not** yet been triaged. Some are likely typing-only imports or
-deliberate accepted debt, but no reviewed baseline distinguishes those from real
-violations. CI does not run the audit today, and the one unit test covering it asserts
-only that the audit returns a list — so it passes at 33 findings and cannot detect a
-regression.
+CI fails on any finding **not** in the baseline, on any accepted import that widens to
+symbols the review never saw, on any entry the code no longer justifies (so the
+baseline cannot overstate the debt), and on any entry that has not been reviewed.
+Run the audit command for the current count; it reports the same verdict CI does.
 
-Classifying the findings, storing a reviewed accepted-debt baseline, and failing CI on
-any unreviewed addition is a **1.1 release gate**; burning the baseline to zero is
-tracked separately for 1.1.x. Tracked as
+Burning the baseline to zero is tracked for 1.1.x (moving the shared graph/event
+contracts out of the inverted packages). The gate's history is
 [D19](https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md) in the defect
-ledger. Treat the layering as the direction the code is held to under review, and
-verify it yourself with the audit command if you depend on it.
+ledger.
 :::
 
 One nuance if you run the audit: the prose chain above and the validator's rule table
@@ -257,7 +256,7 @@ Energy signals flow to the NAc, creating associations between actions and their 
 
 ## Design Principles
 
-- **Layered Separation** — one-way dependencies are the contract that prevents circular reasoning (with [33 open audit findings](#the-layered-architecture) and CI enforcement gated on 1.1)
+- **Layered Separation** — one-way dependencies are the contract that prevents circular reasoning (known debt is held in a [reviewed accepted-debt baseline](#the-layered-architecture) behind a CI regression gate; burn-down is 1.1.x)
 - **Biological Plausibility** — Core systems mirror neuroscience mechanisms
 - **Learning Over Tuning** — Systems adapt rather than requiring manual configuration
 - **Safety First** — Multi-tier harm detection before and during execution
