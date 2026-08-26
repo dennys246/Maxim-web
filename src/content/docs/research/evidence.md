@@ -177,6 +177,10 @@ time because the delivered geometry had drifted about +0.07 over the session, so
 target already sat inside the ±0.05 centre band before the turn. Head-pose drift
 under repeated turns was re-measured during the session (D30).
 
+**Watch it.** [Video of the readout session](https://youtu.be/lLoPM2EkbPU) — a taught infant and a control,
+loaded the same way, on the same robot. The video is illustration; the record is the
+JSONL linked above.
+
 **Run it yourself.** Your install starts blank — there is no pre-loaded want. The
 nursery that produces one is Exp 52; the exact agent files read out here are under
 [`docs/experiments/data/53_agents/`](https://github.com/dennys246/Maxim/tree/main/docs/experiments/data/53_agents) with a SHA-256 manifest, and the harness is
