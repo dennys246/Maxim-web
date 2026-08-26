@@ -105,7 +105,9 @@ social.cooldown_seconds = 0.2
 
 The highest-priority reflex — a rapid reaction to something appearing suddenly in
 the periphery. Its 2-second cooldown is deliberately long so a single startle
-doesn't monopolize the arbiter.
+doesn't monopolize the arbiter. Despite the name, what it implements is orienting
+(a look toward the onset), not a startle brace — see the
+[naming note](/research/behaviors/overview/#on-the-name-startle).
 
 ```python
 from maxim.default_network import StartleResponse

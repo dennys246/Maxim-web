@@ -239,6 +239,16 @@ Default Mode Network, `ThalamicGate` the thalamus, `OrientingResponse` the
 superior colliculus, `GazeController` the frontal eye fields, and
 `StartleResponse` / `SocialAttention` the amygdala.
 
+#### On the name "startle"
+
+`StartleResponse` is a mislabel that the engine's roadmap records for correction.
+Startle proper is a fast, non-directional protective brace (pontine reticular
+circuitry, ~5–10 ms); what this behavior does — propose a look *toward* a sudden
+peripheral appearance — is **orienting** (superior colliculus, ~70–200 ms). The class
+name is unchanged in 1.1, so read "startle" in these pages as peripheral-onset
+orienting, and do not expect startle-literature behaviour (bracing, sensitisation)
+from it.
+
 ## Configuration
 
 Behaviors are configured from a bundled YAML (`data/util/default_network.yaml`),

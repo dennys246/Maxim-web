@@ -30,9 +30,10 @@ Outbound   Agent ──▶ send_message tool ──▶ Gateway ──▶ Channel
 Inbound    User ──▶ Channel ──▶ Gateway ──▶ Percept on bus ──▶ Agent
 ```
 
-Outbound, the agent proposes a `send_message` (or `call`) tool call — which, like
-every side-effecting tool, is reviewed by the [fear circuit](/systems/fear-circuit/)
-before it runs — and the gateway performs the delivery. Inbound, a channel receives
+Outbound, the agent proposes a `send_message` (or `call`) tool call — which is
+reviewed by the [fear circuit](/systems/fear-circuit/) before it runs *when the gate is
+active* (the CLI turns it on; the stable Python API does not — see
+[tool safety](/reference/tools/#tool-safety)) — and the gateway performs the delivery. Inbound, a channel receives
 a message, the gateway wraps it as a percept, and drops it on the perception bus like
 any other sensory input. The agent then decides what, if anything, to do about it.
 

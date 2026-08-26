@@ -213,9 +213,9 @@ falls back to random selection.
 **Status.** Phase −1 (the method itself) is complete and shipped. Phase 0 —
 end-to-end wiring, cradle harness, telemetry — is *planned*, as are phases 1
 through 4 (vocabulary-constrained mode, symbol binding, a sequence model, and a
-pretrained-vs-grounded comparison). The `--aut-mode substrate-primary` flag is
-opt-in and slated for v1.1; `--aut-mode llm-primary` remains the user-facing
-default indefinitely. Read this section as a roadmap with one shipped
+pretrained-vs-grounded comparison). The `--aut-mode substrate-primary` flag
+ships in 1.1 as an experimental opt-in; `--aut-mode llm-primary` remains the
+user-facing default indefinitely. Read this section as a roadmap with one shipped
 foundation, not as a feature you can turn on today and expect to work end to end.
 
 ## How it connects

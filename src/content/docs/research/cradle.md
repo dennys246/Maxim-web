@@ -29,11 +29,16 @@ about which is which:
 - **Built and validated (scripted):** operant-orient learning and crèche
   federation on a deterministic substrate ([exp 46](#46--operant-orient-a-mother-teaches-a-creche-pools)),
   and habituation as novelty-detection in noise ([exp 47](#47--habituation-a-novel-sound-in-a-wall-of-noise)).
-- **Built, embodied, and PARTIAL:** the extero/intero seam on the embodied
-  infant ([exp 48](#48--cradle-mother-seam-the-embodied-infant)). The mother
-  effect is re-earned on the corrected apparatus, but the learning gate is not
-  met and the result reads as attractor selection rather than graded skill.
-  Read it as a case study in apparatus correction, not a graduation.
+- **Built, embodied, and EARNED:** caregiver-taught orienting through hunger
+  relief on the embodied infant ([exp 52](#52--nurture-caregiver-taught-orienting-through-hunger-relief)).
+  The infant learns to turn toward the mother's voice only when her feed
+  relieves its hunger — the same feed without need teaches nothing.
+- **Superseded — the apparatus case study:** the extero/intero seam experiment
+  ([exp 48](#48--cradle-mother-seam-the-embodied-infant)) stays PARTIAL for the
+  constant-credit apparatus it measured. The mother effect was re-earned on the
+  corrected apparatus, but the learning gate was not met and the metric turned
+  out to track phase alignment. Read it as the apparatus correction — v1 contest
+  → v2 re-baseline → sweep → shuffle — that made exp 52's measurement possible.
 - **Built infrastructure, not a behavioral claim:** the generative cradle
   simulator that narrates developmental scenes ([exp 11](#11--cradle-sensorimotor-poc)),
   and the Phase 0 harness smoke test.
@@ -41,7 +46,7 @@ about which is which:
   substrate-primary mode* as a standard way to raise an agent. The
   [NAc page](/systems/nucleus-accumbens/) states this plainly — Phase 0
   (end-to-end wiring, cradle harness, telemetry) is *planned*, and the
-  `--aut-mode substrate-primary` flag is opt-in and slated for v1.1. The
+  `--aut-mode substrate-primary` flag ships in 1.1 as an experimental opt-in. The
   [`cradle_mother.md`](https://github.com/dennys246/Maxim/blob/main/docs/plans/cradle_mother.md)
   design doc is largely a **plan and post-mortem**, not a description of a
   shipped feature.
@@ -54,7 +59,8 @@ one slice of the idea.
 
 | ID | Experiment | Date | Status | Headline result |
 |----|-----------|------|--------|-----------------|
-| 48 | [cradle-mother seam (embodied)](#48--cradle-mother-seam-the-embodied-infant) | re-baselined 2026-08-14, sweep completed 2026-08-18 | **COMPLETE — not graduated** | Mother effect re-earned on apparatus v2 — taught 0.649 vs no-feed 0.167 (+0.482) — but LEARNED-v2 missed and the sweep attributes the gap to phase-locked attractor selection |
+| 52 | [nurture: orienting through hunger relief](#52--nurture-caregiver-taught-orienting-through-hunger-relief) | 2026-08-25 | **COMPLETE — EARNED** | Taught 0.878 vs satiated 0.441 (fed, never hungry) vs no-feed 0.413 on the shuffled apparatus v3, 12 seeds/arm; scripted phase 0.892 vs 0.496 for every control |
+| 48 | [cradle-mother seam (embodied)](#48--cradle-mother-seam-the-embodied-infant) | re-baselined 2026-08-14, sweep completed 2026-08-18 | **COMPLETE — not graduated; superseded by 52** | Mother effect re-earned on apparatus v2 — taught 0.649 vs no-feed 0.167 (+0.482) — but LEARNED-v2 missed and the sweep attributes the gap to phase-locked attractor selection |
 | 47 | [habituation, novel sound in noise](#47--habituation-a-novel-sound-in-a-wall-of-noise) | 2026-07-22 | Complete (scripted) | Habituating 1.00 catch-rate vs 0.04 control at 40-noise density |
 | 46 | [operant orient / crèche](#46--operant-orient-a-mother-teaches-a-creche-pools) | 2026-07-22 | Complete (scripted) | Taught 0.90 vs none 0.50; 12 merged infants reach 1.00 |
 | 13 | phase0 harness smoke | 2026-05-09 | Recorded | Phase 0 harness clears success criterion; no behavioral claim |
@@ -103,6 +109,65 @@ background noise varied across 1, 5, 10, 20, and 40 concurrent sounds.
   novelty at **0.06**; pooling familiarity counts across a crèche of twelve
   pushed it to **1.00**. The group collectively suppresses background nobody
   individually heard enough of.
+
+### 52 — nurture: caregiver-taught orienting through hunger relief
+
+The result the 1.1 "Sensorimotor" release was reopened to test, and the successor
+to exp 48. The question is sharper than "does the mother's feeding teach
+orienting?": does the infant learn *because feeding relieves a need*? Three things
+had to be true — it learns when hungry and fed contingently (LEARNED); it does
+**not** learn when fed contingently but never hungry (HUNGER-NECESSARY, the arm
+exp 48 never had); and it does not learn when fed on the same schedule
+non-contingently, or not at all (MOTHER-NECESSARY).
+
+**What changed versus exp 48.** The mother's feed already wrote a real hunger delta;
+the credit was a constant `feed_reward=1.0`, so a full infant was credited exactly
+like a starving one. Exp 52 makes the operant credit's value the **sign of the
+drive relief the feed actually produced** in the infant — zero relief, no credit —
+delivered through the existing one-turn operant trace. No new mechanism class.
+Pre-registered with frozen gates, both phases run 2026-08-25.
+
+- **Phase A — scripted substrate (8 seeds × 600 ticks): PASS.** Taught settled at
+  **0.892**; satiated **0.496**, yoked **0.496**, no-feed **0.496**. Satiated and
+  no-feed are identical to the digit — with no credit minted, both are the same
+  seeded random walk. Yoked received every one of the taught arm's 4,305 credits
+  decoupled from its own actions and stayed at chance: contingency carries the
+  learning, not reward volume.
+- **Phase B — embodied `cradle_mother`, apparatus v3 (12 seeds/arm, 48 turns,
+  exposure-matched): GRADUATE.** Shuffled stimulus order broke the phase-locking
+  that exp 48's sweep exposed. Taught late-bin directedness **0.878** (rising from
+  0.61 in act 1); satiated **0.441** (fed on 35% of turns, credited on 0%);
+  no-feed **0.413**. LEARNED (0.878 ≥ 0.65, +0.26 rise), MOTHER-TAUGHT (+0.465)
+  and HUNGER-NECESSARY (+0.437; satiated rise +0.10 < 0.15) all pass under gate
+  v3. The apparatus check is clean: every arm shows real seed spread (SD
+  0.08–0.13, 6–8 distinct late values) — the exact seed-invariant twelfths of
+  apparatus v2 are gone, and directedness is a graded measure again.
+
+| Arm (Phase B) | act1 | act2 | act3 | act4 | late (act3+4) | fed | credited |
+|---|---|---|---|---|---|---|---|
+| taught | 0.61 | 0.85 | 0.87 | 0.89 | **0.878** | 73% | 73% |
+| satiated | 0.34 | 0.43 | 0.43 | 0.45 | 0.441 | 35% | **0%** |
+| no_feed | 0.33 | 0.40 | 0.38 | 0.44 | 0.413 | 0% | 0% |
+
+One taught seed was a weak learner (late 0.54). The margin instrumentation says
+why: its learned margin sat at the ~0.11 argmax visibility floor (limit L1), so the
+exploration term decided 18% of its choices against 3–11% for the other eleven
+seeds — a weak learner, not a non-learner.
+
+**What it shows, and what it does not.** On both the clean substrate and the
+embodied sim, an infant with no orient drive acquires "turn toward the voice" from
+the mother's contingent feeding *only when the feed relieves something*. That is
+the operational content of "learns to want to orient from a primary reward". It
+does **not** show "fed while hungry" in the everyday sense: the sign-only credit
+discriminates nonzero-from-zero relief (hunger at feed ≈ 0.05–0.1, far below the
+deprivation threshold). Not modeled: secondary reinforcement of the voice itself,
+or devaluation. Nothing here speaks to magnitude, loudness, the LLM-driven action
+path, or multi-turn credit. **Phase B is one session, n = 12 per arm** —
+cross-session replication is outstanding.
+
+Record: [`52_nurture.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/52_nurture.md) ·
+[pre-registration](https://github.com/dennys246/Maxim/blob/main/docs/experiments/protocols/exp52_nurture_preregistration.md)
+· raw data under [`docs/experiments/data/52_*`](https://github.com/dennys246/Maxim/tree/main/docs/experiments/data).
 
 ### 48 — cradle-mother seam: the embodied infant
 
@@ -182,10 +247,13 @@ lowering exploration would not invert the arms. The result is **not retracted,
 and it is not a code regression**; a matched re-run at the original graduation
 commit reproduced the same behavior.
 
-The sweep dimension is now considered exhausted. The sanctioned next step is the
-contest's other pre-registered control — **randomised stimulus order**, which
-breaks the phase-locking so directedness becomes a meaningful measure again —
-plus a **v3 gate frozen on the randomised apparatus before the data**.
+The sweep dimension was considered exhausted, and the sanctioned next step — the
+contest's other pre-registered control, **randomised stimulus order**, under a
+**v3 gate frozen before the data** — has since run as
+[exp 52](#52--nurture-caregiver-taught-orienting-through-hunger-relief), which also
+replaced the constant credit with relief-sourced credit and graduated. Exp 48's
+verdict stands for the constant-credit apparatus; to reproduce its rows, the
+harness now needs `--credit constant`.
 
 This phase-locking finding was general enough to be promoted into the repo's
 [measurement-limits ledger](https://github.com/dennys246/Maxim/blob/main/docs/limits/README.md)
@@ -257,12 +325,15 @@ claims of *different strength*:
 - **Validated, scripted:** exp 46 (operant orient + federation) and exp 47
   (habituation) are the solid ground. They are deterministic and do not depend
   on the embodied simulator's artifacts.
-- **PARTIAL, embodied:** exp 48 is *not* a graduation. On the corrected
-  apparatus the mother effect is real and causal (+0.482), but the learning
-  gate failed and the completed sweep showed the metric tracking phase
-  alignment rather than orienting skill. Treat it as evidence that contingent
-  care changes embodied behavior, and as an open question about what the
-  embodied metric can actually resolve.
+- **EARNED, embodied:** exp 52 is the graduation. On the shuffled apparatus
+  with relief-sourced credit, the infant learns to orient from the mother's
+  feeding only when it is hungry — one session, 12 seeds per arm, sign-only
+  relief credit; read its stated scope before citing it.
+- **PARTIAL, embodied — superseded:** exp 48 is *not* a graduation. On the
+  corrected apparatus the mother effect is real and causal (+0.482), but the
+  learning gate failed and the completed sweep showed the metric tracking phase
+  alignment rather than orienting skill. It stands as the apparatus case study
+  that exp 52 was built on.
 - **Superseded / invalidated:** the *original* cradle-mother design included an
   intrinsic "centeredness drive (azimuth homeostatic set_point 0)." Probes
   showed the infant oriented at contingent **1.000 vs ~0.50 chance even with no
@@ -273,13 +344,14 @@ claims of *different strength*:
   [`cradle_mother.md`](https://github.com/dennys246/Maxim/blob/main/docs/plans/cradle_mother.md)
   design doc is a plan and post-mortem that lags the experiment record. The
   authoritative dispositions live in
+  [`52_nurture.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/52_nurture.md),
   [`48_cradle_mother_seam.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/48_cradle_mother_seam.md)
   and the
   [behavioral-graduation ledger](https://github.com/dennys246/Maxim/blob/main/docs/plans/behavioral_graduation_candidates.md).
   Where any two disagree, the experiment record and the ledger win.
 - **Planned, not shipped:** the cradle harness wired end-to-end into
   substrate-primary mode. Per the NAc page this is Phase 0 of a multi-phase
-  roadmap, with `--aut-mode substrate-primary` opt-in and slated for v1.1;
+  roadmap, with `--aut-mode substrate-primary` shipped in 1.1 as an experimental opt-in;
   `--aut-mode llm-primary` remains the default indefinitely. Do not read "raise
   an agent in the cradle before autonomy" as an available workflow yet.
 
@@ -289,6 +361,7 @@ claims of *different strength*:
 - Experiment log index: [`docs/experiments/README.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/README.md)
 - [`46_operant_orient_creche.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/46_operant_orient_creche.md)
 - [`47_habituation_novel_in_noise.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/47_habituation_novel_in_noise.md)
+- [`52_nurture.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/52_nurture.md)
 - [`48_cradle_mother_seam.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/48_cradle_mother_seam.md)
 - [`11_cradle_sensorimotor_poc.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/11_cradle_sensorimotor_poc.md)
 - Framing: [Substrate-primary mode](https://www.dennyschaedig.com/maxim/substrate-primary) and [Sound orientation](https://www.dennyschaedig.com/maxim/sound-orientation)

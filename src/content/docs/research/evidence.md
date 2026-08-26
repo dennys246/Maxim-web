@@ -79,13 +79,18 @@ arm. Later arms extended this to magnitude —
 
 **The caveats.** Several, and they matter more than the headline.
 
-- **The measurement platform was degraded.** Two motors, broken for the entire 1.0+
-  era, were replaced in August 2026. Every magnitude claim measured before that is
-  **provisional** — delivered shift is exactly what a degraded platform corrupts.
-  Direction findings are sign-based and expected to survive a proportional gain
-  error. Re-validation on healthy hardware has passed its sensor half and now its
-  delivered-shift half, but the large-step magnitude arms remain n=1 per side with a
-  multi-rep block still queued.
+- **The measurement platform was degraded, and has since been re-validated.** Two
+  motors, broken for the entire 1.0+ era, were replaced in August 2026, so every
+  magnitude claim measured before that was provisional — delivered shift is exactly
+  what a degraded platform corrupts (direction findings are sign-based and survive a
+  proportional gain error). Re-validation on the repaired robot has now passed both
+  halves: the sensor sweep, and on 2026-08-24 the large-step delivered shift at
+  n = 8 per side (0.94 of the commanded rotation on both sides), which clears the
+  provisional flag on that magnitude. It is still **one session** with
+  cross-session replication outstanding, and it surfaced two open defects — head
+  roll drifting under repeated body-only turns (D30) and a missing front/back fold
+  guard on the credit path (D31). The sweep gain itself is scored as a full-range
+  fit under an R² gate, a choice recorded as limit L9.
 - **Several magnitude arms are single hardware sessions**, scoring a metric quantized
   to five values over four bins — against the ten-seeds-with-standard-deviation
   standard the substrate-primary row above is held to. The 45e bootstrap result is
@@ -97,6 +102,37 @@ arm. Later arms extended this to magnitude —
 - An earlier sensor-characterization finding was **retracted** as an artifact of a
   head-frame bug. The direction, cross-session, and merge arms were unaffected;
   magnitude required the fix.
+
+### Caregiver-taught orienting through hunger relief
+
+**The claim.** An infant with a hunger drive and *no* orient drive learns to turn
+toward its mother's voice when — and only when — her feeding relieves its hunger.
+Same feed events, same contingency, no need → no learning. No LLM in the action
+path. This is the result the 1.1 "Sensorimotor" release was reopened to test.
+
+**The evidence.** [Exp 52 (Nurture)](https://github.com/dennys246/Maxim/blob/main/docs/experiments/52_nurture.md),
+EARNED 2026-08-25, pre-registered with gates frozen before the data. Phase A
+(scripted substrate, 8 seeds × 600 ticks): taught **0.892** against satiated 0.496,
+yoked 0.496 and no-feed 0.496 — the satiated and no-feed curves are identical to the
+digit, so a feed without need had zero effect, and the yoked arm received every one
+of the taught arm's credits decoupled from its own actions and stayed at chance.
+Phase B (embodied cradle-mother, apparatus v3 with shuffled stimulus order, 12 seeds
+per arm, exposure-matched): taught late-bin directedness **0.878** against satiated
+**0.441** (fed on 35% of turns, credited on 0%) and no-feed 0.413. LEARNED,
+MOTHER-TAUGHT and HUNGER-NECESSARY all pass under gate v3, and the apparatus check
+that Exp 48 failed is clean — every arm shows real per-seed spread, and the
+seed-invariant twelfths of the deterministic apparatus are gone.
+
+**The caveats.** Phase B is **one session at n = 12 per arm**; cross-session
+replication is outstanding, as it is for the hardware row above. The credit is
+sign-only: it discriminates nonzero-from-zero relief, not "hungry" in the everyday
+sense — hunger at the moment of feeding is roughly 0.05–0.1, far below any
+deprivation threshold. Nothing here speaks to how *far* to turn, to loudness, to
+the LLM-driven action path, or to credit that spans more than one turn; secondary
+reinforcement of the voice itself and devaluation are not modeled. One taught seed
+was a weak learner (late bin 0.54), and the margin instrumentation explains it
+exactly: its learned margin sat at the visibility floor (limit L1), so exploration
+decided 18% of its choices.
 
 ### Two-joint centering
 
@@ -115,9 +151,9 @@ than a win: the LLM crosses the microphone array's front/back fold, while the
 substrate is genuinely trapped by it — but is roughly twenty times faster where its
 trained policy applies.
 
-## Under investigation
+## Superseded
 
-### Operant orienting — a case study in apparatus correction
+### Operant orienting on the constant-credit apparatus — a case study in apparatus correction
 
 **What happened.** In July 2026 the embodied cradle-mother experiment reported a
 large taught-versus-control gap and a GRADUATE verdict. A contest four weeks later
@@ -136,14 +172,18 @@ inverted** while the control moved with no teaching at all. The metric was measu
 phase alignment between the turn cycle and the stimulus cycle, not orienting skill.
 
 **Where it stands.** [Exp 48](https://github.com/dennys246/Maxim/blob/main/docs/experiments/48_cradle_mother_seam.md)
-is **complete but not graduated** — it landed on the PARTIAL branch it had
-pre-registered in advance, which is the outcome the design anticipated for exactly
-this case. The caregiver effect is real and causal, but the honest description
-is credit-tipped attractor selection rather than graded skill. The result is not
-retracted and it is not a code regression. The next step is the contest's other
-pre-registered control — randomised stimulus order — with a v3 gate frozen before
-the data. The finding was general enough to be promoted into the measurement-limits
-ledger as L2. Full walkthrough: [the Cradle](/research/cradle/).
+is **complete but not graduated** for the constant-credit apparatus it measured —
+it landed on the PARTIAL branch it had pre-registered in advance, and that verdict
+stands. The caregiver effect on that apparatus is real and causal, but the honest
+description is credit-tipped attractor selection rather than graded skill; the
+result is not retracted and it is not a code regression. The next step it called
+for — randomised stimulus order under a v3 gate frozen before the data — was run
+as [Exp 52](https://github.com/dennys246/Maxim/blob/main/docs/experiments/52_nurture.md) with the credit sourced from the infant's actual relief, and
+graduated (see [above](#caregiver-taught-orienting-through-hunger-relief)). Exp 48 is
+therefore **superseded**: read it as the apparatus case study — v1 contest → v2
+re-baseline → sweep → shuffle — that made that measurement possible. The
+phase-locking finding was promoted into the measurement-limits ledger as L2, whose
+mitigation the shuffle has now measured. Full walkthrough: [the Cradle](/research/cradle/).
 
 ### Exploratory: substrate influence on the LLM
 
@@ -178,6 +218,12 @@ zone" governed by training method at least as much as parameter count. One model
 failed because its priors were too weak to leverage the substrate; another failed
 because it already solved the task perfectly, leaving nothing to improve.
 ([Exp 37 cross-model results](https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_model_results.md).)
+A further limit bounds those numbers: re-running the identical commit on the
+identical seeds in August 2026 did not reproduce its own June result (0.71 against
+0.42) — the serving environment moved the whole distribution more than the code
+did, and the run records capture nothing that would let anyone reconstruct why. The
+Exp 37 magnitudes are readings taken at one time, not reproducible constants
+(limit [L8](https://github.com/dennys246/Maxim/blob/main/docs/limits/README.md)).
 
 **The consequence for how Maxim is described.** The strong framing — that the
 substrate drives action selection through specific bio-mechanisms — is explicitly
@@ -192,8 +238,13 @@ separate and narrowly graduated result above.
 - **The cradle harness wired end-to-end into substrate-primary mode** is planned.
   `--aut-mode substrate-primary` is opt-in; `--aut-mode llm-primary` remains the
   default.
-- **Architecture layering** is an intended contract with 33 open audit findings and
-  no CI gate yet — see [architecture](/concepts/architecture/).
+- **Architecture layering** is an enforced contract with *reviewed* debt: CI fails on
+  any finding outside a baseline shipped in the wheel, and burning that baseline down
+  is 1.1.x work — see [architecture](/concepts/architecture/).
+- **Loudness / onset salience** is not in 1.1. Nothing in the shipped audio path
+  reads sound level, and no result on this site depends on it; the engine's 1.1.1
+  plan covers a salience design after a bench established the level is readable from
+  the robot daemon.
 - **Fear gating** is opt-in and off in the stable Python API — see
   [tool safety](/reference/tools/#tool-safety).
 

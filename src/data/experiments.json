@@ -2,6 +2,28 @@
   "note": "Generated index of Maxim experiments. Raw data + reproduction live in the pymaxim repo.",
   "experiments": [
     {
+      "id": "52",
+      "file": "52_nurture.md",
+      "title": "Nurture: caregiver-taught orienting through hunger relief",
+      "date": "2026-08-25",
+      "status": "recorded",
+      "phase": null,
+      "cluster": "cradle",
+      "finding": "COMPLETE, EARNED — PASS on both pre-registered phases. Phase A (scripted, 8 seeds x 600 ticks): taught 0.892 vs satiated / yoked / no_feed 0.496 — a feed without need had zero effect. Phase B (embodied cradle_mother, apparatus v3 with shuffled stimulus order, 12 seeds/arm): taught late 0.878 vs satiated 0.441 (fed 35% of turns, credited 0%) vs no_feed 0.413 — LEARNED, MOTHER-TAUGHT and HUNGER-NECESSARY pass under gate v3 with the L2 apparatus check clean. Supersedes Exp 48. One session, n = 12/arm; sign-only relief credit discriminates nonzero-from-zero relief, not hungry-vs-sated.",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/52_nurture.md"
+    },
+    {
+      "id": "H2 bench",
+      "file": "h2_loudness_bench_2026-08-25.md",
+      "title": "H2 loudness bench: is sound level readable on the live rig?",
+      "date": "2026-08-25",
+      "status": "reference-only",
+      "phase": null,
+      "cluster": "reachy",
+      "finding": "Bench note, not a behavioral result: one 75 s trace on the live Reachy Mini shows the XVF3800's pre-AGC speech energy and the AGC gain readback are both served by the daemon's existing REST parameter endpoint, so a level is one read away. Loudness / onset salience is NOT part of 1.1; the design is deferred to 1.1.1.",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/h2_loudness_bench_2026-08-25.md"
+    },
+    {
       "id": "50",
       "file": "50_readaptation_after_plant_change.md",
       "title": "Re-adaptation after plant change (savings + learned non-use)",
@@ -31,7 +53,7 @@
       "status": "partial",
       "phase": null,
       "cluster": "cradle",
-      "finding": "COMPLETE but not graduated, landing on the pre-registered PARTIAL branch after a re-baseline on a corrected apparatus (v2) against a gate re-frozen before the data. The mother effect was re-earned decisively (taught 0.649 vs control 0.167, +0.482), but the learning gate missed (0.001 under the level, +0.104 rise against 0.15) and the completed explore-weight sweep showed the arms inverting — directedness measures phase alignment, so the effect is credit-tipped attractor selection rather than graded orienting skill. The earlier v1 headline magnitudes are retired as apparatus artifacts.",
+      "finding": "COMPLETE but not graduated, landing on the pre-registered PARTIAL branch after a re-baseline on a corrected apparatus (v2) against a gate re-frozen before the data. The mother effect was re-earned decisively (taught 0.649 vs control 0.167, +0.482), but the learning gate missed (0.001 under the level, +0.104 rise against 0.15) and the completed explore-weight sweep showed the arms inverting — directedness measures phase alignment, so the effect is credit-tipped attractor selection rather than graded orienting skill. The earlier v1 headline magnitudes are retired as apparatus artifacts. SUPERSEDED 2026-08-25 by Exp 52 (relief-sourced credit on the shuffled apparatus v3, GRADUATE); Exp 48 stays as the apparatus case study and its PARTIAL verdict stands for the constant-credit apparatus it measured.",
       "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/48_cradle_mother_seam.md"
     },
     {
@@ -42,7 +64,7 @@
       "status": "pilot",
       "phase": null,
       "cluster": "substrate",
-      "finding": "PILOT, explicitly not a result — one seed per arm. The shakedown found the transplant control is name-mismatched and that the two reported axes encode the same entity/affordance pair rather than independent effects, so the Exp 44 confirmatory campaign is not frozen.",
+      "finding": "PILOT, explicitly not a result — one seed per arm. The shakedown found the transplant control is name-mismatched and that the two reported axes encode the same entity/affordance pair rather than independent effects, so the Exp 44 confirmatory campaign is not frozen. S4 non-stationarity measurement (2026-08-24, descriptive, one seed per arm): the treatment is not stationary within a run — in every arm the non-target tools' reward bands fall from strongly to mildly rewarding by the second half while the target holds — and the free determinism probe found 0 flips on 11 identical-prompt pairs.",
       "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/44b_pilot.md"
     },
     {
@@ -185,7 +207,7 @@
       "status": "in-flight",
       "phase": null,
       "cluster": "substrate",
-      "finding": "Substrate-transfer is detectable only in a Goldilocks zone with headroom: Qwen2.5-32B shows the clearest signal (+1.43 SD) and reasoning-trained DeepSeek-R1-Distill-Qwen-32B amplifies it to +2.11 SD with a clean Wire-A ablation attribution.",
+      "finding": "Substrate-transfer is detectable only in a Goldilocks zone with headroom: Qwen2.5-32B shows the clearest signal (+1.43 SD) and reasoning-trained DeepSeek-R1-Distill-Qwen-32B amplifies it to +2.11 SD with a clean Wire-A ablation attribution. Limit L8: these magnitudes are not reproducible across time with code held fixed (same commit, same seeds: 0.42 in June, 0.71 in August 2026), so read them as historical readings.",
       "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_model_results.md"
     },
     {
@@ -204,10 +226,10 @@
       "file": "37_cross_session_graduation.md",
       "title": "Cross-session graduation (1.0 gate)",
       "date": "2026-05-30",
-      "status": "in-flight",
+      "status": "partial",
       "phase": null,
       "cluster": "cross-session",
-      "finding": "The primary 1.0 gate: measures cross-session behavioral delta via the cradle plus the Exp 37 harness; pre-registered and in flight.",
+      "finding": "PARTIAL, an investigation gate: the cross-session behavioral delta appears at >=32B scale but the Arm C isolation test failed on every model where the primary metric passed, so independence from the LLM prior is not established. Limit L8 (2026-08-22): the identical commit on the identical seeds does not reproduce its own June result (0.42 then, 0.71 now) — the recorded magnitudes are readings taken at one time, not constants.",
       "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_session_graduation.md"
     },
     {

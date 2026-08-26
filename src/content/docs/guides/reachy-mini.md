@@ -36,7 +36,7 @@ The package is `pymaxim`; it imports as `maxim`.
 pip install 'pymaxim[reachy]'
 ```
 
-That extra pins `reachy-mini[gstreamer]>=1.8.3,<2.0`. Add `vision` and `audio` if you want the perception stack, and `semantic` for neural embeddings:
+That extra pins `reachy-mini>=1.8.3,<2.0`. Add `vision` and `audio` if you want the perception stack, and `semantic` for neural embeddings:
 
 ```bash
 pip install 'pymaxim[reachy,vision,audio,semantic]'
