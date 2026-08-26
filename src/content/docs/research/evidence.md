@@ -132,7 +132,47 @@ the LLM-driven action path, or to credit that spans more than one turn; secondar
 reinforcement of the voice itself and devaluation are not modeled. One taught seed
 was a weak learner (late bin 0.54), and the margin instrumentation explains it
 exactly: its learned margin sat at the visibility floor (limit L1), so exploration
-decided 18% of its choices.
+decided 18% of its choices. What those infants learned was then read out on a
+physical robot — the next entry.
+
+### Cross-context readout on hardware
+
+**The claim.** The three infants taught in the Exp 52 nursery simulation, with their
+persisted memory files (NAc + EC) loaded **unchanged** onto a physical Reachy Mini —
+nothing is credited on the robot — turn toward the speaker. The never-hungry
+controls, loaded the same way, do not. The want was learned in the nursery; the
+robot only reads it out.
+
+**The evidence.** [Exp 53b](https://github.com/dennys246/Maxim/blob/main/docs/experiments/53_cross_context_readout.md), EARNED 2026-08-26, pre-registered with an
+instrument gate that could stop the run and a transfer gate frozen before the data.
+Gate I (instrument): all three taught seeds pass; 60 of 60 live, speech-gated
+percepts pattern-complete into the nursery's audio clusters (120 of 120 across Exp 53
+and 53b). Gate T (transfer): taught seeds delivered directedness **1.00 / 1.00 / 1.00**
+— 36 of 36 trials turned toward the source, with the chosen direction correct in
+36 of 36; **satiated 0.00** — no action in 36 of 36, because the files hold no learned
+preference; **no-feed 0.50** — `turn_right` in 54 of 54, a side-blind causal credit
+with zero learned bias. Turn step δ = 0.30 rad, the body's own step.
+
+[Exp 53](https://github.com/dennys246/Maxim/blob/main/docs/experiments/53_cross_context_readout.md) ran the same files first with δ = 0.55 rad: direction correct in
+36 of 36, but delivered directedness 0.75 per seed, and every miss was the −0.2 target
+— an overshoot. That is the pre-registered **APPARATUS** verdict (no verdict on the
+claim), recorded beside 53b as the finding that motivated the one declared change.
+
+**The caveats.** This is **readout, not learning** — nothing credits on the robot, so
+it says nothing about learning on hardware. One session, one room, one sound source,
+n = 3 seeds per arm, one fixed step, front hemisphere only. An exploratory +0.2
+placement turned the *wrong* way in 18 of 18 trials across both runs — predicted
+before the data, because the nursery's representation is three azimuth bins and its
+centre bin spans 0 to +0.3; the −0.6 placement turned toward in 18 of 18. Seed 48,
+the weak nursery learner, read out mis-learned (0 of 12). Nothing here is about how
+far to turn, or about loudness. A secondary higher-exploration block is reported,
+not gated. Head-pose drift under repeated turns was re-measured during the session
+(D30).
+
+**Run it yourself.** Your install starts blank — there is no pre-loaded want. The
+nursery that produces one is Exp 52; the exact agent files read out here are under
+[`docs/experiments/data/53_agents/`](https://github.com/dennys246/Maxim/tree/main/docs/experiments/data/53_agents) with a SHA-256 manifest, and the harness is
+[`scripts/orient_backbone/exp53_cross_context_readout.py`](https://github.com/dennys246/Maxim/blob/main/scripts/orient_backbone/exp53_cross_context_readout.py).
 
 ### Two-joint centering
 

@@ -165,6 +165,15 @@ or devaluation. Nothing here speaks to magnitude, loudness, the LLM-driven actio
 path, or multi-turn credit. **Phase B is one session, n = 12 per arm** —
 cross-session replication is outstanding.
 
+**Readout on hardware (exp 53b).** Three of these taught infants' persisted NAc + EC
+files, loaded unchanged onto a physical Reachy Mini with nothing crediting on the
+robot, turned toward the speaker in 36 of 36 trials (delivered directedness 1.00 per
+seed); the never-hungry controls loaded the same way took no action, and the no-feed
+controls turned right every time. Readout, not learning; one session, n = 3 seeds
+per arm, fixed step, front hemisphere. Details and the apparatus finding from exp 53
+are on the [evidence page](/research/evidence/#cross-context-readout-on-hardware);
+record: [`53_cross_context_readout.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/53_cross_context_readout.md).
+
 Record: [`52_nurture.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/52_nurture.md) ·
 [pre-registration](https://github.com/dennys246/Maxim/blob/main/docs/experiments/protocols/exp52_nurture_preregistration.md)
 · raw data under [`docs/experiments/data/52_*`](https://github.com/dennys246/Maxim/tree/main/docs/experiments/data).
