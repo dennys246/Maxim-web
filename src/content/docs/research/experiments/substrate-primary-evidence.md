@@ -57,7 +57,7 @@ unless noted. "SD" is the pre-registered standard-deviation shift `(B − A) / A
 | [40 — counter-prior goldilocks](https://github.com/dennys246/Maxim/blob/main/docs/experiments/40_counter_prior_goldilocks.md) | 2026-06-16 | FIRED | Dominance replicates in the goldilocks zone; substrate signal vanishes under counter-prior |
 | [38 — counter-prior substrate](https://github.com/dennys246/Maxim/blob/main/docs/experiments/38_counter_prior_substrate.md) | 2026-06-11 → 06-16 | FIRED | Prior dominance across all five models tested |
 | [39 — substrate-primary counter-prior](https://github.com/dennys246/Maxim/blob/main/docs/experiments/39_substrate_primary_counter_prior.md) | pending | PRE-REGISTERED | Frozen metric, not yet executed |
-| [37 — cross-session graduation](https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_session_graduation.md) | 2026-05-30 (fires 06-06 → 06-13) | PARTIAL | Behavioral delta appears at ≥32B but fails confound isolation |
+| [37 — cross-session graduation](https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_session_graduation.md) | 2026-05-30 (fires 06-06 → 06-13) | PARTIAL | Behavioral delta appears at ≥32B but fails confound isolation; magnitudes not reproducible across time with code held fixed (L8) |
 
 ### Exp 37 — cross-session behavioral delta (the setup)
 
@@ -244,7 +244,9 @@ production."
   from B7 to B8, and its metric is saturated, so re-runs detect breakage rather
   than degradation.
 - **Pending:** Exp 39 — pre-registered, unexecuted, no results.
-- **PARTIAL:** Exp 37 — behavioral delta gated by the Arm C confound; the
+- **PARTIAL:** Exp 37 — behavioral delta gated by the Arm C confound, and its
+  magnitudes are readings taken at one time: the identical commit and seeds gave
+  0.71 in August 2026 against 0.42 in June (limit L8); the
   `sharp_rock` scenario is structurally degenerate (zero engagement across all
   models) and contributes no information.
 - **Small N throughout:** 5–10 seeds per arm. Every effect here is directional

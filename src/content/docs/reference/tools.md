@@ -155,7 +155,7 @@ Read-only queries into the agent's own biological subsystems. None modifies agen
 
 ### Scene / SEM / entity (Adventure Architect)
 
-Available under the `adventure_architect` persona. They browse reusable content and emit campaign YAML.
+Available in the Dungeon-Master / architect flow (`maxim --sim "<goal>" --dm`). They browse reusable content and emit campaign YAML. (The `adventure_architect` persona label was removed in 1.1 along with the persona system.)
 
 | Tool (`name`) | Does | Notable parameters |
 |---|---|---|
@@ -183,7 +183,7 @@ Available under `maxim --sim "goal"`. These act on the agent-under-test (AUT) th
 | `generate_scenario` | Generate replayable YAML from natural language |
 | `finish_simulation` | End the simulation, trigger cleanup and report |
 
-`inspect_aut` supports eight read-only queries against the AUT's subsystems: `memory_recall`, `causal_links`, `predict_outcome`, `pain_history`, `energy_status`, `system_stats`, `concept_query`, `temporal_patterns` — used mostly by the `refinement` persona for systematic measurement.
+`inspect_aut` supports eight read-only queries against the AUT's subsystems: `memory_recall`, `causal_links`, `predict_outcome`, `pain_history`, `energy_status`, `system_stats`, `concept_query`, `temporal_patterns` — used mostly by systematic measurement runs.
 
 ## Side effects
 
@@ -270,8 +270,8 @@ mode raises rather than silently skipping the robot.
 A few things worth knowing, all of which are code-adjacent and may drift with the source — confirm against the repo before pinning:
 
 - To make the LLM actually *use* a custom tool, remember the two-tier description resolution above: a terse `description` + bare `input_schema` may need enriching.
-- **`register_tool()` is currently one-shot.** Registered tools go on a pending list that `run()` drains and then clears, while each API invocation builds a fresh registry — so a tool registered once is *not* re-registered for a later `run()`, `imagine()`, or `campaign()` call in the same process. Re-register before each call. Whether this becomes persistent registration or an explicitly one-shot contract is an open 1.1 decision, tracked as [D18](https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md).
-- `Tool.cancel()` is a non-abstract no-op on the ABC, reserved for 1.1+ MCP/async-cancel work. No 1.0 dispatch path calls it; heavy tools (HTTP fetch, web search) override it to set a `threading.Event` for cooperative cancellation.
+- **`register_tool()` is persistent (1.1).** Registered tools stay on a module-level list and are injected into every later `run()`, `imagine()`, or `campaign()` in the process; re-injection is idempotent (keyed on `tool.name`, last wins). Remove one with `unregister_tool(name)` (returns `True` if it was registered), remove all with `clear_registered_tools()`, and inspect the list with `list_registered_tools()`. Before 1.1 the list was consumed by the first call — code that relied on that one-shot behaviour now sees the tool everywhere until it unregisters it ([D18](https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md)).
+- `Tool.cancel()` is a non-abstract no-op on the ABC, reserved for MCP/async-cancel work. No dispatch path calls it as of 1.1; heavy tools (HTTP fetch, web search) override it to set a `threading.Event` for cooperative cancellation.
 - For long campaigns, register scene tools with `registry.register_scene_tools(tools, scene_id=...)` so they participate in the 20-tool active window rather than permanently inflating the prompt.
 - If your tool feeds the bio pipeline, emit the documented `side_effects` keys rather than inventing your own — that is what makes it interoperate with NAc learning and the pain pathway.
 

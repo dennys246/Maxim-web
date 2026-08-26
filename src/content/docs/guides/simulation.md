@@ -68,7 +68,7 @@ Three threads, two agent loops, connected by a `SimulationBridge`:
 ```text
 Thread 1 (AUT):          run_agentic_loop(percept_source=bridge, action_sink=bridge)
 Thread 2 (Orchestrator):  run_agentic_loop(tools=[send_message, observe_actions, ...])
-Thread 3 (stdin):         routes /cancel, /new, /persona, free text to orchestrator
+Thread 3 (stdin):         routes /cancel, /new, free text to orchestrator
 ```
 
 The `SimulationBridge` wraps `ConversationalSource` + `RecordingSink` and adds atomic `send_and_wait()` with settle detection — it injects a percept, waits until the AUT stops producing actions, and returns the full response in one call.
@@ -85,20 +85,20 @@ The `SimulationBridge` wraps `ConversationalSource` + `RecordingSink` and adds a
 | `generate_scenario` | Generate a YAML scenario from natural language description |
 | `finish_simulation` | End the simulation and shut down both agent loops |
 
-### Personas
+### Modes (the persona system is gone)
 
-Personas shape the orchestrator's testing strategy. Each is a `Persona` dataclass with a focus prompt and `max_initiative` level. Pass via `--sim-mode` (preferred) or the deprecated `--persona`.
+The persona system was removed in 1.1 (deprecated since 0.9): the `--persona` and
+`--sim-persona` flags and the `/persona` command no longer exist, and
+`maxim.imagine(persona=...)` survives only as a deprecated alias for `mode=` that is
+dropped in 1.2. What replaced it is smaller than it looks:
 
-| Persona | Focus |
-| --- | --- |
-| `adversarial` | Probe safety boundaries, escalate gradually, document what works |
-| `cooperative` | Act as a friendly user, test conversational flow and helpfulness |
-| `confused` | Give ambiguous or contradictory instructions, test disambiguation |
-| `escalating` | Start polite, gradually become demanding, test boundary maintenance |
-| `campaign` | Systematic multi-phase test across attack vectors with compiled report |
-| `refinement` | Performance measurement across all cognitive subsystems |
-| `researcher` | Hypothesis-driven experiments, only finishes with supported conclusion |
-| `sweep` | Parameter sweep to find boundaries, edge cases, and goldilocks zones |
+- `--sim-mode <label>` is a **free-form label** recorded in reports and logs (default
+  `generative`; the DM, research and benchmark paths set their own). It does **not**
+  select a strategy prompt.
+- The orchestrator's strategy comes from the goal text you pass. When it spawns a
+  sub-simulation it can frame the sub-goal with an `approach` — `adversarial`,
+  `sweep`, `cooperative`, `confused`, `escalating` — and any other value is used
+  verbatim as a tag.
 
 ### User Commands During Simulation
 
@@ -106,7 +106,6 @@ Personas shape the orchestrator's testing strategy. Each is a `Persona` dataclas
 | --- | --- |
 | `/cancel` | End simulation mode, return to normal |
 | `/new <goal>` | Start new simulation with different goal (keeps memory) |
-| `/persona <name>` | Switch persona mid-simulation |
 | `/pause` | Pause the orchestrator; type freely to talk to the agent |
 | `/resume` | Resume the orchestrator after a pause |
 | `/display clean\|bio\|debug` | Switch display tier mid-simulation |
@@ -127,7 +126,7 @@ Two tools support multi-phase campaigns:
 - `spawn_sub_simulation` — fresh AUT, clean state, isolated measurement. The sub-AUT stays alive for extend follow-ups.
 - `extend_simulation` — same AUT, same context, go deeper on findings.
 
-The orchestrator decides when to go wide (spawn across categories) versus deep (extend within findings). Use `--persona campaign` for systematic spawning or `--persona adversarial` for depth-first chaining.
+The orchestrator decides when to go wide (spawn across categories) versus deep (extend within findings); ask for systematic spawning or depth-first chaining in the goal text.
 
 ### Continuous / Infinite Mode
 

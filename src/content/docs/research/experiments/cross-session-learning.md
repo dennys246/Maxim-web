@@ -43,7 +43,7 @@ tests.
 
 | ID | Date | Experiment | Status | Result |
 |----|------|-----------|--------|--------|
-| 37 | 2026-05-30 | [Cross-session graduation](https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_session_graduation.md) | Pre-registered → **PARTIAL** | Behavioral delta appears only at ≥32B scale; independence from LLM priors **not** isolated (Arm C confound) |
+| 37 | 2026-05-30 | [Cross-session graduation](https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_session_graduation.md) | Pre-registered → **PARTIAL** | Behavioral delta appears only at ≥32B scale; independence from LLM priors **not** isolated (Arm C confound). The recorded magnitudes are historical: the same commit on the same seeds did not reproduce its own June result in August 2026 (limit L8) |
 | 12 | 2026-04-30 | [V1 phased attribution](https://github.com/dennys246/Maxim/blob/main/docs/experiments/12_v1_phased_attribution.md) | Recorded — **CLEAN PASS** | Substrate alone recalls a planted token across sessions; 7/7 phases |
 | 10 | 2026-04-25 | [Cross-session enrichment](https://github.com/dennys246/Maxim/blob/main/docs/experiments/10_cross_session_enrichment.md) | Recorded — **EARNED** | Prior-session memories surface in resumed prompts (3 per turn) |
 | B4 | 2026-04-17 | [Organic learning, Tier 3](https://github.com/dennys246/Maxim/blob/main/docs/experiments/behavioral_convergence_exp4_tier3.md) | PASS (5/5) | Agent converges to optimal choice across sessions: 0% → 25% → 100% |
@@ -195,6 +195,12 @@ for a local LLM backend, `pip install 'pymaxim[llm-llama,llm-server]'`.
   **PARTIAL** — its Arm C isolation test failed on every model where the primary
   metric passed, so "the substrate changes behavior *independently of the LLM
   prior*" is deferred to Experiment 38.
+- **Not reproducible across time.** Re-running Experiment 37's identical commit on the
+  identical seeds in August 2026 gave 0.71 where June gave 0.42 — the serving
+  environment moved the whole distribution more than the code did, and nothing in
+  the run records lets anyone reconstruct why. Read every Exp 37 number as a reading
+  taken at one time, not a constant (limit
+  [L8](https://github.com/dennys246/Maxim/blob/main/docs/limits/README.md)).
 - **Small N.** Experiment 37 arms are 5 trials each; B3 is N = 10 per condition;
   the interference run notes are single observational runs, not a formal
   statistical analysis. Effects are model- and scenario-dependent, living inside
