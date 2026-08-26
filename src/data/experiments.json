@@ -2,6 +2,17 @@
   "note": "Generated index of Maxim experiments. Raw data + reproduction live in the pymaxim repo.",
   "experiments": [
     {
+      "id": "53 / 53b",
+      "file": "53_cross_context_readout.md",
+      "title": "Cross-context readout: does the nursery-taught want survive on the robot?",
+      "date": "2026-08-26",
+      "status": "recorded",
+      "phase": null,
+      "cluster": "reachy",
+      "finding": "53b EARNED (delta 0.30 rad): the Exp 52 Phase B infants' persisted NAc+EC, loaded unchanged onto the physical Reachy Mini with nothing crediting on the robot, read out as taught 1.00/1.00/1.00 delivered directedness (36/36 toward, chosen direction 36/36), satiated 0.00 (no action 36/36), no_feed 0.50 (turn_right 54/54, zero learned bias). Gate I 3/3, 120/120 live percepts pattern-complete across both runs. Exp 53 (delta 0.55 rad) recorded the pre-registered APPARATUS verdict: direction 36/36 but delivered 0.75 per seed, every miss the -0.2 target (overshoot) — the finding that motivated 53b's one declared change. Readout, not learning; one session, one room, n = 3 seeds/arm, fixed step, front hemisphere; the exploratory +0.2 placement turns the wrong way 18/18 (predicted pre-data: the three-bin representation's centre bin, -0.4..+0.3, carries turn_left); nothing about magnitude or loudness.",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/53_cross_context_readout.md"
+    },
+    {
       "id": "52",
       "file": "52_nurture.md",
       "title": "Nurture: caregiver-taught orienting through hunger relief",
