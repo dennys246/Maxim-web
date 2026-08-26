@@ -177,6 +177,12 @@ time because the delivered geometry had drifted about +0.07 over the session, so
 target already sat inside the ±0.05 centre band before the turn. Head-pose drift
 under repeated turns was re-measured during the session (D30).
 
+**Watch it.** [A demonstration with the same files](https://youtu.be/lLoPM2EkbPU): the
+taught infant turns toward the voice it was taught to want; the never-hungry control,
+loaded identically, sits still. This is a demo, not evidence — shot with a larger turn
+step so the camera sees it, by a script that stamps itself `evidence=false` — and the
+numbers above are the pre-registered record, not the video.
+
 **Run it yourself.** Your install starts blank — there is no pre-loaded want. The
 nursery that produces one is Exp 52; the exact agent files read out here are under
 [`docs/experiments/data/53_agents/`](https://github.com/dennys246/Maxim/tree/main/docs/experiments/data/53_agents) with a SHA-256 manifest, and the harness is
