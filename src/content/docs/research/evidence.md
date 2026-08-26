@@ -170,9 +170,12 @@ before any robot data, because the nursery's representation is three azimuth bin
 `turn_left`, so its right half turns left; the −0.6 placement turned toward in 18 of
 18. That is the representation's stated limit, not generalisation. Seed 48,
 the weak nursery learner, read out mis-learned (0 of 12). Nothing here is about how
-far to turn, or about loudness. A secondary higher-exploration block is reported,
-not gated. Head-pose drift under repeated turns was re-measured during the session
-(D30).
+far to turn, or about loudness. A secondary block at exploration weight 1.5 is
+reported, not gated: taught 0.75 per seed with direction still correct in 36 of 36
+and exploration deciding none of them — every miss was again the −0.2 target, this
+time because the delivered geometry had drifted about +0.07 over the session, so the
+target already sat inside the ±0.05 centre band before the turn. Head-pose drift
+under repeated turns was re-measured during the session (D30).
 
 **Run it yourself.** Your install starts blank — there is no pre-loaded want. The
 nursery that produces one is Exp 52; the exact agent files read out here are under
