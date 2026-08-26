@@ -151,7 +151,10 @@ and 53b). Gate T (transfer): taught seeds delivered directedness **1.00 / 1.00 /
 — 36 of 36 trials turned toward the source, with the chosen direction correct in
 36 of 36; **satiated 0.00** — no action in 36 of 36, because the files hold no learned
 preference; **no-feed 0.50** — `turn_right` in 54 of 54, a side-blind causal credit
-with zero learned bias. Turn step δ = 0.30 rad, the body's own step.
+with zero learned bias. Turn step δ = 0.30 rad, the body's own step; 180 trials, no
+invalid reads; the files were SHA-verified unchanged before and after. This is the
+cross-context half of the 1.1 claim — learning that carries across sessions *and*
+contexts without fine-tuning; the cross-session half rests on Exp 45 above.
 
 [Exp 53](https://github.com/dennys246/Maxim/blob/main/docs/experiments/53_cross_context_readout.md) ran the same files first with δ = 0.55 rad: direction correct in
 36 of 36, but delivered directedness 0.75 per seed, and every miss was the −0.2 target
@@ -162,8 +165,10 @@ claim), recorded beside 53b as the finding that motivated the one declared chang
 it says nothing about learning on hardware. One session, one room, one sound source,
 n = 3 seeds per arm, one fixed step, front hemisphere only. An exploratory +0.2
 placement turned the *wrong* way in 18 of 18 trials across both runs — predicted
-before the data, because the nursery's representation is three azimuth bins and its
-centre bin spans 0 to +0.3; the −0.6 placement turned toward in 18 of 18. Seed 48,
+before any robot data, because the nursery's representation is three azimuth bins
+(far-left / centre / right) whose centre bin runs from −0.4 to +0.3 and carries
+`turn_left`, so its right half turns left; the −0.6 placement turned toward in 18 of
+18. That is the representation's stated limit, not generalisation. Seed 48,
 the weak nursery learner, read out mis-learned (0 of 12). Nothing here is about how
 far to turn, or about loudness. A secondary higher-exploration block is reported,
 not gated. Head-pose drift under repeated turns was re-measured during the session
