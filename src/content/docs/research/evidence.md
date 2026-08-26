@@ -282,7 +282,11 @@ separate and narrowly graduated result above.
 
 ## What isn't shipped
 
-- **Peer substrate sharing (Oasis)** is the next build, not an available feature.
+- **Peer substrate sharing (Oasis)** is the next build, not an available feature. Its
+  first planned case study is the artifact above — the nursery-taught orient files
+  that read out on the robot — as a shareable substrate; that is a
+  [plan](https://github.com/dennys246/Maxim/blob/main/docs/plans/oasis_case_study_taught_orient.md),
+  not something you can run.
 - **The cradle harness wired end-to-end into substrate-primary mode** is planned.
   `--aut-mode substrate-primary` is opt-in; `--aut-mode llm-primary` remains the
   default.
