@@ -27,7 +27,7 @@ The Cradle is a mix of shipped experiments and forward-looking plan. Be clear
 about which is which:
 
 - **Built and validated (scripted):** operant-orient learning and crèche
-  federation on a deterministic substrate ([exp 46](#46--operant-orient-a-mother-teaches-a-creche-pools)),
+  federation on a deterministic substrate ([exp 46](#46--operant-orient-a-mother-teaches-a-crèche-pools)),
   and habituation as novelty-detection in noise ([exp 47](#47--habituation-a-novel-sound-in-a-wall-of-noise)).
 - **Built, embodied, and EARNED:** caregiver-taught orienting through hunger
   relief on the embodied infant ([exp 52](#52--nurture-caregiver-taught-orienting-through-hunger-relief)).
@@ -62,7 +62,7 @@ one slice of the idea.
 | 52 | [nurture: orienting through hunger relief](#52--nurture-caregiver-taught-orienting-through-hunger-relief) | 2026-08-25 | **COMPLETE — EARNED** | Taught 0.878 vs satiated 0.441 (fed, never hungry) vs no-feed 0.413 on the shuffled apparatus v3, 12 seeds/arm; scripted phase 0.892 vs 0.496 for every control |
 | 48 | [cradle-mother seam (embodied)](#48--cradle-mother-seam-the-embodied-infant) | re-baselined 2026-08-14, sweep completed 2026-08-18 | **COMPLETE — not graduated; superseded by 52** | Mother effect re-earned on apparatus v2 — taught 0.649 vs no-feed 0.167 (+0.482) — but LEARNED-v2 missed and the sweep attributes the gap to phase-locked attractor selection |
 | 47 | [habituation, novel sound in noise](#47--habituation-a-novel-sound-in-a-wall-of-noise) | 2026-07-22 | Complete (scripted) | Habituating 1.00 catch-rate vs 0.04 control at 40-noise density |
-| 46 | [operant orient / crèche](#46--operant-orient-a-mother-teaches-a-creche-pools) | 2026-07-22 | Complete (scripted) | Taught 0.90 vs none 0.50; 12 merged infants reach 1.00 |
+| 46 | [operant orient / crèche](#46--operant-orient-a-mother-teaches-a-crèche-pools) | 2026-07-22 | Complete (scripted) | Taught 0.90 vs none 0.50; 12 merged infants reach 1.00 |
 | 13 | phase0 harness smoke | 2026-05-09 | Recorded | Phase 0 harness clears success criterion; no behavioral claim |
 | 11 | [cradle sensorimotor PoC](#11--cradle-sensorimotor-poc) | 2026-04-26 | Recorded (infra) | Narrator generates all 10 developmental scenes |
 

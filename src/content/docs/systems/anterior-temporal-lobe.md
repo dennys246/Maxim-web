@@ -88,7 +88,10 @@ async worker thread. It pulls objects (`detected_objects`), people
 on the ATL so duplicates reinforce rather than multiply; then wires the result
 back with `concept.add_ref("hippocampus", episode.id)` and
 `concept.reinforce(episode.id)`. Concepts that co-occur get categorical
-relationships at confidence 0.3.
+relationships at confidence 0.3. (This is a different mechanism from
+[concept decomposition](/systems/concept-decomposition/), which splits *text
+percepts* into noun-phrase nodes on the substrate path before the EC sees them;
+the extractor works on captured episodes.)
 
 **ConceptGrounder** runs at recall time, async via the WorkerPool, and falls back
 to a synchronous path when no pool is available. It is what turns a bare name
@@ -249,7 +252,9 @@ Clear the layer with `maxim --clear-memory atl`.
   across all layers.
 - [Architecture](/concepts/architecture/) — where the ATL sits relative to the
   agent pipeline.
-- [Semantic memory](https://www.dennyschaedig.com/maxim/semantic-memory) — the
+- [Concept decomposition](/systems/concept-decomposition/) — the substrate-path
+  pre-processor that makes concept-sized nodes for the EC and Hippocampus.
+- [Semantic memory](https://www.dennyschaedig.com/maxim/memory-systems#semantic) — the
   deepest narrative treatment of the concept pipeline.
 - [`docs/memory.md`](https://github.com/dennys246/Maxim/blob/main/docs/memory.md) —
   the ATL section, CrossLayerGraph, and store protocols.

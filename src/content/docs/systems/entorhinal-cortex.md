@@ -213,7 +213,8 @@ That mechanism added a further +4.7 percentage points.
 
 **Decomposition** sits above the encoder. Rather than encoding a whole sentence
 as one opaque node, `ConceptDecomposer` (`maxim/similarity/decomposer.py`)
-splits it into concept-level chunks first:
+splits it into concept-level chunks first, so that `"blue mug"` can
+pattern-complete against a `mug` node from another session or a camera frame:
 
 ```
 Input: "I see a blue mug on the table next to the red plate"
@@ -230,29 +231,11 @@ Input: "I see a blue mug on the table next to the red plate"
                  and get Hebbian-bound together)
 ```
 
-The default strategy is `SpaCyNounChunkStrategy`, using spaCy's noun chunker
-with `en_core_web_sm`; `IdentityStrategy` is the fallback when spaCy is not
-installed. Noun phrases are the payload — pronouns, determiners, and bare verbs
-are deliberately dropped as substrate noise. Decomposition applies to
-text-modality percepts only; CLIP visual embeddings, proprioceptive readings,
-and SEM affordance labels bypass it at the encoder level.
-
-**Both flags are still opt-in and default off**, and both are required:
-
-| Variable | Default | Description |
-| --- | --- | --- |
-| `MAXIM_CONCEPT_DECOMPOSITION` | off | Set to `1` to enable decomposition |
-| `MAXIM_SUBSTRATE_PATH` | off | Must also be `1` (substrate encoding prerequisite) |
-
-```bash
-pip install 'pymaxim[semantic]'
-python -m spacy download en_core_web_sm
-MAXIM_SUBSTRATE_PATH=1 MAXIM_CONCEPT_DECOMPOSITION=1 maxim --llm mistral-7b
-```
-
-Documented limitations: English only (spaCy `en_core_web_sm`), possible
-over-decomposition of short fragments (mitigated by `min_chunk_len`, default 2),
-and no relation tagging yet — chunks are bound with untagged Hebbian edges.
+Nothing below the decomposer changes; it is opt-in pre-processing
+(`MAXIM_SUBSTRATE_PATH=1 MAXIM_CONCEPT_DECOMPOSITION=1`) and applies to
+text-modality percepts only. What is extracted, the pluggable strategies,
+configuration, and limitations are on
+[Concept decomposition](/systems/concept-decomposition/).
 
 ## How it connects
 
@@ -301,5 +284,7 @@ pipeline, see [Architecture](/concepts/architecture/).
   integration table.
 - [`docs/user/concept-decomposition.md`](https://github.com/dennys246/Maxim/blob/main/docs/user/concept-decomposition.md)
   — decomposition strategies, the modality gate, config, and limitations.
-- [Semantic memory](https://www.dennyschaedig.com/maxim/semantic-memory) — the
+- [Concept decomposition](/systems/concept-decomposition/) — the substrate-path
+  pre-processor that feeds `LinguisticEncoder`.
+- [Semantic memory](https://www.dennyschaedig.com/maxim/memory-systems#semantic) — the
   narrative framing of the memory layers around the EC.

@@ -31,11 +31,30 @@ maxim-web/
 ├─ pnpm-workspace.yaml     # pnpm allowBuilds for esbuild/sharp
 ├─ src/
 │  ├─ pages/index.astro    # the landing (hero + links) at the apex
-│  └─ content/docs/        # Starlight docs (getting-started.mdx; guides migrate later)
+│  ├─ components/          # ExperimentsIndex.astro, ComponentCatalog.tsx (the one React island)
+│  ├─ data/                # experiments.json, components.json — generated, never hand-edited
+│  └─ content/docs/        # Starlight docs
+├─ scripts/build-components.mjs  # regenerates src/data/components.json from the engine registry
 ├─ public/                 # favicon.svg, og.png placeholder, static assets
 ├─ LICENSE                 # Apache-2.0 (copy from pymaxim); optional CC-BY-4.0 for docs content
 └─ README.md
 ```
+
+### Regenerating the component catalog
+
+`src/data/components.json` drives `/reference/components/` and the counts on
+`/embodiment/component-library/`. It is generated from the engine registry
+(`src/maxim/_data/components/**/*.yaml`) so the component count is derived, never typed.
+Generate it from the **published wheel** the site documents, not from a moving `main`:
+
+```bash
+python -m venv /tmp/pymaxim && /tmp/pymaxim/bin/pip install pymaxim==<version>
+pnpm build:components -- \
+  --source "$(/tmp/pymaxim/bin/python -c 'import maxim,pathlib;print(pathlib.Path(maxim.__file__).parent/"_data"/"components")')" \
+  --label "pymaxim <version> (PyPI wheel)"
+```
+
+The output is deterministic (no timestamps); a regenerate with no registry change is a no-op diff.
 
 ## Domains
 

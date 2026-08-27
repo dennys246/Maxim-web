@@ -40,7 +40,7 @@ With 20+ tools registered, dumping every schema into every prompt wastes hundred
 
 **Two-tier description resolution.** Built-in tools draw rich descriptions (parameters, examples) from a `TOOL_DESCRIPTIONS` dict in `modes/definitions.py`. User and affordance tools fall back to `Tool.description` + `Tool.input_schema` directly, which is often too terse. If a tool is registered but the LLM never calls it, check whether it has an entry in `TOOL_DESCRIPTIONS`.
 
-The full prompt-system page (assembly order, description tiers, token budgeting) is not yet migrated into these docs; see [prompt-system](https://www.dennyschaedig.com/maxim/prompt-system) for the deep dive.
+The full assembly — every section, its priority, the token budget that truncates and drops sections, and where memory, body state, and learned valence enter alongside the tools — is on [Prompt system](/concepts/prompt-system/).
 
 ## The catalog
 
@@ -304,5 +304,5 @@ If you need every side-effecting call screened, construct the agent yourself wit
 - [Tools reference](https://github.com/dennys246/Maxim/blob/main/docs/user/tools.md) — the canonical tool catalog in the repo.
 - [Tool side-effects registry](https://github.com/dennys246/Maxim/blob/main/docs/user/tool_side_effects.md) — value schemas and the append-only contract.
 - [Extension API](https://github.com/dennys246/Maxim/blob/main/docs/user/extension_api.md) — all stable extension points, including custom tools.
-- [Prompt system](https://www.dennyschaedig.com/maxim/prompt-system) — how tools are injected, budgeted, and described (not yet migrated into these docs).
+- [Prompt system](/concepts/prompt-system/) — how tools are injected, budgeted, and described, and what else shares the context window with them.
 - [GitHub repository](https://github.com/dennys246/Maxim) — source of truth for code-adjacent details.

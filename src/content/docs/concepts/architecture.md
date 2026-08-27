@@ -181,6 +181,8 @@ StructuredContext:
     - "**decision** → navigate_to (confidence: 0.9)"
 ```
 
+How these fields become prompt sections — which are `CRITICAL`, which are truncated first, and what the model sees when the window is tight — is on [Prompt system](/concepts/prompt-system/).
+
 ### Bio-Skill Integration
 
 Skills integrate with biological memory systems by writing context into the agent's perception observations. The MemoryAgent, ConceptExtractor, and ATL relationship graph do the rest automatically — no explicit wiring needed on the skill side.

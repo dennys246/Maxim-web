@@ -211,9 +211,9 @@ maxim --sim scenarios/campaigns/heist_v1.yaml
 maxim --sim scenarios/campaigns/heist_v1.yaml --interactive false
 ```
 
-Six campaigns ship with Maxim across fantasy, cyberpunk, and devops genres, testing memory recall, causality, pain, combat learning, sensory deprivation and overload, and sleep/wake workflows. Campaigns declare a `genre` field that filters the SEM Component Registry, so the `EntityDesigner` only suggests genre-appropriate templates — no cyberpunk drones in a medieval tavern. Genre-neutral components (like `base_humanoid`) are always available, and explicit registry refs bypass the gate for intentional cross-genre use.
+Eleven campaigns ship in a source checkout (`scenarios/campaigns/`) across fantasy, cyberpunk, devops, horror, and sci-fi genres, testing memory recall, causality, pain, combat learning, sensory deprivation and overload, and sleep/wake workflows. Campaigns declare a `genre` field that filters the SEM Component Registry, so the `EntityDesigner` only suggests genre-appropriate templates — no cyberpunk drones in a medieval tavern. Genre-neutral components (like `base_humanoid`) are always available, and explicit registry refs bypass the gate for intentional cross-genre use.
 
-See [DM Campaigns](https://www.dennyschaedig.com/maxim/dm-campaigns) for the full campaign format, and the [Component Library](https://www.dennyschaedig.com/maxim/embodiment#component-library) for creating genre-tagged components.
+See [DM campaigns](/guides/dm-campaigns/) for the full campaign format, and the [component library](/embodiment/component-library/#adding-your-own-components) for creating genre-tagged components.
 
 ## Research Mode
 
@@ -507,4 +507,4 @@ validate_expectations() --> ScenarioResult (PASS/FAIL)
 - [Operating Modes](/concepts/operating-modes/) — live, simulation, and headless modes
 - [Memory Systems](/memory/overview/) — hippocampus, NAc, and consolidation
 - [Installation](/installation/) — getting Maxim running
-- [Benchmarks](https://www.dennyschaedig.com/maxim/benchmarks) — measured results from these scenarios
+- [Benchmarks](/guides/benchmarks/) — the multi-model harness that runs these scenarios (what the results show, with caveats, is on [Evidence](/research/evidence/))

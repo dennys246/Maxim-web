@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import react from '@astrojs/react';
 import experimentsData from './src/data/experiments.json' with { type: 'json' };
 
 /**
@@ -53,7 +54,7 @@ export default defineConfig({
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/dennys246/Maxim' },
 			],
-			customCss: ['./src/styles/experiments.css'],
+			customCss: ['./src/styles/experiments.css', './src/styles/components.css'],
 			head: [
 				// Default social-share image for all docs pages (Starlight emits the rest of
 				// the OG/Twitter tags but no image). Absolute URLs required by scrapers.
@@ -96,6 +97,8 @@ export default defineConfig({
 							label: 'Guides',
 							items: [
 								{ label: 'Simulation', slug: 'guides/simulation' },
+								{ label: 'DM campaigns', slug: 'guides/dm-campaigns' },
+								{ label: 'Benchmarks', slug: 'guides/benchmarks' },
 								{ label: 'Networking & mesh', slug: 'guides/networking' },
 							],
 						},
@@ -105,6 +108,7 @@ export default defineConfig({
 					label: 'Core concepts',
 					items: [
 						{ label: 'Architecture', slug: 'concepts/architecture' },
+						{ label: 'Prompt system', slug: 'concepts/prompt-system' },
 						{ label: 'How the systems connect', slug: 'systems/overview' },
 						{ label: 'Memory & consolidation', slug: 'memory/overview' },
 						{ label: 'Operating modes', slug: 'concepts/operating-modes' },
@@ -116,6 +120,7 @@ export default defineConfig({
 					items: [
 						{ label: 'Hippocampus — episodic', slug: 'systems/hippocampus' },
 						{ label: 'Entorhinal cortex — indexing', slug: 'systems/entorhinal-cortex' },
+						{ label: 'Concept decomposition — text to nodes', slug: 'systems/concept-decomposition' },
 						{ label: 'Anterior temporal lobe — semantic', slug: 'systems/anterior-temporal-lobe' },
 						{ label: 'Nucleus accumbens — reward', slug: 'systems/nucleus-accumbens' },
 						{ label: 'Suprachiasmatic nucleus — time', slug: 'systems/suprachiasmatic-nucleus' },
@@ -181,7 +186,7 @@ export default defineConfig({
 					items: [
 						{ label: 'About the developer', slug: 'about' },
 						{
-							label: 'All original guides',
+							label: 'Design essays (dennyschaedig.com)',
 							link: 'https://www.dennyschaedig.com/maxim',
 							attrs: { target: '_blank', rel: 'noopener' },
 						},
@@ -194,5 +199,6 @@ export default defineConfig({
 				},
 			],
 		}),
+		react(),
 	],
 });

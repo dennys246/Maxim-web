@@ -221,7 +221,7 @@ for a local LLM backend, `pip install 'pymaxim[llm-llama,llm-server]'`.
 - Consumable / behavioral convergence: [B2](https://github.com/dennys246/Maxim/blob/main/docs/experiments/behavioral_convergence_exp2.md) · [B3](https://github.com/dennys246/Maxim/blob/main/docs/experiments/behavioral_convergence_exp3_tier2.md) · [B4](https://github.com/dennys246/Maxim/blob/main/docs/experiments/behavioral_convergence_exp4_tier3.md)
 - Interference: [hippocampal_recall_experiment.md](https://github.com/dennys246/Maxim/blob/main/docs/experiments/hippocampal_recall_experiment.md) · [run notes](https://github.com/dennys246/Maxim/blob/main/docs/experiments/hippocampal_recall_run_notes.md)
 - User-facing guide with `maxim roy diff`: [cross-session-learning.md](https://github.com/dennys246/Maxim/blob/main/docs/user/cross-session-learning.md)
-- Deeper reading: [substrate-primary evidence](/research/experiments/substrate-primary-evidence/) · [memory systems](https://www.dennyschaedig.com/maxim/memory-systems) · [benchmarks](https://www.dennyschaedig.com/maxim/benchmarks)
+- Deeper reading: [substrate-primary evidence](/research/experiments/substrate-primary-evidence/) · [memory systems](https://www.dennyschaedig.com/maxim/memory-systems) · [the benchmark harness](/guides/benchmarks/)
 
 
 ## Run it yourself

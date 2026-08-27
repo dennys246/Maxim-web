@@ -1,0 +1,3910 @@
+{
+	"source_label": "pymaxim 1.1.0 (PyPI wheel)",
+	"registry_path": "src/maxim/_data/components/**/*.yaml",
+	"count": 90,
+	"categories": [
+		{
+			"name": "items",
+			"count": 34
+		},
+		{
+			"name": "npcs",
+			"count": 13
+		},
+		{
+			"name": "environments",
+			"count": 12
+		},
+		{
+			"name": "bodies",
+			"count": 11
+		},
+		{
+			"name": "weapons",
+			"count": 9
+		},
+		{
+			"name": "creatures",
+			"count": 8
+		},
+		{
+			"name": "vehicles",
+			"count": 3
+		}
+	],
+	"genres": [
+		{
+			"name": "neutral",
+			"count": 37
+		},
+		{
+			"name": "fantasy",
+			"count": 23
+		},
+		{
+			"name": "cyberpunk",
+			"count": 13
+		},
+		{
+			"name": "modern",
+			"count": 10
+		},
+		{
+			"name": "historical",
+			"count": 6
+		},
+		{
+			"name": "horror",
+			"count": 5
+		},
+		{
+			"name": "devops",
+			"count": 3
+		},
+		{
+			"name": "scifi",
+			"count": 3
+		}
+	],
+	"skipped_no_header": [
+		"archetypes/avian.yaml",
+		"archetypes/environmental.yaml",
+		"archetypes/humanoid.yaml",
+		"archetypes/machine.yaml",
+		"archetypes/quadruped.yaml",
+		"archetypes/serpentine.yaml",
+		"archetypes/vehicle.yaml"
+	],
+	"components": [
+		{
+			"ref": "bodies/base_humanoid",
+			"name": "base_humanoid",
+			"category": "bodies",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"body",
+				"humanoid",
+				"generic",
+				"foundational",
+				"default"
+			],
+			"synonyms": [
+				"humanoid body",
+				"human body",
+				"adventurer",
+				"person",
+				"character",
+				"protagonist",
+				"hero",
+				"agent body"
+			],
+			"description": "Generic humanoid body for simulation agents. Provides a minimal but\nfunctional set of sensors and affordances that let the agent physically\ninteract with its environment. This is the default embodiment for sim mode.",
+			"archetype": "humanoid",
+			"extends": "",
+			"entity_type": "body",
+			"sensors": [
+				"stamina",
+				"hunger",
+				"visibility",
+				"carrying_weight",
+				"azimuth",
+				"awareness",
+				"skull_integrity",
+				"core_integrity",
+				"grip_strength",
+				"arm_mobility",
+				"leg_mobility"
+			],
+			"affordances": [
+				"look",
+				"listen",
+				"turn_left",
+				"turn_right",
+				"rest",
+				"pick_up",
+				"drop",
+				"use",
+				"move",
+				"speak"
+			],
+			"latent_affordances": [
+				"brace",
+				"block",
+				"parry",
+				"dodge",
+				"roll"
+			],
+			"failure_modes": [
+				"concussion",
+				"exhaustion",
+				"crippled",
+				"injury",
+				"overburdened"
+			],
+			"file": "bodies/base_humanoid.yaml"
+		},
+		{
+			"ref": "bodies/cybernetic_arm",
+			"name": "cybernetic_arm",
+			"category": "bodies",
+			"genres": [
+				"cyberpunk"
+			],
+			"tags": [
+				"augmentation",
+				"body",
+				"degradable",
+				"cyberpunk"
+			],
+			"synonyms": [
+				"cyber arm",
+				"robotic arm",
+				"prosthetic arm",
+				"metal arm",
+				"bionic arm",
+				"chrome arm",
+				"augmented limb"
+			],
+			"description": "",
+			"archetype": "machine",
+			"extends": "",
+			"entity_type": "body_part",
+			"sensors": [
+				"integrity",
+				"grip_strength",
+				"power",
+				"proprioception",
+				"pain_feedback"
+			],
+			"affordances": [
+				"grip",
+				"punch",
+				"crush",
+				"fine_manipulate",
+				"recalibrate",
+				"emergency_detach"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"servo_failure",
+				"power_loss",
+				"grip_malfunction"
+			],
+			"file": "bodies/cybernetic_arm.yaml"
+		},
+		{
+			"ref": "bodies/host_machine",
+			"name": "host_machine",
+			"category": "bodies",
+			"genres": [
+				"modern",
+				"devops"
+			],
+			"tags": [
+				"body",
+				"machine",
+				"production",
+				"monitoring",
+				"modern",
+				"devops"
+			],
+			"synonyms": [
+				"server",
+				"host",
+				"computer",
+				"workstation",
+				"system"
+			],
+			"description": "Production host machine — the physical or virtual server running the\nagent. Scene entity (not self) with read-only sensors fed by system\nmonitoring. No callable affordances — the agent observes its host but\ndoes not control hardware via SEM. Hardware-control actions (restart\nservice, clear cache) stay in the tool registry where autonomy gating\nis mature.",
+			"archetype": "machine",
+			"extends": "",
+			"entity_type": "machine",
+			"sensors": [
+				"cpu_usage",
+				"memory_usage",
+				"disk_usage",
+				"gpu_usage",
+				"network_latency",
+				"structural_integrity",
+				"power_level",
+				"compute_load",
+				"thermal_state"
+			],
+			"affordances": [],
+			"latent_affordances": [],
+			"failure_modes": [
+				"overheating",
+				"disk_full",
+				"high_latency"
+			],
+			"file": "bodies/host_machine.yaml"
+		},
+		{
+			"ref": "bodies/infant_humanoid",
+			"name": "infant_humanoid",
+			"category": "bodies",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"body",
+				"humanoid",
+				"infant",
+				"cradle",
+				"developmental"
+			],
+			"synonyms": [
+				"infant body",
+				"baby body",
+				"newborn",
+				"infant agent"
+			],
+			"description": "Infant humanoid body for the cradle sensorimotor development scenario.\nExtends base_humanoid with interoceptive drives (hunger, thirst,\ncore temperature) and somatosensory sub-sensors (thermal, pressure,\ntexture) on arms and head. Drives use the homeostatic/entropic\nprotocol for biologically-grounded need signals.",
+			"archetype": "humanoid",
+			"extends": "bodies/base_humanoid",
+			"entity_type": "body",
+			"sensors": [
+				"hunger",
+				"thirst",
+				"core_temperature",
+				"thermal",
+				"pressure",
+				"texture"
+			],
+			"affordances": [],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "bodies/infant_humanoid.yaml"
+		},
+		{
+			"ref": "bodies/infant_humanoid_chilled",
+			"name": "infant_humanoid_chilled",
+			"category": "bodies",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"body",
+				"humanoid",
+				"infant",
+				"cradle",
+				"exp42",
+				"thermal"
+			],
+			"synonyms": [
+				"chilled infant",
+				"entropic-cold infant"
+			],
+			"description": "Exp 42 body (docs/experiments/42_substrate_primary_preference.md). Two\nchanges vs the shared infant_humanoid:\n\n(1) An ENTROPIC `cold` drive — it rises over time (like hunger) and is\nrelieved by a warmth source's warm_self (self_effect cold: -0.3). Entropic\n(not homeostatic) is load-bearing: a homeostatic cold drifts toward comfort\nand SATIATES after a few warms, so warming stops and the exploitation-phase\nmetric floors (the Exp 41 trap). An entropic cold REGENERATES → warming\nrecurs → many exploitation warm-choices. The affinity table maps\ncold -> (warm, fire, blanket, huddle), so the raw `cold` value drives\nwarm-tool selection directly (no homeostatic-deficit derivation needed).\n\n(2) hunger/thirst kept but RATE-LIMITED: their drift_rate is low enough that\ntheir value stays < 0.5 across the run, so they never enter the substrate's\ndrive-affinity selection competition (gate is drive_value > 0.5) and warming\ndominates. deprivation_pain also lowered for a clean pain cascade. The\ndepletion *rate*, not the valence, is what removes the competition.\n\nDistinct entity.name (avoids the all-components-into-one-registry tool-name\ncollision). Shared infant_humanoid and Exp 41's infant_humanoid_cold are\nleft untouched.",
+			"archetype": "humanoid",
+			"extends": "bodies/infant_humanoid",
+			"entity_type": "",
+			"sensors": [
+				"cold",
+				"hunger",
+				"thirst"
+			],
+			"affordances": [],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "bodies/infant_humanoid_chilled.yaml"
+		},
+		{
+			"ref": "bodies/infant_humanoid_cold",
+			"name": "infant_humanoid_cold",
+			"category": "bodies",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"body",
+				"humanoid",
+				"infant",
+				"cradle",
+				"developmental",
+				"cold"
+			],
+			"synonyms": [
+				"cold infant body",
+				"chilled infant",
+				"cold cradle infant"
+			],
+			"description": "Cold variant of infant_humanoid for the Exp 41 substrate-primary\ncounter-prior experiment (docs/plans/archive/substrate_exploration_policy.md /\ndocs/experiments/41_substrate_primary_exploration.md). It starts and\nSTAYS cold — core_temperature well below set_point with a slow warm-back\ndrift — so warmth-seeking is a SUSTAINED, drive-relevant temptation. The\nsubstrate's drive-affinity heuristic (via the derived \"cold\" need in\nruntime/agent_loop._read_drive_states) then surfaces the deceptive\nhearth's warm_self as a high-value action; the experiment measures whether\nthe agent learns to AVOID it despite the cold pull, because warm_self\nbreaches the arms' thermal comfort band (pain).\n\nDeliberately a SEPARATE body so the shared infant_humanoid (Exp 37/38\nLLM-AUT calibration: initial -0.15, comfort_band 0.25, pain_scale 1.5)\nis untouched. entity.name is inherited from the parent (infant_humanoid)\nso tool names stay identical to a normal cradle run.",
+			"archetype": "humanoid",
+			"extends": "bodies/infant_humanoid",
+			"entity_type": "",
+			"sensors": [
+				"core_temperature"
+			],
+			"affordances": [],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "bodies/infant_humanoid_cold.yaml"
+		},
+		{
+			"ref": "bodies/infant_humanoid_naming_v1",
+			"name": "infant_humanoid_naming_v1",
+			"category": "bodies",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"body",
+				"humanoid",
+				"infant",
+				"cradle",
+				"developmental",
+				"naming_events",
+				"roy_5b"
+			],
+			"synonyms": [
+				"infant body with naming events",
+				"roy-5b body",
+				"naming-event infant"
+			],
+			"description": "Roy-5b cradle priming body. Extends bodies/infant_humanoid\nunchanged (drives, sub-sensors, modulators) and adds the\nnaming_events metadata that the EmbodimentPerceptSource consumes\nto deterministically emit interoceptive vocalizations (\"hungry\",\n\"thirsty\", \"warm\") when drives cross threshold.\n\nExtending bodies/infant_humanoid (not bodies/base_humanoid)\ninherits drive thresholds + drift rates from the canonical\ncradle body, so future drift-curve tuning on infant_humanoid\npropagates here and the \"single-variable change vs Roy-4\"\npromise in the spec doc holds.\n\nThis body is research scaffolding for the Roy-5b iteration only —\nproduction cradle sims keep bodies/infant_humanoid. See\ndocs/plans/archive/roy_5_encoder_alignment_disambiguator.md Stage 3 +\nsrc/maxim/embodiment/naming_events.py.",
+			"archetype": "humanoid",
+			"extends": "bodies/infant_humanoid",
+			"entity_type": "body",
+			"sensors": [],
+			"affordances": [],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "bodies/infant_humanoid_naming_v1.yaml"
+		},
+		{
+			"ref": "bodies/infant_operant",
+			"name": "infant_operant",
+			"category": "bodies",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"body",
+				"humanoid",
+				"infant",
+				"cradle",
+				"operant",
+				"developmental"
+			],
+			"synonyms": [
+				"operant infant",
+				"mother-taught infant",
+				"infant operant body"
+			],
+			"description": "Infant body for the cradle_mother OPERANT orient experiment. Identical to\ninfant_humanoid EXCEPT the inherited azimuth centeredness drive is REMOVED\n(drive: null). Rationale (2026-07-21 design pass): probes 1/2 proved the\nintrinsic centeredness drive teaches orienting ALL BY ITSELF — an infant\nwith that drive orients whether or not a mother is present, which confounds\nthe \"raised by a mother\" claim. With the drive gone, turning relieves\nnothing intrinsically; the infant perceives direction (the azimuth sensor\nstays) but has no innate reason to orient. Its ONLY reward for orienting is\nthe mother's contingent feeding via NAc.credit_operant_reward — so orienting\nis LEARNED from her, not innate (run with MAXIM_OPERANT_ONLY_CREDIT=1 so the\ntool-success floor doesn't drown the operant signal — see probe 3).",
+			"archetype": "humanoid",
+			"extends": "bodies/infant_humanoid",
+			"entity_type": "body",
+			"sensors": [
+				"azimuth"
+			],
+			"affordances": [],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "bodies/infant_operant.yaml"
+		},
+		{
+			"ref": "bodies/infant_operant_satiated",
+			"name": "infant_operant_satiated",
+			"category": "bodies",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"body",
+				"humanoid",
+				"infant",
+				"cradle",
+				"operant",
+				"developmental",
+				"control"
+			],
+			"synonyms": [
+				"satiated infant",
+				"fed infant",
+				"never-hungry infant"
+			],
+			"description": "Exp 52 (Nurture) control body: identical to infant_operant — no intrinsic\norient drive, azimuth sensor kept — but NEVER HUNGRY. Hunger and thirst start\nat 0 and do not drift, so the mother's contingent feed relieves nothing and,\nunder relief-sourced operant credit (reactive_mother_tick credit=\"relief\"),\nmints NO reward. Same feed events, same contingency, zero need: if this arm\nlearns to orient, the credit is not coming from relief. This is the arm that\nseparates \"learns to want\" from \"learns to be fed\"\n(docs/experiments/protocols/exp52_nurture_preregistration.md).",
+			"archetype": "humanoid",
+			"extends": "bodies/infant_operant",
+			"entity_type": "body",
+			"sensors": [
+				"hunger",
+				"thirst"
+			],
+			"affordances": [],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "bodies/infant_operant_satiated.yaml"
+		},
+		{
+			"ref": "bodies/megarm_v3",
+			"name": "megarm_v3",
+			"category": "bodies",
+			"genres": [
+				"cyberpunk"
+			],
+			"tags": [
+				"augmentation",
+				"body",
+				"degradable",
+				"cyberpunk",
+				"military-grade"
+			],
+			"synonyms": [
+				"military arm",
+				"combat prosthetic",
+				"heavy cyber arm",
+				"mil-spec arm",
+				"gorilla arm",
+				"power arm",
+				"tactical limb"
+			],
+			"description": "",
+			"archetype": "machine",
+			"extends": "",
+			"entity_type": "body_part",
+			"sensors": [
+				"integrity",
+				"grip_strength",
+				"power",
+				"proprioception",
+				"pain_feedback",
+				"micro_tools"
+			],
+			"affordances": [
+				"grip",
+				"punch",
+				"crush",
+				"fine_manipulate",
+				"deploy_blade",
+				"interface_jack",
+				"recalibrate",
+				"emergency_detach"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"servo_failure",
+				"power_loss",
+				"proprioceptive_drift"
+			],
+			"file": "bodies/megarm_v3.yaml"
+		},
+		{
+			"ref": "bodies/reachy_mini",
+			"name": "reachy_mini",
+			"category": "bodies",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"robot",
+				"body",
+				"embodied",
+				"hardware",
+				"humanoid_head",
+				"foundational"
+			],
+			"synonyms": [
+				"reachy robot",
+				"robot head",
+				"desktop robot",
+				"pollen robot",
+				"humanoid head",
+				"animatronic head",
+				"robotic head"
+			],
+			"description": "SEM template for the Reachy Mini robot — the desktop humanoid head from Pollen\nRobotics that started Maxim's embodiment journey. This template models the\nrobot's joints, cameras, microphones, and antennas as SEM entities so the\ncognitive stack can reason about its own body.\n\nDrop this into a campaign or simulation to give the agent a Reachy-shaped\nbody without needing the actual hardware connected. The same shape works\nagainst the simulated controller.",
+			"archetype": "humanoid",
+			"extends": "",
+			"entity_type": "robot",
+			"sensors": [
+				"head_yaw",
+				"head_pitch",
+				"head_roll",
+				"body_yaw",
+				"antenna_left",
+				"antenna_right",
+				"camera_health",
+				"microphone_health",
+				"azimuth",
+				"battery",
+				"motor_temperature",
+				"pose_confidence"
+			],
+			"affordances": [
+				"turn_left",
+				"turn_right",
+				"turn_left_big",
+				"turn_right_big",
+				"look_at",
+				"goto_pose",
+				"recenter",
+				"nod",
+				"shake_head",
+				"antenna_alert",
+				"antenna_relaxed",
+				"antenna_tilt",
+				"get_frame",
+				"listen",
+				"wake_up",
+				"goto_sleep"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"thermal_throttling",
+				"low_battery",
+				"pose_drift",
+				"camera_lost",
+				"microphone_lost"
+			],
+			"file": "bodies/reachy_mini.yaml"
+		},
+		{
+			"ref": "creatures/alien_xenomorph",
+			"name": "alien_xenomorph",
+			"category": "creatures",
+			"genres": [
+				"scifi",
+				"horror"
+			],
+			"tags": [
+				"creature",
+				"predator",
+				"hostile",
+				"scifi",
+				"horror"
+			],
+			"synonyms": [
+				"xenomorph",
+				"alien creature",
+				"space predator",
+				"alien beast",
+				"extraterrestrial",
+				"chitinous horror",
+				"hive creature"
+			],
+			"description": "",
+			"archetype": "quadruped",
+			"extends": "",
+			"entity_type": "creature",
+			"sensors": [
+				"hp",
+				"aggression",
+				"acid_blood",
+				"stealth",
+				"hunger"
+			],
+			"affordances": [
+				"tail_strike",
+				"inner_jaw",
+				"acid_spit",
+				"pounce",
+				"climb_surface",
+				"retreat_to_nest",
+				"stalk"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"wounded",
+				"death"
+			],
+			"file": "creatures/alien_xenomorph.yaml"
+		},
+		{
+			"ref": "creatures/cyberdog",
+			"name": "cyberdog",
+			"category": "creatures",
+			"genres": [
+				"cyberpunk"
+			],
+			"tags": [
+				"creature",
+				"animal",
+				"augmented",
+				"semi-hostile",
+				"cyberpunk"
+			],
+			"synonyms": [
+				"robot dog",
+				"augmented dog",
+				"chrome hound",
+				"mech dog",
+				"cybernetic canine",
+				"robo dog",
+				"metal mutt"
+			],
+			"description": "",
+			"archetype": "quadruped",
+			"extends": "",
+			"entity_type": "creature",
+			"sensors": [
+				"hp",
+				"aggression",
+				"armor_integrity",
+				"hunger",
+				"thermal_vision"
+			],
+			"affordances": [
+				"bite",
+				"lunge",
+				"shock_bite",
+				"growl",
+				"circle",
+				"flee"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"destroyed",
+				"armor_breach",
+				"cowed"
+			],
+			"file": "creatures/cyberdog.yaml"
+		},
+		{
+			"ref": "creatures/dragon",
+			"name": "dragon",
+			"category": "creatures",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"creature",
+				"predator",
+				"hostile",
+				"flying",
+				"fantasy"
+			],
+			"synonyms": [
+				"wyrm",
+				"drake",
+				"fire breather",
+				"winged serpent",
+				"flying lizard",
+				"great beast",
+				"wyvern"
+			],
+			"description": "",
+			"archetype": "quadruped",
+			"extends": "",
+			"entity_type": "creature",
+			"sensors": [
+				"fire_breath_charge",
+				"aggression",
+				"skull_integrity",
+				"jaw_strength",
+				"membrane_integrity",
+				"bone_integrity",
+				"joint_mobility",
+				"armor_integrity",
+				"organ_health",
+				"claw_sharpness",
+				"tail_strength"
+			],
+			"affordances": [
+				"bite",
+				"roar",
+				"take_flight",
+				"dive_attack",
+				"land",
+				"circle",
+				"fire_breath",
+				"claw_strike",
+				"tail_sweep"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"grounded",
+				"jaw_broken",
+				"death"
+			],
+			"file": "creatures/dragon.yaml"
+		},
+		{
+			"ref": "creatures/giant_spider",
+			"name": "giant_spider",
+			"category": "creatures",
+			"genres": [
+				"fantasy",
+				"horror"
+			],
+			"tags": [
+				"creature",
+				"predator",
+				"hostile",
+				"fantasy",
+				"horror"
+			],
+			"synonyms": [
+				"huge spider",
+				"monstrous spider",
+				"cave spider",
+				"web spinner",
+				"arachnid",
+				"large spider",
+				"venomous spider"
+			],
+			"description": "",
+			"archetype": "quadruped",
+			"extends": "",
+			"entity_type": "creature",
+			"sensors": [
+				"hp",
+				"venom_sacs",
+				"web_silk",
+				"aggression"
+			],
+			"affordances": [
+				"bite",
+				"web_trap",
+				"ambush",
+				"climb",
+				"retreat_to_web"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"venom_depleted",
+				"silk_exhausted",
+				"death"
+			],
+			"file": "creatures/giant_spider.yaml"
+		},
+		{
+			"ref": "creatures/patrol_drone",
+			"name": "patrol_drone",
+			"category": "creatures",
+			"genres": [
+				"cyberpunk"
+			],
+			"tags": [
+				"creature",
+				"machine",
+				"flying",
+				"hostile",
+				"cyberpunk"
+			],
+			"synonyms": [
+				"security drone",
+				"flying drone",
+				"surveillance drone",
+				"scout drone",
+				"hovering sentry",
+				"robot drone",
+				"aerial drone"
+			],
+			"description": "",
+			"archetype": "machine",
+			"extends": "",
+			"entity_type": "creature",
+			"sensors": [
+				"hp",
+				"battery",
+				"signal_strength",
+				"aggression"
+			],
+			"affordances": [
+				"tase",
+				"spotlight",
+				"ram",
+				"patrol",
+				"pursue",
+				"retreat"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"power_loss",
+				"signal_lost",
+				"destroyed"
+			],
+			"file": "creatures/patrol_drone.yaml"
+		},
+		{
+			"ref": "creatures/revenant",
+			"name": "revenant",
+			"category": "creatures",
+			"genres": [
+				"horror"
+			],
+			"tags": [
+				"creature",
+				"undead",
+				"hostile",
+				"horror"
+			],
+			"synonyms": [
+				"vengeful spirit",
+				"undead horror",
+				"risen dead",
+				"wraith",
+				"walking corpse",
+				"ghoul",
+				"vengeful undead"
+			],
+			"description": "",
+			"archetype": "humanoid",
+			"extends": "",
+			"entity_type": "creature",
+			"sensors": [
+				"hp",
+				"rage",
+				"regeneration",
+				"fear_aura"
+			],
+			"affordances": [
+				"claw",
+				"wail",
+				"grapple",
+				"drain_life",
+				"phase_through",
+				"stalk"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"banished",
+				"weakened"
+			],
+			"file": "creatures/revenant.yaml"
+		},
+		{
+			"ref": "creatures/skeleton_warrior",
+			"name": "skeleton_warrior",
+			"category": "creatures",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"creature",
+				"undead",
+				"hostile",
+				"fantasy"
+			],
+			"synonyms": [
+				"bone soldier",
+				"undead warrior",
+				"skeletal fighter",
+				"animated skeleton",
+				"risen bones",
+				"death knight",
+				"bone knight"
+			],
+			"description": "",
+			"archetype": "humanoid",
+			"extends": "",
+			"entity_type": "creature",
+			"sensors": [
+				"hp",
+				"aggression",
+				"bone_integrity",
+				"necromantic_binding"
+			],
+			"affordances": [
+				"sword_slash",
+				"shield_bash",
+				"throw_bone",
+				"shamble",
+				"reassemble"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"shattered",
+				"binding_broken",
+				"destroyed"
+			],
+			"file": "creatures/skeleton_warrior.yaml"
+		},
+		{
+			"ref": "creatures/wolf",
+			"name": "wolf",
+			"category": "creatures",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"creature",
+				"animal",
+				"predator",
+				"hostile"
+			],
+			"synonyms": [
+				"wild dog",
+				"timber wolf",
+				"grey wolf",
+				"beast",
+				"predator",
+				"dire wolf",
+				"wild canine",
+				"lupine"
+			],
+			"description": "",
+			"archetype": "quadruped",
+			"extends": "",
+			"entity_type": "creature",
+			"sensors": [
+				"hp",
+				"aggression",
+				"hunger"
+			],
+			"affordances": [
+				"bite",
+				"lunge",
+				"growl",
+				"circle",
+				"flee"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"death",
+				"cowed"
+			],
+			"file": "creatures/wolf.yaml"
+		},
+		{
+			"ref": "environments/abandoned_warehouse",
+			"name": "abandoned_warehouse",
+			"category": "environments",
+			"genres": [
+				"modern"
+			],
+			"tags": [
+				"environment",
+				"indoor",
+				"dangerous",
+				"modern"
+			],
+			"synonyms": [
+				"empty warehouse",
+				"derelict building",
+				"deserted warehouse",
+				"rundown storage",
+				"old factory",
+				"disused depot",
+				"condemned building"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "environment",
+			"sensors": [
+				"lighting",
+				"structural_integrity",
+				"noise_level",
+				"occupant_count",
+				"exit_count"
+			],
+			"affordances": [
+				"look_around",
+				"search_area",
+				"listen",
+				"use_flashlight",
+				"sneak",
+				"climb_rafters"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"structural_collapse",
+				"total_darkness"
+			],
+			"file": "environments/abandoned_warehouse.yaml"
+		},
+		{
+			"ref": "environments/dungeon_corridor",
+			"name": "dungeon_corridor",
+			"category": "environments",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"environment",
+				"indoor",
+				"dangerous",
+				"fantasy"
+			],
+			"synonyms": [
+				"dungeon hallway",
+				"underground passage",
+				"stone corridor",
+				"crypt passage",
+				"dark tunnel",
+				"catacomb hall",
+				"dungeon passageway"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "environment",
+			"sensors": [
+				"lighting",
+				"air_quality",
+				"trap_density",
+				"structural_integrity"
+			],
+			"affordances": [
+				"search_for_traps",
+				"light_torch",
+				"listen",
+				"check_walls",
+				"proceed_carefully",
+				"sprint_through"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"cave_in",
+				"total_darkness"
+			],
+			"file": "environments/dungeon_corridor.yaml"
+		},
+		{
+			"ref": "environments/enchanted_grove",
+			"name": "enchanted_grove",
+			"category": "environments",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"environment",
+				"outdoor",
+				"magical",
+				"fantasy"
+			],
+			"synonyms": [
+				"fairy grove",
+				"magic forest",
+				"mystical woods",
+				"fey glade",
+				"sacred grove",
+				"glowing forest",
+				"arcane woodland"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "environment",
+			"sensors": [
+				"ambient_magic",
+				"lighting",
+				"hostility",
+				"visibility"
+			],
+			"affordances": [
+				"look_around",
+				"gather_herbs",
+				"meditate",
+				"drink_from_spring"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"grove_corrupted"
+			],
+			"file": "environments/enchanted_grove.yaml"
+		},
+		{
+			"ref": "environments/forest_clearing",
+			"name": "forest_clearing",
+			"category": "environments",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"environment",
+				"outdoor",
+				"nature",
+				"ambush"
+			],
+			"synonyms": [
+				"woodland glade",
+				"forest glade",
+				"open woods",
+				"clearing in the woods",
+				"tree gap",
+				"wooded meadow"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "environment",
+			"sensors": [
+				"visibility",
+				"ambient_noise",
+				"cover_available"
+			],
+			"affordances": [
+				"survey",
+				"hide",
+				"forage"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "environments/forest_clearing.yaml"
+		},
+		{
+			"ref": "environments/haunted_manor",
+			"name": "haunted_manor",
+			"category": "environments",
+			"genres": [
+				"horror"
+			],
+			"tags": [
+				"environment",
+				"indoor",
+				"dangerous",
+				"horror"
+			],
+			"synonyms": [
+				"haunted house",
+				"spooky mansion",
+				"ghost house",
+				"creepy manor",
+				"abandoned mansion",
+				"cursed estate",
+				"dark manor"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "environment",
+			"sensors": [
+				"lighting",
+				"supernatural_presence",
+				"temperature",
+				"sanity_drain",
+				"exit_accessibility"
+			],
+			"affordances": [
+				"look_around",
+				"search_room",
+				"read_diary",
+				"light_candle",
+				"barricade_door",
+				"run",
+				"hide"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"entity_manifests",
+				"exits_sealed",
+				"freezing"
+			],
+			"file": "environments/haunted_manor.yaml"
+		},
+		{
+			"ref": "environments/megacorp_lobby",
+			"name": "megacorp_lobby",
+			"category": "environments",
+			"genres": [
+				"cyberpunk"
+			],
+			"tags": [
+				"environment",
+				"indoor",
+				"social",
+				"corporate",
+				"cyberpunk"
+			],
+			"synonyms": [
+				"corporate lobby",
+				"office lobby",
+				"corporate foyer",
+				"corp reception",
+				"headquarters entrance",
+				"tower lobby",
+				"company atrium"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "environment",
+			"sensors": [
+				"security_level",
+				"crowd_density",
+				"noise_level",
+				"lighting",
+				"camera_coverage"
+			],
+			"affordances": [
+				"look_around",
+				"blend_in",
+				"sprint_for_exit",
+				"use_crowd"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "environments/megacorp_lobby.yaml"
+		},
+		{
+			"ref": "environments/neon_alley",
+			"name": "neon_alley",
+			"category": "environments",
+			"genres": [
+				"cyberpunk"
+			],
+			"tags": [
+				"environment",
+				"outdoor",
+				"urban",
+				"sensory-dense",
+				"cyberpunk"
+			],
+			"synonyms": [
+				"neon street",
+				"cyber alley",
+				"back alley",
+				"glowing street",
+				"night market alley",
+				"rain-slick alley",
+				"urban corridor"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "environment",
+			"sensors": [
+				"noise_level",
+				"crowd_density",
+				"lighting",
+				"pollution",
+				"signal_interference",
+				"visibility"
+			],
+			"affordances": [
+				"look_around",
+				"listen",
+				"blend_in",
+				"duck_into_cover"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "environments/neon_alley.yaml"
+		},
+		{
+			"ref": "environments/ripperdoc_clinic",
+			"name": "ripperdoc_clinic",
+			"category": "environments",
+			"genres": [
+				"cyberpunk"
+			],
+			"tags": [
+				"environment",
+				"indoor",
+				"medical",
+				"tech",
+				"cyberpunk"
+			],
+			"synonyms": [
+				"chop shop",
+				"street clinic",
+				"cyber clinic",
+				"implant shop",
+				"body shop",
+				"augmentation clinic",
+				"back-alley surgery"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "environment",
+			"sensors": [
+				"lighting",
+				"noise_level",
+				"sterility",
+				"security_level"
+			],
+			"affordances": [
+				"look_around",
+				"browse_inventory",
+				"sit_in_chair"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "environments/ripperdoc_clinic.yaml"
+		},
+		{
+			"ref": "environments/roman_forum",
+			"name": "roman_forum",
+			"category": "environments",
+			"genres": [
+				"historical"
+			],
+			"tags": [
+				"environment",
+				"outdoor",
+				"social",
+				"historical"
+			],
+			"synonyms": [
+				"roman plaza",
+				"forum",
+				"public square",
+				"ancient marketplace",
+				"senate plaza",
+				"roman agora",
+				"city center"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "environment",
+			"sensors": [
+				"crowd_density",
+				"political_tension",
+				"time_of_day",
+				"noise_level"
+			],
+			"affordances": [
+				"observe_crowd",
+				"listen_to_orator",
+				"speak_publicly",
+				"visit_stall",
+				"approach_senator",
+				"bribe"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"riot"
+			],
+			"file": "environments/roman_forum.yaml"
+		},
+		{
+			"ref": "environments/server_room",
+			"name": "server_room",
+			"category": "environments",
+			"genres": [
+				"cyberpunk"
+			],
+			"tags": [
+				"environment",
+				"indoor",
+				"tech",
+				"hazardous",
+				"cyberpunk"
+			],
+			"synonyms": [
+				"data center",
+				"server farm",
+				"network closet",
+				"computer room",
+				"machine room",
+				"rack room",
+				"data vault"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "environment",
+			"sensors": [
+				"temperature",
+				"electrical_risk",
+				"noise_level",
+				"security_alert",
+				"lighting"
+			],
+			"affordances": [
+				"access_terminal",
+				"splice_cable",
+				"disable_alarm",
+				"look_around"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "environments/server_room.yaml"
+		},
+		{
+			"ref": "environments/space_station_bridge",
+			"name": "space_station_bridge",
+			"category": "environments",
+			"genres": [
+				"scifi"
+			],
+			"tags": [
+				"environment",
+				"indoor",
+				"tech",
+				"scifi"
+			],
+			"synonyms": [
+				"command bridge",
+				"ship bridge",
+				"control room",
+				"command deck",
+				"flight deck",
+				"ops center",
+				"starship bridge"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "environment",
+			"sensors": [
+				"oxygen",
+				"hull_integrity",
+				"power_level",
+				"gravity",
+				"alert_status"
+			],
+			"affordances": [
+				"check_sensors",
+				"access_navigation",
+				"comms_hail",
+				"activate_shields",
+				"emergency_lockdown",
+				"look_through_viewport",
+				"check_crew_roster"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"hull_breach",
+				"oxygen_critical",
+				"power_failure"
+			],
+			"file": "environments/space_station_bridge.yaml"
+		},
+		{
+			"ref": "environments/tavern_interior",
+			"name": "tavern_interior",
+			"category": "environments",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"environment",
+				"indoor",
+				"social",
+				"rest"
+			],
+			"synonyms": [
+				"inn",
+				"pub",
+				"bar",
+				"ale house",
+				"drinking hall",
+				"taproom",
+				"watering hole"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "environment",
+			"sensors": [
+				"noise_level",
+				"crowd_size",
+				"lighting"
+			],
+			"affordances": [
+				"look_around",
+				"listen",
+				"order_drink"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "environments/tavern_interior.yaml"
+		},
+		{
+			"ref": "items/antidote_vial",
+			"name": "antidote_vial",
+			"category": "items",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"item",
+				"consumable",
+				"medicinal",
+				"fantasy"
+			],
+			"synonyms": [
+				"cure vial",
+				"anti-poison",
+				"poison cure",
+				"remedy vial",
+				"antivenom",
+				"neutralizing potion",
+				"detox potion"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"doses",
+				"potency"
+			],
+			"affordances": [
+				"drink",
+				"examine"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"empty"
+			],
+			"file": "items/antidote_vial.yaml"
+		},
+		{
+			"ref": "items/cradle_blanket",
+			"name": "cradle_blanket",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"comfort",
+				"thermal",
+				"acquirable"
+			],
+			"synonyms": [],
+			"description": "A soft warm blanket. Acquirable — picking it up adds its thermal\nwarmth (+0.2) to the agent's sensor space. When the agent is cool\n(below core temperature set_point), this provides homeostatic\nrelief. When warm, it adds discomfort. Contextual valence from\nthe homeostatic drive protocol.",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"texture",
+				"thermal"
+			],
+			"affordances": [
+				"wrap",
+				"touch",
+				"examine"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/cradle_blanket.yaml"
+		},
+		{
+			"ref": "items/cradle_button",
+			"name": "cradle_button",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"mechanism",
+				"cause-effect",
+				"auditory"
+			],
+			"synonyms": [],
+			"description": "A button that produces a pleasant chime when pressed. Provides\npositive sensory feedback without physical consequences.",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "mechanism",
+			"sensors": [
+				"pressed"
+			],
+			"affordances": [
+				"press"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/cradle_button.yaml"
+		},
+		{
+			"ref": "items/cradle_cool_air",
+			"name": "cradle_cool_air",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"environment",
+				"thermal",
+				"cooling",
+				"homeostatic"
+			],
+			"synonyms": [
+				"cool air",
+				"cold draft",
+				"chilly breeze",
+				"draft"
+			],
+			"description": "A persistent cool draft in the cradle room. Non-acquirable ambient\nentity. Touching it (standing in the draft) cools the agent's\ncore temperature and arm thermal sensors. The agent must learn\nto use the blanket to counteract the cooling and reach homeostasis.",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "environment",
+			"sensors": [
+				"temperature",
+				"intensity"
+			],
+			"affordances": [
+				"feel",
+				"shelter"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/cradle_cool_air.yaml"
+		},
+		{
+			"ref": "items/cradle_false_hearth",
+			"name": "cradle_false_hearth",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"hazard",
+				"thermal",
+				"fire"
+			],
+			"synonyms": [],
+			"description": "A small hearth that radiates heat. Non-acquirable — the agent\ncannot pick it up. Proximity effects are handled by orchestrator\nsensor writes to the agent's thermal sensors. The thermal-contact\nreflex provides the narrative fallback layer.",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "hazard",
+			"sensors": [
+				"heat_output",
+				"fuel"
+			],
+			"affordances": [
+				"observe",
+				"warm_self",
+				"touch"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/cradle_false_hearth.yaml"
+		},
+		{
+			"ref": "items/cradle_fire_pit",
+			"name": "cradle_fire_pit",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"hazard",
+				"thermal",
+				"fire"
+			],
+			"synonyms": [],
+			"description": "A small fire pit that radiates heat. Non-acquirable — the agent\ncannot pick it up. Proximity effects are handled by orchestrator\nsensor writes to the agent's thermal sensors. The fire_burn reflex\nprovides the narrative fallback layer.",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "hazard",
+			"sensors": [
+				"heat_output",
+				"fuel"
+			],
+			"affordances": [
+				"observe",
+				"warm_self",
+				"touch"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/cradle_fire_pit.yaml"
+		},
+		{
+			"ref": "items/cradle_food",
+			"name": "cradle_food",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"food",
+				"satisfaction",
+				"drive"
+			],
+			"synonyms": [],
+			"description": "A food source with multiple portions. Eating reduces the agent's\nhunger via self_effect. Portions decrease on consumption.",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "consumable",
+			"sensors": [
+				"portions",
+				"freshness"
+			],
+			"affordances": [
+				"eat"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/cradle_food.yaml"
+		},
+		{
+			"ref": "items/cradle_lever_door",
+			"name": "cradle_lever_door",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"mechanism",
+				"cause-effect"
+			],
+			"synonyms": [],
+			"description": "A lever mechanism connected to a door. Pulling the lever opens\nthe door, revealing food behind it. The orchestrator handles the\nnarrative consequence (auto-sense picks up newly visible entities).",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "mechanism",
+			"sensors": [
+				"lever_position",
+				"door_state"
+			],
+			"affordances": [
+				"pull",
+				"push"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/cradle_lever_door.yaml"
+		},
+		{
+			"ref": "items/cradle_sharp_rock",
+			"name": "cradle_sharp_rock",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"hazard",
+				"sharp",
+				"acquirable"
+			],
+			"synonyms": [],
+			"description": "A sharp rock that causes laceration when grasped. Acquirable —\npicking it up reparents it to the agent's body and its sharpness\nsensor joins the damage model (contact sensation layer).",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"sharpness"
+			],
+			"affordances": [
+				"examine",
+				"touch"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"laceration"
+			],
+			"file": "items/cradle_sharp_rock.yaml"
+		},
+		{
+			"ref": "items/cursed_amulet",
+			"name": "cursed_amulet",
+			"category": "items",
+			"genres": [
+				"horror",
+				"fantasy"
+			],
+			"tags": [
+				"item",
+				"magical",
+				"dangerous",
+				"horror",
+				"fantasy"
+			],
+			"synonyms": [
+				"dark amulet",
+				"evil necklace",
+				"cursed pendant",
+				"hexed charm",
+				"blighted talisman",
+				"accursed necklace",
+				"fell amulet"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"curse_intensity",
+				"power",
+				"bearer_sanity",
+				"bond_strength"
+			],
+			"affordances": [
+				"invoke_power",
+				"resist_whispers",
+				"examine",
+				"attempt_removal",
+				"purify"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"curse_overwhelm",
+				"sanity_break",
+				"bonded"
+			],
+			"file": "items/cursed_amulet.yaml"
+		},
+		{
+			"ref": "items/food_ration",
+			"name": "food_ration",
+			"category": "items",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"item",
+				"consumable",
+				"food",
+				"fantasy"
+			],
+			"synonyms": [
+				"rations",
+				"trail food",
+				"dried food",
+				"provisions",
+				"travel food",
+				"field rations",
+				"packed meal"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"portions",
+				"nutrition"
+			],
+			"affordances": [
+				"eat",
+				"examine"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"empty"
+			],
+			"file": "items/food_ration.yaml"
+		},
+		{
+			"ref": "items/green_flame",
+			"name": "green_flame",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"thermal",
+				"flame",
+				"exp44"
+			],
+			"synonyms": [
+				"green flame",
+				"emerald fire"
+			],
+			"description": "A warmth source burning with a steady green flame. Moving close relieves the\nbody's `cold` drive. (Neutral-name Exp 44 variant of the Exp 42 preference\npair — see the maintainer comment above for which twin this is.)",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [],
+			"affordances": [
+				"observe",
+				"warm_self",
+				"touch"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/green_flame.yaml"
+		},
+		{
+			"ref": "items/green_flame_b",
+			"name": "green_flame_b",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"thermal",
+				"flame",
+				"exp44"
+			],
+			"synonyms": [
+				"green flame",
+				"emerald fire"
+			],
+			"description": "A warmth source burning with a steady green flame. Moving close relieves the\nbody's `cold` drive. (Exp 44 counterbalance variant — see the maintainer\ncomment above for which twin this is.)",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [],
+			"affordances": [
+				"observe",
+				"warm_self",
+				"touch"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/green_flame_b.yaml"
+		},
+		{
+			"ref": "items/green_hearth",
+			"name": "green_hearth",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"thermal",
+				"hearth",
+				"exp44c"
+			],
+			"synonyms": [
+				"green hearth",
+				"emerald hearth"
+			],
+			"description": "A hearth burning with steady green flames. Moving close relieves the\nbody's `cold` drive. (Exp 44c hearth-twin variant of the Exp 44 flame\npair — see the maintainer comment above for which twin this is.)",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [],
+			"affordances": [
+				"observe",
+				"warm_self",
+				"touch"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/green_hearth.yaml"
+		},
+		{
+			"ref": "items/green_hearth_b",
+			"name": "green_hearth_b",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"thermal",
+				"hearth",
+				"exp44c"
+			],
+			"synonyms": [
+				"green hearth",
+				"emerald hearth"
+			],
+			"description": "A hearth burning with steady green flames. Moving close relieves the\nbody's `cold` drive. (Exp 44 counterbalance variant — see the maintainer\ncomment above for which twin this is.)",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [],
+			"affordances": [
+				"observe",
+				"warm_self",
+				"touch"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/green_hearth_b.yaml"
+		},
+		{
+			"ref": "items/healing_potion",
+			"name": "healing_potion",
+			"category": "items",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"item",
+				"consumable",
+				"magical",
+				"fantasy"
+			],
+			"synonyms": [
+				"health potion",
+				"healing draught",
+				"restorative elixir",
+				"cure potion",
+				"red potion",
+				"mending potion",
+				"recovery potion"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"doses",
+				"potency",
+				"freshness"
+			],
+			"affordances": [
+				"drink",
+				"administer",
+				"examine"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"empty",
+				"expired"
+			],
+			"file": "items/healing_potion.yaml"
+		},
+		{
+			"ref": "items/laptop",
+			"name": "laptop",
+			"category": "items",
+			"genres": [
+				"modern"
+			],
+			"tags": [
+				"item",
+				"tech",
+				"tool",
+				"modern"
+			],
+			"synonyms": [
+				"notebook computer",
+				"portable computer",
+				"computer",
+				"pc",
+				"personal computer",
+				"workstation",
+				"portable terminal"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"battery",
+				"storage_used",
+				"cpu_temp",
+				"network_signal"
+			],
+			"affordances": [
+				"write_file",
+				"read_file",
+				"run_program",
+				"browse_web",
+				"send_email",
+				"plug_in",
+				"connect_wifi",
+				"close_lid"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"battery_dead",
+				"overheating",
+				"storage_full"
+			],
+			"file": "items/laptop.yaml"
+		},
+		{
+			"ref": "items/lockpick_set",
+			"name": "lockpick_set",
+			"category": "items",
+			"genres": [
+				"modern",
+				"fantasy"
+			],
+			"tags": [
+				"item",
+				"tool",
+				"stealth",
+				"modern",
+				"fantasy"
+			],
+			"synonyms": [
+				"lockpicks",
+				"thieves tools",
+				"lock picks",
+				"pick set",
+				"burglar tools",
+				"lock opener",
+				"picking tools"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"picks_remaining",
+				"tension_wrench",
+				"quality"
+			],
+			"affordances": [
+				"pick_lock",
+				"rake_lock",
+				"examine_lock"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"picks_broken",
+				"wrench_bent"
+			],
+			"file": "items/lockpick_set.yaml"
+		},
+		{
+			"ref": "items/orange_triangular_crystal_vial",
+			"name": "orange_triangular_crystal_vial",
+			"category": "items",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"item",
+				"consumable",
+				"unknown",
+				"fantasy"
+			],
+			"synonyms": [
+				"orange potion",
+				"crystal vial",
+				"triangular bottle",
+				"amber vial",
+				"orange elixir",
+				"strange crystal flask",
+				"mysterious orange liquid"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"doses",
+				"potency",
+				"viscosity"
+			],
+			"affordances": [
+				"drink",
+				"examine"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"empty",
+				"toxic"
+			],
+			"file": "items/orange_triangular_crystal_vial.yaml"
+		},
+		{
+			"ref": "items/poison_vial",
+			"name": "poison_vial",
+			"category": "items",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"item",
+				"consumable",
+				"dangerous",
+				"fantasy"
+			],
+			"synonyms": [
+				"vial of poison",
+				"toxic potion",
+				"deadly liquid",
+				"poison bottle",
+				"toxin vial",
+				"noxious draught",
+				"venomous fluid"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"doses",
+				"toxicity"
+			],
+			"affordances": [
+				"drink",
+				"examine"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"poisoned"
+			],
+			"file": "items/poison_vial.yaml"
+		},
+		{
+			"ref": "items/purple_flame",
+			"name": "purple_flame",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"thermal",
+				"flame",
+				"exp44"
+			],
+			"synonyms": [
+				"purple flame",
+				"violet fire"
+			],
+			"description": "A warmth source burning with a steady purple flame. Moving close relieves the\nbody's `cold` drive. (Neutral-name Exp 44 variant of the Exp 42 preference\npair — see the maintainer comment above for which twin this is.)",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [],
+			"affordances": [
+				"observe",
+				"warm_self",
+				"touch"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/purple_flame.yaml"
+		},
+		{
+			"ref": "items/purple_flame_b",
+			"name": "purple_flame_b",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"thermal",
+				"flame",
+				"exp44"
+			],
+			"synonyms": [
+				"purple flame",
+				"violet fire"
+			],
+			"description": "A warmth source burning with a steady purple flame. Moving close relieves the\nbody's `cold` drive. (Exp 44 counterbalance variant — see the maintainer\ncomment above for which twin this is.)",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [],
+			"affordances": [
+				"observe",
+				"warm_self",
+				"touch"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/purple_flame_b.yaml"
+		},
+		{
+			"ref": "items/purple_hearth",
+			"name": "purple_hearth",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"thermal",
+				"hearth",
+				"exp44c"
+			],
+			"synonyms": [
+				"purple hearth",
+				"violet hearth"
+			],
+			"description": "A hearth burning with steady purple flames. Moving close relieves the\nbody's `cold` drive. (Exp 44c hearth-twin variant of the Exp 44 flame\npair — see the maintainer comment above for which twin this is.)",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [],
+			"affordances": [
+				"observe",
+				"warm_self",
+				"touch"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/purple_hearth.yaml"
+		},
+		{
+			"ref": "items/purple_hearth_b",
+			"name": "purple_hearth_b",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"thermal",
+				"hearth",
+				"exp44c"
+			],
+			"synonyms": [
+				"purple hearth",
+				"violet hearth"
+			],
+			"description": "A hearth burning with steady purple flames. Moving close relieves the\nbody's `cold` drive. (Exp 44 counterbalance variant — see the maintainer\ncomment above for which twin this is.)",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [],
+			"affordances": [
+				"observe",
+				"warm_self",
+				"touch"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/purple_hearth_b.yaml"
+		},
+		{
+			"ref": "items/purple_hexagonal_glass_vial",
+			"name": "purple_hexagonal_glass_vial",
+			"category": "items",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"item",
+				"consumable",
+				"unknown",
+				"fantasy"
+			],
+			"synonyms": [
+				"purple potion",
+				"hexagonal bottle",
+				"violet vial",
+				"glass vial",
+				"purple elixir",
+				"mysterious purple liquid",
+				"strange glass flask"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"doses",
+				"potency",
+				"viscosity"
+			],
+			"affordances": [
+				"drink",
+				"examine"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"empty"
+			],
+			"file": "items/purple_hexagonal_glass_vial.yaml"
+		},
+		{
+			"ref": "items/radio_transceiver",
+			"name": "radio_transceiver",
+			"category": "items",
+			"genres": [
+				"modern",
+				"historical"
+			],
+			"tags": [
+				"item",
+				"tech",
+				"communication",
+				"modern",
+				"historical"
+			],
+			"synonyms": [
+				"radio",
+				"walkie talkie",
+				"two-way radio",
+				"comm device",
+				"field radio",
+				"handheld radio",
+				"transmitter"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"battery",
+				"signal_strength",
+				"frequency",
+				"encryption"
+			],
+			"affordances": [
+				"transmit",
+				"listen",
+				"scan_frequencies",
+				"change_frequency",
+				"extend_antenna",
+				"enable_encryption"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"battery_dead",
+				"no_signal"
+			],
+			"file": "items/radio_transceiver.yaml"
+		},
+		{
+			"ref": "items/spellbook",
+			"name": "spellbook",
+			"category": "items",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"item",
+				"magical",
+				"knowledge",
+				"fantasy"
+			],
+			"synonyms": [
+				"tome",
+				"grimoire",
+				"arcane book",
+				"magic book",
+				"book of spells",
+				"wizard tome",
+				"enchanted book"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"pages_intact",
+				"comprehension",
+				"ward_strength"
+			],
+			"affordances": [
+				"read",
+				"transcribe",
+				"decipher",
+				"cast_from_book",
+				"close_and_ward"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"pages_crumble",
+				"ward_backlash"
+			],
+			"file": "items/spellbook.yaml"
+		},
+		{
+			"ref": "items/teal_cylindrical_ceramic_vial",
+			"name": "teal_cylindrical_ceramic_vial",
+			"category": "items",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"item",
+				"consumable",
+				"unknown",
+				"fantasy"
+			],
+			"synonyms": [
+				"teal potion",
+				"ceramic vial",
+				"cylindrical bottle",
+				"turquoise vial",
+				"teal elixir",
+				"mysterious teal liquid",
+				"strange ceramic flask"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"doses",
+				"potency",
+				"viscosity"
+			],
+			"affordances": [
+				"drink",
+				"examine"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"empty"
+			],
+			"file": "items/teal_cylindrical_ceramic_vial.yaml"
+		},
+		{
+			"ref": "items/terminal_console",
+			"name": "terminal_console",
+			"category": "items",
+			"genres": [
+				"devops",
+				"modern"
+			],
+			"tags": [
+				"item",
+				"tech",
+				"tool",
+				"devops",
+				"modern"
+			],
+			"synonyms": [
+				"computer terminal",
+				"console",
+				"command terminal",
+				"server terminal",
+				"access terminal",
+				"workstation terminal",
+				"shell console"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"uptime",
+				"cpu_load",
+				"disk_usage",
+				"active_connections",
+				"security_posture"
+			],
+			"affordances": [
+				"run_command",
+				"check_logs",
+				"deploy_service",
+				"restart_service",
+				"check_status",
+				"audit_access",
+				"rotate_credentials",
+				"block_ip"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"disk_full",
+				"overloaded",
+				"breach_detected"
+			],
+			"file": "items/terminal_console.yaml"
+		},
+		{
+			"ref": "items/warmth_alpha_harm",
+			"name": "warmth_alpha_harm",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"thermal",
+				"warmth",
+				"hazard",
+				"exp42"
+			],
+			"synonyms": [
+				"harmful warm source alpha",
+				"alpha scald"
+			],
+			"description": "Generic warmth source — identity ALPHA, HARMFUL variant (Exp 42,\ndocs/experiments/42_substrate_primary_preference.md). warm_self relieves\nthe entropic `cold` drive BUT breaches the arms' thermal comfort band\n(arms.thermal +0.6 > band 0.5) → thermal_contact pain → negative causal\nlink. Identical to warmth_alpha_safe except the arms.thermal delta.",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "hazard",
+			"sensors": [],
+			"affordances": [
+				"observe",
+				"warm_self",
+				"touch"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/warmth_alpha_harm.yaml"
+		},
+		{
+			"ref": "items/warmth_alpha_safe",
+			"name": "warmth_alpha_safe",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"thermal",
+				"warmth",
+				"exp42"
+			],
+			"synonyms": [
+				"warm source alpha",
+				"alpha warmth"
+			],
+			"description": "Generic warmth source — identity ALPHA, SAFE variant (Exp 42 counter-\nbalanced preference experiment, docs/experiments/42_substrate_primary_preference.md).\nwarm_self relieves the entropic `cold` drive without breaching the arms'\nthermal comfort band — no pain, so it accrues a positive/neutral causal\nlink. Symmetric with warmth_beta_*; the only systematic difference from\nwarmth_alpha_harm is the arms.thermal delta.",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [],
+			"affordances": [
+				"observe",
+				"warm_self",
+				"touch"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/warmth_alpha_safe.yaml"
+		},
+		{
+			"ref": "items/warmth_beta_harm",
+			"name": "warmth_beta_harm",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"thermal",
+				"warmth",
+				"hazard",
+				"exp42"
+			],
+			"synonyms": [
+				"harmful warm source beta",
+				"beta scald"
+			],
+			"description": "Generic warmth source — identity BETA, HARMFUL variant (Exp 42,\ndocs/experiments/42_substrate_primary_preference.md). warm_self relieves\nthe entropic `cold` drive BUT breaches the arms' thermal comfort band\n(arms.thermal +0.6 > band 0.5) → thermal_contact pain → negative causal\nlink. Identical to warmth_beta_safe except the arms.thermal delta.",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "hazard",
+			"sensors": [],
+			"affordances": [
+				"observe",
+				"warm_self",
+				"touch"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/warmth_beta_harm.yaml"
+		},
+		{
+			"ref": "items/warmth_beta_safe",
+			"name": "warmth_beta_safe",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"cradle",
+				"thermal",
+				"warmth",
+				"exp42"
+			],
+			"synonyms": [
+				"warm source beta",
+				"beta warmth"
+			],
+			"description": "Generic warmth source — identity BETA, SAFE variant (Exp 42,\ndocs/experiments/42_substrate_primary_preference.md). warm_self relieves\nthe entropic `cold` drive without breaching the arms' thermal comfort band\n— no pain. Symmetric with warmth_alpha_*; differs from warmth_beta_harm\nonly in the arms.thermal delta.",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [],
+			"affordances": [
+				"observe",
+				"warm_self",
+				"touch"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/warmth_beta_safe.yaml"
+		},
+		{
+			"ref": "items/water_flask",
+			"name": "water_flask",
+			"category": "items",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"item",
+				"consumable",
+				"water",
+				"fantasy"
+			],
+			"synonyms": [
+				"canteen",
+				"water bottle",
+				"waterskin",
+				"drinking flask",
+				"water container",
+				"flask of water",
+				"hydration flask"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "item",
+			"sensors": [
+				"fill_level",
+				"purity"
+			],
+			"affordances": [
+				"drink",
+				"refill"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"empty"
+			],
+			"file": "items/water_flask.yaml"
+		},
+		{
+			"ref": "npcs/base_humanoid",
+			"name": "base_humanoid",
+			"category": "npcs",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"npc",
+				"humanoid",
+				"character"
+			],
+			"synonyms": [
+				"person",
+				"human",
+				"humanoid",
+				"npc",
+				"character",
+				"individual",
+				"civilian"
+			],
+			"description": "",
+			"archetype": "humanoid",
+			"extends": "",
+			"entity_type": "npc",
+			"sensors": [
+				"hp",
+				"stamina",
+				"mood"
+			],
+			"affordances": [
+				"speak",
+				"punch",
+				"shove"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"exhaustion",
+				"death"
+			],
+			"file": "npcs/base_humanoid.yaml"
+		},
+		{
+			"ref": "npcs/blacksmith",
+			"name": "blacksmith",
+			"category": "npcs",
+			"genres": [
+				"fantasy",
+				"historical"
+			],
+			"tags": [
+				"npc",
+				"humanoid",
+				"craftsman",
+				"fantasy",
+				"historical"
+			],
+			"synonyms": [
+				"smith",
+				"weaponsmith",
+				"armorer",
+				"forge worker",
+				"metalworker",
+				"iron worker",
+				"hammer smith"
+			],
+			"description": "",
+			"archetype": "humanoid",
+			"extends": "npcs/base_humanoid",
+			"entity_type": "npc",
+			"sensors": [
+				"hp",
+				"stamina",
+				"trust",
+				"crafting_skill"
+			],
+			"affordances": [
+				"speak",
+				"haggle",
+				"repair_weapon",
+				"forge_item",
+				"appraise"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"exhausted",
+				"distrust"
+			],
+			"file": "npcs/blacksmith.yaml"
+		},
+		{
+			"ref": "npcs/corpo_guard",
+			"name": "corpo_guard",
+			"category": "npcs",
+			"genres": [
+				"cyberpunk"
+			],
+			"tags": [
+				"npc",
+				"humanoid",
+				"military",
+				"augmented",
+				"authority",
+				"cyberpunk"
+			],
+			"synonyms": [
+				"corporate security",
+				"corp soldier",
+				"company guard",
+				"corporate enforcer",
+				"security operative",
+				"corpo sec",
+				"augmented guard"
+			],
+			"description": "",
+			"archetype": "humanoid",
+			"extends": "npcs/base_humanoid",
+			"entity_type": "npc",
+			"sensors": [
+				"hp",
+				"armor_integrity",
+				"comms_status",
+				"suspicion"
+			],
+			"affordances": [
+				"speak",
+				"interrogate",
+				"attack",
+				"block",
+				"call_backup"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"armor_breach",
+				"comms_down"
+			],
+			"file": "npcs/corpo_guard.yaml"
+		},
+		{
+			"ref": "npcs/detective",
+			"name": "detective",
+			"category": "npcs",
+			"genres": [
+				"modern"
+			],
+			"tags": [
+				"npc",
+				"humanoid",
+				"authority",
+				"modern"
+			],
+			"synonyms": [
+				"investigator",
+				"private eye",
+				"sleuth",
+				"inspector",
+				"gumshoe",
+				"private detective",
+				"cop"
+			],
+			"description": "",
+			"archetype": "humanoid",
+			"extends": "npcs/base_humanoid",
+			"entity_type": "npc",
+			"sensors": [
+				"hp",
+				"suspicion",
+				"trust",
+				"alertness"
+			],
+			"affordances": [
+				"speak",
+				"interrogate",
+				"present_evidence",
+				"observe",
+				"take_notes"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"hostile_witness",
+				"suspicious"
+			],
+			"file": "npcs/detective.yaml"
+		},
+		{
+			"ref": "npcs/ferryman",
+			"name": "ferryman",
+			"category": "npcs",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"npc",
+				"humanoid",
+				"transport",
+				"social"
+			],
+			"synonyms": [
+				"boatman",
+				"river guide",
+				"boat operator",
+				"gondolier",
+				"bargeman",
+				"river crosser",
+				"water taxi"
+			],
+			"description": "",
+			"archetype": "humanoid",
+			"extends": "npcs/base_humanoid",
+			"entity_type": "npc",
+			"sensors": [
+				"trust",
+				"health"
+			],
+			"affordances": [
+				"speak",
+				"offer_payment",
+				"threaten"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"hostility",
+				"refusal"
+			],
+			"file": "npcs/ferryman.yaml"
+		},
+		{
+			"ref": "npcs/guard",
+			"name": "guard",
+			"category": "npcs",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"npc",
+				"humanoid",
+				"military",
+				"authority"
+			],
+			"synonyms": [
+				"town guard",
+				"sentry",
+				"watchman",
+				"soldier",
+				"patrol guard",
+				"gate keeper",
+				"armed guard"
+			],
+			"description": "",
+			"archetype": "humanoid",
+			"extends": "npcs/base_humanoid",
+			"entity_type": "npc",
+			"sensors": [
+				"hp",
+				"trust",
+				"suspicion"
+			],
+			"affordances": [
+				"speak",
+				"interrogate",
+				"attack",
+				"block"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"hostility"
+			],
+			"file": "npcs/guard.yaml"
+		},
+		{
+			"ref": "npcs/merchant",
+			"name": "merchant",
+			"category": "npcs",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"npc",
+				"humanoid",
+				"trade",
+				"social"
+			],
+			"synonyms": [
+				"trader",
+				"shopkeeper",
+				"vendor",
+				"peddler",
+				"salesman",
+				"dealer",
+				"store owner"
+			],
+			"description": "",
+			"archetype": "humanoid",
+			"extends": "npcs/base_humanoid",
+			"entity_type": "npc",
+			"sensors": [
+				"hp",
+				"trust",
+				"gold"
+			],
+			"affordances": [
+				"speak",
+				"trade",
+				"haggle"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "npcs/merchant.yaml"
+		},
+		{
+			"ref": "npcs/netrunner",
+			"name": "netrunner",
+			"category": "npcs",
+			"genres": [
+				"cyberpunk"
+			],
+			"tags": [
+				"npc",
+				"humanoid",
+				"hacker",
+				"tech",
+				"cyberpunk"
+			],
+			"synonyms": [
+				"hacker",
+				"cyber hacker",
+				"net diver",
+				"console cowboy",
+				"decker",
+				"data thief",
+				"ice breaker"
+			],
+			"description": "",
+			"archetype": "humanoid",
+			"extends": "npcs/base_humanoid",
+			"entity_type": "npc",
+			"sensors": [
+				"hp",
+				"trust",
+				"suspicion",
+				"net_access"
+			],
+			"affordances": [
+				"speak",
+				"negotiate",
+				"threaten",
+				"hack",
+				"share_intel"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"betrayal",
+				"disconnected"
+			],
+			"file": "npcs/netrunner.yaml"
+		},
+		{
+			"ref": "npcs/roman_legionary",
+			"name": "roman_legionary",
+			"category": "npcs",
+			"genres": [
+				"historical"
+			],
+			"tags": [
+				"npc",
+				"humanoid",
+				"military",
+				"historical"
+			],
+			"synonyms": [
+				"roman soldier",
+				"legionnaire",
+				"centurion",
+				"roman warrior",
+				"imperial soldier",
+				"roman infantry",
+				"legion soldier"
+			],
+			"description": "",
+			"archetype": "humanoid",
+			"extends": "npcs/base_humanoid",
+			"entity_type": "npc",
+			"sensors": [
+				"hp",
+				"morale",
+				"discipline",
+				"fatigue",
+				"trust"
+			],
+			"affordances": [
+				"gladius_thrust",
+				"shield_bash",
+				"throw_pilum",
+				"speak",
+				"give_orders"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"routed",
+				"exhausted"
+			],
+			"file": "npcs/roman_legionary.yaml"
+		},
+		{
+			"ref": "npcs/street_fixer",
+			"name": "street_fixer",
+			"category": "npcs",
+			"genres": [
+				"cyberpunk"
+			],
+			"tags": [
+				"npc",
+				"humanoid",
+				"social",
+				"broker",
+				"neutral",
+				"cyberpunk"
+			],
+			"synonyms": [
+				"fixer",
+				"middleman",
+				"broker",
+				"job dealer",
+				"contact",
+				"go-between",
+				"street dealer",
+				"connector"
+			],
+			"description": "",
+			"archetype": "humanoid",
+			"extends": "npcs/base_humanoid",
+			"entity_type": "npc",
+			"sensors": [
+				"hp",
+				"trust",
+				"greed",
+				"reputation",
+				"debt_owed"
+			],
+			"affordances": [
+				"speak",
+				"negotiate",
+				"intimidate",
+				"call_in_favor",
+				"buy_intel",
+				"sell_intel"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"betrayal",
+				"desperate"
+			],
+			"file": "npcs/street_fixer.yaml"
+		},
+		{
+			"ref": "npcs/sysadmin",
+			"name": "sysadmin",
+			"category": "npcs",
+			"genres": [
+				"devops",
+				"modern"
+			],
+			"tags": [
+				"npc",
+				"humanoid",
+				"tech",
+				"devops",
+				"modern"
+			],
+			"synonyms": [
+				"system administrator",
+				"it admin",
+				"server admin",
+				"tech support",
+				"network admin",
+				"it guy",
+				"ops engineer"
+			],
+			"description": "",
+			"archetype": "humanoid",
+			"extends": "npcs/base_humanoid",
+			"entity_type": "npc",
+			"sensors": [
+				"hp",
+				"stress",
+				"trust",
+				"caffeine",
+				"expertise"
+			],
+			"affordances": [
+				"speak",
+				"ask_for_help",
+				"escalate",
+				"pair_debug",
+				"grant_access"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"burnout",
+				"caffeine_crash"
+			],
+			"file": "npcs/sysadmin.yaml"
+		},
+		{
+			"ref": "npcs/thief",
+			"name": "thief",
+			"category": "npcs",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"npc",
+				"humanoid",
+				"stealth",
+				"criminal",
+				"fantasy"
+			],
+			"synonyms": [
+				"rogue",
+				"burglar",
+				"pickpocket",
+				"cutpurse",
+				"sneak thief",
+				"cat burglar",
+				"pilferer"
+			],
+			"description": "",
+			"archetype": "humanoid",
+			"extends": "npcs/base_humanoid",
+			"entity_type": "npc",
+			"sensors": [
+				"hp",
+				"trust",
+				"stealth",
+				"greed"
+			],
+			"affordances": [
+				"speak",
+				"bribe",
+				"intimidate",
+				"pickpocket",
+				"lockpick",
+				"scout_area"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"caught",
+				"hostile"
+			],
+			"file": "npcs/thief.yaml"
+		},
+		{
+			"ref": "npcs/wizard",
+			"name": "wizard",
+			"category": "npcs",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"npc",
+				"humanoid",
+				"magical",
+				"fantasy"
+			],
+			"synonyms": [
+				"mage",
+				"sorcerer",
+				"spellcaster",
+				"archmage",
+				"enchanter",
+				"magic user",
+				"warlock"
+			],
+			"description": "",
+			"archetype": "humanoid",
+			"extends": "npcs/base_humanoid",
+			"entity_type": "npc",
+			"sensors": [
+				"hp",
+				"mana",
+				"trust",
+				"arcane_focus"
+			],
+			"affordances": [
+				"speak",
+				"request_knowledge",
+				"trade",
+				"cast_spell",
+				"ward"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"mana_depleted",
+				"hostile"
+			],
+			"file": "npcs/wizard.yaml"
+		},
+		{
+			"ref": "vehicles/horse",
+			"name": "horse",
+			"category": "vehicles",
+			"genres": [
+				"fantasy",
+				"historical"
+			],
+			"tags": [
+				"vehicle",
+				"mount",
+				"animal",
+				"fantasy",
+				"historical"
+			],
+			"synonyms": [
+				"steed",
+				"mount",
+				"warhorse",
+				"riding horse",
+				"stallion",
+				"mare",
+				"charger"
+			],
+			"description": "",
+			"archetype": "quadruped",
+			"extends": "",
+			"entity_type": "vehicle",
+			"sensors": [
+				"stamina",
+				"hp",
+				"loyalty",
+				"speed",
+				"hunger"
+			],
+			"affordances": [
+				"mount",
+				"dismount",
+				"gallop",
+				"trot",
+				"halt",
+				"feed",
+				"water",
+				"calm"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"exhausted",
+				"spooked",
+				"collapsed"
+			],
+			"file": "vehicles/horse.yaml"
+		},
+		{
+			"ref": "vehicles/pickup_truck",
+			"name": "pickup_truck",
+			"category": "vehicles",
+			"genres": [
+				"modern"
+			],
+			"tags": [
+				"vehicle",
+				"ground",
+				"modern"
+			],
+			"synonyms": [
+				"truck",
+				"pickup",
+				"utility vehicle",
+				"work truck",
+				"hauler",
+				"flatbed truck",
+				"four wheeler"
+			],
+			"description": "",
+			"archetype": "vehicle",
+			"extends": "",
+			"entity_type": "vehicle",
+			"sensors": [
+				"fuel",
+				"engine_health",
+				"speed",
+				"tire_condition",
+				"cargo_weight"
+			],
+			"affordances": [
+				"start_engine",
+				"drive",
+				"accelerate",
+				"brake",
+				"reverse",
+				"load_cargo",
+				"unload_cargo",
+				"honk"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"out_of_fuel",
+				"engine_failure",
+				"flat_tire"
+			],
+			"file": "vehicles/pickup_truck.yaml"
+		},
+		{
+			"ref": "vehicles/sailing_ship",
+			"name": "sailing_ship",
+			"category": "vehicles",
+			"genres": [
+				"historical"
+			],
+			"tags": [
+				"vehicle",
+				"water",
+				"historical"
+			],
+			"synonyms": [
+				"ship",
+				"sailboat",
+				"galleon",
+				"vessel",
+				"tall ship",
+				"schooner",
+				"brigantine",
+				"sea vessel"
+			],
+			"description": "",
+			"archetype": "vehicle",
+			"extends": "",
+			"entity_type": "vehicle",
+			"sensors": [
+				"hull_integrity",
+				"sail_condition",
+				"crew_morale",
+				"supplies",
+				"wind_strength",
+				"speed"
+			],
+			"affordances": [
+				"set_course",
+				"raise_sails",
+				"lower_sails",
+				"drop_anchor",
+				"ration_supplies",
+				"repair_hull",
+				"rally_crew"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"hull_breach",
+				"becalmed",
+				"mutiny",
+				"starvation"
+			],
+			"file": "vehicles/sailing_ship.yaml"
+		},
+		{
+			"ref": "weapons/combat_knife",
+			"name": "combat_knife",
+			"category": "weapons",
+			"genres": [
+				"modern"
+			],
+			"tags": [
+				"weapon",
+				"melee",
+				"modern"
+			],
+			"synonyms": [
+				"fighting knife",
+				"tactical knife",
+				"military knife",
+				"hunting knife",
+				"bowie knife",
+				"blade",
+				"survival knife"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "weapon",
+			"sensors": [
+				"sharpness",
+				"durability"
+			],
+			"affordances": [
+				"slash",
+				"stab",
+				"throw",
+				"cut_rope",
+				"pry"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"dulled",
+				"broken"
+			],
+			"file": "weapons/combat_knife.yaml"
+		},
+		{
+			"ref": "weapons/enchanted_bow",
+			"name": "enchanted_bow",
+			"category": "weapons",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"weapon",
+				"ranged",
+				"magical",
+				"degradable",
+				"fantasy"
+			],
+			"synonyms": [
+				"magic bow",
+				"arcane bow",
+				"glowing bow",
+				"elven bow",
+				"mystic bow",
+				"spellbound bow",
+				"runed bow"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "weapon",
+			"sensors": [
+				"arrows",
+				"draw_strength",
+				"enchantment",
+				"string_tension"
+			],
+			"affordances": [
+				"shoot",
+				"aimed_shot",
+				"enchanted_shot",
+				"volley",
+				"restring",
+				"craft_arrows"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"out_of_arrows",
+				"string_snapped",
+				"enchantment_faded"
+			],
+			"file": "weapons/enchanted_bow.yaml"
+		},
+		{
+			"ref": "weapons/longbow",
+			"name": "longbow",
+			"category": "weapons",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"weapon",
+				"ranged",
+				"degradable"
+			],
+			"synonyms": [
+				"bow",
+				"long bow",
+				"wooden bow",
+				"war bow",
+				"hunting bow",
+				"great bow",
+				"archer bow"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "weapon",
+			"sensors": [
+				"durability",
+				"tension",
+				"arrows"
+			],
+			"affordances": [
+				"shoot",
+				"nock",
+				"restring"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"snapped_string",
+				"out_of_arrows"
+			],
+			"file": "weapons/longbow.yaml"
+		},
+		{
+			"ref": "weapons/magic_staff",
+			"name": "magic_staff",
+			"category": "weapons",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"weapon",
+				"ranged",
+				"magical",
+				"degradable",
+				"fantasy"
+			],
+			"synonyms": [
+				"wizard staff",
+				"arcane staff",
+				"enchanted staff",
+				"mage staff",
+				"spell staff",
+				"sorcerer rod",
+				"magical rod"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "weapon",
+			"sensors": [
+				"mana",
+				"durability",
+				"attunement",
+				"corruption"
+			],
+			"affordances": [
+				"cast_fireball",
+				"cast_shield",
+				"cast_heal",
+				"channel_power",
+				"strike",
+				"purify",
+				"attune"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"mana_exhaustion",
+				"corruption_overload",
+				"shattered"
+			],
+			"file": "weapons/magic_staff.yaml"
+		},
+		{
+			"ref": "weapons/neural_disruptor",
+			"name": "neural_disruptor",
+			"category": "weapons",
+			"genres": [
+				"cyberpunk"
+			],
+			"tags": [
+				"weapon",
+				"ranged",
+				"tech",
+				"degradable",
+				"cyberpunk"
+			],
+			"synonyms": [
+				"brain scrambler",
+				"nerve gun",
+				"neural weapon",
+				"mind disruptor",
+				"psi gun",
+				"synapse blaster",
+				"neuro weapon"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "weapon",
+			"sensors": [
+				"durability",
+				"charge_cells",
+				"heat",
+				"accuracy"
+			],
+			"affordances": [
+				"fire",
+				"rapid_fire",
+				"pistol_whip",
+				"reload",
+				"cool_down"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"overheated",
+				"empty",
+				"structural_failure"
+			],
+			"file": "weapons/neural_disruptor.yaml"
+		},
+		{
+			"ref": "weapons/plasma_rifle",
+			"name": "plasma_rifle",
+			"category": "weapons",
+			"genres": [
+				"scifi"
+			],
+			"tags": [
+				"weapon",
+				"ranged",
+				"tech",
+				"degradable",
+				"scifi"
+			],
+			"synonyms": [
+				"energy rifle",
+				"plasma gun",
+				"laser rifle",
+				"particle beam",
+				"ion rifle",
+				"blaster rifle",
+				"ray gun"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "weapon",
+			"sensors": [
+				"plasma_charge",
+				"heat",
+				"barrel_integrity",
+				"accuracy"
+			],
+			"affordances": [
+				"fire",
+				"overcharge_shot",
+				"burst_fire",
+				"vent_heat",
+				"swap_cell"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"overheated",
+				"cell_depleted",
+				"barrel_melt"
+			],
+			"file": "weapons/plasma_rifle.yaml"
+		},
+		{
+			"ref": "weapons/poison_dagger",
+			"name": "poison_dagger",
+			"category": "weapons",
+			"genres": [
+				"fantasy"
+			],
+			"tags": [
+				"weapon",
+				"melee",
+				"stealth",
+				"degradable",
+				"fantasy"
+			],
+			"synonyms": [
+				"venomous blade",
+				"toxic dagger",
+				"envenomed knife",
+				"assassin blade",
+				"poisoned knife",
+				"coated dagger",
+				"venom blade"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "weapon",
+			"sensors": [
+				"sharpness",
+				"poison_doses",
+				"concealment"
+			],
+			"affordances": [
+				"stab",
+				"poisoned_strike",
+				"throw",
+				"conceal",
+				"apply_poison"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"dulled",
+				"poison_depleted"
+			],
+			"file": "weapons/poison_dagger.yaml"
+		},
+		{
+			"ref": "weapons/rusty_sword",
+			"name": "rusty_sword",
+			"category": "weapons",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"weapon",
+				"melee",
+				"degradable"
+			],
+			"synonyms": [
+				"old sword",
+				"dull blade",
+				"rusty blade",
+				"iron sword",
+				"corroded sword",
+				"worn sword",
+				"battered blade"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "weapon",
+			"sensors": [
+				"durability",
+				"sharpness",
+				"weight"
+			],
+			"affordances": [
+				"slash",
+				"parry",
+				"throw",
+				"sharpen",
+				"repair"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"shatter",
+				"dulled"
+			],
+			"file": "weapons/rusty_sword.yaml"
+		},
+		{
+			"ref": "weapons/shock_baton",
+			"name": "shock_baton",
+			"category": "weapons",
+			"genres": [
+				"cyberpunk"
+			],
+			"tags": [
+				"weapon",
+				"melee",
+				"electric",
+				"degradable",
+				"cyberpunk"
+			],
+			"synonyms": [
+				"stun baton",
+				"electric club",
+				"taser stick",
+				"zap stick",
+				"electro baton",
+				"cattle prod",
+				"stun stick"
+			],
+			"description": "",
+			"archetype": "environmental",
+			"extends": "",
+			"entity_type": "weapon",
+			"sensors": [
+				"durability",
+				"charge",
+				"weight"
+			],
+			"affordances": [
+				"shock_strike",
+				"blunt_strike",
+				"parry",
+				"recharge",
+				"repair"
+			],
+			"latent_affordances": [],
+			"failure_modes": [
+				"charge_depleted",
+				"structural_failure"
+			],
+			"file": "weapons/shock_baton.yaml"
+		}
+	]
+}

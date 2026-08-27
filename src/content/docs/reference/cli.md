@@ -70,7 +70,7 @@ The `--mode` and `--autonomy` values combine processing states (awake/sleep), op
 
 ## Peer & Tunnel Commands
 
-Connect peers to a leader's GPU for distributed inference. See [Networking & Mesh](https://www.dennyschaedig.com/maxim/networking) for full details.
+Connect peers to a leader's GPU for distributed inference. See [Networking & mesh](/guides/networking/) for full details.
 
 ```sh
 # Environment diagnostics
