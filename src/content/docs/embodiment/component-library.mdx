@@ -3,6 +3,8 @@ title: Component library
 description: A catalog of ready-made SEM entity components — prebuilt sensors, affordances, and failure modes across seven categories — plus the ComponentIndex that discovers them by exact alias or semantic similarity.
 ---
 
+import data from '../../../data/components.json';
+
 Authoring a Sensor-Entity-Modulator (SEM) entity by hand means writing YAML for every sensor range, every affordance, and every failure mode an object can hit. That is fine once. It is tedious the tenth time you need a guard, a healing potion, or a dungeon corridor. The **component library** is Maxim's answer: a catalog of ready-made SEM entities you can drop into a body or world by name instead of authoring them from scratch.
 
 Maxim is a bio-inspired cognitive architecture, and these components are the reusable furniture its cognition acts on. Every component ships with sensors, affordances, and failure modes already wired up, so the moment you reference one it behaves correctly under simulation — a dragon that can exhaust its fire breath, a laptop whose battery dies, a captain whose suspicion rises.
@@ -15,29 +17,23 @@ Components are the counterpart to two other systems. The [Asset Foundry](/embodi
 
 ## The catalog
 
-The library is organized into **seven categories**. Every component carries one or more genre tags (or is genre-neutral), which drives genre gating during a campaign.
+The library is organized into **{data.categories.length} categories**. Every component carries one or more genre tags (or is genre-neutral), which drives genre gating during a campaign. The counts below are generated from the registry files in **{data.source_label}** — see [the count, derived](/reference/components/#the-count-derived) for the counting rule and why older hand-typed totals (72, 73, 81) disagree.
 
-| Category | Count | Genre tags represented |
-| --- | --- | --- |
-| Weapons | 9 | fantasy, neutral, modern, cyberpunk, scifi |
-| Creatures | 8 | fantasy, horror, neutral, scifi, cyberpunk |
-| NPCs | 13 | neutral, fantasy, historical, modern, devops, cyberpunk |
-| Environments | 12 | fantasy, neutral, horror, scifi, historical, modern, cyberpunk |
-| Items | 21 | fantasy, horror, modern, devops, historical |
-| Vehicles | 3 | modern, fantasy, historical |
-| Bodies | 6 | neutral, modern, devops, cyberpunk |
-| **Total** | **72** | — |
+<div class="table-wrap" tabindex="0">
+<table>
+<thead><tr><th>Category</th><th>Components</th></tr></thead>
+<tbody>
+{data.categories.map((k) => (
+<tr><td>{k.name}</td><td>{k.count}</td></tr>
+))}
+<tr><td><strong>Total</strong></td><td><strong>{data.count}</strong></td></tr>
+</tbody>
+</table>
+</div>
 
-**A note on the total.** The two sources for this catalog disagree by one. The repository's current user doc lists **72 components**, with **6** in the Bodies category. The interactive web catalog reports **73 components**, with **7** Bodies. The entire delta is that one Bodies row. This page follows the repo doc's current number (**72**), but both figures are stated here so the discrepancy is visible rather than silently resolved. If you need the authoritative count at any given moment, generate it from the registry rather than trusting a hand-copied total.
+The full per-component listing — every entity, its sensors, affordances, and failure modes — lives on the **[Components reference](/reference/components/)**, a searchable catalog with category and genre filters that is regenerated from the registry rather than maintained by hand. The canonical source is the registry itself: [`src/maxim/_data/components/`](https://github.com/dennys246/Maxim/tree/main/src/maxim/_data/components) in the engine repo, described in [docs/user/component-library.md](https://github.com/dennys246/Maxim/blob/main/docs/user/component-library.md).
 
-The full per-component listing — every entity, its sensors, and its failure modes — is drift-prone by nature: components get added and retuned faster than a prose table can track. For the complete enumeration, see:
-
-- **[Components reference](/reference/components/)** — the full on-site catalog, every entity by category, sourced from the repo registry
-- Interactive catalog with search and filtering: [dennyschaedig.com/maxim/component-library](https://www.dennyschaedig.com/maxim/component-library)
-- Repo registry (canonical source): [`src/maxim/_data/components/`](https://github.com/dennys246/Maxim/tree/main/src/maxim/_data/components)
-- Repo user doc: [docs/user/component-library.md](https://github.com/dennys246/Maxim/blob/main/docs/user/component-library.md)
-
-To give a sense of the shape: `weapons/magic_staff` (fantasy) tracks mana, durability, attunement, and corruption, and can fail via `mana_exhaustion`, `corruption_overload`, or `shattered`. `creatures/dragon` (fantasy) tracks hp, fire-breath charge, aggression, altitude, and armor integrity, failing to `grounded`, `breath_exhausted`, or `death`. `bodies/reachy_mini` (a robot body) tracks head yaw/pitch/roll, camera health, battery, and motor temperature, failing to `thermal_throttling`, `low_battery`, `pose_drift`, or `camera_lost`. The Items category also bundles seven `cradle_*` scene objects used by the `cradle` developmental arc, reachable through the registry like any other component.
+To give a sense of the shape: `weapons/magic_staff` (fantasy) tracks mana, durability, attunement, and corruption, and can fail via `mana_exhaustion`, `corruption_overload`, or `shattered`. `creatures/dragon` (fantasy) tracks hp, fire-breath charge, aggression, altitude, and armor integrity, failing to `grounded`, `breath_exhausted`, or `death`. `bodies/reachy_mini` (a robot body) tracks head yaw/pitch/roll, camera health, battery, and motor temperature, failing to `thermal_throttling`, `low_battery`, `pose_drift`, or `camera_lost`. The Items category also bundles the `cradle_*` scene objects used by the [Cradle](/research/cradle/) developmental arc, reachable through the registry like any other component.
 
 ### Genre gating
 
@@ -47,7 +43,7 @@ Components are tagged with genres, and a campaign filters the registry by its de
 - **includes** genre-neutral components (no genre tag), and
 - **excludes** components tagged with other genres (e.g. `cyberpunk`).
 
-The available genres are `fantasy`, `cyberpunk`, `scifi`, `horror`, `historical`, `modern`, and `devops`.
+The recognised genres are `fantasy`, `cyberpunk`, `scifi`, `horror`, `historical`, `modern`, and `devops`. Explicit refs bypass the gate — `ref: "npcs/corpo_guard"` loads in a fantasy campaign if you ask for it by name; only generative lookups and registry queries are filtered. How campaigns declare a genre is on [DM campaigns](/guides/dm-campaigns/#genre-gating).
 
 ## Discovery: the ComponentIndex
 
@@ -110,7 +106,7 @@ encounters:
     world_objects: [magic_staff]   # Makes affordances available as tools
 ```
 
-Placing a component in `world_objects` and then listing it in an encounter's `world_objects` exposes its affordances to the agent as callable tools for that scene. These campaign files are what the [simulation guide](/guides/simulation/) runs — components are the cast and props of a scripted or generated scenario.
+Placing a component in `world_objects` and then listing it in an encounter's `world_objects` exposes its affordances to the agent as callable tools for that scene. These campaign files are what the [DM campaign runtime](/guides/dm-campaigns/) runs — components are the cast and props of a scripted or generated scenario.
 
 ### Adding your own components
 
@@ -141,19 +137,19 @@ entity:
       trigger: {field: durability, op: "<", value: 0.1, pain: 0.5}
 ```
 
-Once written, the ComponentIndex adds it to the alias table and embeds its description, so it becomes reachable both by exact path (`weapons/my_weapon`) and by semantic query.
+The genre tag in `tags` (here `fantasy`) is what genre gating reads. Once written, the ComponentIndex adds it to the alias table and embeds its description, so it becomes reachable both by exact path (`weapons/my_weapon`) and by semantic query.
 
 ## How it connects
 
 - [SEM protocol](/embodiment/sem-protocol/) — the sensor/entity/modulator format every component implements.
 - [Asset Foundry](/embodiment/asset-foundry/) — how new components are generated when the shelf does not have what a campaign needs.
 - [Imagination](/embodiment/imagination/) — designing entities at runtime, the live-simulation cousin of the curated library.
-- [Simulation](/guides/simulation/) — where components are cast into campaigns as NPCs, world objects, and encounter props.
+- [DM campaigns](/guides/dm-campaigns/) and [Simulation](/guides/simulation/) — where components are cast into campaigns as NPCs, world objects, and encounter props.
 
 ## Going deeper
 
-- Repository: [github.com/dennys246/Maxim](https://github.com/dennys246/Maxim)
-- User doc (source of truth for counts): [docs/user/component-library.md](https://github.com/dennys246/Maxim/blob/main/docs/user/component-library.md)
-- Interactive catalog: [dennyschaedig.com/maxim/component-library](https://www.dennyschaedig.com/maxim/component-library)
+- [Components reference](/reference/components/) — the searchable catalog, every component with its sensors, affordances, and failure modes.
+- Repository: [github.com/dennys246/Maxim](https://github.com/dennys246/Maxim); registry at [`src/maxim/_data/components/`](https://github.com/dennys246/Maxim/tree/main/src/maxim/_data/components).
+- User doc: [docs/user/component-library.md](https://github.com/dennys246/Maxim/blob/main/docs/user/component-library.md) — its category tables are hand-maintained; when they and the registry disagree, the files win.
 
 Maxim installs as `pip install pymaxim` and imports as `maxim` — see [Installation](/installation/) to get set up before instantiating your first component.

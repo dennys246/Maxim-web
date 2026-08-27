@@ -260,7 +260,7 @@ no direct index keys. The graph bridges contexts that flat recall cannot.
 - [Full memory-systems write-up](https://www.dennyschaedig.com/maxim/memory-systems)
   — the complete original article, including the MemoryLayer protocol, cross-layer
   graph, typed relationships, and knowledge in the agent loop (until migrated here).
-- [Semantic memory](https://www.dennyschaedig.com/maxim/semantic-memory) — the
+- [Semantic memory](https://www.dennyschaedig.com/maxim/memory-systems#semantic) — the
   concept-memory pipeline and ATL internals in depth.
 - [`docs/memory.md`](https://github.com/dennys246/Maxim/blob/main/docs/memory.md)
   — code-adjacent reference.

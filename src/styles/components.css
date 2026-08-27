@@ -1,0 +1,143 @@
+/* Interactive component catalog (src/components/ComponentCatalog.tsx).
+   Colours come from Starlight's theme tokens so light/dark both work. */
+
+.catalog-controls {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem 1rem;
+	align-items: flex-end;
+	margin-block: 1rem 0.5rem;
+}
+.catalog-field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	min-width: 9rem;
+}
+.catalog-field--grow {
+	flex: 1 1 16rem;
+}
+.catalog-field--button {
+	min-width: 0;
+}
+.catalog-field label {
+	font-size: var(--sl-text-sm);
+	color: var(--sl-color-gray-2);
+}
+.catalog-field input,
+.catalog-field select,
+.catalog-field button {
+	font: inherit;
+	font-size: var(--sl-text-sm);
+	color: var(--sl-color-white);
+	background: var(--sl-color-black);
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: 0.375rem;
+	padding: 0.45rem 0.6rem;
+	min-height: 2.5rem;
+}
+.catalog-field input {
+	width: 100%;
+}
+.catalog-field button {
+	cursor: pointer;
+}
+.catalog-field button:disabled {
+	opacity: 0.55;
+	cursor: default;
+}
+.catalog-field input:focus-visible,
+.catalog-field select:focus-visible,
+.catalog-field button:focus-visible {
+	outline: 2px solid var(--sl-color-accent-high);
+	outline-offset: 2px;
+}
+
+.catalog-status {
+	font-size: var(--sl-text-sm);
+	color: var(--sl-color-gray-2);
+	margin-block: 0.5rem 1rem;
+}
+.catalog-empty {
+	padding: 1rem;
+	border: 1px dashed var(--sl-color-gray-5);
+	border-radius: 0.5rem;
+}
+
+.catalog-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: grid;
+	gap: 1rem;
+}
+.catalog-card {
+	margin: 0;
+	padding: 1rem 1.1rem;
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: 0.5rem;
+	background: var(--sl-color-black);
+}
+.catalog-card-head {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 0.75rem;
+	align-items: baseline;
+	justify-content: space-between;
+}
+.catalog-card h3 {
+	margin: 0;
+	font-size: var(--sl-text-base);
+	line-height: 1.4;
+}
+.catalog-card h3 code {
+	font-size: 0.95em;
+}
+.catalog-chips {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: 0.3rem;
+}
+.catalog-chip {
+	font-size: var(--sl-text-xs);
+	line-height: 1;
+	padding: 0.3rem 0.5rem;
+	border-radius: 999px;
+	border: 1px solid var(--sl-color-gray-5);
+	color: var(--sl-color-gray-1);
+	background: var(--sl-color-gray-6);
+}
+.catalog-desc {
+	margin-block: 0.6rem 0;
+	font-size: var(--sl-text-sm);
+	white-space: pre-line;
+}
+.catalog-facts {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	gap: 0.3rem 0.9rem;
+	margin-block: 0.75rem 0;
+	font-size: var(--sl-text-sm);
+}
+.catalog-facts dt {
+	color: var(--sl-color-gray-2);
+	font-weight: 600;
+}
+.catalog-facts dd {
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+.catalog-source {
+	margin-block: 0.6rem 0;
+	font-size: var(--sl-text-xs);
+	color: var(--sl-color-gray-3);
+}
+@media (max-width: 40rem) {
+	.catalog-facts {
+		grid-template-columns: 1fr;
+		gap: 0.15rem;
+	}
+	.catalog-facts dd {
+		margin-bottom: 0.4rem;
+	}
+}

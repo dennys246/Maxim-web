@@ -355,7 +355,7 @@ Prediction and pain gate *proposed* actions. The preemption circuit interrupts
 actions *already in flight*. Any subsystem can raise a `PreemptionSignal`;
 sources are ranked by a `SourceConfig.priority`, and a higher-priority signal
 overrides a lower one. The three tiers, from the
-[Preemption Circuit](https://www.dennyschaedig.com/maxim/communication):
+[Preemption Circuit](/concepts/communication/):
 
 - **HARD_STOP (immediate)** — unconditional halt. Triggered by a voice command
   ("Maxim stop"), a hard-stop-whitelisted message, or a safety-circuit trigger.
@@ -416,5 +416,5 @@ and [Memory overview](/memory/overview/).
   — the full ten-layer safety stack and how to configure or reset each layer.
 - [Proprioception System](https://github.com/dennys246/Maxim/blob/main/docs/proprioception.md)
   — pain detection, the two-layer predictive pain architecture, and NAc wiring.
-- [Preemption Circuit](https://www.dennyschaedig.com/maxim/communication)
+- [Preemption Circuit](/concepts/communication/)
   — interrupt priorities, execution snapshots, and reversal.
