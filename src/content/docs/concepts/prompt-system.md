@@ -56,7 +56,7 @@ The table lists every section the 1.1.0 builder can add, grouped the way the cod
 | `reasoning_carryover` | IMPORTANT | prior reasoning carried | Compressed reasoning from earlier turns |
 | `prefetch_context` | — | prefetched material | Pre-fetched documents, truncatable |
 | `coding_guidelines` | IMPORTANT | coding tools in play | Repository coding conventions |
-| `foundational` | IMPORTANT | see note | `CONSTITUTION.md` principles and `AGENTS.md` rules, loaded from a repository root. **In a pip install there is no repository root, so this section is empty** — it only exists when running from a source checkout |
+| `foundational` | IMPORTANT | see note | Constitutional principles and agent behaviour rules. The text is a hardcoded paraphrase in `llm_context.py`, gated on finding a `CONSTITUTION.md`/`AGENTS.md` above the package — so **a pip-installed agent gets an empty preamble**, and the file and the prompt can drift. Filed as [defect D32](https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md) |
 | `mode_context` | NICE_TO_HAVE | the mode has one | The mode's own instructions — filesystem rules, cognitive tools. Frequently the first thing dropped |
 | `observation` | IMPORTANT | a current percept | Detected objects, attention target, novelty and salience |
 | `speech` | NICE_TO_HAVE | speech detected | Last three utterances |

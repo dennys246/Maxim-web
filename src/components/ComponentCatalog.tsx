@@ -86,7 +86,12 @@ export default function ComponentCatalog({ data, sourceBase }: Props) {
 
 	return (
 		<div className="catalog">
-			<form className="catalog-controls" role="search" onSubmit={(e) => e.preventDefault()}>
+			<form
+				className="catalog-controls"
+				role="search"
+				aria-label="Filter components"
+				onSubmit={(e) => e.preventDefault()}
+			>
 				<div className="catalog-field catalog-field--grow">
 					<label htmlFor={searchId}>Search</label>
 					<input
@@ -155,7 +160,7 @@ export default function ComponentCatalog({ data, sourceBase }: Props) {
 								</h3>
 								<span className="catalog-chips" aria-label="genres">
 									{c.genres.map((g) => (
-										<span key={g} className={`catalog-chip catalog-chip--${g}`}>
+										<span key={g} className="catalog-chip">
 											{g}
 										</span>
 									))}

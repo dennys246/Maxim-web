@@ -139,7 +139,7 @@ expectations:
     output_matches: "ALPHA"
 ```
 
-A suite references scenarios with weights and adds suite-level scoring thresholds:
+A suite references scenarios and adds suite-level scoring thresholds. The `weight` on each entry is accepted by the loader but does not reach the score in 1.1.0 — see [scoring](#scoring-and-thresholds):
 
 ```yaml
 name: my_suite
@@ -166,7 +166,9 @@ suite:
 Two separate things come out of a run:
 
 - **Pass/fail** against `scoring`. Each entry names a metric and a `pass_above` (for metrics where higher is better, such as recall) or `pass_below` (for `hallucination_rate` and the like) threshold. A suite with no `scoring` block passes automatically.
-- **A composite score** in 0–1 for ranking models. The runner normalises every collected metric — rates are used as-is, lower-is-better rates (`hallucination_rate`, `alias_redirect_rate`, `cost_per_turn`) are inverted, counts are capped — and averages them. Scenario `weight` values are read from the suite file; the exact formula is `_compute_composite_score` in `src/maxim/simulation/benchmark.py`, and it is a ranking convenience, not a calibrated quantity.
+- **A composite score** in 0–1 for ranking models. The runner normalises every metric it collected for that model — rates as-is, lower-is-better rates (`hallucination_rate`, `alias_redirect_rate`, `cost_per_turn`) inverted, counts capped — and takes the mean.
+
+Two things a suite file invites you to expect do **not** happen in 1.1.0: a scenario's `weight` is parsed and then never read again, and there is no per-scenario score for weights to compose from — the composite is a flat mean over one model's aggregated metrics. Read `_compute_composite_score` in `src/maxim/simulation/benchmark.py` before attaching meaning to the number. It ranks; it does not measure. Pass/fail against `scoring` thresholds is the part that behaves as written.
 
 ## Baseline comparison
 
