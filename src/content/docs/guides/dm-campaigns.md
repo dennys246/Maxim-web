@@ -28,7 +28,9 @@ maxim --sim scenarios/campaigns/heist_v1.yaml --interactive false
 maxim --sim scenarios/campaigns/heist_v1.yaml --show sim
 ```
 
-The bare `maxim` command opens an interactive menu that discovers campaigns and offers them alongside recent sessions. `--dm` is also accepted: with a YAML path it is redundant (the campaign is auto-detected), and with a goal string (`maxim --sim "run a heist" --dm`) it asks Maxim to generate a campaign rather than play one — that generative path is covered under [Tools](/reference/tools/), not here.
+The bare `maxim` command opens an interactive menu that discovers campaigns and offers them alongside recent sessions.
+
+`--dm` is also accepted, but it does less than its help text suggests. With a YAML path it is redundant — a campaign is auto-detected from the `campaign:` and `encounters:` keys. With a goal string (`maxim --sim "run a heist" --dm`) it starts the **generative narrative campaign** runner, the same one a plain `--sim "<goal>"` uses (see [Generative campaigns](/guides/simulation/#generative-campaigns)), with `dm` recorded as the flow-shape label in reports and logs. It does not author a campaign: the design in which an architect agent writes campaign YAML and hands it to the DM runtime is **not implemented** in 1.1.0, and the CLI help's "generate a campaign" overstates what happens.
 
 The shipped campaigns live in `scenarios/campaigns/` of a **source checkout**; the wheel does not bundle them. Reports go to `~/.maxim/sim_reports/<session_id>/` with the standard `report.json` and `actions.jsonl` plus a campaign section listing the choices made, dice rolls, flags, and entity snapshots.
 
