@@ -54,7 +54,9 @@ pnpm build:components -- \
   --label "pymaxim <version> (PyPI wheel)"
 ```
 
-The output is deterministic (no timestamps); a regenerate with no registry change is a no-op diff.
+The output is deterministic (no timestamps); a regenerate with no registry change is a no-op
+diff. A normal run **always overwrites `src/data/components.json`**, whatever `--source`
+pointed at — add `--dry-run` to inspect a registry (say, engine `main`) without publishing it.
 
 ## Domains
 

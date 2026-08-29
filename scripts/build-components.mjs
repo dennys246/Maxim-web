@@ -22,6 +22,9 @@
 //   --label   free-text provenance shown on the page, e.g.
 //             "pymaxim 1.1.0 (PyPI wheel)". Prefer the published wheel the site
 //             documents over a moving `main` checkout.
+//   --dry-run print the tally and write nothing. Use this to inspect a registry
+//             you are not publishing — a normal run always overwrites
+//             src/data/components.json, whatever --source pointed at.
 //
 // The output is deterministic for a given source tree (no timestamps), so a
 // regenerate with no registry change produces no diff.
@@ -44,6 +47,7 @@ function arg(name, fallback) {
 
 const source = resolve(arg('--source', join(repoRoot, '..', 'Maxim', 'src', 'maxim', '_data', 'components')));
 const label = arg('--label', 'engine checkout (src/maxim/_data/components)');
+const dryRun = process.argv.includes('--dry-run');
 const outPath = join(repoRoot, 'src', 'data', 'components.json');
 
 function walk(dir) {
@@ -139,10 +143,12 @@ const data = {
 	components,
 };
 
-mkdirSync(dirname(outPath), { recursive: true });
-writeFileSync(outPath, JSON.stringify(data, null, '\t') + '\n');
+if (!dryRun) {
+	mkdirSync(dirname(outPath), { recursive: true });
+	writeFileSync(outPath, JSON.stringify(data, null, '\t') + '\n');
+}
 console.log(
 	`${components.length} components from ${source} (${skipped.length} files without a component: header skipped)\n` +
 		data.categories.map((c) => `  ${c.name}: ${c.count}`).join('\n') +
-		`\n→ ${relative(repoRoot, outPath)}`,
+		`\n${dryRun ? '(--dry-run: nothing written)' : `→ ${relative(repoRoot, outPath)}`}`,
 );
