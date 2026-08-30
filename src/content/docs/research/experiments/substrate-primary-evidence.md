@@ -87,7 +87,11 @@ above the Arm A baseline — meaning "any resumed prior shifts behavior," not
 "fire-failure-specific learning." That violates the pre-registered isolation
 rule, so the overall verdict is **PARTIAL — investigation gate**. Only R1's
 clean Wire-A ablation (delta shrinks by 1.13 SD when the substrate voice is
-removed) gives a legible bio-mechanism, and only in a reasoning-trained model.
+removed) even suggests a legible bio-mechanism, and only in a reasoning-trained
+model — while the three experiments that tested that mechanism head-on
+([Exp 30](https://github.com/dennys246/Maxim/blob/main/docs/experiments/30_wire_a_tau_validation.md), [33](https://github.com/dennys246/Maxim/blob/main/docs/experiments/33_wire_a_post_fix_a.md),
+[34](https://github.com/dennys246/Maxim/blob/main/docs/experiments/34_wire_a_post_fix_a_b.md)) each returned 0 on their pre-registered
+primary.
 
 The honest consequence: cross-session memory *infrastructure* graduates as EARNED
 (on the strength of [Exp 10](/research/experiments/cross-session-learning/)), but

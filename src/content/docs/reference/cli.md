@@ -15,7 +15,7 @@ maxim [OPTIONS]
 Connection
 
 --robot-name TEXT            Robot identifier (default: reachy_mini)
---home-dir PATH              Data directory (default: ~/.maxim/)
+--home-dir PATH              Run-artifact directory, relative to cwd (default: data)
 --timeout FLOAT              Connection timeout in seconds (default: 30.0)
 
 Execution
@@ -32,7 +32,6 @@ Execution
 Agentic mode
 
 --language-model TEXT        LLM profile (e.g., mistral-7b)
---prompt-profile TIER        minimal|standard|rich
 --autonomy LEVEL             planning|supervised|autonomous
 --autonomy-duration FLOAT    Timed autonomy in seconds
 --memory-path PATH           Memory persistence file
@@ -125,7 +124,6 @@ MAXIM_HEARTBEAT=1 maxim                # System health every 10s
 ```sh
 maxim --mode live \
   --language-model mistral-7b \
-  --prompt-profile standard \
   --autonomy supervised
 ```
 
@@ -134,8 +132,7 @@ maxim --mode live \
 ```sh
 CUDA_VISIBLE_DEVICES="" maxim \
   --mode live \
-  --language-model smollm-1.7b \
-  --prompt-profile minimal
+  --language-model smollm-1.7b
 ```
 
 ### Verbose Debugging Session
@@ -218,7 +215,10 @@ Learned state lives under `~/.maxim/util/` — see the [directory layout](/confi
 | 0 | Errors only |
 | 1 | Key events (mode changes, goals, tool calls) |
 | 2 | Detailed processing (every detection, memory query, decision) |
-| 3 (agentic only) | Full trace (LLM prompts, raw responses, bridge activity) |
+
+`--log-level` (alias `--verbosity`) accepts only `0`, `1` or `2`; argparse rejects
+anything else. For a full trace — LLM prompts, raw responses, bridge activity —
+use `--trace`, `--debug`, or `--sim-debug` instead.
 
 ### Inspecting Learned State
 

@@ -137,8 +137,17 @@ none of them establishes latency independent of how much is stored.
 They also do not describe the substrate hot path. Assigning a percept to a
 concept cluster is an exact same-modality centroid scan — O(N·d) in the number
 of same-modality clusters — which bypasses the hash index entirely and has no
-published latency figure. See [memory & consolidation](/memory/overview/) for
-the split.
+published latency figure.
+
+Nor do they describe `EntorhinalCortex.find_similar()`, the signature index that
+NAc consults. That one is a full scan too, for a different reason: its buckets
+are keyed on `SituationSignature.semantic_hash`, which stays at the null value
+`(0,) * 8` unless the EC holds a `SemanticLSH` hasher — and it holds one only on
+the fallback path where `maxim.similarity.semantic` fails to import. Neither the
+default nor `enable_semantic=True` installs one, so every signature lands in a
+single bucket and each query rescores the whole set. The MinHash structural index
+above is unaffected; it does its own banding and is genuinely sublinear. See
+[memory & consolidation](/memory/overview/) for the full split.
 :::
 
 Footprint, as documented: ~80 MB for the MiniLM model, ~384 bytes per embedding
@@ -262,7 +271,7 @@ The EC is a hub spoke, not an endpoint. Direction matters:
   concepts by string.
 - **EC ↔ NAc.** `LinguisticEncoder` is constructed with `ec`, `atl`, and `nac`.
   With decomposition on, valence annotation lands on individual concept nodes —
-  the agent learns "rusty sword is associated with pain" rather than tagging a
+  the negative signal attaches to a *rusty sword* node rather than tagging a
   whole sentence. See [NAc](/systems/nucleus-accumbens/).
 - **MemoryHub.** Owns the wiring and the lifecycle: it registers the capture
   callback, exposes `hub.find_semantic()` and `hub.semantic_enabled`, and loads
@@ -286,5 +295,5 @@ pipeline, see [Architecture](/concepts/architecture/).
   — decomposition strategies, the modality gate, config, and limitations.
 - [Concept decomposition](/systems/concept-decomposition/) — the substrate-path
   pre-processor that feeds `LinguisticEncoder`.
-- [Semantic memory](https://www.dennyschaedig.com/maxim/memory-systems#semantic) — the
+- [Semantic memory](https://www.dennyschaedig.com/maxim/memory-systems#atl) — the
   narrative framing of the memory layers around the EC.

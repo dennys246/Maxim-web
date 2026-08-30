@@ -15,7 +15,7 @@ That matters most for three things this site makes claims about:
 
 - **Cross-modal retrieval** — matching text descriptions to visual memories.
 - **[Cross-session learning](/research/experiments/cross-session-learning/)** — recognising the same concept described differently in different sessions.
-- **Pain and reward association** — finer-grained targets for valence, so the agent learns that *rusty sword* is dangerous rather than that a whole sentence about picking one up was bad.
+- **Pain and reward association** — finer-grained targets for valence, so a negative signal attaches to a *rusty sword* node rather than to a whole sentence about picking one up.
 
 ## How it works
 
@@ -135,7 +135,7 @@ Two different things in Maxim make "concepts", and they are easy to conflate:
 - **This decomposer** runs on the *substrate path*, on text percepts, before EC pattern completion — its output is substrate nodes in the same episode.
 - **The [ATL](/systems/anterior-temporal-lobe/)'s `ConceptExtractor`** runs on captured episodes — detected objects, people, goal tokens, tool names — and promotes recurring ones into semantic memory.
 
-They are complementary rather than redundant: the decomposer makes finer-grained nodes for the substrate to bind and annotate; the ATL distils stable knowledge out of many episodes. The connection to valence is the one demonstrated end to end: with decomposition on, [valence annotation](https://github.com/dennys246/Maxim/blob/main/docs/experiments/valence_annotation_poc.md) lands on individual concept nodes such as *rusty sword* rather than on a sentence, so the aversive signal follows the concept into other contexts through spreading activation.
+They are complementary rather than redundant: the decomposer makes finer-grained nodes for the substrate to bind and annotate; the ATL distils stable knowledge out of many episodes. The connection to valence is the one with a worked demonstration: with decomposition on, [valence annotation](https://github.com/dennys246/Maxim/blob/main/docs/experiments/valence_annotation_poc.md) lands on individual concept nodes such as *rusty sword* rather than on a sentence. Read that PoC for what it is — two scripted episodes, one agent, no LLM — showing pain in episode 1 annotating the edges co-activated *within that episode*, and a neutral episode 2 left unannotated. It does not show the signal following a concept into a new context, and agent-level consumption of valence is listed there as future work. In production the effect is smaller still: `apply_hebbian_on_close` is [dormant on the main percept path](https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md) — the hub stashes one substrate node per percept, so the `len(nodes) < 2` early return is taken every time and the binding graph never grows from percepts.
 
 ## Going deeper
 

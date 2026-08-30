@@ -254,7 +254,7 @@ Clear the layer with `maxim --clear-memory atl`.
   agent pipeline.
 - [Concept decomposition](/systems/concept-decomposition/) — the substrate-path
   pre-processor that makes concept-sized nodes for the EC and Hippocampus.
-- [Semantic memory](https://www.dennyschaedig.com/maxim/memory-systems#semantic) — the
+- [Semantic memory](https://www.dennyschaedig.com/maxim/memory-systems#atl) — the
   deepest narrative treatment of the concept pipeline.
 - [`docs/memory.md`](https://github.com/dennys246/Maxim/blob/main/docs/memory.md) —
   the ATL section, CrossLayerGraph, and store protocols.

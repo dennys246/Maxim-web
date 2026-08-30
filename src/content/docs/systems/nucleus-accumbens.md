@@ -256,8 +256,11 @@ foundation, not as a feature you can turn on today and expect to work end to end
   inform which movement signatures to avoid, complementing the cerebellum's
   error-driven gain calibration below the agent loop.
 - **[SCN](/systems/suprachiasmatic-nucleus/)** — supplies temporal context for
-  when a pattern applies, plus oscillator feedback: event-type phase tracking
-  pre-activates eligibility traces for events predicted to be imminent.
+  when a pattern applies. The oscillator's event-type phase tracking *would* also
+  pre-activate eligibility traces for events predicted to be imminent, but its
+  consumer (`TemporalCreditDistributor.anticipatory_pre_activate`) has been
+  [dormant since 2026-05-26](/systems/suprachiasmatic-nucleus/#rhythm-learning)
+  with no per-tick caller wired, so no anticipation runs today.
 - **[Memory systems](/memory/overview/)** — `rpe_magnitude` is the top-weighted
   significance heuristic at 0.35, so NAc surprise is the single largest driver of
   what gets staged for consolidation.
