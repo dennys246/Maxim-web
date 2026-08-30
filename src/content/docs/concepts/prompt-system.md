@@ -29,7 +29,7 @@ Since the prompt-caching work, every section is also tagged stable or dynamic. S
 
 ## What goes in, and at what priority
 
-The table lists every section the 1.1.0 builder can add, grouped the way the code adds them. "When" says what has to be true for the section to exist at all — an empty section is skipped silently.
+The table lists every section the 1.1.1 builder can add, grouped the way the code adds them. "When" says what has to be true for the section to exist at all — an empty section is skipped silently.
 
 | Section | Priority | When | Content |
 | --- | --- | --- | --- |
@@ -56,7 +56,7 @@ The table lists every section the 1.1.0 builder can add, grouped the way the cod
 | `reasoning_carryover` | IMPORTANT | prior reasoning carried | Compressed reasoning from earlier turns |
 | `prefetch_context` | — | prefetched material | Pre-fetched documents, truncatable |
 | `coding_guidelines` | IMPORTANT | coding tools in play | Repository coding conventions |
-| `foundational` | IMPORTANT | see note | `CONSTITUTION.md` principles and `AGENTS.md` rules, loaded from a repository root. **In a pip install there is no repository root, so this section is empty** — it only exists when running from a source checkout |
+| `foundational` | IMPORTANT | see note | Constitutional principles and agent behaviour rules. The text is a hardcoded paraphrase in `llm_context.py`, gated on finding a `CONSTITUTION.md`/`AGENTS.md` above the package — so **a pip-installed agent gets an empty preamble**, and the file and the prompt can drift. Filed as [defect D32](https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md) |
 | `mode_context` | NICE_TO_HAVE | the mode has one | The mode's own instructions — filesystem rules, cognitive tools. Frequently the first thing dropped |
 | `observation` | IMPORTANT | a current percept | Detected objects, attention target, novelty and salience |
 | `speech` | NICE_TO_HAVE | speech detected | Last three utterances |
@@ -103,7 +103,7 @@ None of these sections issue commands. They are evidence placed in front of the 
 
 ## The Acting Coach
 
-The Acting Coach (`src/maxim/prompts/acting_coach.py`) is present in 1.1.0 and is set by both the CLI and the simulation orchestrator. It renders a `CRITICAL` section that encourages the agent to explore its physical capabilities — when the agent has entity tools such as `sense_tools` — and then annotates that base directive with what the bio-systems know:
+The Acting Coach (`src/maxim/prompts/acting_coach.py`) is present in 1.1.1 and is set by both the CLI and the simulation orchestrator. It renders a `CRITICAL` section that encourages the agent to explore its physical capabilities — when the agent has entity tools such as `sense_tools` — and then annotates that base directive with what the bio-systems know:
 
 1. **NAc valence** — causal links inject learned caution or preference about specific affordances.
 2. **Pain anticipation** — read from `body_state`.
@@ -116,7 +116,7 @@ Each layer *adds* information; none removes the base directive. The agent always
 
 The `tools` section is `=== Available Tools ===`: one line per tool with its description, parameters, and an example. Where the list comes from and how it is described is covered in depth on the [Tools reference](/reference/tools/#tool-selection-and-injection); the parts that matter for the prompt are:
 
-- **Two description tiers.** Built-in tools take rich entries from the `TOOL_DESCRIPTIONS` dict in `modes/definitions.py` (31 entries in 1.1.0). User-registered tools and SEM affordance tools fall back to `Tool.description` plus `Tool.input_schema`, which is often too terse. A registered tool the model never calls usually has no `TOOL_DESCRIPTIONS` entry.
+- **Two description tiers.** Built-in tools take rich entries from the `TOOL_DESCRIPTIONS` dict in `modes/definitions.py` (31 entries in 1.1.1). User-registered tools and SEM affordance tools fall back to `Tool.description` plus `Tool.input_schema`, which is often too terse. A registered tool the model never calls usually has no `TOOL_DESCRIPTIONS` entry.
 - **Relevance filtering is per mode.** Modes that opt in (`uses_tool_relevance_filter`, the passive interactive modes) get a `CRITICAL` section of tools the learned tool index matched to the request and an `IMPORTANT` `tools_background` section for the rest. Autonomous modes get the full manifest in one section — the filter has a cold-start pathology under no learned signal that produced near-random subsets and tool hallucination.
 - **Scene-scoped tools.** In campaigns, entity affordances register per scene with a cap of 20 active scene tools; core tools are exempt and the oldest scene auto-deactivates on overflow. Deactivated tools are not in the prompt and return a descriptive error if called anyway.
 - **Truncation before dropping.** The manifest is truncatable down to a 50-token floor — examples go first, then indented detail lines — so it is essentially never dropped outright.
@@ -133,7 +133,7 @@ With `MAXIM_LOG_FILE` set (root logger at DEBUG), every prompt build emits a `pr
 
 ## Going deeper
 
-- [`src/maxim/agents/prompt_builder.py`](https://github.com/dennys246/Maxim/blob/main/src/maxim/agents/prompt_builder.py) and [`prompt_budgeter.py`](https://github.com/dennys246/Maxim/blob/main/src/maxim/agents/prompt_budgeter.py) — the assembly and the budgeter; the section table above was read from the 1.1.0 source.
+- [`src/maxim/agents/prompt_builder.py`](https://github.com/dennys246/Maxim/blob/main/src/maxim/agents/prompt_builder.py) and [`prompt_budgeter.py`](https://github.com/dennys246/Maxim/blob/main/src/maxim/agents/prompt_budgeter.py) — the assembly and the budgeter; the section table above was read from the 1.1.1 source (unchanged from 1.1.0 apart from a docstring path).
 - [`src/maxim/prompts/acting_coach.py`](https://github.com/dennys246/Maxim/blob/main/src/maxim/prompts/acting_coach.py) — the coach and its four layers.
 - [`docs/agents/runtime-tools.md`](https://github.com/dennys246/Maxim/blob/main/docs/agents/runtime-tools.md) — the engineering brief for the agent loop, including the byte-stable prompt rule and the context-pool variables.
 - [`docs/user/deliberation.md`](https://github.com/dennys246/Maxim/blob/main/docs/user/deliberation.md) — the inner monologue, ThoughtGate, and the thinking panel.

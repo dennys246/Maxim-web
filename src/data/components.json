@@ -1,11 +1,15 @@
 {
-	"source_label": "pymaxim 1.1.0 (PyPI wheel)",
+	"source_label": "pymaxim 1.1.1 (PyPI wheel)",
 	"registry_path": "src/maxim/_data/components/**/*.yaml",
-	"count": 90,
+	"count": 92,
 	"categories": [
 		{
 			"name": "items",
 			"count": 34
+		},
+		{
+			"name": "bodies",
+			"count": 13
 		},
 		{
 			"name": "npcs",
@@ -14,10 +18,6 @@
 		{
 			"name": "environments",
 			"count": 12
-		},
-		{
-			"name": "bodies",
-			"count": 11
 		},
 		{
 			"name": "weapons",
@@ -35,7 +35,7 @@
 	"genres": [
 		{
 			"name": "neutral",
-			"count": 37
+			"count": 39
 		},
 		{
 			"name": "fantasy",
@@ -562,6 +562,77 @@
 				"microphone_lost"
 			],
 			"file": "bodies/reachy_mini.yaml"
+		},
+		{
+			"ref": "bodies/reachy_mini_infant",
+			"name": "reachy_mini_infant",
+			"category": "bodies",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"body",
+				"robot",
+				"reachy",
+				"infant",
+				"cradle",
+				"operant",
+				"developmental"
+			],
+			"synonyms": [
+				"reachy infant",
+				"infant reachy",
+				"reachy nursery body",
+				"reachy mini infant"
+			],
+			"description": "Exp 54 nursery body: the Reachy Mini's own body component — its four orient\naffordances with the robot's own head_yaw/azimuth self-effects (what the\nproduction ReachyOrientMotorBackend factory reads) and, load-bearing, the SAME\nentity name, so learned bias keys are tool:reachy_mini_turn_left etc. — with the\ninnate azimuth centeredness drive REMOVED (drive: null, the Exp 52 rule: an\nintrinsic orient drive teaches orienting by itself) and the infant's hunger and\nthirst drives ADDED (infant_humanoid's specs) so the mother has something to relieve.\nPre-registration: docs/experiments/protocols/exp54_nurture_reachy_body_preregistration.md.\nStructural guard: tests/unit/test_reachy_mini_infant_body.py.",
+			"archetype": "humanoid",
+			"extends": "bodies/reachy_mini",
+			"entity_type": "",
+			"sensors": [
+				"azimuth",
+				"hunger",
+				"thirst"
+			],
+			"affordances": [],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "bodies/reachy_mini_infant.yaml"
+		},
+		{
+			"ref": "bodies/reachy_mini_infant_satiated",
+			"name": "reachy_mini_infant_satiated",
+			"category": "bodies",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"body",
+				"robot",
+				"reachy",
+				"infant",
+				"cradle",
+				"operant",
+				"developmental",
+				"control"
+			],
+			"synonyms": [
+				"satiated reachy infant",
+				"fed reachy infant",
+				"never-hungry reachy infant"
+			],
+			"description": "Exp 54 control body (the Exp 52 satiated pattern, verbatim): identical to\nreachy_mini_infant — the robot's own four orient affordances, no intrinsic\norient drive, azimuth sensor kept, the SAME entity name reachy_mini — but NEVER\nHUNGRY. Hunger and thirst start at 0 and do not drift, so the mother's\ncontingent feed relieves nothing and, under relief-sourced operant credit\n(reactive_mother_tick credit=\"relief\"), mints NO reward. Same feed events, same\ncontingency, zero need: if this arm learns to orient, the credit is not coming\nfrom relief (docs/experiments/protocols/exp54_nurture_reachy_body_preregistration.md).",
+			"archetype": "humanoid",
+			"extends": "bodies/reachy_mini_infant",
+			"entity_type": "",
+			"sensors": [
+				"hunger",
+				"thirst"
+			],
+			"affordances": [],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "bodies/reachy_mini_infant_satiated.yaml"
 		},
 		{
 			"ref": "creatures/alien_xenomorph",

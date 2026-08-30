@@ -31,7 +31,11 @@
 	font-size: var(--sl-text-sm);
 	color: var(--sl-color-white);
 	background: var(--sl-color-black);
-	border: 1px solid var(--sl-color-gray-5);
+	/* gray-3, not the gray-5 used for decorative card borders: a form control's
+	   boundary must clear 3:1 against the adjacent background (WCAG 1.4.11).
+	   gray-5 is #c1c3c8 on #fff (1.6:1) in light and #353841 on #17181c
+	   (1.5:1) in dark — both fail; gray-3 clears 6:1 in both themes. */
+	border: 1px solid var(--sl-color-gray-3);
 	border-radius: 0.375rem;
 	padding: 0.45rem 0.6rem;
 	min-height: 2.5rem;
