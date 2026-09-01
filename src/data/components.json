@@ -1,5 +1,5 @@
 {
-	"source_label": "pymaxim 1.1.1 (PyPI wheel)",
+	"source_label": "pymaxim 1.1.2 (PyPI wheel)",
 	"registry_path": "src/maxim/_data/components/**/*.yaml",
 	"count": 92,
 	"categories": [

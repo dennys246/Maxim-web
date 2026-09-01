@@ -210,7 +210,7 @@ has exactly **one bucket**. Its key is the signature's `semantic_hash`, which
 `SituationSignature.from_memory` only fills in when the EC hands it a hasher — and
 the EC's hasher is `None` in every configuration you can reach from the library.
 It is `None` by default, because `ECConfig.enable_semantic` is `False` and nothing
-in 1.1.1 sets it: `build_bio_stack` and the agent factory both construct their EC
+in 1.1.2 sets it: `build_bio_stack` and the agent factory both construct their EC
 as `EntorhinalCortex(config=ECConfig(persistence_path=…))` and pass nothing else,
 and neither lets you supply an `ECConfig` of your own. It is *still* `None` if you
 build the EC by hand with `enable_semantic=True` — that branch constructs a
@@ -221,10 +221,17 @@ fallback path, when `maxim.similarity.semantic` fails to import at all.
 
 So every signature carries the null hash `(0,) * 8`, all of them collide into the
 same bucket, and a query rescores the entire corpus with the full signature
-comparison. Measured on 1.1.1, `find_similar()` takes roughly 0.3 ms over 100
+comparison. Measured on 1.1.2, `find_similar()` takes roughly 0.3 ms over 100
 signatures, 3.0 ms over 1,000, and 12.6 ms over 4,000 — linear in the number of
 stored signatures, not constant. The bucketing that LSH is there to buy is real
 code that nothing reaching this index switches on.
+
+The engine agrees. As of 1.1.2 the `similarity/ec.py` docstring says so directly —
+"LSH-STRUCTURED but DEGENERATE… one bucket holding 100% at every size" — and the
+behaviour is filed in the bugs ledger as **[D51](https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md)**, *"a real defect, not a
+design choice"*, filed rather than fixed because it needs a design decision. A
+companion row, D52, records that calling this path "approximate nearest neighbour"
+described its intent rather than its behaviour.
 
 *Substrate pattern completion.* The hot path that assigns a percept to a concept
 cluster — the one that runs per tick — does **not** use that index. It is an

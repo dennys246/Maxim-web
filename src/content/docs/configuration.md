@@ -132,7 +132,7 @@ prompt_profiles:
 Selection is not exposed as an option. `ExecAgent` looks for the key
 `exec_agent`, then `executive`, and uses the first one present; if neither
 exists, no profile is applied. There is no `--prompt-profile` flag and no
-`MAXIM_PROMPT_PROFILE` environment variable in 1.1.1.
+`MAXIM_PROMPT_PROFILE` environment variable in 1.1.2.
 
 Both fields are sanitised on load: a fragment matching one of the blocked
 injection patterns (`ignore safety`, `bypass safety`, `override rules`,

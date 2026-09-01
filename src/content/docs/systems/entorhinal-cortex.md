@@ -145,7 +145,8 @@ are keyed on `SituationSignature.semantic_hash`, which stays at the null value
 `(0,) * 8` unless the EC holds a `SemanticLSH` hasher — and it holds one only on
 the fallback path where `maxim.similarity.semantic` fails to import. Neither the
 default nor `enable_semantic=True` installs one, so every signature lands in a
-single bucket and each query rescores the whole set. The MinHash structural index
+single bucket and each query rescores the whole set — a defect the engine tracks as
+**[D51](https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md)** and has filed rather than fixed. The MinHash structural index
 above is unaffected; it does its own banding and is genuinely sublinear. See
 [memory & consolidation](/memory/overview/) for the full split.
 :::

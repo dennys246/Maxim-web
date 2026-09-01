@@ -31,7 +31,7 @@
       "status": "reference-only",
       "phase": null,
       "cluster": "reachy",
-      "finding": "Bench note, not a behavioral result: one 75 s trace on the live Reachy Mini shows the XVF3800's pre-AGC speech energy and the AGC gain readback are both served by the daemon's existing REST parameter endpoint, so a level is one read away. Loudness / onset salience is NOT part of 1.1; the design is deferred to 1.1.1.",
+      "finding": "Bench note, not a behavioral result: one 75 s trace on the live Reachy Mini shows the XVF3800's pre-AGC speech energy and the AGC gain readback are both served by the daemon's existing REST parameter endpoint, so a level is one read away. Loudness / onset salience is NOT part of 1.1; the design was deferred and neither 1.1.1 nor 1.1.2 shipped it.",
       "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/h2_loudness_bench_2026-08-25.md"
     },
     {
