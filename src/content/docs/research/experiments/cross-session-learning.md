@@ -82,7 +82,18 @@ behavior. Qwen-14B's priors were too weak for the signal to emerge; Mistral's
 were strong enough to already solve the scenario (Arm A = 1.000, no headroom);
 the two 32B models sat in the detectable range, and the reasoning-trained
 R1-Distill produced the only clean ablation (Wire-A off shrinks the delta by
-+1.13 SD, implicating cluster-bias annotation as the load-bearing mechanism).
++1.13 SD).
+
+Read that ablation narrowly. It is a model-conditional secondary, and the three
+experiments that tested cluster-bias annotation *directly* all failed their
+pre-registered primary: [Exp 30](https://github.com/dennys246/Maxim/blob/main/docs/experiments/30_wire_a_tau_validation.md),
+[Exp 33](https://github.com/dennys246/Maxim/blob/main/docs/experiments/33_wire_a_post_fix_a.md) and
+[Exp 34](https://github.com/dennys246/Maxim/blob/main/docs/experiments/34_wire_a_post_fix_a_b.md) each required Arm A to produce at least
+one `sense_food_source` call and each returned **0**, with no cross-arm divergence
+(A = B = C = 0) — in Exp 33 and 34 even with the Wire-A text demonstrably reaching
+the LLM. So the +1.13 SD figure is suggestive of a mechanism, not an attribution
+of one; the engine's own ledger records the cluster-bias-annotation claim as
+dropped on that evidence.
 
 But the isolation test failed on **every** fire where the primary passed. On
 Qwen-32B, Arm C = 0.667, outside Arm A's [0.033, 0.660] band; on R1-Distill,

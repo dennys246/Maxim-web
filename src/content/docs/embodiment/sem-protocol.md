@@ -279,14 +279,23 @@ itself: the system is simply out of balance.
 
 From there the [SEM pain cascade](/systems/fear-circuit/) takes over. The chill
 registers as pain, the episode is tagged with negative valence, and the
-[nucleus accumbens](/systems/nucleus-accumbens/) learns that whatever caused the
-drift is aversive — so a later session approaches that cold source with caution
-instead of walking into it again.
+[nucleus accumbens](/systems/nucleus-accumbens/) records the drift as aversive.
+Whether that record changes what the agent *does* in a later session is the open
+question here, not the guarantee — see the limitation below.
 
-That across-session dynamic is exactly what Maxim's thermal experiments probe. The
-drive → pain → learning pathway this example relies on is validated end to end in the
-[SEM pain cascade PoC](https://github.com/dennys246/Maxim/blob/main/docs/experiments/p2_sem_pain_cascade.md),
-and you can drive a body cold yourself with a test sequence in
+The cascade's plumbing is validated end to end in the
+[SEM pain cascade PoC](https://github.com/dennys246/Maxim/blob/main/docs/experiments/p2_sem_pain_cascade.md)
+— affordance use → sensor failure → `PainBus` → NAc causal learning →
+`nac.predict` → policy pick, with no mocks in the middle. Note what that PoC ran
+on, though: a scripted `PoCAgent` driving `weapons/rusty_sword` past its `shatter`
+threshold, in one session, with no LLM in the loop. That is the *scripted
+`failure_mode`* path — the one this example is explicitly not using. The
+homeostatic-drive route described above has no equivalent end-to-end run, and the
+closest thing to a behavioural test of it went the other way: the drive-gating arm
+in [Exp 42](https://github.com/dennys246/Maxim/blob/main/docs/experiments/42_substrate_primary_preference.md)
+graduated identically with gating switched **off** (`safe_pref` 0.984 vs 0.965),
+so drive gating was not load-bearing for the preference it was meant to produce.
+You can still drive a body cold yourself with a test sequence in
 [simulation](/guides/simulation/).
 
 :::caution[Known limitation: priors can override learned pain]
@@ -406,8 +415,11 @@ update, on every percept the agent receives:
    synonyms, and placed in the entity map as an observe-only scene entity. Its
    affordance names are decomposed into concepts (`fire_breath` → *fire*,
    *breath*) and encoded through the EC → ATL →
-   [NAc](/systems/nucleus-accumbens/) substrate, so what the agent learns about
-   one entity's *fire* can transfer to another's.
+   [NAc](/systems/nucleus-accumbens/) substrate, which is what a shared *fire*
+   node across two entities would be built on. The cross-entity reward transfer
+   itself is a design goal, not a measured result — the nearest evidence measures
+   *sentence* decomposition for cross-modal recall, and the behavioural-transfer
+   claim is explicitly withheld in the engine's own ledger.
 
 ### Scene manifests: imagination before turn one
 

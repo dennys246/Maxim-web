@@ -179,8 +179,11 @@ master clock. Maxim's SCN provides temporal indexing across multiple timescales
 (hourly/24 bins, daily/7, weekly/4, monthly/12), enabling queries like "what
 typically happens around this time on weekday mornings?" at minimal cost —
 10,000 memories require only ~500KB of index storage. An optional
-Kuramoto-inspired coupled-oscillator network can learn emergent rhythms like
-"Monday mornings" beyond simple bin lookups.
+Kuramoto-inspired coupled-oscillator network learns a coupling matrix over the
+four timescales; the intent is that rhythms like "Monday mornings" emerge from
+that coupling rather than from intersecting two bins, but what it demonstrably
+yields today is the matrix and a few scalars that feed enrichment and scoring —
+not behaviour. See the [SCN page](/systems/suprachiasmatic-nucleus/#rhythm-learning).
 
 **Nucleus Accumbens — reward prediction.** The NAc learns causal links between
 events and outcomes, essentially asking "what happened last time I did this?" It
@@ -197,14 +200,31 @@ proactive rather than purely reactive decision-making.
 
 **Entorhinal Cortex — similarity matching.** The EC enables similarity queries
 ("find memories similar to this situation"), which matters because exact matches
-are rare. Two different mechanisms sit behind that, and they have very different
-performance characteristics — it's worth knowing which one you are on.
+are rare. Two different mechanisms sit behind that. Neither is sublinear as
+shipped, but they scale in different quantities, so it is worth knowing which one
+you are on.
 
-*Indexed signature lookup.* Situation signatures are indexed with
-Locality-Sensitive Hashing: query and stored items hash into shared buckets, so a
-lookup collects candidates from a handful of bucket probes and rescores only
-those. This part is approximately constant in the number of stored items, which
-is the property LSH is there to buy.
+*Indexed signature lookup.* Situation signatures are registered in an LSH index,
+and `find_similar()` queries that index rather than walking the store. That index
+has exactly **one bucket**. Its key is the signature's `semantic_hash`, which
+`SituationSignature.from_memory` only fills in when the EC hands it a hasher — and
+the EC's hasher is `None` in every configuration you can reach from the library.
+It is `None` by default, because `ECConfig.enable_semantic` is `False` and nothing
+in 1.1.1 sets it: `build_bio_stack` and the agent factory both construct their EC
+as `EntorhinalCortex(config=ECConfig(persistence_path=…))` and pass nothing else,
+and neither lets you supply an `ECConfig` of your own. It is *still* `None` if you
+build the EC by hand with `enable_semantic=True` — that branch constructs a
+`NeuralSemanticLSH`, which feeds the separate `EmbeddingStore` behind
+`find_semantic()` and leaves the signature hasher unset. The word-based
+`SemanticLSH` that would actually populate the bucket key is installed only on the
+fallback path, when `maxim.similarity.semantic` fails to import at all.
+
+So every signature carries the null hash `(0,) * 8`, all of them collide into the
+same bucket, and a query rescores the entire corpus with the full signature
+comparison. Measured on 1.1.1, `find_similar()` takes roughly 0.3 ms over 100
+signatures, 3.0 ms over 1,000, and 12.6 ms over 4,000 — linear in the number of
+stored signatures, not constant. The bucketing that LSH is there to buy is real
+code that nothing reaching this index switches on.
 
 *Substrate pattern completion.* The hot path that assigns a percept to a concept
 cluster — the one that runs per tick — does **not** use that index. It is an
@@ -260,7 +280,7 @@ no direct index keys. The graph bridges contexts that flat recall cannot.
 - [Full memory-systems write-up](https://www.dennyschaedig.com/maxim/memory-systems)
   — the complete original article, including the MemoryLayer protocol, cross-layer
   graph, typed relationships, and knowledge in the agent loop (until migrated here).
-- [Semantic memory](https://www.dennyschaedig.com/maxim/memory-systems#semantic) — the
+- [Semantic memory](https://www.dennyschaedig.com/maxim/memory-systems#atl) — the
   concept-memory pipeline and ATL internals in depth.
 - [`docs/memory.md`](https://github.com/dennys246/Maxim/blob/main/docs/memory.md)
   — code-adjacent reference.

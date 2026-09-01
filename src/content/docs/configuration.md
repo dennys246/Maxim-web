@@ -75,7 +75,6 @@ maxim doctor                                       # "Resolved Config" section
 MAXIM_LLM_ENABLED=1                   # Enable LLM inference
 MAXIM_LLM_PROFILE=smollm-1.7b-instruct  # Model profile
 MAXIM_LLM_QUANTIZATION=Q4_K_M         # Quantization level
-MAXIM_PROMPT_PROFILE=standard          # Prompt optimization tier
 MAXIM_ROBOT_NAME=reachy_mini           # Robot identifier
 
 # GPU control
@@ -114,12 +113,28 @@ MAXIM_REMOTE_PROBE_CACHE_TTL_S=60      # Probe-cache freshness window (clamped 0
 
 ## Prompt Profiles
 
-Three tiers of cognitive effort, matched to your hardware:
+A prompt profile is a pair of text fragments spliced into the executive agent's
+prompt — nothing more. `PromptProfile` (`src/maxim/prompts/prompt_profiles.py`)
+carries exactly three fields: a `name`, a `system_suffix` appended to the system
+prompt, and a `context_prefix` prepended to the context block. There are no
+effort tiers, no depth or LLM-call caps, and no parallelism setting.
 
-| Profile | Max Depth | LLM Calls | Parallelism | Best For |
-| --- | --- | --- | --- | --- |
-| minimal | 2 levels | 8 max | None | CPU-only, low RAM, Raspberry Pi |
-| standard | 5 levels | 20 max | 4 workers | Laptop with GPU or fast CPU |
-| rich | 7 levels | 50 max | 8 workers | Desktop with dedicated GPU |
+Profiles are declared in a `prompt_profiles` block in the language-model config
+(entries in `~/.config/maxim/profiles.yml` are merged in at import):
 
-Select a profile per session with `--prompt-profile` or persistently via `MAXIM_PROMPT_PROFILE` — see the [CLI Reference](/reference/cli/) for the full option list.
+```yaml
+prompt_profiles:
+  exec_agent:
+    system_suffix: "Prefer short, concrete answers."
+    context_prefix: "Recent context follows."
+```
+
+Selection is not exposed as an option. `ExecAgent` looks for the key
+`exec_agent`, then `executive`, and uses the first one present; if neither
+exists, no profile is applied. There is no `--prompt-profile` flag and no
+`MAXIM_PROMPT_PROFILE` environment variable in 1.1.1.
+
+Both fields are sanitised on load: a fragment matching one of the blocked
+injection patterns (`ignore safety`, `bypass safety`, `override rules`,
+`disregard policy`, and similar) is dropped to the empty string and a warning is
+logged, so a profile cannot be used to talk the agent out of its constraints.
