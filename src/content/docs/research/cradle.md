@@ -59,7 +59,7 @@ one slice of the idea.
 
 | ID | Experiment | Date | Status | Headline result |
 |----|-----------|------|--------|-----------------|
-| 52 | [nurture: orienting through hunger relief](#52--nurture-caregiver-taught-orienting-through-hunger-relief) | 2026-08-25 | **COMPLETE — EARNED** | Taught 0.878 vs satiated 0.441 (fed, never hungry) vs no-feed 0.413 on the shuffled apparatus v3, 12 seeds/arm; scripted phase 0.892 vs 0.496 for every control |
+| 52 | [nurture: orienting through hunger relief](#52--nurture-caregiver-taught-orienting-through-hunger-relief) | 2026-08-25, re-validated 2026-09-02 | **COMPLETE — EARNED, reproduced** | Taught 0.878 vs satiated 0.441 (fed, never hungry) vs no-feed 0.413 on the shuffled apparatus v3, 12 seeds/arm; re-run 0.837 / 0.413 / 0.413, GRADUATE reproduced; scripted phase 0.892 vs 0.496 for every control |
 | 48 | [cradle-mother seam (embodied)](#48--cradle-mother-seam-the-embodied-infant) | re-baselined 2026-08-14, sweep completed 2026-08-18 | **COMPLETE — not graduated; superseded by 52** | Mother effect re-earned on apparatus v2 — taught 0.649 vs no-feed 0.167 (+0.482) — but LEARNED-v2 missed and the sweep attributes the gap to phase-locked attractor selection |
 | 47 | [habituation, novel sound in noise](#47--habituation-a-novel-sound-in-a-wall-of-noise) | 2026-07-22 | Complete (scripted) | Habituating 1.00 catch-rate vs 0.04 control at 40-noise density |
 | 46 | [operant orient / crèche](#46--operant-orient-a-mother-teaches-a-crèche-pools) | 2026-07-22 | Complete (scripted) | Taught 0.90 vs none 0.50; 12 merged infants reach 1.00 |
@@ -92,6 +92,17 @@ The reason this matters: it isolates the mechanism from the messy embodied
 simulator. Operant conditioning *alone* drives orienting, and federated crèches
 reach full coverage by pooling — both without any language model deciding
 actions.
+
+**Correction (2026-09-03) on what the federation shows.** Every infant in the
+crèche runs under one shared agent id with one shared encoder and entorhinal cortex
+— the script says so in its own words: *"SAME id for every infant so the merged
+cluster keys align."* That is the one configuration in which the merge's
+key-alignment defect cannot fire. Until 1.1.3, a substrate merged from an agent with
+*its own* clusters read out as exactly 0.0 on the receiver while the merge reported
+success (D43), so these numbers show pooling within a shared cluster space, not
+sharing between independent agents. The independent-agent case is mechanically fixed
+in 1.1.3 and is not yet an earned behavioural claim; see
+[what isn't shipped](/research/evidence/#what-isnt-shipped) on the evidence page.
 
 ### 47 — habituation: a novel sound in a wall of noise
 
@@ -149,10 +160,22 @@ Pre-registered with frozen gates, both phases run 2026-08-25.
 | satiated | 0.34 | 0.43 | 0.43 | 0.45 | 0.441 | 35% | **0%** |
 | no_feed | 0.33 | 0.40 | 0.38 | 0.44 | 0.413 | 0% | 0% |
 
-One taught seed was a weak learner (late 0.54). The margin instrumentation says
-why: its learned margin sat at the ~0.11 argmax visibility floor (limit L1), so the
-exploration term decided 18% of its choices against 3–11% for the other eleven
-seeds — a weak learner, not a non-learner.
+**Re-validated 2026-09-02.** The D53 credit-path fix fired the row's re-run trigger,
+and Phase B was re-run whole on the fixed code under the same frozen v3 gate and the
+same twelve seeds: taught late **0.837**, satiated **0.413**, no-feed **0.413** —
+all three gates pass and GRADUATE is reproduced, with every delta from the original
+inside the per-seed spread. Phase A was not re-run (scripted; its credit does not
+route through the changed path).
+
+**Correction (2026-09-02).** This page used to say that one taught seed was a weak
+learner (late 0.54) and that the margin instrumentation explained why, via the
+visibility floor. That sentence is retracted — the one sentence of the original
+write-up the re-run retracts. Per-seed values are not reproducible run-to-run: only 4
+of 36 (arm, seed) cells were identical across the two runs, per-seed late scores
+correlate at r = +0.66 (taught), +0.29 (no-feed) and −0.24 (satiated), and the
+"weak" seed read 0.667 the second time. The seed fixes the stimulus order, not the
+trajectory. Arm means replicate; per-seed narratives from this apparatus do not, and
+none is carried here. The per-arm table above is what the gates read.
 
 **What it shows, and what it does not.** On both the clean substrate and the
 embodied sim, an infant with no orient drive acquires "turn toward the voice" from
@@ -169,8 +192,12 @@ cross-session replication is outstanding.
 files, loaded unchanged onto a physical Reachy Mini with nothing crediting on the
 robot, turned toward the speaker in 36 of 36 trials (delivered directedness 1.00 per
 seed); the never-hungry controls loaded the same way took no action, and the no-feed
-controls turned right every time. Readout, not learning; one session, n = 3 seeds
-per arm, fixed step, front hemisphere. Details and the apparatus finding from exp 53
+controls turned right every time. Readout, not learning; n = 3 seeds per arm, fixed
+step, front hemisphere. Re-run on the robot on 2026-09-02 with the same files, it
+reproduced exactly (1.00 / 0.00 / 0.50) — on a platform that emitted 85
+actuator-degradation warnings across 180 trials, all roll and pitch, never yaw, the
+axis azimuth readout rides on. A pass on a platform that was warning, not a clean
+win. Details and the apparatus finding from exp 53
 are on the [evidence page](/research/evidence/#cross-context-readout-on-hardware);
 record: [`53_cross_context_readout.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/53_cross_context_readout.md).
 
@@ -318,10 +345,12 @@ several systems documented elsewhere.
   already knew." See the [Roy harness write-up](/research/experiments/roy-harness/).
 - **Real-hardware orient** — the crèche's sound-orienting task is the
   simulation counterpart of the [Reachy Mini](/guides/reachy-mini/) work, where
-  direction learning went from chance to 100% correct within about ten trials
-  and two independently trained substrates merged into a working combined
-  policy. The cradle federation results (twelve infants → 1.00) are the
-  same substrate-merge story tested at scale in simulation.
+  direction learning went from chance to 100% correct within about ten trials.
+  A third arm merged two independently trained substrates, but it has since
+  been downgraded to a vacuous guard — its two learners shared one agent id and
+  one cluster space. The cradle federation results (twelve infants → 1.00) are
+  that same shared-key configuration at scale in simulation, not a test of
+  sharing between independent agents (see the correction under exp 46).
 - **Evidence index** — for the broader substrate-primary evidence base, see
   [substrate-primary evidence](/research/experiments/substrate-primary-evidence/)
   and the full [experiments log](/research/experiments/).
@@ -336,8 +365,9 @@ claims of *different strength*:
   on the embodied simulator's artifacts.
 - **EARNED, embodied:** exp 52 is the graduation. On the shuffled apparatus
   with relief-sourced credit, the infant learns to orient from the mother's
-  feeding only when it is hungry — one session, 12 seeds per arm, sign-only
-  relief credit; read its stated scope before citing it.
+  feeding only when it is hungry — 12 seeds per arm, sign-only relief credit,
+  arm means reproduced by a second run on 2026-09-02 (per-seed values were
+  not); read its stated scope before citing it.
 - **PARTIAL, embodied — superseded:** exp 48 is *not* a graduation. On the
   corrected apparatus the mother effect is real and causal (+0.482), but the
   learning gate failed and the completed sweep showed the metric tracking phase

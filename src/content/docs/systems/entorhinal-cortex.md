@@ -199,7 +199,8 @@ There is a second encoder in the same package, and it is not doing search. The
 substrate path's `LinguisticEncoder` (`maxim/similarity/encoder.py`) performs
 *pattern completion*: deciding whether a new percept refers to a concept the
 substrate already holds or a genuinely new one, via
-`ec.pattern_complete_or_separate(embedding, modality)`.
+`ec.pattern_complete_or_separate(embedding, modality, geometry=...)` — the
+`geometry=` keyword is required as of 1.1.3; see below.
 
 | Aspect | Phase 4 (`NeuralSemanticLSH`) | Substrate (`LinguisticEncoder`) |
 | --- | --- | --- |
@@ -220,6 +221,31 @@ new_centroid = (old_centroid × n + new_embedding) / (n + 1)
 ```
 
 That mechanism added a further +4.7 percentage points.
+
+**Geometry-aware since 1.1.3.** A centroid is only comparable to an embedding
+produced in the same encoding space, and the space can change without the vector
+length changing — a text model swap, a fall back to the hash encoder, or a sensor
+channel that gains a sensor name. Each substrate node now carries a `geometry` tag
+derived from what actually makes two vectors comparable: for sensor channels the
+*declared* sensor set plus the normalization mode (declared, not the keys present on
+a given tick — a corrective "cold" drive only appears while the body is cold, and a
+tag built from the reading rather than the space made a warm infant and a cold one
+mutually unreachable); for text, the model. `LinguisticEncoder.geometry_for(embedding,
+modality)` returns the text tag and is public so any consumer of the shared EC can
+obtain it. `pattern_complete_or_separate` takes `geometry=` as a **required
+keyword-only argument** — omitting it is a `TypeError`, because an optional argument
+whose omission silently disabled the guard was one of the defects the pre-merge
+review found, with a live caller already omitting it — and it skips any node that
+declares a different space. Two nodes that both declare a geometry and declare
+different ones never fold, **at cosine 1.0 included**: similarity across spaces is
+undefined, not small, so this cannot be a threshold. On disk the tag is an additive
+`geometry` field on each substrate node in `ec.json`; files written before 1.1.3 still
+load, their untagged nodes are treated as unverifiable rather than mismatched, and they
+adopt the live tag on first successful match or fold. What did *not* ship is a
+migration: an incompatible node is skipped and warned about, and the warning promises a
+re-encode path that does not exist yet (D66). As of this writing the defect ledger's
+D1, D3 and D4 rows, which describe the pre-1.1.3 behaviour, had not yet been
+re-dispositioned.
 
 **Decomposition** sits above the encoder. Rather than encoding a whole sentence
 as one opaque node, `ConceptDecomposer` (`maxim/similarity/decomposer.py`)

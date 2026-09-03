@@ -117,6 +117,36 @@ MAXIM_LANE_TRACE=1 maxim               # Trace every LLM call
 MAXIM_HEARTBEAT=1 maxim                # System health every 10s
 ```
 
+## Substrate Bundles
+
+`maxim substrate` moves learned state — NAc reward biases and EC concept clusters,
+never episodes — between installs as a signed zip bundle. Four verbs:
+
+```bash
+maxim substrate export out.zip --session <id|dir> --contributor-id <id> [--domain <tag>]
+maxim substrate inspect out.zip                        # print the manifest, extract nothing
+maxim substrate import out.zip --output-dir <dir>      # extract the bundle; does NOT merge it
+maxim substrate merge-nac policy.json [--into ~/.maxim/memory/nac.json] --source-id <id>
+```
+
+Two things the verbs do **not** do, stated because both used to be implied:
+
+- **`import` extracts and stops.** It writes the bundle's `nac.json` / `ec.json`
+  slices to a directory and leaves what to do with them to you. As of 1.1.3 the
+  supported next step is the library call `maxim.hivemind.substrate_merge` (align
+  the donor's clusters onto the receiver's, re-key the donor's biases, then fold),
+  applied to a live system with `EntorhinalCortex.ingest_substrate_nodes` and
+  `NAc.load_state`. **No CLI verb performs a cross-substrate merge** — that path is
+  library-only today. Hand-composing `ec_merge` + `nac_merge`, which this tool's own
+  help text recommended before 2026-09-02, merges the two slices independently and
+  discards the alignment, so the donor's biases land under clusters the receiver has
+  no node for and the merged want reads out as 0.0 (D43).
+- **`merge-nac` is a same-substrate import.** It folds a trained policy file into a
+  runtime `nac.json` on disk, for a policy trained in the *same* state space (the
+  Reachy orient policies are the intended use). It is one-shot — re-running it
+  double-counts observations — and it never touches a running bio-stack; the runtime
+  picks the file up at next boot.
+
 ## Common Recipes
 
 ### Full Agentic Mode with Mistral
