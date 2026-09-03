@@ -210,7 +210,7 @@ has exactly **one bucket**. Its key is the signature's `semantic_hash`, which
 `SituationSignature.from_memory` only fills in when the EC hands it a hasher — and
 the EC's hasher is `None` in every configuration you can reach from the library.
 It is `None` by default, because `ECConfig.enable_semantic` is `False` and nothing
-in 1.1.2 sets it: `build_bio_stack` and the agent factory both construct their EC
+in 1.1.3 sets it: `build_bio_stack` and the agent factory both construct their EC
 as `EntorhinalCortex(config=ECConfig(persistence_path=…))` and pass nothing else,
 and neither lets you supply an `ECConfig` of your own. It is *still* `None` if you
 build the EC by hand with `enable_semantic=True` — that branch constructs a
@@ -241,7 +241,11 @@ termination. That is **O(N·d)** per call, where *N* is the number of
 same-modality substrate nodes (concept clusters, not episodic memories) and *d*
 is the embedding dimension — 768 with sentence-transformers installed, 384 on the
 bag-of-words fallback. It is exact rather than approximate, and it scales
-linearly with the number of clusters.
+linearly with the number of clusters. Since 1.1.3 the scan is also
+**geometry-gated**: every node carries a tag naming the encoding space it was
+produced in, the caller must pass the live embedding's `geometry=`, and a node
+tagged with a different space is skipped rather than scored — two spaces are not
+comparable at any cosine. See the [entorhinal cortex page](/systems/entorhinal-cortex/#concept-decomposition).
 
 :::note[On the retired "~10ms regardless of memory size" figure]
 This page previously claimed roughly constant-time recall at about 10ms

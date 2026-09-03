@@ -99,7 +99,10 @@ const ogImage = new URL('/og.png', Astro.site);
 							discriminates relief from no relief. Loaded unchanged onto a physical Reachy
 							Mini, three of those taught infants turned toward the speaker in 36 of 36
 							trials; the never-hungry controls, loaded the same way, did not — readout, not
-							learning, at three seeds per arm.
+							learning, at three seeds per arm. Both re-ran on 2026-09-02 after a credit-path
+							fix and reproduced their arm-level results; the robot re-run passed on a platform
+							that was warning about its roll and pitch actuators throughout, and one per-seed
+							sentence of the original nursery write-up is retracted.
 							<a href="https://github.com/dennys246/Maxim/blob/main/docs/experiments/52_nurture.md" rel="noopener">Exp 52 →</a>
 							<a href="https://github.com/dennys246/Maxim/blob/main/docs/experiments/53_cross_context_readout.md" rel="noopener">Exp 53b →</a>
 							<a href="https://youtu.be/lLoPM2EkbPU" rel="noopener">Watch the demo →</a>
@@ -109,9 +112,10 @@ const ogImage = new URL('/og.png', Astro.site);
 						<h3>Sensorimotor learning on real hardware</h3>
 						<p>
 							On a Reachy Mini, the substrate learned a closed-loop sound-orienting policy from
-							scratch in about ten trials with no LLM in the action path, carried it across
-							sessions, and merged two independently trained substrates into a working combined
-							policy. Later arms extended this to <em>how far</em> to turn, not just which way.
+							scratch in about ten trials with no LLM in the action path and carried it across
+							sessions. A third arm that merged two independently trained substrates has since
+							been downgraded: its guard could not fail, and its two learners shared one cluster
+							space. Later arms extended this to <em>how far</em> to turn, not just which way.
 							Magnitude claims from the pre-repair robot were re-validated on the repaired robot
 							in August 2026 — one session, cross-session replication outstanding.
 							<a href="https://github.com/dennys246/Maxim/blob/main/docs/experiments/45_reachy_orient_live.md" rel="noopener">Exp 45 series →</a>

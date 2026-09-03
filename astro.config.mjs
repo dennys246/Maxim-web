@@ -145,6 +145,7 @@ export default defineConfig({
 					label: 'Research',
 					items: [
 						{ label: 'Evidence', slug: 'research/evidence' },
+						{ label: 'Measurement limits', slug: 'research/limits', badge: { text: 'New', variant: 'success' } },
 						{
 							label: 'Experiments',
 							items: [

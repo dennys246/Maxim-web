@@ -13,7 +13,7 @@ they ever disagree:
 
 - [Behavioral graduation ledger](https://github.com/dennys246/Maxim/blob/main/docs/plans/behavioral_graduation_candidates.md) — which bio-claims have earned a cited experiment, and their current lifecycle status
 - [Known defects](https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md) — what is verifiably wrong or bounded right now
-- [Measurement limits](https://github.com/dennys246/Maxim/blob/main/docs/limits/README.md) — what the instruments themselves cannot resolve
+- [Measurement limits](https://github.com/dennys246/Maxim/blob/main/docs/limits/README.md) — what the instruments themselves cannot resolve ([summary on this site](/research/limits/))
 - [All experiments](/research/experiments/) — the full lab notebook
 
 ## Graduated results
@@ -63,13 +63,14 @@ not a general claim about substrate-driven behavior.
 
 **The claim.** On a physical Reachy Mini, the substrate learned a closed-loop
 sound-orienting policy from scratch — direction first, then magnitude — with no LLM
-in the action path, carried it across sessions, and merged two independently trained
-substrates into a combined policy at least as good as either input.
+in the action path, and carried it across sessions. A third arm merged two
+independently trained substrates; it has since been downgraded — see the first
+caveat below for what it did and did not show.
 
 **The evidence.** The [Exp 45 series](https://github.com/dennys246/Maxim/blob/main/docs/experiments/45_reachy_orient_live.md).
-Three pre-registered arms all passed: a learning curve from chance to perfect in
-about ten trials, cross-session transfer probing correct at trial zero, and the merge
-arm. Later arms extended this to magnitude —
+Three pre-registered arms passed at the time: a learning curve from chance to perfect
+in about ten trials, cross-session transfer probing correct at trial zero, and the
+merge arm (downgraded 2026-09-01, below). Later arms extended this to magnitude —
 [45b](https://github.com/dennys246/Maxim/blob/main/docs/experiments/45b_orient_magnitude.md),
 [45c](https://github.com/dennys246/Maxim/blob/main/docs/experiments/45c_flip_bins.md),
 [45d](https://github.com/dennys246/Maxim/blob/main/docs/experiments/45d_magnitude_replication.md)
@@ -79,6 +80,24 @@ arm. Later arms extended this to magnitude —
 
 **The caveats.** Several, and they matter more than the headline.
 
+- **Correction (2026-09-01): the merge arm was a vacuous guard, and it is downgraded.**
+  The arm's sentence is true as written — the merged policy scored at least as well as
+  either input — but its evidential status was not. Re-run on the recorded parent
+  policies, the arm's regression gauntlet **passed with `nac_merge` replaced by
+  `return left`, and by `return right`**; only `return {}` failed, and the real
+  merge's output is argmax-identical to `return left` in all four bins. Three
+  vacuities compounded: the gate read direction-correctness only and never the
+  magnitude score it printed on every run; both parents were already perfect, so
+  "merged ≥ best parent" sat at ceiling and carried no information; and both parents
+  share one `agent_id` and one hard-coded four-bin cluster space by construction, so
+  "independently trained" is true and "independent agents" is not — this arm never
+  tested sharing between agents that own their own clusters (D62). The guard was
+  repaired in 1.1.3: it now gates magnitude as well as correctness, can derive two
+  half-blind parents from one policy so that only a real fold passes, and
+  `--assert-noop-fails` checks that every stub fails. The downgrade of the original
+  evidence stands; what is restored is the guard's ability to fire. Arms 1 and 2 are
+  unaffected. For what this means for substrate sharing as a whole, see
+  [what isn't shipped](#what-isnt-shipped).
 - **The measurement platform was degraded, and has since been re-validated.** Two
   motors, broken for the entire 1.0+ era, were replaced in August 2026, so every
   magnitude claim measured before that was provisional — delivered shift is exactly
@@ -111,8 +130,8 @@ Same feed events, same contingency, no need → no learning. No LLM in the actio
 path. This is the result the 1.1 "Sensorimotor" release was reopened to test.
 
 **The evidence.** [Exp 52 (Nurture)](https://github.com/dennys246/Maxim/blob/main/docs/experiments/52_nurture.md),
-EARNED 2026-08-25, pre-registered with gates frozen before the data. Phase A
-(scripted substrate, 8 seeds × 600 ticks): taught **0.892** against satiated 0.496,
+EARNED 2026-08-25 and re-validated 2026-09-02, pre-registered with gates frozen
+before the data. Phase A (scripted substrate, 8 seeds × 600 ticks): taught **0.892** against satiated 0.496,
 yoked 0.496 and no-feed 0.496 — the satiated and no-feed curves are identical to the
 digit, so a feed without need had zero effect, and the yoked arm received every one
 of the taught arm's credits decoupled from its own actions and stayed at chance.
@@ -123,17 +142,35 @@ MOTHER-TAUGHT and HUNGER-NECESSARY all pass under gate v3, and the apparatus che
 that Exp 48 failed is clean — every arm shows real per-seed spread, and the
 seed-invariant twelfths of the deterministic apparatus are gone.
 
-**The caveats.** Phase B is **one session at n = 12 per arm**; cross-session
-replication is outstanding, as it is for the hardware row above. The credit is
+**Re-validated 2026-09-02.** The row's re-run trigger fired when the D53 credit-path
+fix changed how drive relief is consumed, and Phase B was re-run whole on the fixed
+code under the same frozen gate, same twelve seeds per arm: taught **0.837**,
+satiated **0.413**, no-feed **0.413** — LEARNED, MOTHER-TAUGHT and HUNGER-NECESSARY
+all pass and GRADUATE is reproduced. Every delta from the original (−0.042, −0.028,
+0.000) sits inside the per-seed spread, so the fix did not move the result. Phase A
+was not re-run; it is scripted and its credit does not route through the changed
+path.
+
+**The caveats.** Phase B was originally **one session at n = 12 per arm**; the
+2026-09-02 re-run is a second session whose arm means reproduce the first. The
+hardware row above still has its cross-session replication outstanding. The credit is
 sign-only: it discriminates nonzero-from-zero relief, not "hungry" in the everyday
 sense — hunger at the moment of feeding is roughly 0.05–0.1, far below any
 deprivation threshold. Nothing here speaks to how *far* to turn, to loudness, to
 the LLM-driven action path, or to credit that spans more than one turn; secondary
-reinforcement of the voice itself and devaluation are not modeled. One taught seed
-was a weak learner (late bin 0.54), and the margin instrumentation explains it
-exactly: its learned margin sat at the visibility floor (limit L1), so exploration
-decided 18% of its choices. What those infants learned was then read out on a
-physical robot — the next entry.
+reinforcement of the voice itself and devaluation are not modeled.
+
+**Correction (2026-09-02).** This page used to say that one taught seed was a weak
+learner (late bin 0.54) and that the margin instrumentation explained it exactly, via
+the visibility floor. That sentence is retracted — it is the one sentence of the
+original write-up the re-run retracts. Per-seed values are **not reproducible
+run-to-run**: only 4 of 36 (arm, seed) cells were identical across the two runs, and
+per-seed late scores correlate at only r = +0.66 (taught), +0.29 (no-feed) and
+−0.24 (satiated). The same seed read 0.667 in the re-run. The seed fixes the
+stimulus order, not the trajectory, so the "one weak seed" story was a post-hoc
+account of a number that does not hold still. Arm means replicate; per-seed
+narratives from this apparatus do not, and this site no longer carries one. What
+those infants learned was then read out on a physical robot — the next entry.
 
 ### Cross-context readout on hardware
 
@@ -143,8 +180,9 @@ nothing is credited on the robot — turn toward the speaker. The never-hungry
 controls, loaded the same way, do not. The want was learned in the nursery; the
 robot only reads it out.
 
-**The evidence.** [Exp 53b](https://github.com/dennys246/Maxim/blob/main/docs/experiments/53_cross_context_readout.md), EARNED 2026-08-26, pre-registered with an
-instrument gate that could stop the run and a transfer gate frozen before the data.
+**The evidence.** [Exp 53b](https://github.com/dennys246/Maxim/blob/main/docs/experiments/53_cross_context_readout.md), EARNED 2026-08-26 and re-validated on the
+robot 2026-09-02, pre-registered with an instrument gate that could stop the run and a
+transfer gate frozen before the data.
 Gate I (instrument): all three taught seeds pass; 60 of 60 live, speech-gated
 percepts pattern-complete into the nursery's audio clusters (120 of 120 across Exp 53
 and 53b). Gate T (transfer): taught seeds delivered directedness **1.00 / 1.00 / 1.00**
@@ -161,6 +199,20 @@ contexts without fine-tuning; the cross-session half rests on Exp 45 above.
 — an overshoot. That is the pre-registered **APPARATUS** verdict (no verdict on the
 claim), recorded beside 53b as the finding that motivated the one declared change.
 
+**Re-validated 2026-09-02, on the robot — a PASS on a platform that was warning.**
+The row's trigger fired (D53 changed the orient motor backend), and 53b was re-run on
+the physical Reachy Mini with the original August agent files, SHA-verified unchanged,
+so only the code differed from the earned run. The original reproduced exactly:
+taught **1.00 / 1.00 / 1.00**, satiated **0.00**, no-feed **0.50**, Gate I pass, and
+the exploratory placements reproduced too (+0.2 wrong-way 9 of 9, −0.6 toward 9 of
+9). The caveat travels with the number: the controller emitted **85
+actuator-degradation warnings across 180 trials** — roll and pitch every time, yaw
+never once. Azimuth readout rides on yaw, which is why the result is reported as
+sound rather than retracted; a roll/pitch recalibration is owed before the next
+hardware block. Read it as a pass on a platform that was complaining, not as a clean
+win. Reading out the *new* post-fix nursery is a separate question that needs its own
+registration and has not been run.
+
 **The caveats.** This is **readout, not learning** — nothing credits on the robot, so
 it says nothing about learning on hardware. One session, one room, one sound source,
 n = 3 seeds per arm, one fixed step, front hemisphere only. An exploratory +0.2
@@ -168,9 +220,11 @@ placement turned the *wrong* way in 18 of 18 trials across both runs — predict
 before any robot data, because the nursery's representation is three azimuth bins
 (far-left / centre / right) whose centre bin runs from −0.4 to +0.3 and carries
 `turn_left`, so its right half turns left; the −0.6 placement turned toward in 18 of
-18. That is the representation's stated limit, not generalisation. Seed 48,
-the weak nursery learner, read out mis-learned (0 of 12). Nothing here is about how
-far to turn, or about loudness. A secondary block at exploration weight 1.5 is
+18. That is the representation's stated limit, not generalisation. Seed 48, an
+exploratory fourth taught seed, read out 0 of 12 — its nursery map differs
+(`turn_right` on the centre bin), so it mis-learned rather than under-learned; the
+"weak learner" explanation this page used to attach to it is retracted (see the
+correction above). Nothing here is about how far to turn, or about loudness. A secondary block at exploration weight 1.5 is
 reported, not gated: taught 0.75 per seed with direction still correct in 36 of 36
 and exploration deciding none of them — every miss was again the −0.2 target, this
 time because the delivered geometry had drifted about +0.07 over the session, so the
@@ -288,9 +342,30 @@ separate and narrowly graduated result above.
 
 ## What isn't shipped
 
-- **Peer substrate sharing (Oasis)** is the next build, not an available feature. Its
-  first planned case study is the artifact above — the nursery-taught orient files
-  that read out on the robot — as a shareable substrate; that is a
+- **Peer substrate sharing (Oasis) is not an earned claim — and until 1.1.3 it did
+  not work at all.** *Correction, dated 2026-09-03.* Before 1.1.3, merging a foreign
+  substrate produced a want that read out as exactly **0.0** on the receiver.
+  `ec_merge` computed the alignment between the donor's clusters and the receiver's
+  and discarded it, while `nac_merge` folded reward biases on exact string keys, so
+  every donor bias landed under a cluster id the receiver had no node for. The merge
+  reported success and the bias dictionary grew — its size is the union of both key
+  sets, which is maximal exactly when nothing aligned (D43). Nothing on this site
+  should have been read as evidence that sharing between independent agents worked:
+  the two results that looked like it, the Exp 45 merge arm and the Exp 46 crèche
+  federation, both ran in the one configuration where the defect cannot fire — a
+  shared agent id and a shared cluster space (see [the correction
+  above](#sensorimotor-learning-on-real-hardware) and [the Cradle
+  page](/research/cradle/#46--operant-orient-a-mother-teaches-a-crèche-pools)).
+  **1.1.3 fixes the mechanism.** `maxim.hivemind.substrate_merge` aligns the donor's
+  clusters onto the receiver's, re-keys the donor's biases through that map, then
+  folds; on the shipped path a receiver that never saw a contingency goes **0.0 →
+  1.0**, with four of four merged keys naming a reachable cluster. That is a
+  mechanical fix verified by a behavioural unit gate (D44), not an earned behavioural
+  row: it is **library-only** — no CLI verb performs a cross-substrate merge, and
+  `maxim substrate import` extracts a bundle without merging it — and the
+  pre-registered two-robot replication at n = 12 is 1.2 work. The first planned case
+  study is the artifact above, the nursery-taught orient files that read out on the
+  robot, as a shareable substrate; that is a
   [plan](https://github.com/dennys246/Maxim/blob/main/docs/plans/oasis_case_study_taught_orient.md),
   not something you can run.
 - **The cradle harness wired end-to-end into substrate-primary mode** is planned.
@@ -302,8 +377,8 @@ separate and narrowly graduated result above.
 - **Loudness / onset salience** is not in 1.1. Nothing in the shipped audio path
   reads sound level, and no result on this site depends on it. A salience design was
   planned for the 1.1 line after a bench established the level is readable from the
-  robot daemon; 1.1.1 and 1.1.2 both shipped without it, so treat it as planned, not
-  imminent.
+  robot daemon; 1.1.1, 1.1.2 and 1.1.3 all shipped without it, so treat it as planned,
+  not imminent.
 - **Fear gating** is opt-in and off in the stable Python API — see
   [tool safety](/reference/tools/#tool-safety).
 

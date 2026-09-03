@@ -265,9 +265,27 @@ foundation, not as a feature you can turn on today and expect to work end to end
   significance heuristic at 0.35, so NAc surprise is the single largest driver of
   what gets staged for consolidation.
 
-In Hivemind bundles, NAc links can be merged between peers via
-`hivemind/merge.py::nac_merge`, using Bayesian aggregation with provenance
-tracking.
+In Hivemind bundles, NAc state is merged between peers — but not by calling
+`hivemind/merge.py::nac_merge` on its own. **Correction (2026-09-03).** This page
+used to point at `nac_merge` as the peer-merge entry point. It folds
+`cluster_reward_bias` on exact string keys, and until 1.1.3 that was the whole
+story: `ec_merge` computed the alignment between the donor's clusters and the
+receiver's and discarded it, so a donor's biases landed under cluster ids the
+receiver had no node for. The merged want read out as exactly 0.0, the merge
+reported success, and the bias dictionary grew — its size is the union of both key
+sets, maximal exactly when nothing aligned (D43, fixed in 1.1.3). The function to
+call is `maxim.hivemind.substrate_merge`, which aligns the donor's EC nodes onto the
+receiver's, re-keys the donor's biases through that map, then folds — the order is
+load-bearing — and reports `biases_rekeyed` and `biases_dropped` instead of a size.
+Its result is applied to a live system with `EntorhinalCortex.ingest_substrate_nodes`
+(which preserves the merged nodes' member counts; the ordinary registration path
+resets them to one) plus `NAc.load_state`. **There is no CLI verb for this**: a
+cross-substrate merge is library-only in 1.1.3. `maxim substrate merge-nac` is a
+same-substrate, file-level policy import, and `maxim substrate import` extracts a
+bundle without merging it — see the [CLI reference](/reference/cli/#substrate-bundles).
+The fix is mechanical, verified by a behavioural unit gate; sharing between
+independent agents is not an earned behavioural claim — see
+[what isn't shipped](/research/evidence/#what-isnt-shipped).
 
 ## Going deeper
 
