@@ -29,7 +29,7 @@ Since the prompt-caching work, every section is also tagged stable or dynamic. S
 
 ## What goes in, and at what priority
 
-The table lists every section the 1.1.1 builder can add, grouped the way the code adds them. "When" says what has to be true for the section to exist at all — an empty section is skipped silently.
+The table lists every section the 1.1.2 builder can add, grouped the way the code adds them. "When" says what has to be true for the section to exist at all — an empty section is skipped silently.
 
 | Section | Priority | When | Content |
 | --- | --- | --- | --- |
@@ -103,20 +103,20 @@ None of these sections issue commands. They are evidence placed in front of the 
 
 ## The Acting Coach
 
-The Acting Coach (`src/maxim/prompts/acting_coach.py`) is present in 1.1.1 and is set by both the CLI and the simulation orchestrator. It renders a `CRITICAL` section that encourages the agent to explore its physical capabilities — when the agent has entity tools such as `sense_tools` — and then annotates that base directive with what the bio-systems know:
+The Acting Coach (`src/maxim/prompts/acting_coach.py`) is present in 1.1.2 and is set by both the CLI and the simulation orchestrator. It renders a `CRITICAL` section that encourages the agent to explore its physical capabilities — when the agent has entity tools such as `sense_tools` — and then annotates that base directive with what the bio-systems know:
 
 1. **NAc valence** — causal links inject learned caution or preference about specific affordances.
 2. **Pain anticipation** — read from `body_state`.
 3. **Cerebellum forward-model predictions** — from `motor_programs`.
 4. **Drive modulation** — interoceptive needs, also read from `body_state`.
 
-Each layer *adds* information; none removes the base directive. The agent always can explore; the bio-systems inform how cautiously. The config (`ActingCoachConfig`) carries role values, a speech register, a failure-mode style, a continuity contract, and an `exploration_intensity` (default 0.7). Layers 2 and 4 need a non-empty `body_state`, and in 1.1.1 nothing gives them one by default — being embodied is not enough. Routing the executor's `Embodiment` into `MemoryHub.embodiment`, which is what lets `format_body_state_for_prompt` populate `StructuredContext.body_state`, is gated on `MAXIM_ENABLE_BODY_STATE_PROMPT` at both seams that do the wiring (`AgentFactory._maybe_wire_body_state` and the matching gate in `agentic_runtime`), and it is off unless you set it. Until you do, layers 2 and 4 contribute nothing to any prompt. `MAXIM_DISABLE_COACH_BODY_LAYERS=1` is the opposite switch — it suppresses the two layers when `body_state` *is* present, supplying arm B of the pre-registered Exp 44 ablation that must run before the enable flag can become the default.
+Each layer *adds* information; none removes the base directive. The agent always can explore; the bio-systems inform how cautiously. The config (`ActingCoachConfig`) carries role values, a speech register, a failure-mode style, a continuity contract, and an `exploration_intensity` (default 0.7). Layers 2 and 4 need a non-empty `body_state`, and in 1.1.2 nothing gives them one by default — being embodied is not enough. Routing the executor's `Embodiment` into `MemoryHub.embodiment`, which is what lets `format_body_state_for_prompt` populate `StructuredContext.body_state`, is gated on `MAXIM_ENABLE_BODY_STATE_PROMPT` at both seams that do the wiring (`AgentFactory._maybe_wire_body_state` and the matching gate in `agentic_runtime`), and it is off unless you set it. Until you do, layers 2 and 4 contribute nothing to any prompt. `MAXIM_DISABLE_COACH_BODY_LAYERS=1` is the opposite switch — it suppresses the two layers when `body_state` *is* present, supplying arm B of the pre-registered Exp 44 ablation that must run before the enable flag can become the default.
 
 ## Tool injection
 
 The `tools` section is `=== Available Tools ===`: one line per tool with its description, parameters, and an example. Where the list comes from and how it is described is covered in depth on the [Tools reference](/reference/tools/#tool-selection-and-injection); the parts that matter for the prompt are:
 
-- **Two description tiers.** Built-in tools take rich entries from the `TOOL_DESCRIPTIONS` dict in `modes/definitions.py` (31 entries in 1.1.1). User-registered tools and SEM affordance tools fall back to `Tool.description` plus `Tool.input_schema`, which is often too terse. A registered tool the model never calls usually has no `TOOL_DESCRIPTIONS` entry.
+- **Two description tiers.** Built-in tools take rich entries from the `TOOL_DESCRIPTIONS` dict in `modes/definitions.py` (31 entries in 1.1.2). User-registered tools and SEM affordance tools fall back to `Tool.description` plus `Tool.input_schema`, which is often too terse. A registered tool the model never calls usually has no `TOOL_DESCRIPTIONS` entry.
 - **Relevance filtering is per mode.** Modes that opt in (`uses_tool_relevance_filter`, the passive interactive modes) get a `CRITICAL` section of tools the learned tool index matched to the request and an `IMPORTANT` `tools_background` section for the rest. Autonomous modes get the full manifest in one section — the filter has a cold-start pathology under no learned signal that produced near-random subsets and tool hallucination.
 - **Scene-scoped tools.** In campaigns, entity affordances register per scene with a cap of 20 active scene tools; core tools are exempt and the oldest scene auto-deactivates on overflow. Deactivated tools are not in the prompt and return a descriptive error if called anyway.
 - **Truncation before dropping.** The manifest is truncatable down to a 50-token floor — examples go first, then indented detail lines — so it is essentially never dropped outright.
@@ -133,7 +133,7 @@ With `MAXIM_LOG_FILE` set (root logger at DEBUG), every prompt build emits a `pr
 
 ## Going deeper
 
-- [`src/maxim/agents/prompt_builder.py`](https://github.com/dennys246/Maxim/blob/main/src/maxim/agents/prompt_builder.py) and [`prompt_budgeter.py`](https://github.com/dennys246/Maxim/blob/main/src/maxim/agents/prompt_budgeter.py) — the assembly and the budgeter; the section table above was read from the 1.1.1 source (unchanged from 1.1.0 apart from a docstring path).
+- [`src/maxim/agents/prompt_builder.py`](https://github.com/dennys246/Maxim/blob/main/src/maxim/agents/prompt_builder.py) and [`prompt_budgeter.py`](https://github.com/dennys246/Maxim/blob/main/src/maxim/agents/prompt_budgeter.py) — the assembly and the budgeter; the section table above was read from the 1.1.2 source (both files unchanged since 1.1.0 apart from a docstring path).
 - [`src/maxim/prompts/acting_coach.py`](https://github.com/dennys246/Maxim/blob/main/src/maxim/prompts/acting_coach.py) — the coach and its four layers.
 - [`docs/agents/runtime-tools.md`](https://github.com/dennys246/Maxim/blob/main/docs/agents/runtime-tools.md) — the engineering brief for the agent loop, including the byte-stable prompt rule and the context-pool variables.
 - [`docs/user/deliberation.md`](https://github.com/dennys246/Maxim/blob/main/docs/user/deliberation.md) — the inner monologue, ThoughtGate, and the thinking panel.

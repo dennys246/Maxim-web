@@ -24,7 +24,7 @@ maxim --sim benchmark \
 
 `--models` and `--campaign` are both required in this form. The scenario files live in `scenarios/benchmarks/` of a **source checkout** — the wheel does not bundle them — so run from the repository root or pass absolute paths.
 
-There is also a shorthand, `maxim --benchmark [tier1|tier2|tier3|all] --models …`, which picks a suite for you. In 1.1.1 only the `tier1`/`all` mapping points at a file that exists (`cognitive_suite.yaml`); `tier2` and `tier3` map to `biosystem_suite.yaml` and `embodiment_suite.yaml`, which are not in the tree. Use `--sim benchmark --campaign <path>` and name the suite explicitly.
+There is also a shorthand, `maxim --benchmark [tier1|tier2|tier3|all] --models …`, which picks a suite for you. In 1.1.2 only the `tier1`/`all` mapping points at a file that exists (`cognitive_suite.yaml`); `tier2` and `tier3` map to `biosystem_suite.yaml` and `embodiment_suite.yaml`, which are not in the tree. Use `--sim benchmark --campaign <path>` and name the suite explicitly.
 
 ## CLI reference
 
@@ -38,7 +38,7 @@ There is also a shorthand, `maxim --benchmark [tier1|tier2|tier3|all] --models �
 | `--sim-mode` | no | `campaign` | Orchestrator flow-shape label recorded in reports and logs |
 | `--write-paper` | no | off | Also draft a comparative research paper from the results |
 
-All flags above are present in the 1.1.1 wheel's `maxim --help` (the flag set is unchanged from 1.1.0).
+All flags above are present in the 1.1.2 wheel's `maxim --help` (the flag set is unchanged from 1.1.0).
 
 ## Python API
 
@@ -99,7 +99,7 @@ Metrics are grouped by the layer they measure. Tier 1 is about the model's outpu
 
 ### Tier 3 — embodiment
 
-The runner has a hook for a third tier of embodiment metrics, collected automatically if the run's introspector exposes an `embodiment_stats()` method. In 1.1.1 nothing does, so the hook returns nothing and no Tier 3 metric appears in a report. Descriptions of Tier 3 metrics elsewhere describe a design, not a measurement.
+The runner has a hook for a third tier of embodiment metrics, collected automatically if the run's introspector exposes an `embodiment_stats()` method. In 1.1.2 nothing does, so the hook returns nothing and no Tier 3 metric appears in a report. Descriptions of Tier 3 metrics elsewhere describe a design, not a measurement.
 
 ## Writing scenarios and suites
 
@@ -139,7 +139,7 @@ expectations:
     output_matches: "ALPHA"
 ```
 
-A suite references scenarios and adds suite-level scoring thresholds. The `weight` on each entry is accepted by the loader but does not reach the score in 1.1.1 — see [scoring](#scoring-and-thresholds):
+A suite references scenarios and adds suite-level scoring thresholds. The `weight` on each entry is accepted by the loader but does not reach the score in 1.1.2 — see [scoring](#scoring-and-thresholds):
 
 ```yaml
 name: my_suite
@@ -168,7 +168,7 @@ Two separate things come out of a run:
 - **Pass/fail** against `scoring`. Each entry names a metric and a `pass_above` (for metrics where higher is better, such as recall) or `pass_below` (for `hallucination_rate` and the like) threshold. A suite with no `scoring` block passes automatically.
 - **A composite score** in 0–1 for ranking models. The runner normalises every metric it collected for that model — rates as-is, lower-is-better rates (`hallucination_rate`, `alias_redirect_rate`, `cost_per_turn`) inverted, counts capped — and takes the mean.
 
-Two things a suite file invites you to expect do **not** happen in 1.1.1: a scenario's `weight` is parsed and then never read again, and there is no per-scenario score for weights to compose from — the composite is a flat mean over one model's aggregated metrics. Read `_compute_composite_score` in `src/maxim/simulation/benchmark.py` before attaching meaning to the number. It ranks; it does not measure. Pass/fail against `scoring` thresholds is the part that behaves as written.
+Two things a suite file invites you to expect do **not** happen in 1.1.2: a scenario's `weight` is parsed and then never read again, and there is no per-scenario score for weights to compose from — the composite is a flat mean over one model's aggregated metrics. Read `_compute_composite_score` in `src/maxim/simulation/benchmark.py` before attaching meaning to the number. It ranks; it does not measure. Pass/fail against `scoring` thresholds is the part that behaves as written.
 
 ## Baseline comparison
 

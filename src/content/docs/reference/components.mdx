@@ -6,14 +6,14 @@ description: The searchable catalog of every pre-built SEM entity in Maxim's com
 import ComponentCatalog from '../../../components/ComponentCatalog.tsx';
 import data from '../../../data/components.json';
 
-export const sourceBase = 'https://github.com/dennys246/Maxim/blob/v1.1.1/src/maxim/_data/components/';
+export const sourceBase = 'https://github.com/dennys246/Maxim/blob/v1.1.2/src/maxim/_data/components/';
 export const skipped = data.skipped_no_header.length;
 
 This page is the exhaustive list. It enumerates every pre-built [SEM entity](/embodiment/sem-protocol/) that ships in the Maxim component library — genre tags, sensors, affordances, and failure modes — read directly from the registry files. It is the companion to the [component library](/embodiment/component-library/) page, which explains how the registry, genre gating, and the ComponentIndex discovery layer work; that page is the "how", this page is the "what". Maxim is a bio-inspired cognitive architecture (`pip install pymaxim`, `import maxim`), and these components are the reusable furniture its cognition acts on.
 
 ## The count, derived
 
-The catalog below holds **{data.count} components** across {data.categories.length} categories, generated from **{data.source_label}** by [`scripts/build-components.mjs`](https://github.com/dennys246/Maxim-web/blob/main/scripts/build-components.mjs) in this site's repo. The script applies the same rule as the engine's `ComponentRegistry`: a YAML file under [`src/maxim/_data/components/`](https://github.com/dennys246/Maxim/tree/v1.1.1/src/maxim/_data/components) is a component if and only if it carries a `component:` header. The {skipped} files in `archetypes/` (`humanoid`, `quadruped`, `avian`, `serpentine`, `machine`, `vehicle`, `environmental`) have no such header — they are body-plan scaffolds other components inherit from — so both the runtime registry and this page skip them. The generated set was checked against `ComponentRegistry().list_refs()` on the installed 1.1.1 wheel and matches it exactly.
+The catalog below holds **{data.count} components** across {data.categories.length} categories, generated from **{data.source_label}** by [`scripts/build-components.mjs`](https://github.com/dennys246/Maxim-web/blob/main/scripts/build-components.mjs) in this site's repo. The script applies the same rule as the engine's `ComponentRegistry`: a YAML file under [`src/maxim/_data/components/`](https://github.com/dennys246/Maxim/tree/v1.1.2/src/maxim/_data/components) is a component if and only if it carries a `component:` header. The {skipped} files in `archetypes/` (`humanoid`, `quadruped`, `avian`, `serpentine`, `machine`, `vehicle`, `environmental`) have no such header — they are body-plan scaffolds other components inherit from — so both the runtime registry and this page skip them. The generated set was checked against `ComponentRegistry().list_refs()` on the installed 1.1.2 wheel and matches it exactly.
 
 <div class="table-wrap" tabindex="0">
 <table>
@@ -39,7 +39,7 @@ Search matches names, synonyms (the same aliases the [ComponentIndex](/embodimen
 
 ## Keeping this current
 
-The files win. The canonical live source is [`src/maxim/_data/components/`](https://github.com/dennys246/Maxim/tree/main/src/maxim/_data/components) on GitHub (the links on each card point at the `v1.1.1` tag this catalog was generated from). To enumerate the registry yourself, `maxim.create.templates()` returns the live grouping by category from whatever pymaxim you have installed, including anything you dropped into `~/.maxim/components/`.
+The files win. The canonical live source is [`src/maxim/_data/components/`](https://github.com/dennys246/Maxim/tree/main/src/maxim/_data/components) on GitHub (the links on each card point at the `v1.1.2` tag this catalog was generated from). To enumerate the registry yourself, `maxim.create.templates()` returns the live grouping by category from whatever pymaxim you have installed, including anything you dropped into `~/.maxim/components/`.
 
 Related reading:
 

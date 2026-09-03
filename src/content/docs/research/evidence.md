@@ -300,9 +300,10 @@ separate and narrowly graduated result above.
   any finding outside a baseline shipped in the wheel, and burning that baseline down
   is 1.1.x work — see [architecture](/concepts/architecture/).
 - **Loudness / onset salience** is not in 1.1. Nothing in the shipped audio path
-  reads sound level, and no result on this site depends on it; the engine's 1.1.1
-  plan covers a salience design after a bench established the level is readable from
-  the robot daemon.
+  reads sound level, and no result on this site depends on it. A salience design was
+  planned for the 1.1 line after a bench established the level is readable from the
+  robot daemon; 1.1.1 and 1.1.2 both shipped without it, so treat it as planned, not
+  imminent.
 - **Fear gating** is opt-in and off in the stable Python API — see
   [tool safety](/reference/tools/#tool-safety).
 
