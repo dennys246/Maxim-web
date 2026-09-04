@@ -65,7 +65,7 @@ pymaxim.bio (Astro, static, Cloudflare)              sandbox.pymaxim.bio (the ne
 2. Broker: capacity check → start a stopped machine from the pool → copy the seed into the agent slot → poll `/api/identity` inside it → mark `ready`. Reports each step: `queued · starting · loading model · ready`.
 3. Page hands the visitor to `https://sandbox.pymaxim.bio/s/<id>/#t=<token>`. The Console build reads the fragment once, strips it from the URL, keeps the token in memory, and sends it as `Authorization: Bearer` on `/api/*` and as an auth frame before the subscribe frame on `/ws` (re-sent on every reconnect, which the kit already does for the subscribe frame).
 4. Visitor plays. The idle timer resets on every proxied request or WS frame.
-5. "End session", the cap, or idle → the broker calls the new `POST /api/session/end` (P5) so the engine flushes and consolidates, waits for it, then destroys the machine. tmpfs gone, key gone.
+5. "End session", the cap, or idle → the broker sends `maxim serve` a graceful SIGTERM and waits for it to exit: uvicorn closes the sockets, runs the lifespan shutdown, and that shutdown now drains the run and stops the handle **inside** its `finally` (pymaxim D74), which is what persists a Talk-only session's substrate. The stop grace covers the handle's bounded waits. The in-band `POST /api/session/end` (P5) is a wire change and joins the 0.4.0 batch (P8b); until then SIGTERM is the mechanism. Then the machine is destroyed: tmpfs gone, key gone.
 
 **What the visitor can do.** The Console's surfaces: **Talk** (interactive), **Adventure**, **Rest**, the Memory view, and a trimmed Diagnostics. Two honest corrections from the audit:
 
@@ -143,6 +143,8 @@ So: **agent select** is a small pymaxim seam (P8), Phase 4. **Maxims in one envi
 ## The pymaxim tangent
 
 Everything the sandbox needs or wants from the engine, grouped, smallest first within each group. **launch** = blocks Phase 3. Sizes are from the audit; file references are at 1.1.2.
+
+**Status 2026-09-03.** P1, P2, P3, P4, P4b, P4c, P4d, P6, P7 and the `finally` half of P5 landed in pymaxim as [PR #606](https://github.com/dennys246/Maxim/pull/606) (`feat/sandbox-launch-blockers`; bugs ledger D69–D74, D75 pending; no wire change, OpenAPI snapshot byte-identical; two-lens review round plus a fold-delta pass folded before opening). The review moved the three sandbox knobs to `console.sandbox` / `console.allowed_origins` / `console.max_input_chars` config keys, made `build_executor(permissions=)` a required keyword, and taught the filesystem tools to resolve relative paths against their containment root. P5's endpoint moved into the P8b contract batch. Two things the audit missed and that PR notes as still CWD-relative: the agent loop's `state_<run_id>.json` (D15) and the CLI scenario path's `--home-dir` default; both are harmless with CWD=/data/run.
 
 ### A. Filesystem and process hygiene (all launch)
 
