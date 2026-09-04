@@ -109,7 +109,20 @@ export default defineConfig({
 				{
 					label: 'Guides',
 					items: [
-						{ label: 'Simulation', slug: 'guides/simulation' },
+						{
+							label: 'Simulation',
+							items: [
+								{ label: 'Overview', slug: 'guides/simulation' },
+								{ label: 'Interactive sessions', slug: 'guides/simulation/interactive' },
+								{ label: 'Generative campaigns', slug: 'guides/simulation/generative' },
+								{ label: 'The simulation agent', slug: 'guides/simulation/orchestrator' },
+								{ label: 'YAML scenarios', slug: 'guides/simulation/scenarios' },
+								{ label: 'Fixtures, curricula & Roy', slug: 'guides/simulation/curricula' },
+								{ label: 'What a run produces', slug: 'guides/simulation/outputs' },
+								{ label: 'Safety & sandboxing', slug: 'guides/simulation/sandboxing' },
+								{ label: 'CLI & environment reference', slug: 'guides/simulation/cli' },
+							],
+						},
 						{ label: 'DM campaigns', slug: 'guides/dm-campaigns' },
 						{ label: 'Benchmarks', slug: 'guides/benchmarks' },
 						{ label: 'Networking & mesh', slug: 'guides/networking' },
