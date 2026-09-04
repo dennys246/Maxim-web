@@ -1,0 +1,53 @@
+# Release-truth check for the LIVE site.
+#
+# Why: on 2026-09-03 three Workers Builds for main (the 1.1.2 refresh, the
+# sandbox plan, the 1.1.3 refresh) each reported "success" on GitHub while the
+# active Worker version stayed at the 2026-09-01 deploy — pymaxim.bio kept
+# naming 1.1.1 "Enforcement" for a day after the repo said 1.1.3. A build check
+# that passes is not a deploy that took effect; only the live HTML is. This
+# workflow reads the version the source claims and fails if the live page
+# does not say the same thing.
+name: Live site check
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  live-matches-main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for Workers Builds to deploy (push only)
+        if: github.event_name == 'push'
+        run: sleep 240
+      - name: Compare the live release line with the source
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="$(grep -oE 'current stable release, \*\*[0-9]+\.[0-9]+\.[0-9]+ "[^"]+"\*\*' src/content/docs/getting-started.mdx | sed -E 's/\*\*//g; s/"/“/; s/"/”/')"
+          echo "source says: $expected"
+          live="$(curl -sL --max-time 30 -H 'Cache-Control: no-cache' 'https://pymaxim.bio/getting-started/' | sed 's/<[^>]*>//g' | grep -oE 'current stable release, [0-9]+\.[0-9]+\.[0-9]+ “[^”]+”' | head -1 || true)"
+          echo "live says:   ${live:-<not found>}"
+          if [ "$live" != "$expected" ]; then
+            echo "::error::Live pymaxim.bio does not serve main. Open the Cloudflare Workers dashboard (maxim-web → Deployments) and activate the latest version, or run 'npx wrangler deploy' from a fresh 'pnpm build' of main."
+            exit 1
+          fi
+      - name: Newest page from main is served
+        shell: bash
+        run: |
+          set -euo pipefail
+          # The most recently added doc page must exist live; a 404 here means
+          # an older asset manifest is active even if the version line matches.
+          newest="$(git log --diff-filter=A --format= --name-only -n 20 -- src/content/docs | grep -E '\.mdx?$' | head -1 || true)"
+          [ -n "$newest" ] || { echo "no recently added page to probe"; exit 0; }
+          slug="$(echo "$newest" | sed -E 's#^src/content/docs/##; s#\.mdx?$##; s#/index$##')"
+          code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "https://pymaxim.bio/${slug}/")"
+          echo "newest page /${slug}/ -> HTTP $code"
+          [ "$code" = "200" ] || { echo "::error::/${slug}/ is not served live (HTTP $code) — the active Worker version predates it."; exit 1; }
