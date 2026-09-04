@@ -198,7 +198,7 @@ Each run writes a timestamped directory:
   summary.md               # human-readable summary table
 ```
 
-`--write-paper` additionally asks the Writer/Reviewer agents from [research mode](/guides/simulation/#research-mode) to draft a comparative paper from the report.
+`--write-paper` additionally asks the Writer/Reviewer agents from [research mode](/guides/simulation/orchestrator/#research-mode) to draft a comparative paper from the report.
 
 ## Expectation types
 
