@@ -63,8 +63,9 @@ coreutil.
 
 The sandbox bounds what the **agent under test** can touch. It does not bound the orchestrator or the
 narrator, which run in the host process with the host's LLM configuration; it does not limit how many
-LLM calls a run makes; and the trace files a run writes under `data/sim_sandbox/` land relative to your
-working directory, not inside the sandbox. If you are running untrusted scenarios on a shared machine,
+LLM calls a run makes; and the trace files a run writes under `sim_sandbox/` land in the data home
+(`~/.maxim/` unless `$MAXIM_DATA_HOME` redirects it; through 1.1.3 they were `data/sim_sandbox/` relative
+to your working directory), not inside the sandbox. If you are running untrusted scenarios on a shared machine,
 `--sandbox docker` with `--sandbox-network none` is the setting to insist on.
 
 ## Related

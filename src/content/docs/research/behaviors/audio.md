@@ -9,7 +9,7 @@ description: The aspirational orient-to-sound reflex — an honest account of wh
 > below should be read as a shipped feature. Where it describes an API or a code
 > shape, that is the *design*, not something you can run. Nothing in 1.1 reads sound
 > *level* either: loudness / onset salience is not part of the audio path (planned
-> for the 1.1 line, but none of 1.1.1, 1.1.2 or 1.1.3 shipped it), and no result on
+> for the 1.1 line, but none of 1.1.1 through 1.1.4 shipped it), and no result on
 > this site depends on it.
 
 Unlike a vision behavior — which, because the whole reactive path is built around

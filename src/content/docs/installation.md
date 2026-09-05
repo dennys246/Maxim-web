@@ -69,6 +69,7 @@ RTX 50-series (Blackwell) GPUs have a known GStreamer/CUDA incompatibility. Maxi
 | Torch LLM | `pip install 'pymaxim[llm-torch]'` | PyTorch transformers backend |
 | YOLOv8 | `pip install 'pymaxim[yolo]'` | YOLOv8 vision engine via Ultralytics (AGPL-3.0). Default engine is RTMDet-m (Apache 2.0) |
 | Reachy | `pip install 'pymaxim[reachy]'` | Reachy Mini robot support — see the [Reachy Mini guide](/guides/reachy-mini/) |
+| Console | `pip install 'pymaxim[console]'` | The local Console backend, `maxim serve` — see the [CLI reference](/reference/cli/#console-server) |
 
 ## First Run (No Robot)
 

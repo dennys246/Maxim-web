@@ -5,6 +5,8 @@
 **Target:** After the pulse sandbox build flavour and the launch-marked items in both tangents. Launch gated on the Phase 0 measurements.
 **Reverses:** maxim-pulse `docs/plans/maxim_console.md` open questions #1 and #2 and `AGENTS.md` § "Localhost-only Console" ("a hosted console is an explicit non-goal"). Both documents get amended in the same change that ships the sandbox flavour; the engine's own posture (`maxim serve` binds 127.0.0.1, no auth) is **kept**, and the hosting boundary lives entirely in the broker.
 
+**Update 2026-09-05 (pymaxim 1.1.4):** the engine's posture moved. `maxim serve` now requires a bearer token on every `/api/*`, `/docs`, `/openapi.json` and `/ws` request in every mode *except* sandbox mode, where `maxim serve --help` says authentication is the proxy's job (console contract 0.4.0). Decisions 2 and 3 below stand as written; the "no auth" premise above now describes sandbox mode only, and a browser-relay Host/Origin guard is on in every mode.
+
 ---
 
 ## Why a hosted sandbox, not in-browser

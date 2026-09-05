@@ -136,8 +136,9 @@ none of them establishes latency independent of how much is stored.
 
 They also do not describe the substrate hot path. Assigning a percept to a
 concept cluster is an exact same-modality centroid scan — O(N·d) in the number
-of same-modality clusters — which bypasses the hash index entirely and has no
-published latency figure.
+of same-modality clusters — which bypasses the hash index entirely. Since 1.1.4
+that scan is vectorized (still exact, decision-equivalent by test) and has a
+committed cost measurement — see [memory & consolidation](/memory/overview/).
 
 Nor do they describe `EntorhinalCortex.find_similar()`, the signature index that
 NAc consults. That one is a full scan too, for a different reason: its buckets
