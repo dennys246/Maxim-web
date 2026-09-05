@@ -247,13 +247,37 @@ The kit is closer than the plan assumed on transport and further on chrome. Noth
 
 | Phase | Deliverable | Gate to pass |
 |---|---|---|
-| 0 Measure | A session container on the Mac mini, its large lane pointed at the mesh proxy, arena or heist for 10 turns: (a) the local 14B–32B model alone, (b) the same with 5 sessions running concurrently, (c) a cheap cloud model as the comparison arm. | p50 turn latency ≤ 8 s alone AND under 5-way contention; container start to `ready` ≤ 45 s; cost per 20-min cloud session known and the ceiling arithmetic done. If contention fails: raise `proxy.max_concurrent`, drop model size, or lower the concurrency cap — in that order. |
+| 0 Measure | **DONE 2026-09-04, see § Phase 0 results.** Session containers on the Mac mini against the mesh proxy, arena campaign, imagination off: (a) Qwen2.5-32B Q4 alone, (b) four sessions at once. The cloud arm is not yet measured. | The 8 s gate was set before any measured call and is **not reachable on this hardware with this prompt**: measured steady turns are 68 s solo and 222 s four-way. Re-set the gate from § Phase 0 results (open question 5) before Phase 1. |
 | 1 Broker + one machine | `POST /session` → machine → proxied Console works end to end; token enforced; P4/P4b/P4c/P4d in the image; U1–U4, U13, U15 in the bundle; teardown on idle via P5. | Two parallel sessions cannot see each other; `search_code`, `git_diff`, `/api/probe`, `/api/setup/mesh`, `/api/diagnose` all refused from a session; a killed machine leaves nothing behind. |
 | 2 Site | Gold button, `/sandbox/` page, status island, behind a flag. U5–U7 in the bundle. | a11y pass; reads correctly with JS off; an expired session shows a banner, not a blank page. |
 | 3 Console flavour | Sandbox bundle in the image; the 0.4.0 launch batch (P5 endpoint, P8, P11, P14, P16 + P8b); U9 SessionChip, U11 disclosure, U16 choice surface, U17 share/report; hand-off flow. Turn on the button. | A first-time visitor reaches a running Talk or a PLAYED Adventure in under 90 s without reading docs; an idle visitor's campaign advances by itself. |
 | 4 Seeds, agent select, BYO key, export | Seed picker (experiment agents, Roy-primed infant, one character Maxim); P7/P8/P8b + U10; P9/P10/P11 + U8; P12–P14 + U12. | Every seed primed on the sandbox image; a pasted key actually dispatches (P9 test); the key never appears in broker logs; export restores into a local `maxim serve` under a different name. |
 | 5 Hardening + extras | Rate limits tuned from traffic; P13 + the localhost probe; P15/P15b; performance-CPU tier if Phase 0 said so; P16 if visitors ask to play rather than watch. | 30 days without an abuse incident or a bill surprise. |
 | 6 Party | P20a → P19 → P20 → P18 land in pymaxim; `party_v1.yaml` becomes a seed-and-scene option. | Party Mode shipped and documented in pymaxim first; the sandbox only exposes it. |
+
+## Phase 0 results (2026-09-04)
+
+Apparatus: the `maxim-sandbox` Phase 0 harness (session containers as mesh peers, `--add-host host.docker.internal`, `MAXIM_DISABLE_IMAGINATION=1`, `MAXIM_BACKEND_TRACE=1`), arena campaign, 5 encounters, Qwen2.5-32B-Instruct Q4_K_M on the M4 Pro Mac mini (48 GB).
+
+| Server on the leader | Sessions | Per-call p50 | Steady turn p50 | Notes |
+|---|---|---|---|---|
+| Python `llama_cpp.server` (the engine's auto-spawn; single slot, no prompt cache) | 1 | 29.5 s | 56 s | ~5 calls per encounter |
+| same | 5 | 83 s | 127–182 s | one session REFUSED (429 ×3, 400 ×2) and played with no model; the peer backend does not retry by design |
+| brew `llama.cpp` bottle (CPU-only: no Metal init lines, decode ~1 tok/s) | 1 | 65 s | 69 s | prefix cache engaged (3450 cached tokens on alternate calls) but decode on CPU |
+| from-source llama.cpp, Metal, `-np 4 -c 65536 --cache-reuse 256` | 1 | 63 s | 68 s | decode 10 tok/s; a call with 3450 cached tokens = 20 s, with only the 559-token system prefix cached = 65 s |
+| same | 4 | 101 s | 222 s | aggregate ≈ one call per 17 s — the slots batch ~3.7× over serial |
+
+What the per-call trace says: every agent call sends ~4,600 prompt tokens and receives ~60. On this hardware prompt processing runs at ~90 tokens/s for the 32B, so an uncached call is ~50 s of prefill plus ~6 s of decode. The agent alternates between two prompt families that share only a 559-token prefix, so slot caches thrash and two calls in three pay full prefill. **The lever is the prompt, not the model:** a stable ~4k prefix that always hits would put a call near 12 s; halving the model halves what is left.
+
+Operational findings, all now in the harness README: the brew `llama.cpp` bottle is CPU-only on this machine — build from source with `-DGGML_METAL=ON`; the leader must run with `auto_spawn.llm_server=false` and REUSE a server already on 8100 (it does, by design), and the old Python server must be killed first — with both bound to 8100 the box held 40 GB of models, swapped, and Tailscale SSH stalled; `maxim tunnel key export` prints snippets, the bare key is `~/.config/maxim/api_key`; a `docker run … python -` probe needs `-i` or it is vacuous; DM encounters are scored from `sim_scene` records, not the generative runner's turn markers.
+
+Three engine items this adds to the tangent:
+
+| # | Change | Where | Size | Needed by |
+|---|---|---|---|---|
+| P21 | **Prompt budget for the console agent.** Measure what fills the ~4.6k-token agent prompt (system prompt, tool schemas, enrichment sections, memory) and give the sandbox a smaller, PREFIX-STABLE composition: static parts first, per-turn parts last, so slot prompt caches hit every call. Expose `max_response_tokens` and the deliberation `max_cycles` as config (today: a packaged prompt JSON with no override, and a hard-coded 3). | agents/prompt_builder.py, modes/definitions.py, runtime/agent_loop.py | medium | launch |
+| P22 | **Native llama.cpp server as the leader's spawn target.** The auto-spawner launches the Python `llama_cpp.server` (single slot, no prompt cache); the sandbox needs `llama-server` with parallel slots, prompt caching and Metal. Add a spawner backend choice (`auto_spawn.server = llama_cpp \| llama_server`) with `-np`, `-c`, `-ctk/-ctv`, `--cache-reuse` from config, and keep the existing reuse-if-alive path. | runtime/local_server_spawner.py, runtime/lane_backends.py, config_loader | small | Phase 1 (until then: run llama-server by hand, `auto_spawn.llm_server=false`) |
+| P23 | **Proxy admission instead of 429.** A session refused by `proxy.max_concurrent` silently plays with no model. Either the proxy queues with a bounded wait, or the broker keeps `sessions × calls in flight ≤ max_concurrent` and reports "queued" to the visitor. The peer backend's no-retry invariant stays. | runtime/leader_proxy.py, broker | small | launch |
 
 ## Honest accounting
 
@@ -290,6 +314,7 @@ The kit is closer than the plan assumed on transport and further on chrome. Noth
 2. **Which local model.** Phase 0 picks among the 14B–32B profiles by the contention gate, not by benchmark prose.
 3. **Choice timeout length** for an idle visitor (decision 14): long enough to read a scene, short enough that a queue of watchers is not held by one absent player.
 4. **Oasis intake format.** The bucket manifest is the seam; when the 1.2 Oasis software is designed, it consumes exactly that. Route through `substrate_merge` only, `strict_geometry=True`, the contributor-count floor before publication, and keep a raw-substrate arm for the headline claim (`maxim_hivemind.md` § Confound discipline).
+5. **Re-set the latency gate from § Phase 0 results.** The 8 s figure predates any measurement. Recommendation: gate on the *cached* call — steady turn ≤ 30 s solo and ≤ 60 s at four sessions on the local 32B after P21, with the cloud arm measured against ≤ 10 s — and make the visible UI honest about it (a turn takes a while; show the agent thinking). Decide after P21's prompt budget lands and the pair is re-run.
 
 ## References
 
