@@ -57,6 +57,8 @@ maxim config set role leader                       # leader / peer / solo
 maxim config set llm.profile qwen2.5-32b-instruct  # default model
 maxim config set llm.n_ctx 16384                   # context window
 maxim config set llm.auto_download true            # download GGUFs on first run
+maxim config set llm.max_response_tokens 256       # per-call max_tokens + prompt reserve (engine main, after 1.1.4)
+maxim config set llm.deliberation_max_cycles 1     # PFC deliberation cap; 1 = one LLM call per turn (same)
 maxim config set auto_spawn.llm_server true        # spawn llama-cpp-server
 maxim config set auto_spawn.tunnel true            # spawn cloudflared
 
@@ -105,6 +107,8 @@ MAXIM_PROXY_RATE_LIMIT_RPM=0           # Per-peer rate limit (0=unlimited)
 # Routing & downloads (peer/leader flexibility)
 
 MAXIM_LLM_N_CTX=4096                   # Override auto-computed llama.cpp n_ctx (P4c)
+MAXIM_LLM_MAX_RESPONSE_TOKENS=256      # Agent-loop max_tokens + budget reserve in one field (engine main after 1.1.4; read at loop start)
+MAXIM_LLM_DELIBERATION_MAX_CYCLES=1    # Deliberation cycles per turn, default 3 in sim / 2 live (same)
 MAXIM_AUTO_DOWNLOAD_MODELS=1           # Skip the download prompt (P5) — same as --auto-download
 MAXIM_DATA_BUDGET_GB=50                # Optional soft cap on ~/.maxim disk usage
 MAXIM_SKIP_REMOTE_PROBE=1              # Bypass the P6 remote-URL probe (CI escape hatch)
