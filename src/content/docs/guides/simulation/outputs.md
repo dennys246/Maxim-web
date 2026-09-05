@@ -17,10 +17,12 @@ That directory exists and is empty. Nothing at 1.1.3 writes to it; one docstring
 otherwise. If a tool or doc points you there, it is stale.
 :::
 
-Two things a run writes **outside** the session directory, relative to the working directory rather than
-the data home: the full simulation trace at `data/sim_sandbox/sim_agent_<timestamp>.jsonl`, and research
-mode's `research_result.json`, `bus_history.json` and `paper.md` under `data/sim_reports/research_<id>/`.
-This surprises pip-installed users; it is how the code is today.
+Two things a run writes **outside** the session directory. The full simulation trace lands at
+`sim_sandbox/sim_agent_<timestamp>.jsonl` under the data home (`~/.maxim/sim_sandbox/`, or
+`$MAXIM_DATA_HOME/sim_sandbox/`) — *since 1.1.4*; through 1.1.3 it was `data/sim_sandbox/` relative to the
+working directory, a defect the engine fixed as D69. Research mode's `research_result.json`,
+`bus_history.json` and `paper.md` still land under `data/sim_reports/research_<id>/` relative to the
+working directory, not the data home. This surprises pip-installed users; it is how the code is today.
 
 ## The files
 

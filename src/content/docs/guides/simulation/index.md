@@ -17,7 +17,10 @@ pain detector all run their real code. That is why simulation is the project's i
 test whether the mocks work.
 
 Every page in this section states what the 1.1.3 code does. Where the engine's own help text or older
-documentation disagrees with the code, the page says so.
+documentation disagrees with the code, the page says so. 1.1.4 changed one thing these pages describe —
+the simulation trace now lands under the data home rather than the working directory (see
+[Outputs](/guides/simulation/outputs/) and [Sandboxing](/guides/simulation/sandboxing/)) — and added the
+Minecraft world seam, which is apparatus for 1.2 and is not covered here.
 
 ## The ways to drive a run
 

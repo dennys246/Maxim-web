@@ -236,12 +236,16 @@ described its intent rather than its behaviour.
 *Substrate pattern completion.* The hot path that assigns a percept to a concept
 cluster — the one that runs per tick — does **not** use that index. It is an
 exact, same-modality scan over cluster centroids: every centroid of the matching
-modality is compared by full cosine similarity, in pure Python, with no early
-termination. That is **O(N·d)** per call, where *N* is the number of
+modality is compared by full cosine similarity, with no early termination.
+That is **O(N·d)** per call, where *N* is the number of
 same-modality substrate nodes (concept clusters, not episodic memories) and *d*
 is the embedding dimension — 768 with sentence-transformers installed, 384 on the
 bag-of-words fallback. It is exact rather than approximate, and it scales
-linearly with the number of clusters. Since 1.1.3 the scan is also
+linearly with the number of clusters. Since 1.1.4 the comparison runs as one
+numpy matrix–vector product per modality slice instead of a Python loop over
+nodes; it is the same exact scan — a randomized equivalence test pins its
+decisions to the pre-1.1.4 loop — and not an approximate index, so the
+correction above about LSH still stands. Since 1.1.3 the scan is also
 **geometry-gated**: every node carries a tag naming the encoding space it was
 produced in, the caller must pass the live embedding's `geometry=`, and a node
 tagged with a different space is skipped rather than scored — two spaces are not
@@ -253,9 +257,14 @@ irrespective of memory size. That conflated the two mechanisms above and is
 withdrawn. The underlying ~10ms measurement is a GPU sentence-transformer query
 benchmark at roughly 10K memories — largely the embedding forward pass, not the
 search — and no benchmark in the repo varies memory size, so nothing measured
-supports "regardless of memory size." The substrate centroid scan has no
-published latency figure at all. If retrieval latency matters for your workload,
-measure it on your own data and hardware.
+supports "regardless of memory size." The substrate centroid scan now has a
+committed cost measurement, taken 2026-09-03 before the 1.1.4 encoding change
+shipped ([data](https://github.com/dennys246/Maxim/blob/main/docs/experiments/data/ec_scan_cost_2026-09-03.json)):
+the Python loop crossed that harness's 5 ms p95 bar at roughly 240 same-modality
+nodes, which is why it was vectorized, and the vectorized scan measured p95
+0.89 ms at a 20,000-node store on the same harness. Those figures come with their
+conditions attached. If retrieval latency matters for your workload, measure it on
+your own data and hardware.
 :::
 
 Optional neural embeddings provide richer semantic similarity; note that the

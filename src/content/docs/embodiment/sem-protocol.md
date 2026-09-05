@@ -134,9 +134,22 @@ sensors:
 | `dtype` | No | Array dtype; only meaningful with `shape` |
 | `initial` | No | Starting value; defaults to the midpoint of `range`, else `0` |
 | `type` | No | Explicit `float`/`int`; usually inferred from `range`/`shape` |
+| `modality` | No | Since 1.1.4: the exteroceptive substrate channel this sensor feeds — `world` or `audio`. Absent means no exteroceptive channel (the pre-1.1.4 behaviour); `interoception` is not declarable |
 
 \* Provide at least one of `range` or `shape`. With neither, the sensor defaults
 to `type: float`.
+
+**`modality`, since 1.1.4.** A sensor may declare which exteroceptive substrate
+channel carries it: `modality: world` or `modality: audio`. The `world` channel
+exists only when a body declares into it, so every body that predates the field
+behaves byte-identically; `interoception` is not declarable, because interoception
+membership comes from the sensor's `drive:` block. It is an entity-level sensor
+field — a modulator's sub-sensor cannot carry one — and an unknown tag raises at
+parse time rather than leaving a sensor silently in no channel. For a world body
+the declaration is not cosmetic: the `range` sets where the encoding's neutral
+point sits, and the shipped `bodies/minecraft_player` re-centres its ranges so a
+resting value sits at that neutral. The ceiling this is designed around is
+[L11](/research/limits/#l11--the-sensor-count-discrimination-ceiling).
 
 ### Modulators
 

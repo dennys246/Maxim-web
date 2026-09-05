@@ -85,22 +85,50 @@ sensors for two different excursions to be confusable is measuring the wrong thi
 Budget sensors per channel, not per body, and state the per-channel count in the
 pre-registration.
 
-**Mitigation — selected, not shipped.** A bake-off on 2026-09-01 selected a nonlinear
-gain (a sensor's contribution rises with its distance from set-point) at the unchanged
-threshold, which scored perfectly on all three criteria from N = 30 to N = 100 and
-overturned the earlier recommendation of a scaled threshold plus grouping, which
-measured worse. It is **not yet shipped and not yet re-measured on a real body**: the
-measurements use synthetic bodies with uncorrelated bases and independent noise,
-because no shipped body exceeds about twelve sensors, and real drives correlate. Its
-cost — roughly 120× the cluster allocation of the control — makes the exact-scan
-defect D51 a prerequisite rather than a dormancy candidate.
+**Mitigation — shipped in 1.1.4, for one channel, and re-measured: it helps, and it
+does not retire the limit.** A bake-off on 2026-09-01 selected a nonlinear gain (a
+sensor's contribution rises with its distance from set-point) at the unchanged
+threshold, which scored perfectly on all three criteria from N = 30 to N = 100 on
+synthetic bodies and overturned the earlier recommendation of a scaled threshold
+plus grouping, which measured worse. 1.1.4 ships that gain for the new `world`
+modality channel **only**. At N = 6 the gain's stability collapsed in the bake-off
+(0.97 → 0.62), so interoception and audio keep the ungained encoding — byte-identical
+to 1.1.3 and pinned by test — and "the sensor encoding" as a whole did not change;
+one channel's did. Its cost, roughly 120× the cluster allocation of the control, was
+measured before anything shipped (the verdict: an index was a prerequisite), and the
+gain rides a vectorized exact centroid scan that is decision-equivalent to the old
+loop by test — see [memory & consolidation](/memory/overview/).
+
+**The re-measure, pre-registered.** The protocol was frozen and merged before the
+first data timestamp, and the verdict is computed by the protocol's own decision
+function, not read off afterwards. On ten minutes of live Minecraft world data at
+N = 16 sensors in one channel:
+
+| | A0 — the encoding as shipped through 1.1.3 | A4 — the gain 1.1.4 ships |
+|---|---|---|
+| Separation | **0.0 — fully blind** | **0.0566** |
+| Clusters | 1 | 3 |
+| Stability | 1.0 (vacuous: one cluster) | 0.9984 |
+
+Verdict: **mitigation-confirmed, not retired-eligible.** Read both halves together.
+The ungained encoding cannot see events at this sensor count at all; the gain
+restores real but weak separation, and 0.057 is nowhere near the 0.70 bar the
+protocol set for retirement. So L11 stays active, with the gain as a partial
+mitigation, and the scaled threshold remains the retirement path — unshipped. The
+re-measure also surfaced a new instance of the same principle: with ranges declared
+so that rest sits at an extreme, the gained background is maximally loud and events
+vanish (event cosine 0.926); re-centring the ranges so rest sits at the encoding's
+neutral point brought that to 0.747. The range declaration is part of the design
+under test.
 
 **What it bounds.** The representation behind Exp 42 (interoception clusters), Exp 48
 (the extero/intero seam) and Exp 53b, whose re-run trigger states outright that "the
 representation is what transfers". All three ran at about six drives, inside the safe
 band, so **the limit does not retract them**; it bounds any future body that grows past
-it. Shipping the mitigation re-stales Exp 53b on hardware, and that re-run and the
-1.2 two-robot replication are the same scarce resource.
+it. Shipping the gain to the interoception or audio channel would re-stale Exp 53b on
+hardware; 1.1.4 did not, because the gain is world-only and those channels are
+unchanged. That re-run and the 1.2 two-robot replication remain the same scarce
+resource.
 
 **Re-measure on:** any change to the sensor embedding, the pattern threshold, the
 substrate channel count, or any body whose per-channel sensor count exceeds about

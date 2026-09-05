@@ -377,8 +377,20 @@ separate and narrowly graduated result above.
 - **Loudness / onset salience** is not in 1.1. Nothing in the shipped audio path
   reads sound level, and no result on this site depends on it. A salience design was
   planned for the 1.1 line after a bench established the level is readable from the
-  robot daemon; 1.1.1, 1.1.2 and 1.1.3 all shipped without it, so treat it as planned,
+  robot daemon; 1.1.1 through 1.1.4 all shipped without it, so treat it as planned,
   not imminent.
+- **The Minecraft world seam (1.1.4) is apparatus, not a result.** 1.1.4 built the
+  first seam where the substrate meets a world it does not control — a Minecraft
+  server, real hostiles, real timing — and shipped, for that one channel, an
+  encoding change so a sixteen-sensor body can register events at all. It makes no
+  behavioural claim: nothing on this page changed because of it, and nothing on this
+  site should be read as "Maxim plays Minecraft". The one measurement it produced is
+  a limit re-measure, which confirmed a partial mitigation and did **not** retire the
+  limit — see [L11](/research/limits/#l11--the-sensor-count-discrimination-ceiling).
+  Claims, if any, come in 1.2, measured against this apparatus. A `pip install`
+  carries the engine half of the seam (the bridge client, the `bodies/minecraft_player`
+  body, the world backend and the two-agent harness); the Mineflayer bridge process
+  lives in the repository's `scripts/`, so running the live seam needs a checkout.
 - **Fear gating** is opt-in and off in the stable Python API — see
   [tool safety](/reference/tools/#tool-safety).
 

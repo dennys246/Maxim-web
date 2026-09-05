@@ -147,6 +147,48 @@ Two things the verbs do **not** do, stated because both used to be implied:
   double-counts observations — and it never touches a running bio-stack; the runtime
   picks the file up at next boot.
 
+## Console server
+
+`maxim serve` runs the local Console backend that the
+[maxim-pulse](https://github.com/dennys246/maxim-pulse) app talks to. It needs the
+`console` extra (`pip install 'pymaxim[console]'`); without it the command exits
+naming that extra.
+
+```bash
+maxim serve [--port PORT] [--ui-dist PATH]   # 127.0.0.1 only; port from config console.port, default 8765
+maxim serve --show-token                     # print the console token (creating it if absent) and exit
+maxim serve --rotate-token                   # mint a NEW token, logging every device out, and exit
+maxim serve --dump-openapi [PATH]            # write the OpenAPI schema and exit
+```
+
+- **Bearer auth, always on, fail-closed (since 1.1.4, console contract 0.4.0).** At
+  start the server prints a one-time sign-in URL of the form
+  `http://127.0.0.1:8765/#token=…`; open it once and that browser is signed in.
+  Every `/api/*` route, `/docs`, `/openapi.json` and `/ws` require the token;
+  `GET /api/hello` is the one tokenless probe and answers
+  `{"contract_version": "0.4.0", "auth": "bearer"}`. A token passed as a query
+  parameter is refused. The token is an `mxc_`-prefixed secret in
+  `~/.config/maxim/console_token`, re-read on every request, so `--rotate-token`
+  takes effect without a restart.
+- **API clients send it as a header.** `--show-token` prints the bare token, so:
+
+  ```bash
+  curl -s -H "Authorization: Bearer $(maxim serve --show-token)" \
+    http://127.0.0.1:8765/api/identity
+  ```
+
+- **Sandbox mode is the exception.** With `MAXIM_CONSOLE_SANDBOX=1` authentication is
+  the fronting proxy's job, and the engine instead closes `/api/probe` (the `url`
+  form), `/api/setup/mesh` and `/api/diagnose`, refuses `/ws` upgrades whose Origin
+  is not in `MAXIM_CONSOLE_ALLOWED_ORIGINS`, and caps run input at
+  `MAXIM_CONSOLE_MAX_INPUT_CHARS`. A browser-relay guard (Host and Origin checks
+  against loopback plus the allowed list) is on in every mode.
+- **The bundled UI lags the server, as shipped.** The Console bundle vendored into the
+  1.1.4 wheel was built against contract 0.3.0 while the server speaks 0.4.0;
+  `maxim serve` warns about the mismatch at start ("parts of the UI may not work")
+  until a matching bundle is re-vendored. The API surface is unaffected. To use the
+  UI now, build a matching maxim-pulse and point `--ui-dist` at it.
+
 ## Common Recipes
 
 ### Full Agentic Mode with Mistral

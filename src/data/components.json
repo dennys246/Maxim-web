@@ -1,15 +1,15 @@
 {
-	"source_label": "pymaxim 1.1.2 (PyPI wheel)",
+	"source_label": "pymaxim 1.1.4 (PyPI wheel)",
 	"registry_path": "src/maxim/_data/components/**/*.yaml",
-	"count": 92,
+	"count": 94,
 	"categories": [
 		{
 			"name": "items",
-			"count": 34
+			"count": 35
 		},
 		{
 			"name": "bodies",
-			"count": 13
+			"count": 14
 		},
 		{
 			"name": "npcs",
@@ -35,7 +35,7 @@
 	"genres": [
 		{
 			"name": "neutral",
-			"count": 39
+			"count": 41
 		},
 		{
 			"name": "fantasy",
@@ -492,6 +492,59 @@
 				"proprioceptive_drift"
 			],
 			"file": "bodies/megarm_v3.yaml"
+		},
+		{
+			"ref": "bodies/minecraft_player",
+			"name": "minecraft_player",
+			"category": "bodies",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"body",
+				"minecraft",
+				"world",
+				"player",
+				"bridge"
+			],
+			"synonyms": [
+				"minecraft body",
+				"player body",
+				"minecraft avatar"
+			],
+			"description": "The Minecraft player body (1.1.4 world seam, docs/plans/world_seam_1_1_4.md\nPR 3). World-state sensors declare `modality: world` — the first body to\nfeed the A4-gained, frozen-centroid world channel (which RE-fires L11's\nre-measure trigger when this body first runs; see the L11 note). Every\nworld sensor is written by the bridge's MEASURED game snapshots\n(MinecraftWorldBackend world-owns them; the modeled self_effect on those\nkeys is filtered on live), so none carries drift (`drift_rate: 0` on the\ndrive-bearing ones, no drive on the rest) — the drift loop must never\nfight the writer. `food` additionally carries an entropic hunger-style\ndrive and `health` a homeostatic one, so real game state feeds the drive\nsystem: world-truth pain, the same dual world+interoception pattern as a\ndrive-bearing azimuth. Affordance self_effects are the STUB model for\nbridge-less runs; on live the game's readback is the truth.",
+			"archetype": "humanoid",
+			"extends": "",
+			"entity_type": "body",
+			"sensors": [
+				"health",
+				"food",
+				"light_level",
+				"y_altitude",
+				"nearest_hostile_dist",
+				"time_of_day",
+				"saturation",
+				"oxygen",
+				"hostile_count",
+				"distance_from_spawn",
+				"speed",
+				"on_ground",
+				"is_raining",
+				"xp_level",
+				"nearest_player_dist",
+				"look_pitch"
+			],
+			"affordances": [
+				"move_to",
+				"turn",
+				"mine_block",
+				"place_block",
+				"eat",
+				"attack_nearest"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "bodies/minecraft_player.yaml"
 		},
 		{
 			"ref": "bodies/reachy_mini",
@@ -1782,7 +1835,7 @@
 				"drive"
 			],
 			"synonyms": [],
-			"description": "A food source with multiple portions. Eating reduces the agent's\nhunger via self_effect. Portions decrease on consumption.",
+			"description": "A food source. Eating reduces the agent's hunger via self_effect.\nFeeding is UNLIMITED BY DESIGN (D67, resolved 2026-09-04 as option b):\nthe `portions` sensor exists but nothing decrements it — implementing\nthe decrement would change Exp 52's own twice-revalidated harness. The\nfinite-resource mechanic lives where scarcity is the point:\nitems/minecraft_bread.yaml (1.1.4 world seam), whose eat affordance\nactually decrements portions via target_effect.",
 			"archetype": "",
 			"extends": "",
 			"entity_type": "consumable",
@@ -2207,6 +2260,39 @@
 				"wrench_bent"
 			],
 			"file": "items/lockpick_set.yaml"
+		},
+		{
+			"ref": "items/minecraft_bread",
+			"name": "minecraft_bread",
+			"category": "items",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"minecraft",
+				"food",
+				"world",
+				"finite",
+				"scarcity"
+			],
+			"synonyms": [
+				"bread",
+				"loaf",
+				"minecraft food"
+			],
+			"description": "Finite bread for the world seam (1.1.4 PR 3; plan decision D5 / bugs\nledger D67): a finite-resource world is where scarcity is the point, and\nTHIS item actually implements it — eating decrements its own `portions`\nthrough target_effect, riding the existing target-resolution machinery\n(the `target` param defaults to this entity's name, so the entity_map\nresolves the item itself and the -1 applies; zero new mechanism). The\n`requires: {portions: 1}` gate makes an empty loaf refuse. Contrast\ncradle_food, which is unlimited BY DESIGN (its description was corrected\nthe same day this shipped — D67 option b — because implementing the\ndecrement there would re-stale Exp 52's twice-revalidated harness).",
+			"archetype": "",
+			"extends": "",
+			"entity_type": "consumable",
+			"sensors": [
+				"portions"
+			],
+			"affordances": [
+				"eat_bread"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "items/minecraft_bread.yaml"
 		},
 		{
 			"ref": "items/orange_triangular_crystal_vial",
