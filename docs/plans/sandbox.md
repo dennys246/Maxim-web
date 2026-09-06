@@ -297,9 +297,25 @@ What it says:
 - **The larger swing is slot-cache state, not our code.** Two solo runs of the same commit and the same prompts came in at 48 s and 28 s; the only difference in the traces is whether the encounter-change call found 2,041 or ~3,700 cached tokens. With `--cache-reuse 256` llama-server can salvage the roster past the changed `choose` line — *if* the request lands on the slot that still holds the previous prompt. The DM narrator's small calls (~230 tokens, 6 per session) land on the same four slots and can evict the agent's 4k prompt. **Slot pinning is the next lever** (P22: `id_slot` per session through the proxy, or `-np` ≥ sessions × 2 so narrator calls never share the agent's slot). Until then a solo turn is 28–48 s depending on which slot the narrator hit.
 - **The allow-list cannot be measured with this harness.** `MAXIM_TOOLS_ALLOW` arms `AgentPermissions` only on the console agent (`MaximHandle`); the orchestrator's sim agents carry no permissions by design (pymaxim `tests/unit/test_console_tool_allowlist.py::TestSimAgentsUntouched`). The sandbox runs the console agent, so the D82 roster filter (25 → ~10 tools, ≈1,400 → ≈500 roster tokens) applies there — but proving the saving needs the Phase 1 harness driving `maxim serve`, not `--dm --sim`.
 - **Four-way contention is prefill-bound.** Each large call still processes ~2.1–2.4k uncached tokens; four at once serialize on the GPU (75–250 s per call). Cutting cycles to one helped only because it removed calls, not tokens. The 32B does not reach ≤ 60 s at four sessions after P21.
-- **Models on the mini:** Qwen2.5-14B-Instruct Q4, Mistral-Small-24B Q4, DeepSeek-R1-Distill-32B Q4, SmolLM-1.7B, Mistral-7B — the 14B pair can run without a download.
+- **Models on the mini:** Qwen2.5-14B-Instruct Q4, Mistral-Small-24B Q4, DeepSeek-R1-Distill-32B Q4, SmolLM-1.7B, Mistral-7B — the 14B pair ran the same day (next subsection).
 
-Recommendation for open question 5, given these numbers: gate the **solo** cached turn at ≤ 30 s (met when the slot survives, not yet reliably), gate contention per machine at whatever session count keeps the steady turn ≤ 60 s (on the 32B that is likely 1–2 sessions; measure N=2), and treat slot pinning + the 14B pair as the two experiments that decide whether the 32B stays the launch narrator. The visible UI shows the agent thinking either way.
+### The narrator runs (2026-09-05, same day, engine `main@d52e2a6e`)
+
+The recommendation above was accepted; the two experiments it asked for ran the same afternoon (every run `deliberation_max_cycles=1`, imagination off, the 32B server swapped to the 14B by `maxim-sandbox/swap_model.sh` with every other flag preserved — `-np 4 -c 32768 -ctk q8_0 -ctv q8_0 --cache-reuse 256` — and restored afterwards):
+
+| Narrator | Sessions | Per-call p50 | Steady turn p50 | p95 | Gate |
+|---|---|---|---|---|---|
+| Qwen2.5-32B Q4 | 1 | 38.5 s / 22.3 s | 48 s / 28 s (slot-cache dependent) | 69 s / 45 s | solo ≤ 30 s: only when the slot survives |
+| Qwen2.5-32B Q4 | 2 | 45.4 s | **49 s** | 111 s | ≤ 60 s: **pass** |
+| Qwen2.5-32B Q4 | 4 | 92.6 s | 168 s | 281 s | fail |
+| Qwen2.5-14B Q4 | 1 | 20.1 s | **26 s** | 37 s | solo ≤ 30 s: **pass** (first run; slot cache 2,041 after encounter changes) |
+| Qwen2.5-14B Q4 | 2 | 27.6 s | **35 s** | 65 s | ≤ 60 s: **pass** |
+| Qwen2.5-14B Q4 | 3 | 57.6 s | 65 s | 91 s | fail |
+| Qwen2.5-14B Q4 | 4 | 47.5 s | 71 s | 102 s | fail (just) |
+
+One N=2 run on the 32B is retracted: both sessions' 3-second readiness probe through the proxy timed out (`inference_broken`), the lane was marked down and the sessions played without a model (one LLM call each, 5 s "turns") — the harness now greps for `inference_broken`; a re-run minutes later answered the same probe in 0.2 s. That failure mode is P23's: a session that cannot get a probe through in 3 s silently degrades to no narrator, and nothing tells the visitor.
+
+**Launch narrator: the 14B.** It is the only configuration that passes the solo gate on its first run, it passes at two sessions with room, and its four-session miss is narrow. The 32B passes only at two sessions and only clears the solo gate when the slot cache happens to survive. **Per-machine cap: two sessions** — three miss at 65 s and four at 71 s (the two are within run-to-run variance of each other; both are prefill contention on the uncached tail, and the third session shares the four slots with the narrator's calls). Slot pinning (P22) remains the lever that would make the solo number stable and would likely pull the four-session 14B under 60 s, since every contention miss is prefill on the 2.1–2.4k uncached tokens the eviction leaves behind.
 
 ## Honest accounting
 
@@ -330,13 +346,15 @@ Recommendation for open question 5, given these numbers: gate the **solo** cache
 16. **Monthly ceiling: $10**, a broker config value the operator can change; the broker refuses new sessions past it and the status widget says so.
 17. **Send-session rides the Oasis intake, built as a bucket first.** On explicit click the broker writes the P14 agent-home bundle + transcript + manifest to a private R2 bucket; the authority Oasis (1.2 software, not yet built) consumes from that bucket later. Episodes enter an Oasis as private contributions and are never re-broadcast (`maxim_hivemind.md` § What's shareable).
 
+- **Latency gate (2026-09-05, replaces the pre-measurement 8 s figure).** Gate on the *cached* solo turn: steady turn p50 ≤ 30 s alone on the launch narrator — which requires slot pinning (P22) to be reliable, since the 32B measures 28 s or 48 s on the same code depending on whether the narrator's calls evicted the agent's slot. Concurrency is capped **per machine** at the session count that keeps the steady turn p50 ≤ 60 s, measured, not assumed (the 32B misses it at four; N=2 is the candidate). The cloud arm is gated at ≤ 10 s. The visible UI shows the agent thinking during a turn regardless. **Narrator: Qwen2.5-14B-Instruct Q4** (§ P21 re-run, "The narrator runs"); the 32B stays available for the cloud-free comparison arm but is not the launch default. Per-machine cap = **2 sessions** on the 14B (the largest measured count under 60 s: N=2 35 s, N=3 65 s, N=4 71 s); raise it only on a new measurement after slot pinning (P22).
+
 ## Open questions
 
 1. **Per-peer lane keys on the leader proxy.** Decision 13 assumes the broker can mint a lane key per session; if the proxy knows only one key, a leaked key from one container serves every visitor. Check in Phase 1; if absent, add per-peer keys before any public session.
 2. **Which local model.** Phase 0 picks among the 14B–32B profiles by the contention gate, not by benchmark prose.
 3. **Choice timeout length** for an idle visitor (decision 14): long enough to read a scene, short enough that a queue of watchers is not held by one absent player.
 4. **Oasis intake format.** The bucket manifest is the seam; when the 1.2 Oasis software is designed, it consumes exactly that. Route through `substrate_merge` only, `strict_geometry=True`, the contributor-count floor before publication, and keep a raw-substrate arm for the headline claim (`maxim_hivemind.md` § Confound discipline).
-5. **Re-set the latency gate from § P21 re-run.** The 8 s figure predates any measurement; after P21 the 32B measures 28–48 s solo (slot-cache dependent) and 168 s at four sessions. Recommendation: gate on the *cached* solo turn ≤ 30 s (requires slot pinning to be reliable, P22), cap concurrency per machine at the session count that keeps the steady turn ≤ 60 s (measure N=2 on the 32B; run the 14B pair), cloud arm ≤ 10 s, and make the visible UI honest about it (a turn takes a while; show the agent thinking). Still open: pick the launch narrator (32B at low concurrency vs 14B) once those two runs exist.
+5. **Re-set the latency gate — DECIDED 2026-09-05 (see Decisions, "Latency gate").** Narrator decided the same day: the 14B (§ P21 re-run, "The narrator runs"). Nothing open.
 
 ## References
 
