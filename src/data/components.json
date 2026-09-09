@@ -1,7 +1,7 @@
 {
-	"source_label": "pymaxim 1.1.4 (PyPI wheel)",
+	"source_label": "pymaxim 1.2.0 (PyPI wheel)",
 	"registry_path": "src/maxim/_data/components/**/*.yaml",
-	"count": 94,
+	"count": 97,
 	"categories": [
 		{
 			"name": "items",
@@ -9,7 +9,7 @@
 		},
 		{
 			"name": "bodies",
-			"count": 14
+			"count": 17
 		},
 		{
 			"name": "npcs",
@@ -35,7 +35,7 @@
 	"genres": [
 		{
 			"name": "neutral",
-			"count": 41
+			"count": 44
 		},
 		{
 			"name": "fantasy",
@@ -492,6 +492,124 @@
 				"proprioceptive_drift"
 			],
 			"file": "bodies/megarm_v3.yaml"
+		},
+		{
+			"ref": "bodies/minecraft_bench",
+			"name": "minecraft_bench",
+			"category": "bodies",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"body",
+				"minecraft",
+				"world",
+				"benchmark",
+				"exp56"
+			],
+			"synonyms": [
+				"minecraft benchmark body",
+				"exp56 body",
+				"four-arm body"
+			],
+			"description": "The Exp 56 four-arm benchmark body (frozen apparatus —\ndocs/experiments/protocols/exp56_four_arm_sharing_preregistration.md\n§Apparatus). A deliberately BUDGETED variant of minecraft_player:\n\n* World channel budgeted to FIVE sensors (L11's per-channel rule: <= 12,\n  stated in the prereg; prereg amendment 2 dropped light_level — the\n  live bridge reads it as 0.0 everywhere, a dead rest-at-extreme sensor\n  that drowned the signature, measured 2026-09-05) — the situation\n  signature spans distance_from_spawn + y_altitude (far + elevated\n  slots). Sensor NAMES stay the bridge snapshot keys (the\n  backend writes by declared-name match; names only reach the SHA-basis\n  encoder, carrying no semantics — L12 concerns TOOL and DRIVE names).\n  Ranges follow minecraft_player's re-centered PRINCIPLE (rest = the\n  A4 neutral; D1's lever); speed's window is narrower than the\n  player's — the principle, not the bytes, is what is copied.\n* OPAQUE affordance and drive names (L12): the eight roster affordances\n  are aff_a..aff_h under the abstract `act` modulator — the per-pair\n  opaque-name -> bridge-action permutation lives in the harness's\n  translating client, NEVER in this file — and the single interoceptive\n  drive is d1 (no entry in _DRIVE_TOOL_AFFINITIES; no tool name\n  contains a drive name). Do not \"clarify\" these names: their opacity\n  is the mitigation.\n* d1 is MODELED interoception (drifts by wall-clock, relieved by the\n  harness TEACHER's feed via credit_operant_reward) — deliberately NOT\n  modality: world, so the live-readback credit withhold cannot\n  short-circuit the operant path (prereg §Apparatus body bullet (d)).\n\nThe satiated twin (minecraft_bench_satiated) keeps THIS entity name —\nthe name prefixes every tool signature and is the body_ref; a renamed\ntwin would be refused by gate 7 and could never share keys.",
+			"archetype": "humanoid",
+			"extends": "",
+			"entity_type": "body",
+			"sensors": [
+				"d1",
+				"y_altitude",
+				"distance_from_spawn",
+				"speed",
+				"on_ground",
+				"time_of_day"
+			],
+			"affordances": [
+				"aff_a",
+				"aff_b",
+				"aff_c",
+				"aff_d",
+				"aff_e",
+				"aff_f",
+				"aff_g",
+				"aff_h"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "bodies/minecraft_bench.yaml"
+		},
+		{
+			"ref": "bodies/minecraft_bench_satiated",
+			"name": "minecraft_bench_satiated",
+			"category": "bodies",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"body",
+				"minecraft",
+				"world",
+				"benchmark",
+				"exp56",
+				"control"
+			],
+			"synonyms": [
+				"satiated benchmark body",
+				"exp56 satiated body"
+			],
+			"description": "Exp 56 satiated-donor control body (the Exp 52/54 satiated pattern,\nverbatim — reachy_mini_infant_satiated is the precedent): identical to\nminecraft_bench — same six world sensors, same eight opaque affordances,\nthe SAME entity name minecraft_bench (load-bearing: the name prefixes\nevery tool signature and is the body_ref; gate 7 refuses a renamed\ntwin) — but d1 starts at 0 and never drifts. The teacher's contingent\nfeed relieves nothing, so under relief-signed operant credit it mints\nNO reward: identical schedule, identical feed events, zero need. If a\nreceiver of this donor's bundle moves, the effect is not a learned want\n(docs/experiments/protocols/exp56_four_arm_sharing_preregistration.md,\narm 3).",
+			"archetype": "humanoid",
+			"extends": "bodies/minecraft_bench",
+			"entity_type": "",
+			"sensors": [
+				"d1"
+			],
+			"affordances": [],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "bodies/minecraft_bench_satiated.yaml"
+		},
+		{
+			"ref": "bodies/minecraft_bench57",
+			"name": "minecraft_bench57",
+			"category": "bodies",
+			"genres": [
+				"neutral"
+			],
+			"tags": [
+				"body",
+				"minecraft",
+				"world",
+				"benchmark",
+				"exp57"
+			],
+			"synonyms": [
+				"minecraft benchmark body exp57",
+				"exp57 body",
+				"dose-response body"
+			],
+			"description": "The Exp 57 dose-response ladder body — minecraft_bench (the EARNED Exp 56\nfour-arm body) with a world channel that is DIRECTION-AWARE and NOT diluted\nby situation-constant sensors. Copied verbatim and frozen:\n\n* The d1 interoceptive drive with its EXACT spec (entropic up-drift 0.006,\n  deprivation_threshold 0.7 / pain 0.3, satisfaction_threshold 0.3) —\n  MODELED interoception, deliberately NOT modality: world so the\n  live-readback credit withhold cannot short-circuit the operant path.\n* The eight OPAQUE affordances aff_a..aff_h under the abstract `act`\n  modulator — the per-pair opaque-name -> bridge-action permutation lives\n  in the harness's translating client, NEVER here. Opacity is the L12\n  mitigation; do not \"clarify\" these names or d1.\n\nWORLD CHANNEL = the bot's SIGNED horizontal position from spawn (offset_x,\noffset_z), and ONLY that. WHY, in two parts:\n\n1. DIRECTION. The Exp 56 world channel was direction-BLIND —\n   distance_from_spawn is a magnitude and y_altitude an elevation, so the\n   four FROZEN contingency slots (same ~88-block distance, same y=112,\n   differing only in BEARING) collapsed to ONE cluster (G=1). offset_x/\n   offset_z are what the game ALREADY exposes (distance_from_spawn is the\n   magnitude of exactly this signed position — less lossy than the derived\n   magnitude, not an invented sensor), so bearing now separates the slots.\n2. NO DILUTION. The other Exp 56 world sensors (distance_from_spawn,\n   y_altitude, speed, on_ground, time_of_day) are IDENTICAL across the four\n   frozen slots — they carry zero situation information here and, through\n   the SHA-basis + A4-gain encoder, add a large shared component that\n   DILUTES the offsets (measured on the real SensorEncoder: keeping all\n   seven gave max pairwise cosine 0.8387, a jitter-fragile 0.011 margin).\n   Dropping them is the root-cause fix, not a trim for taste.\n\nResult, measured through the real SensorEncoder on the four frozen slots +\nrest: five distinct clusters, MAX pairwise cosine 0.3716 (margin 0.478\nbelow the 0.85 pattern-completion threshold) — robust to bridge jitter. The\nworld channel touches neither the opaque affordance names nor d1, so the\nL12 opacity mitigation is preserved.",
+			"archetype": "humanoid",
+			"extends": "",
+			"entity_type": "body",
+			"sensors": [
+				"d1",
+				"offset_x",
+				"offset_z"
+			],
+			"affordances": [
+				"aff_a",
+				"aff_b",
+				"aff_c",
+				"aff_d",
+				"aff_e",
+				"aff_f",
+				"aff_g",
+				"aff_h"
+			],
+			"latent_affordances": [],
+			"failure_modes": [],
+			"file": "bodies/minecraft_bench57.yaml"
 		},
 		{
 			"ref": "bodies/minecraft_player",

@@ -22,19 +22,42 @@ such as the Reachy robot.
 pip install pymaxim
 ```
 
-That resolves to the current stable release, **1.1.4 "The world seam"** (published
-2026-09-05 UTC) —
-[release notes](https://github.com/dennys246/Maxim/blob/main/docs/announcements/release_1_1_4.md) ·
+That resolves to the current stable release, **1.2.0 "Oasis"** (published
+2026-09-09 UTC) —
+[release notes](https://github.com/dennys246/Maxim/blob/main/docs/announcements/release_1_2_0.md) ·
 [changelog](https://github.com/dennys246/Maxim/blob/main/CHANGELOG.md) ·
-[GitHub release](https://github.com/dennys246/Maxim/releases/tag/v1.1.4).
+[GitHub release](https://github.com/dennys246/Maxim/releases/tag/v1.2.0) ·
+[PyPI](https://pypi.org/project/pymaxim/1.2.0/).
 
-1.1.4 is infrastructure, not a result. It builds the first seam where the substrate
-meets a world it does not control — a Minecraft server, reached through a bridge —
-and ships a world-only change to how a body-scale sensor set is encoded, plus
-bearer authentication on the local Console. It makes no behavioural claim; the
-claims, if any, come in 1.2, measured against this apparatus. The one measurement
-it produced is on the
-[limits page](/research/limits/#l11--the-sensor-count-discrimination-ceiling).
+1.2.0 is the substrate-sharing line, and the first release to make a behavioural
+claim about the world seam 1.1.4 built. It carries two measured claims and the
+plumbing that connects them:
+
+- **A taught want transfers between independent agents — earned.** One agent is
+  taught that a specific action pays off in a specific situation; its substrate is
+  exported as a signed bundle and ingested into a second agent built separately.
+  At the second agent's first contact with that situation, it chooses the taught
+  action, and three controls show the choice needed the taught representation
+  rather than the mere arrival of a bundle.
+  ([Exp 56](/research/evidence/#a-taught-want-transfers-between-independent-agents),
+  n = 50 per arm, all four gates pass.)
+- **Pooling partial learners is faster per participant, at a total-experience
+  cost — partial.** Folding N independent partial learners lets each reach the
+  criterion in fewer of *its own* trials as N grows. But the pool spends **more
+  total experience** than one agent given everything, so this is a per-participant
+  win, not a free lunch, and it ships as a named partial rather than a pass.
+  ([Exp 57](/research/evidence/#pooling-partial-learners--faster-per-participant-at-a-total-experience-cost).)
+- **The Hivemind exchange ships end to end** — bundle signing, authenticated
+  HTTP endpoints, and the `oasis` / `hive` operator CLIs, with pulls trusting
+  Queen-signed releases only by default. Queen-tier *promotion* is deliberately
+  not shipped. See [the Oasis](/guides/oasis/).
+
+Both claims are substrate-primary, in Minecraft, on one world layout, with
+teacher-taught wants. Two pre-registered probes resolved as nulls and bound them:
+there is no cross-layout generalization in the current readout, and world-owned
+drives do not yet close a survival loop. This is a bounded behavioural result, not
+a general-intelligence claim — the [evidence page](/research/evidence/) states each
+scope in full.
 
 Optional extras pull in LLM backends and semantic tooling, for example:
 

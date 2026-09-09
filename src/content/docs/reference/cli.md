@@ -120,32 +120,75 @@ MAXIM_HEARTBEAT=1 maxim                # System health every 10s
 ## Substrate Bundles
 
 `maxim substrate` moves learned state — NAc reward biases and EC concept clusters,
-never episodes — between installs as a signed zip bundle. Four verbs:
+never episodes — between installs as a zip bundle, optionally signed. Seven verbs:
 
 ```bash
-maxim substrate export out.zip --session <id|dir> --contributor-id <id> [--domain <tag>]
+maxim substrate export out.zip --session <id|dir> --contributor-id <id> [--domain <tag>] [--sign]
 maxim substrate inspect out.zip                        # print the manifest, extract nothing
 maxim substrate import out.zip --output-dir <dir>      # extract the bundle; does NOT merge it
+maxim substrate ingest out.zip --session <id|dir> --receiver-body <ref> [--apply]
+maxim substrate keygen --identity <id>                 # mint + print the signing public key
+maxim substrate invalidate --session <id|dir> --modality <name> [--apply]
 maxim substrate merge-nac policy.json [--into ~/.maxim/memory/nac.json] --source-id <id>
 ```
 
-Two things the verbs do **not** do, stated because both used to be implied:
-
+- **`ingest` is the cross-substrate merge, and it is new in 1.2.** It runs the
+  receiver-side validation contract — contributor trust and provenance stamping,
+  numeric bounds, count and confidence caps, strict geometry, an identity and content
+  re-scrub, resource caps, declared-slices-only reads, and a digest-deduped journal —
+  then merges through `substrate_merge`: the donor's clusters aligned onto the
+  receiver's, the donor's biases re-keyed through that map, then folded, with a
+  tighten-only clamp so an import can deepen a learned aversion but never raise it
+  toward zero. It is a **dry run until `--apply`**, the receiver must be at rest, and
+  the pair is backed up and journalled before any write. Add `--require-signed
+  --trust-key <id>=<pubkey>` to refuse anything not signed by a key you name. This is
+  the path the [Exp 56 transfer result](/research/evidence/#a-taught-want-transfers-between-independent-agents)
+  ran through; the network wrapper around it is [the Oasis](/guides/oasis/).
 - **`import` extracts and stops.** It writes the bundle's `nac.json` / `ec.json`
-  slices to a directory and leaves what to do with them to you. As of 1.1.3 the
-  supported next step is the library call `maxim.hivemind.substrate_merge` (align
-  the donor's clusters onto the receiver's, re-key the donor's biases, then fold),
-  applied to a live system with `EntorhinalCortex.ingest_substrate_nodes` and
-  `NAc.load_state`. **No CLI verb performs a cross-substrate merge** — that path is
-  library-only today. Hand-composing `ec_merge` + `nac_merge`, which this tool's own
+  slices to a directory and leaves what to do with them to you — use `ingest` to
+  actually merge one. Hand-composing `ec_merge` + `nac_merge`, which this tool's own
   help text recommended before 2026-09-02, merges the two slices independently and
   discards the alignment, so the donor's biases land under clusters the receiver has
-  no node for and the merged want reads out as 0.0 (D43).
+  no node for and the merged want reads out as 0.0 (D43). The library entry point
+  behind `ingest` is `maxim.hivemind.substrate_merge`.
 - **`merge-nac` is a same-substrate import.** It folds a trained policy file into a
   runtime `nac.json` on disk, for a policy trained in the *same* state space (the
   Reachy orient policies are the intended use). It is one-shot — re-running it
   double-counts observations — and it never touches a running bio-stack; the runtime
   picks the file up at next boot.
+
+## Oasis & Hive (substrate exchange)
+
+New in 1.2: the peer-to-peer half of substrate sharing. `maxim oasis` runs the server
+side, `maxim hive` is the client. Full walkthrough on [the Oasis](/guides/oasis/).
+
+```bash
+maxim oasis serve [--root <dir>] [--port <n>] [--bind-host <addr>]
+maxim oasis publish signed-bundle.zip     # add to the Queen-tier release store (refuses unsigned)
+maxim oasis status                        # release / experimental tier counts
+
+maxim hive add <name> <url> --queen-key <id>=<pubkey> [--domain <tag>]
+maxim hive list | maxim hive remove <name>
+maxim hive trust <name> [--allow-unsigned] [--inherent] [--trust-source <id>]
+maxim hive pull --from <name> --session <id|dir> --receiver-body <ref> [--apply]
+maxim hive contribute bundle.zip --to <name>
+```
+
+- **`pull` delegates to `substrate ingest`** rather than reimplementing it, so the
+  signature check, the validation duties and the journal are the same ones above. It
+  is a dry run until `--apply`, and it refuses a release whose signer is not a Queen
+  key registered for that Oasis.
+- **Trust defaults to Queen-only.** `hive trust --allow-unsigned` disables signature
+  verification for that Oasis's release stream — it is the check itself, off, not a
+  lower tier. Contradictory flags error rather than granting the looser setting.
+- **`oasis serve` fails closed.** Binding a non-loopback interface without a bearer
+  key is refused unless you pass `--insecure`.
+- **Nothing promotes a contribution.** `hive contribute` writes into an experimental
+  tier that no shipped verb promotes to Queen tier; that gate is
+  [deliberately not shipped in 1.2](/guides/oasis/#what-isnt-shipped).
+
+The registry lives at `~/.config/maxim/hive.json` (name → URL, Queen public keys,
+subscribed domains). It holds no secrets: Queen keys are public verification anchors.
 
 ## Console server
 

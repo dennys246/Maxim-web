@@ -17,6 +17,8 @@ A capable local model wants a real GPU and a lot of memory. A laptop, or a Reach
 
 What's shipped today is a clean single-leader / many-peer topology: peers forward their **large** lane to the leader over HTTPS, the leader serves it from GPU, and the bytes come back. What's *not* here yet is automatic peer discovery and per-request "smartest available backend" routing — those are described honestly under [What's planned](#whats-planned).
 
+This guide is about sharing **inference**. Sharing what agents have *learned* is a separate axis with its own transport and its own trust rules — see [the Oasis](/guides/oasis/).
+
 ## The roles
 
 Every Maxim instance resolves to exactly one of three roles at startup:
