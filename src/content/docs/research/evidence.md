@@ -19,6 +19,9 @@ they ever disagree:
 ## Graduated results
 
 These have cited experiments and a settled disposition in the graduation ledger.
+Most are EARNED. One — the 1.2 scaling claim — is a named **PARTIAL**: it is here
+because its disposition is settled and its passing half is real, and its entry
+states the half that failed before anything else.
 
 ### Cross-session memory persistence
 
@@ -242,6 +245,92 @@ nursery that produces one is Exp 52; the exact agent files read out here are und
 [`docs/experiments/data/53_agents/`](https://github.com/dennys246/Maxim/tree/main/docs/experiments/data/53_agents) with a SHA-256 manifest, and the harness is
 [`scripts/orient_backbone/exp53_cross_context_readout.py`](https://github.com/dennys246/Maxim/blob/main/scripts/orient_backbone/exp53_cross_context_readout.py).
 
+### A taught want transfers between independent agents
+
+**The claim.** Agent A is taught, by a contingent teacher, that one specific action
+pays off at one specific world situation. A's learned substrate is exported as a
+signed bundle and ingested into agent B — independent by construction: a different
+`agent_id`, a separately built entorhinal cortex and sensor encoder, disjoint
+cluster ids. At B's **first contact** with that situation, B chooses A's taught
+action. This is the 1.2 headline: learning is transferable between minds, over the
+shipped path, without B ever having experienced the contingency.
+
+**The evidence.** [Exp 56](https://github.com/dennys246/Maxim/blob/main/docs/experiments/56_four_arm_sharing.md),
+EARNED 2026-09-06, pre-registered with its gate constants frozen before any run and
+all four amendments dated before the confirmatory data. A four-arm campaign on a
+**live** Paper 1.16.5 Minecraft world — not the mock — n = 50 receivers per arm, one
+seed-paired donor each, substrate-primary with no LLM in the action path. The taught
+arm chose the target on **0.84** of first contacts [0.71, 0.92] against an isolated
+floor of **0.22**, and **0.80** of taught first contacts were decided by the
+situation-keyed learned-bias channel [0.67, 0.89] against **0.00** in every control
+arm. All four pre-registered gates pass: TRANSFERRED (0.80 ≥ 0.70), ABOVE-FLOOR
+(0.84 − 0.22 = 0.62 ≥ 0.20), WANT-NOT-FILE (0.84 − 0.12 = 0.72 ≥ 0.20), and the
+BOTH-HALVES falsifier (0.12 − 0.22 = −0.10, below the 0.10 one-sided bar), plus the
+anti-vacuity kit.
+
+**The controls are the result.** Two arms exist to break the claim and both sit at
+the floor. A **satiated** donor ran the identical schedule with identical feeds but
+its drive held at zero, so the teacher minted no credit — its bundle transfers a
+file, not a want, and its receivers chose the target 0.12 of the time. The
+**dangling-half** falsifier ships A's bias keys *without* the representation they
+key on: the ingest report shows those biases dropped rather than silently landing,
+and its receivers also sit at 0.12. So a bias key with no cluster to key on buys
+nothing, and it fails loudly.
+
+**The caveats.** One campaign, one world layout, substrate-primary, in Minecraft,
+teacher-taught wants, n = 50 per arm. It is **not** scaling — that is Exp 57 below,
+and it is partial. It is not hardware: the two-Reachy cross-unit replication is its
+own pre-registration. It is not aversion transfer — only positive credit moved here.
+It is not cross-layout generalization: A trains and B probes the *same* seeded
+configuration, and the R1 null below says the current readout cannot do otherwise.
+And the want is taught by a contingent teacher, not acquired on the agent's own.
+
+**Run it yourself.** The harness is [`scripts/exp56/`](https://github.com/dennys246/Maxim/tree/main/scripts/exp56)
+with the frozen analyzer at [`scripts/analyze_exp56.py`](https://github.com/dennys246/Maxim/blob/main/scripts/analyze_exp56.py);
+the 200 committed rows and the analyzer verdict are under
+[`docs/experiments/data/`](https://github.com/dennys246/Maxim/tree/main/docs/experiments/data).
+Reproducing the live arm needs a Paper server and the bridge, per
+[`scripts/exp56/README.md`](https://github.com/dennys246/Maxim/blob/main/scripts/exp56/README.md).
+
+### Pooling partial learners — faster per participant, at a total-experience cost
+
+**PARTIAL by pre-registration — read both halves.** This is the 1.2 scaling claim,
+run as its pre-registered may-fail second claim. One gate passed robustly and one
+failed, and the failure is a real property of the shipped merge, not an apparatus
+artifact.
+
+**What passed.** Pooling N independent *partial* learners lets each agent reach the
+criterion in fewer of **its own** trials as N grows. Per-agent trials-to-criterion
+fall **21 → 21 → 15.5 → 10.5** across N = 1/2/4/8: a lone agent never reaches the
+3-of-4 criterion inside its 20-trial budget, while an agent in a crèche of eight
+gets there in about 10.5 of its own trials. The ordered-trend test passes at
+p ≈ 1e-4 and survives dropping the fully-censored rungs, and the mechanism is
+visible — endpoint coverage of the situation widens 0.25 → 0.50 → 0.75 → 0.75, so
+the win comes from pooled *coverage* rather than from louder wants (the fold is a
+convex combination, bounded above by the largest contributor, so it cannot amplify).
+
+**What failed.** Pooling is **not a total-sample free lunch**. At every rung the
+crèche spends more aggregate experience to reach the criterion than one agent given
+all of it: N × τ of **42 / 62 / 84** against a matched single agent's **41 / 46 /
+43**. The cost is convex-combination merge overhead — averaging N partial biases
+recovers coverage but dilutes signal one agent accumulates undiluted. Anything that
+says pooling beats centralizing outright is wrong; the honest sentence is *faster
+per participant, at a total-experience cost*.
+
+**The evidence.** [Exp 57](https://github.com/dennys246/Maxim/blob/main/docs/experiments/57_dose_response_ladder.md),
+PARTIAL 2026-09-08, gate constants frozen at the pre-registration merge rather than
+from pilot data. One confirmatory ladder run on the live Minecraft apparatus, four
+rungs × three conditions × 20 cohorts (9,200 committed rows), substrate-primary. The
+noise floor, seed-variance and anti-vacuity gates also pass.
+
+**The caveats.** One campaign, one world layout, substrate-primary, in Minecraft, 20
+cohorts per rung, teacher-taught wants. This is **not a scaling law** — the gate is
+monotone decrease, not a functional form. The comparison that fails is deliberately
+the strict *serial sample-cost* one: those 84 agent-trials at N = 8 are spent by
+eight agents in parallel against one agent's 43 serially, so pooling can still win
+in wall-clock terms — that is simply not what this gate measured. Whether a
+coverage-preserving fold closes the cost is open 1.3 work, not a claim made here.
+
 ### Two-joint centering
 
 **The claim.** Given sound sources beyond the neck's reach, an agent with
@@ -333,6 +422,26 @@ did, and the run records capture nothing that would let anyone reconstruct why. 
 Exp 37 magnitudes are readings taken at one time, not reproducible constants
 (limit [L8](https://github.com/dennys246/Maxim/blob/main/docs/limits/README.md)).
 
+**A shared want is a cache entry, not a concept.** The want Exp 56 transfers is
+keyed on an exact cluster: a world layout different enough to be a genuinely
+different situation necessarily misses that key, so cross-layout generalization is
+unreachable in the current readout. This was resolved as a pre-registered structural
+null from the mechanism rather than by running a campaign that could only confirm it
+([R1](https://github.com/dennys246/Maxim/blob/main/docs/experiments/r1_cross_layout.md),
+CACHE-CONFIRMED 2026-09-07), and it is a 1.3 design target rather than a defect. It
+is also the sharpest bound on the headline: transfer is demonstrated, generalization
+is not.
+
+**World-owned drives do not, on their own, move behaviour.** The Minecraft player
+body's health and food drives — drained by the game rather than by the model — do not
+measurably push the agent toward the corrective affordances, and the survival loop
+has three specific breaks. Rather than back-fit a survival benchmark onto a premise
+that does not hold, the dependent rungs were stopped by their own pre-registered stop
+rule and deferred to 1.3, where the loop gets designed and the three breaks are the
+build list
+([R2](https://github.com/dennys246/Maxim/blob/main/docs/experiments/r2_drive_premise_check.md),
+PREMISE-NULL 2026-09-07).
+
 **The consequence for how Maxim is described.** The strong framing — that the
 substrate drives action selection through specific bio-mechanisms — is explicitly
 pulled from the release positioning. Maxim ships as a bio-inspired LLM harness: the
@@ -342,8 +451,16 @@ separate and narrowly graduated result above.
 
 ## What isn't shipped
 
-- **Peer substrate sharing (Oasis) is not an earned claim — and until 1.1.3 it did
-  not work at all.** *Correction, dated 2026-09-03.* Before 1.1.3, merging a foreign
+- **Peer substrate sharing: transfer is earned, generalization and hardware are
+  not — and until 1.1.3 the merge did not work at all.** Cross-agent transfer of a
+  taught want is earned by
+  [Exp 56](#a-taught-want-transfers-between-independent-agents) at the scope stated
+  there, and the exchange carrying it ships end to end ([the Oasis](/guides/oasis/)).
+  What is still **not** earned: generalization to a world layout the want was not
+  taught at (the R1 null above), replication across two physical robots, transfer of
+  an *aversion* rather than a want, and scaling beyond the named partial. *The
+  correction below is dated 2026-09-03 and kept in full* — it is why the claim needed
+  a live four-arm campaign before anyone could make it. Before 1.1.3, merging a foreign
   substrate produced a want that read out as exactly **0.0** on the receiver.
   `ec_merge` computed the alignment between the donor's clusters and the receiver's
   and discarded it, while `nac_merge` folded reward biases on exact string keys, so
@@ -356,18 +473,16 @@ separate and narrowly graduated result above.
   shared agent id and a shared cluster space (see [the correction
   above](#sensorimotor-learning-on-real-hardware) and [the Cradle
   page](/research/cradle/#46--operant-orient-a-mother-teaches-a-crèche-pools)).
-  **1.1.3 fixes the mechanism.** `maxim.hivemind.substrate_merge` aligns the donor's
-  clusters onto the receiver's, re-keys the donor's biases through that map, then
-  folds; on the shipped path a receiver that never saw a contingency goes **0.0 →
-  1.0**, with four of four merged keys naming a reachable cluster. That is a
-  mechanical fix verified by a behavioural unit gate (D44), not an earned behavioural
-  row: it is **library-only** — no CLI verb performs a cross-substrate merge, and
-  `maxim substrate import` extracts a bundle without merging it — and the
-  pre-registered two-robot replication at n = 12 is 1.2 work. The first planned case
-  study is the artifact above, the nursery-taught orient files that read out on the
-  robot, as a shareable substrate; that is a
-  [plan](https://github.com/dennys246/Maxim/blob/main/docs/plans/oasis_case_study_taught_orient.md),
-  not something you can run.
+  **1.1.3 fixed the mechanism** — `maxim.hivemind.substrate_merge` aligns the
+  donor's clusters onto the receiver's, re-keys the donor's biases through that map,
+  then folds — but that was a mechanical fix verified by a behavioural unit gate
+  (D44), not an earned behavioural row, and it was library-only. **1.2 closes both
+  halves:** `maxim substrate ingest` performs the validated cross-substrate merge
+  from the command line, and Exp 56 measured what the merge does to an independent
+  receiver's behaviour on a live world. What remains unearned is stated with the
+  claim: no cross-layout generalization, no hardware replication, no aversion
+  transfer, and scaling only as the partial above. The two-Reachy cross-unit
+  replication is still its own pre-registration and has not run.
 - **The cradle harness wired end-to-end into substrate-primary mode** is planned.
   `--aut-mode substrate-primary` is opt-in; `--aut-mode llm-primary` remains the
   default.
@@ -387,10 +502,21 @@ separate and narrowly graduated result above.
   site should be read as "Maxim plays Minecraft". The one measurement it produced is
   a limit re-measure, which confirmed a partial mitigation and did **not** retire the
   limit — see [L11](/research/limits/#l11--the-sensor-count-discrimination-ceiling).
-  Claims, if any, come in 1.2, measured against this apparatus. A `pip install`
+  The claims measured against this apparatus landed in 1.2 and are stated above —
+  [Exp 56](#a-taught-want-transfers-between-independent-agents) earned,
+  [Exp 57](#pooling-partial-learners--faster-per-participant-at-a-total-experience-cost)
+  partial — and they are claims about a taught want transferring and pooling, not
+  about playing the game. A `pip install`
   carries the engine half of the seam (the bridge client, the `bodies/minecraft_player`
   body, the world backend and the two-agent harness); the Mineflayer bridge process
   lives in the repository's `scripts/`, so running the live seam needs a checkout.
+- **Queen-tier promotion is deliberately not shipped in 1.2.** An Oasis can serve
+  signed Queen-tier releases and accept contributions into an experimental tier, but
+  nothing promotes a contribution to Queen tier: the gauntlet battery that would
+  score one does not exist yet, so the blocker is
+  [recorded](https://github.com/dennys246/Maxim/blob/main/docs/plans/hivemind_p2p_scope.md)
+  rather than shipping a gate that cannot gate. `maxim hive contribute` is
+  write-only. See [the Oasis](/guides/oasis/).
 - **Fear gating** is opt-in and off in the stable Python API — see
   [tool safety](/reference/tools/#tool-safety).
 

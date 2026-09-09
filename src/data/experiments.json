@@ -935,6 +935,50 @@
       "cluster": "substrate",
       "finding": "Pre-registered: removes the LLM from action selection to test whether the substrate alone drives adaptive within-session avoidance and cross-session carry.",
       "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/39_substrate_primary_counter_prior.md"
+    },
+    {
+      "id": "56",
+      "file": "56_four_arm_sharing.md",
+      "title": "Four-arm sharing benchmark: a taught want transfers between independent agents",
+      "date": "2026-09-06",
+      "status": "recorded",
+      "phase": null,
+      "cluster": "substrate",
+      "finding": "EARNED — the 1.2 \"Oasis\" headline. Agent A's teacher-taught, world-keyed operant bias, exported as a signed bundle and ingested into an independent agent B (different agent_id, separately built EC + SensorEncoder, disjoint cluster ids), changes B's FIRST-contact choice. Live Paper 1.16.5 Minecraft world (not the mock), n = 50 receivers/arm, substrate-primary. Taught raw 0.84 [0.71, 0.92] and 0.80 bias-decisive vs isolated floor 0.22 raw / 0.00 decisive; satiated (zero-credit donor) 0.12 and dangling-half falsifier 0.12, both at floor. All four gates PASS: TRANSFERRED 0.80 >= 0.70, ABOVE-FLOOR 0.62 >= 0.20, WANT-NOT-FILE 0.72 >= 0.20, BOTH-HALVES -0.10 < 0.10, plus the anti-vacuity kit. 40 of 50 taught first contacts decided by the situation-keyed learned-bias channel. Scope: one campaign, one world layout, teacher-taught wants — not scaling (Exp 57), not hardware, not aversion, not cross-layout (R1).",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/56_four_arm_sharing.md"
+    },
+    {
+      "id": "57",
+      "file": "57_dose_response_ladder.md",
+      "title": "Dose-response ladder: pooling scales per-agent learning, at a total-experience cost",
+      "date": "2026-09-08",
+      "status": "partial",
+      "phase": null,
+      "cluster": "substrate",
+      "finding": "PARTIAL by pre-registration — the 1.2 scaling claim, run as its may-fail second claim; both halves are load-bearing. MONOTONICITY (primary) PASS in its robust form: per-agent trials-to-criterion fall 21 / 21 / 15.5 / 10.5 across N = 1/2/4/8 (Jonckheere-Terpstra permutation p ~ 1e-4, surviving the drop-censored-rungs guard), driven by endpoint coverage widening 0.25 -> 0.50 -> 0.75 -> 0.75 — a lone agent never reaches the 3-of-4 criterion in 20 trials, an agent in a creche of 8 reaches it in ~10.5 of its own. NOT-JUST-MORE-DATA FAIL: N x tau = 42 / 62 / 84 vs a matched single agent's 41 / 46 / 43, so the pool spends MORE total experience than one agent given all of it — convex-combination merge overhead, named as the 1.3 audit target. Collective learning is a per-participant win, not a total-sample free lunch. Live Minecraft, 4 rungs x 3 conditions x 20 cohorts (9,200 rows), substrate-primary. Not a scaling law; the failing gate is the strict serial sample-cost comparison, not wall-clock.",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/57_dose_response_ladder.md"
+    },
+    {
+      "id": "R1",
+      "file": "r1_cross_layout.md",
+      "title": "Cross-layout generalization: a structural null (representation vs cache)",
+      "date": "2026-09-07",
+      "status": "recorded",
+      "phase": null,
+      "cluster": "substrate",
+      "finding": "CACHE-CONFIRMED (structural null). Asks whether Exp 56's shared want carries a generalizable representation or a cached association: does a want taught at one world layout fire at a layout the receiver never trained on? It does not — the shared want is an exact-key cluster cache with no cross-layout generalization channel, knowable from the substrate mechanism without a live campaign. Bounds the 1.2 headline: transfer is demonstrated, generalization is not. A 1.3 readout design target, not a defect; a null shipped as a null.",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/r1_cross_layout.md"
+    },
+    {
+      "id": "R2",
+      "file": "r2_drive_premise_check.md",
+      "title": "Premise check: do the world-owned drives move behaviour? (a null)",
+      "date": "2026-09-07",
+      "status": "recorded",
+      "phase": null,
+      "cluster": "substrate",
+      "finding": "PREMISE-NULL. The minecraft_player world-owned drives (health homeostatic, food entropic, both drift_rate 0.0 — the game drains them, not the model) do not measurably move behaviour toward the corrective affordances, and the survival loop has three specific breaks. Per the rung's own pre-registered stop rule the dependent survival rungs R3/R4 do not run in 1.2; the three breaks become the 1.3 build list rather than a benchmark back-fitted onto a premise that does not hold. A null shipped as a null.",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/r2_drive_premise_check.md"
     }
   ]
 }

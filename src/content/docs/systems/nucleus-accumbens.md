@@ -279,13 +279,17 @@ receiver's, re-keys the donor's biases through that map, then folds — the orde
 load-bearing — and reports `biases_rekeyed` and `biases_dropped` instead of a size.
 Its result is applied to a live system with `EntorhinalCortex.ingest_substrate_nodes`
 (which preserves the merged nodes' member counts; the ordinary registration path
-resets them to one) plus `NAc.load_state`. **There is no CLI verb for this**: a
-cross-substrate merge is library-only in 1.1.3. `maxim substrate merge-nac` is a
+resets them to one) plus `NAc.load_state`. **Since 1.2 there is a CLI verb for this**: `maxim substrate ingest` runs the
+receiver-side validation contract and then this merge, as a dry run until `--apply`
+(it was library-only through 1.1.x). `maxim substrate merge-nac` remains a
 same-substrate, file-level policy import, and `maxim substrate import` extracts a
 bundle without merging it — see the [CLI reference](/reference/cli/#substrate-bundles).
-The fix is mechanical, verified by a behavioural unit gate; sharing between
-independent agents is not an earned behavioural claim — see
-[what isn't shipped](/research/evidence/#what-isnt-shipped).
+The 1.1.3 fix was mechanical, verified by a behavioural unit gate. The behavioural
+claim came later: in 1.2, a taught want carried through this path changed an
+independent receiver's first-contact behaviour on a live world
+([Exp 56](/research/evidence/#a-taught-want-transfers-between-independent-agents)),
+at the scope stated there — one world layout, teacher-taught wants, no cross-layout
+generalization.
 
 ## Going deeper
 

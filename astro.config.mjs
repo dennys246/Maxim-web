@@ -126,6 +126,7 @@ export default defineConfig({
 						{ label: 'DM campaigns', slug: 'guides/dm-campaigns' },
 						{ label: 'Benchmarks', slug: 'guides/benchmarks' },
 						{ label: 'Networking & mesh', slug: 'guides/networking' },
+						{ label: 'The Oasis — sharing substrate', slug: 'guides/oasis' },
 					],
 				},
 				{

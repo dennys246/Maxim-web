@@ -100,9 +100,13 @@ cluster keys align."* That is the one configuration in which the merge's
 key-alignment defect cannot fire. Until 1.1.3, a substrate merged from an agent with
 *its own* clusters read out as exactly 0.0 on the receiver while the merge reported
 success (D43), so these numbers show pooling within a shared cluster space, not
-sharing between independent agents. The independent-agent case is mechanically fixed
-in 1.1.3 and is not yet an earned behavioural claim; see
-[what isn't shipped](/research/evidence/#what-isnt-shipped) on the evidence page.
+sharing between independent agents. The independent-agent case was mechanically fixed
+in 1.1.3 and earned its behavioural claim in 1.2, in a different apparatus: a taught
+want transferring into a genuinely independent receiver on a live Minecraft world
+([Exp 56](/research/evidence/#a-taught-want-transfers-between-independent-agents)).
+That result does not retroactively license these numbers — they still show pooling
+within a shared cluster space, and the crèche-scaling question has its own, partial,
+answer in [Exp 57](/research/evidence/#pooling-partial-learners--faster-per-participant-at-a-total-experience-cost).
 
 ### 47 — habituation: a novel sound in a wall of noise
 
