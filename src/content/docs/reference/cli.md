@@ -204,12 +204,13 @@ maxim serve --rotate-token                   # mint a NEW token, logging every d
 maxim serve --dump-openapi [PATH]            # write the OpenAPI schema and exit
 ```
 
-- **Bearer auth, always on, fail-closed (since 1.1.4, console contract 0.4.0).** At
+- **Bearer auth, always on, fail-closed (since 1.1.4; console contract 0.5.0 since
+  1.2.0).** At
   start the server prints a one-time sign-in URL of the form
   `http://127.0.0.1:8765/#token=…`; open it once and that browser is signed in.
   Every `/api/*` route, `/docs`, `/openapi.json` and `/ws` require the token;
   `GET /api/hello` is the one tokenless probe and answers
-  `{"contract_version": "0.4.0", "auth": "bearer"}`. A token passed as a query
+  `{"contract_version": "0.5.0", "auth": "bearer"}`. A token passed as a query
   parameter is refused. The token is an `mxc_`-prefixed secret in
   `~/.config/maxim/console_token`, re-read on every request, so `--rotate-token`
   takes effect without a restart.
@@ -226,11 +227,29 @@ maxim serve --dump-openapi [PATH]            # write the OpenAPI schema and exit
   is not in `MAXIM_CONSOLE_ALLOWED_ORIGINS`, and caps run input at
   `MAXIM_CONSOLE_MAX_INPUT_CHARS`. A browser-relay guard (Host and Origin checks
   against loopback plus the allowed list) is on in every mode.
-- **The bundled UI lags the server, as shipped.** The Console bundle vendored into the
-  1.1.4 wheel was built against contract 0.3.0 while the server speaks 0.4.0;
-  `maxim serve` warns about the mismatch at start ("parts of the UI may not work")
-  until a matching bundle is re-vendored. The API surface is unaffected. To use the
-  UI now, build a matching maxim-pulse and point `--ui-dist` at it.
+- **The bundled UI matches the server again, as of 1.2.1.** Through 1.2.0 the
+  vendored Console bundle lagged the contract the server spoke — 0.3.0 against 0.4.0
+  in the 1.1.4 wheel, then 0.4.0 against 0.5.0 in the 1.2.0 one — so `maxim serve`
+  warned at start ("parts of the UI may not work") and the UI drew a banner on every
+  screen. 1.2.1 vendors the maxim-pulse v0.3.0 bundle, which speaks 0.5.0: both the
+  warning and the banner are gone. The API surface was never affected by the
+  mismatch. `--ui-dist` still points the server at a bundle you built yourself.
+- **Spoken-code device pairing (A9.1) is available, and hardware verification is
+  owed.** A device with a speaker — a Reachy Mini is the case it was built for — can
+  sign its owner in by *saying* a six-digit code aloud instead of handing over a URL:
+  a tokenless request makes the device announce the code, and a second exchanges the
+  code for the console token. The 1.2.1 pairing screen is the UI half; the library
+  halves are `maxim.console.make_pairing_announcer` and
+  `maxim.utils.audio.make_device_speak_sink`. Two properties are **not yet verified
+  on a robot** and are tracked as
+  [D87](https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md): whether the
+  device's fixed-rate audio pipeline matches the speech synthesizer's 22050 Hz (a
+  mismatch would play the digits at the wrong pitch and speed, which for a code read
+  aloud is a functional failure, not a cosmetic one), and whether synthesis plus a
+  digit-by-digit repeat fits inside the code's 120-second lifetime on hardware as slow
+  as a Pi. Treat it as shipped and unverified on the device, not as validated there.
+  The endpoints are refused entirely unless an embedder wires an announcer, and under
+  sandbox mode.
 
 ## Common Recipes
 
