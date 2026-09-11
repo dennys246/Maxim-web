@@ -22,16 +22,28 @@ such as the Reachy robot.
 pip install pymaxim
 ```
 
-That resolves to the current stable release, **1.2.0 "Oasis"** (published
-2026-09-09 UTC) —
-[release notes](https://github.com/dennys246/Maxim/blob/main/docs/announcements/release_1_2_0.md) ·
+That resolves to the current stable release, **1.2.1 "Spoken-code loop"** (published
+2026-09-10 UTC) —
+[release notes](https://github.com/dennys246/Maxim/blob/main/docs/announcements/release_1_2_1.md) ·
 [changelog](https://github.com/dennys246/Maxim/blob/main/CHANGELOG.md) ·
-[GitHub release](https://github.com/dennys246/Maxim/releases/tag/v1.2.0) ·
-[PyPI](https://pypi.org/project/pymaxim/1.2.0/).
+[GitHub release](https://github.com/dennys246/Maxim/releases/tag/v1.2.1) ·
+[PyPI](https://pypi.org/project/pymaxim/1.2.1/).
 
-1.2.0 is the substrate-sharing line, and the first release to make a behavioural
-claim about the world seam 1.1.4 built. It carries two measured claims and the
-plumbing that connects them:
+1.2.1 is a patch on 1.2.0, and infrastructure only — it makes **no new behavioural
+claim**. It completes the spoken-code device-pairing loop end to end: the bundled
+Console UI is re-vendored to the contract the server already spoke, so the version
+warning and on-screen banner 1.2.0 shipped with are gone and the pairing screen is
+present, and the two pymaxim halves the loop needed — an announcer factory and a
+device speaker sink — are now in the library. It also fixes a real bug found on the
+way: device audio was pushed as 16-bit samples into a 32-bit float pipeline, which
+made spoken output noise rather than speech, on embodied speech as well as on the new
+pairing announce. Two audio properties are shipped but still owed hardware
+verification — see [the Console](/reference/cli/#console-server).
+
+The behavioural claims are 1.2.0's, and 1.2.1 does not touch them. 1.2.0 is the
+substrate-sharing line, and the first release to make a behavioural claim about the
+world seam 1.1.4 built. It carries two measured claims and the plumbing that connects
+them:
 
 - **A taught want transfers between independent agents — earned.** One agent is
   taught that a specific action pays off in a specific situation; its substrate is
