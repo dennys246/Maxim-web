@@ -331,6 +331,102 @@ eight agents in parallel against one agent's 43 serially, so pooling can still w
 in wall-clock terms — that is simply not what this gate measured. Whether a
 coverage-preserving fold closes the cost is open 1.3 work, not a claim made here.
 
+### Learned, anticipatory avoidance from the game's own pain
+
+**The claim.** An agent held underwater until air-hunger pain, then rescued, carries a
+fear keyed to *that situation* — not to the place, and not to a rule anyone wrote. On
+later submersions it leaves the water **before** the pain would fire. The learning
+signal is the game's, not a teacher's: no one rewards the agent, and no language model
+is anywhere in the action path.
+
+**The evidence.** [Exp 60](https://github.com/dennys246/Maxim/blob/main/docs/experiments/exp60_drowning_avoidance_prereg.md),
+EARNED 2026-09-16, pre-registered and frozen before any trial. A live Paper 1.20.4
+water classroom, five seeds per arm, six pain-free probe placements each. The trained
+arm surfaced on **1.0** of placements against **0.0** for the ablated twin, on every
+seed — an exact permutation test at p = 1/252, which is the floor for five against
+five. The fear is specific: the water cluster carries −1.0, the shore 0.0. Median
+latency to air after training is 1.72 s, inside the 4.34 s window before pain.
+
+**The control is the result.** The ablated twin is yoked by construction and measured
+equal: same water, same pain, same episodes, same actuator, same loop — only the
+subscriber that writes fear onto the situation is detached. It made **zero** executor
+calls across all thirty post-training placements. So the contrast is learning, not
+exposure.
+
+**The caveats.** Five seeds. After a seed's first escape, the escape action also
+carries a positive causal link, so placements two through six are read through fear
+*plus* that link rather than fear alone; the fear-only read is the first placement per
+seed, which surfaced 5 of 5 at 2.9–3.3 s. It says nothing about other geometries, and
+nothing about innate versus learned beyond the ablation. The contingency this earned
+on is water: "dark means danger" was tried first and **blocked at the instrument**
+(see [below](#where-it-didnt-hold-up)).
+
+### A survival fear transfers between agents
+
+**The claim.** A fear one agent learned the hard way travels to an agent that never
+felt the pain, through the shipped signed-bundle path, and changes what that agent does
+the first time its own loop runs underwater. This is the 1.3 headline, and it is the
+1.2 transfer claim moved from a want a teacher installed to a fear the world taught.
+
+**The evidence.** [Exp 61](https://github.com/dennys246/Maxim/blob/main/docs/experiments/exp61_shared_fear_prereg.md),
+EARNED 2026-09-17, one campaign at one code hash, 121 rows, zero refusals. A donor
+learns the fear, exports its substrate, and a fresh receiver ingests it — **discounted
+by a quarter at the ingest boundary**, because a fear you were told about is real but
+weaker than one you felt. The receiver then reboots and meets the water. **12 of 12**
+transferred receivers left it, against **0 of 24** isolated, **0 of 12** where the
+donor's cluster shipped but its fear did not, and **0 of 24** where the fear shipped
+without the cluster it keys on. Fisher one-sided p = 8.0 × 10⁻¹⁰; all six frozen gates
+pass.
+
+**What the controls rule out.** The third arm is the sharp one: the donor's cluster and
+its percept valence arrive, and the fear does not — receivers made zero executor calls
+in 12 of 12 windows, so the situation's *presence* is not the fear. The fourth arm
+ships the fear without its world node and the ingest drops it for want of something to
+key on, loudly, in 24 of 24. Before any loop ran, the representation gate read the
+transferred fear at exactly the discounted value on every receiver.
+
+**The caveats.** One campaign, one pool, one world layout, teacher-free but
+substrate-primary throughout. "First loop-live submersion" is precise: the receiver's
+lifecycle submerges it once with the loop **off**, at that representation gate, before
+the measured run. The discount's magnitude is not tested by this measure — 0.75 clears
+the threshold, and so would other values. Extinction, scaling to more donors, the
+fear's reach to a *different* pool, and promotion on the sharing side are all untested.
+
+### What a carried drive is worth: the R3 benchmark
+
+**Nothing here graduated.** R3 is an instrument and a frozen baseline, and it is on this
+page because it is the honest answer to "so what does the drive buy?"
+
+Five arms of twelve fresh agents each get one unrescued submersion on a depth-calibrated
+gauntlet. Median time to air:
+
+| arm | what it carries | time to air |
+|---|---|---|
+| A | the innate health reflex only | 28.0 s |
+| B | learns the fear there, in the water | 8.6 s |
+| C | carries a fear it learned earlier | 3.2 s |
+| D | carries a fear it received from another agent | 3.1 s |
+| E | the same pain exposure as C, fear subscriber detached | 28.1 s |
+
+**Every agent in every arm survived.** With regeneration on, survival is a ceiling by
+design and separates nothing. What the carried drive buys is the cost it removes:
+about 25 seconds of latency, about 11 health points, and about 22 seconds of oxygen
+pain. **Not life.** Two readings carry the mechanism: E is indistinguishable from A, so
+pain exposure without the subscriber that writes fear buys nothing; and D is
+indistinguishable from C, so a received fear acts like a learned one.
+
+**Reported with its own instrument trouble.** The frozen report read INCOMPLETE on two
+rules that turned out to be facts about the instrument rather than about the agents: a
+code-hash rule no bench run could satisfy, and a loop-cadence band that, on events
+lasting a few seconds, measured the tick phase instead of the cadence. Both were amended
+after the data, instrument-only, reviewed by two independent lenses, and published
+beside the frozen report rather than replacing it. The amended report reads COMPLETE.
+The frozen band had been refusing the carried-fear arm's *fastest* rows, so restoring
+them moved that median 0.10 s in the claim's own favour — which is exactly why the
+amendment rests on the instrument argument and not on the rows' outcomes, and why both
+reports ship.
+([R3](https://github.com/dennys246/Maxim/blob/main/docs/experiments/r3_survival_benchmark_prereg.md).)
+
 ### Two-joint centering
 
 **The claim.** Given sound sources beyond the neck's reach, an agent with
@@ -422,6 +518,16 @@ did, and the run records capture nothing that would let anyone reconstruct why. 
 Exp 37 magnitudes are readings taken at one time, not reproducible constants
 (limit [L8](https://github.com/dennys246/Maxim/blob/main/docs/limits/README.md)).
 
+**"Dark means danger" was blocked at the instrument, and the design moved.** The 1.3
+survival work set out to teach an agent that darkness is dangerous. It could not: on the
+shipped sensors the dark situation and the safe one never form distinct clusters, so
+there is nothing for a fear to key on — a dilution of the same kind the
+[sensor-count limit](/research/limits/#l11--the-sensor-count-discrimination-ceiling)
+describes, and verified unfixable by an encoding remedy. The mechanism was kept and the
+*cue* was swapped to drowning, which does separate. That is why the earned result is
+about water. Recorded as blocked rather than quietly re-aimed
+([Exp 58](https://github.com/dennys246/Maxim/blob/main/docs/experiments/exp58_survival_wants_prereg.md)).
+
 **A shared want is a cache entry, not a concept.** The want Exp 56 transfers is
 keyed on an exact cluster: a world layout different enough to be a genuinely
 different situation necessarily misses that key, so cross-layout generalization is
@@ -502,14 +608,26 @@ separate and narrowly graduated result above.
   site should be read as "Maxim plays Minecraft". The one measurement it produced is
   a limit re-measure, which confirmed a partial mitigation and did **not** retire the
   limit — see [L11](/research/limits/#l11--the-sensor-count-discrimination-ceiling).
-  The claims measured against this apparatus landed in 1.2 and are stated above —
-  [Exp 56](#a-taught-want-transfers-between-independent-agents) earned,
+  The claims measured against this apparatus landed in 1.2 and 1.3 and are stated
+  above — [Exp 56](#a-taught-want-transfers-between-independent-agents) and
   [Exp 57](#pooling-partial-learners--faster-per-participant-at-a-total-experience-cost)
-  partial — and they are claims about a taught want transferring and pooling, not
-  about playing the game. A `pip install`
+  on a taught want, then [Exp 60](#learned-anticipatory-avoidance-from-the-games-own-pain)
+  and [Exp 61](#a-survival-fear-transfers-between-agents) on a fear the game itself
+  taught. They are claims about one contingency in one world, not about playing the
+  game, and the apparatus moved to Paper 1.20.4 in 1.3 (Exp 56 re-ran there and
+  reproduced row for row — a same-seed reproduction on the new platform, not an
+  independent replication). A `pip install`
   carries the engine half of the seam (the bridge client, the `bodies/minecraft_player`
   body, the world backend and the two-agent harness); the Mineflayer bridge process
   lives in the repository's `scripts/`, so running the live seam needs a checkout.
+- **A shared fear is not a shared concept, and its edges are named.** Extinction (a
+  fear that fades when the danger stops), scaling past one donor, the fear's reach to a
+  *different* pool, and promotion of a received fear on the sharing side are all
+  untested as of 1.3. The reach question is a designed, unrun experiment; nothing on
+  this site should be read as "Maxim is afraid of water".
+- **Eating when hungry is prior-driven, not learned.** The world-owned drives move the
+  agent toward food because the substrate prior already favours the corrective action,
+  which is a different and much weaker statement than the fear result above.
 - **Queen-tier promotion is deliberately not shipped in 1.2.** An Oasis can serve
   signed Queen-tier releases and accept contributions into an experimental tier, but
   nothing promotes a contribution to Queen tier: the gauntlet battery that would

@@ -110,6 +110,17 @@ N = 16 sensors in one channel:
 | Clusters | 1 | 3 |
 | Stability | 1.0 (vacuous: one cluster) | 0.9984 |
 
+**Re-read 2026-09-15, same trace, same verdict.** One sensor's declared range changed
+in the 1.3 work (`saturation`, re-centred so the value the game actually rests at sits
+at the encoding's neutral point instead of an extreme). The analyzer reads body ranges
+at run time, so re-running it over the *same committed trace* now reports A4 separation
+**0.0881**, stability **1.0**, discrimination **0.6852**. The September 4 numbers stand
+as measured under the old range and are pinned by their own provenance; putting that one
+sensor back reproduces them exactly, so the whole delta is that sensor, moving
+favourably. The verdict does not move: 0.088 is still nowhere near 0.70. A declared rest
+the world never rests at is a constant, not a neutral — which is the same lesson the
+range-recentring finding below records, now with a number attached.
+
 Verdict: **mitigation-confirmed, not retired-eligible.** Read both halves together.
 The ungained encoding cannot see events at this sensor count at all; the gain
 restores real but weak separation, and 0.057 is nowhere near the 0.70 bar the

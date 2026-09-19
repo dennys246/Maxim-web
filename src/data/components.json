@@ -1,5 +1,5 @@
 {
-	"source_label": "pymaxim 1.2.0 (PyPI wheel)",
+	"source_label": "pymaxim 1.3.0 (PyPI wheel)",
 	"registry_path": "src/maxim/_data/components/**/*.yaml",
 	"count": 97,
 	"categories": [
@@ -648,6 +648,7 @@
 				"speed",
 				"on_ground",
 				"is_raining",
+				"is_in_water",
 				"xp_level",
 				"nearest_player_dist",
 				"look_pitch"
@@ -658,7 +659,9 @@
 				"mine_block",
 				"place_block",
 				"eat",
-				"attack_nearest"
+				"attack_nearest",
+				"flee",
+				"escape_water"
 			],
 			"latent_affordances": [],
 			"failure_modes": [],

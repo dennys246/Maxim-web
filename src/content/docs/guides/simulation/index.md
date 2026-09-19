@@ -20,7 +20,7 @@ Every page in this section states what the 1.1.3 code does. Where the engine's o
 documentation disagrees with the code, the page says so. 1.1.4 changed one thing these pages describe —
 the simulation trace now lands under the data home rather than the working directory (see
 [Outputs](/guides/simulation/outputs/) and [Sandboxing](/guides/simulation/sandboxing/)) — and added the
-Minecraft world seam, which is apparatus for 1.2 and is not covered here.
+Minecraft world seam, which carried the 1.2 and 1.3 behavioural claims and is not covered here.
 
 ## The ways to drive a run
 

@@ -127,7 +127,7 @@ maxim substrate export out.zip --session <id|dir> --contributor-id <id> [--domai
 maxim substrate inspect out.zip                        # print the manifest, extract nothing
 maxim substrate import out.zip --output-dir <dir>      # extract the bundle; does NOT merge it
 maxim substrate ingest out.zip --session <id|dir> --receiver-body <ref> [--apply]
-maxim substrate keygen --identity <id>                 # mint + print the signing public key
+maxim substrate keygen --signer-id <id>                # mint + print the signing public key
 maxim substrate invalidate --session <id|dir> --modality <name> [--apply]
 maxim substrate merge-nac policy.json [--into ~/.maxim/memory/nac.json] --source-id <id>
 ```
@@ -144,6 +144,25 @@ maxim substrate merge-nac policy.json [--into ~/.maxim/memory/nac.json] --source
   --trust-key <id>=<pubkey>` to refuse anything not signed by a key you name. This is
   the path the [Exp 56 transfer result](/research/evidence/#a-taught-want-transfers-between-independent-agents)
   ran through; the network wrapper around it is [the Oasis](/guides/oasis/).
+- **Since 1.3, a bundle can carry a learned situation *fear*, not only a want.** The
+  export clamps it and allows only a named set of failure modes through; ingest bounds
+  it, refuses an out-of-allowlist mode rather than stripping it, and multiplies what it
+  admits by **0.75** — a fear received second-hand is treated as real but weaker than
+  one the agent felt, and a re-export hands the next hop the discount again. The ingest
+  report counts what happened (`fear_rekeyed`, `fear_dropped`, `fear_below_floor`); a
+  fear whose world node did not survive the merge is dropped rather than left dangling.
+  Pair 1.3 exporters with 1.3 receivers.
+- **Upgrading to 1.3 restales stored Minecraft world nodes.** A gained modality's
+  geometry tag now includes the sensors' declared ranges, so world nodes written before
+  1.3 load with a one-line warning. Interoception and audio are untouched. To drop the
+  stale nodes, run the census first and pass the tag it prints — the flag does not work
+  alone:
+
+  ```bash
+  maxim substrate invalidate --session <id|dir>                      # dry-run census; prints the stale tags
+  maxim substrate invalidate --session <id|dir> --drop-geometry <tag> --apply
+  ```
+
 - **`import` extracts and stops.** It writes the bundle's `nac.json` / `ec.json`
   slices to a directory and leaves what to do with them to you — use `ingest` to
   actually merge one. Hand-composing `ec_merge` + `nac_merge`, which this tool's own
@@ -210,7 +229,7 @@ maxim serve --dump-openapi [PATH]            # write the OpenAPI schema and exit
   `http://127.0.0.1:8765/#token=…`; open it once and that browser is signed in.
   Every `/api/*` route, `/docs`, `/openapi.json` and `/ws` require the token;
   `GET /api/hello` is the one tokenless probe and answers
-  `{"contract_version": "0.5.0", "auth": "bearer"}`. A token passed as a query
+  `{"contract_version": "0.5.0", "auth": "bearer", "pairing": "none"}`. A token passed as a query
   parameter is refused. The token is an `mxc_`-prefixed secret in
   `~/.config/maxim/console_token`, re-read on every request, so `--rotate-token`
   takes effect without a restart.
@@ -234,22 +253,26 @@ maxim serve --dump-openapi [PATH]            # write the OpenAPI schema and exit
   screen. 1.2.1 vendors the maxim-pulse v0.3.0 bundle, which speaks 0.5.0: both the
   warning and the banner are gone. The API surface was never affected by the
   mismatch. `--ui-dist` still points the server at a bundle you built yourself.
-- **Spoken-code device pairing (A9.1) is available, and hardware verification is
-  owed.** A device with a speaker — a Reachy Mini is the case it was built for — can
-  sign its owner in by *saying* a six-digit code aloud instead of handing over a URL:
-  a tokenless request makes the device announce the code, and a second exchanges the
-  code for the console token. The 1.2.1 pairing screen is the UI half; the library
-  halves are `maxim.console.make_pairing_announcer` and
-  `maxim.utils.audio.make_device_speak_sink`. Two properties are **not yet verified
-  on a robot** and are tracked as
+- **Spoken-code device pairing (A9.1): the pieces ship, the composition does not.** The
+  idea is that a device with a speaker — a Reachy Mini is the case it was built for —
+  signs its owner in by *saying* a six-digit code aloud instead of handing over a URL.
+  1.2.1's notes said this loop was complete end to end; [1.3.0 corrects
+  that](https://github.com/dennys246/Maxim/blob/main/docs/announcements/release_1_3_0.md),
+  and the correction is what this page documents. What ships is the parts: the 0.5.0
+  console contract and its pairing screen, the announcer factory
+  `maxim.console.make_pairing_announcer`, the device speaker sink
+  `maxim.utils.audio.make_device_speak_sink`, and an audio format fix. What does not
+  ship is anything that wires them together. **No shipped command constructs the
+  announcer**, so a plain `maxim serve` runs with pairing disabled: `/api/hello`
+  reports `"pairing": "none"` and `POST /api/pair/request` answers **409**. Pairing
+  needs an embedder that owns both the console and a live robot handle. Two audio
+  properties are also **not yet verified on a robot**, tracked as
   [D87](https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md): whether the
   device's fixed-rate audio pipeline matches the speech synthesizer's 22050 Hz (a
-  mismatch would play the digits at the wrong pitch and speed, which for a code read
-  aloud is a functional failure, not a cosmetic one), and whether synthesis plus a
+  mismatch plays the digits at the wrong pitch and speed, which for a code read aloud
+  is a functional failure, not a cosmetic one), and whether synthesis plus a
   digit-by-digit repeat fits inside the code's 120-second lifetime on hardware as slow
-  as a Pi. Treat it as shipped and unverified on the device, not as validated there.
-  The endpoints are refused entirely unless an embedder wires an announcer, and under
-  sandbox mode.
+  as a Pi. The endpoints are refused under sandbox mode regardless.
 
 ## Common Recipes
 
