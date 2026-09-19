@@ -944,7 +944,7 @@
       "status": "recorded",
       "phase": null,
       "cluster": "substrate",
-      "finding": "EARNED — the 1.2 \"Oasis\" headline. Agent A's teacher-taught, world-keyed operant bias, exported as a signed bundle and ingested into an independent agent B (different agent_id, separately built EC + SensorEncoder, disjoint cluster ids), changes B's FIRST-contact choice. Live Paper 1.16.5 Minecraft world (not the mock), n = 50 receivers/arm, substrate-primary. Taught raw 0.84 [0.71, 0.92] and 0.80 bias-decisive vs isolated floor 0.22 raw / 0.00 decisive; satiated (zero-credit donor) 0.12 and dangling-half falsifier 0.12, both at floor. All four gates PASS: TRANSFERRED 0.80 >= 0.70, ABOVE-FLOOR 0.62 >= 0.20, WANT-NOT-FILE 0.72 >= 0.20, BOTH-HALVES -0.10 < 0.10, plus the anti-vacuity kit. 40 of 50 taught first contacts decided by the situation-keyed learned-bias channel. Scope: one campaign, one world layout, teacher-taught wants — not scaling (Exp 57), not hardware, not aversion, not cross-layout (R1).",
+      "finding": "EARNED — the 1.2 \"Oasis\" headline. Agent A's teacher-taught, world-keyed operant bias, exported as a signed bundle and ingested into an independent agent B (different agent_id, separately built EC + SensorEncoder, disjoint cluster ids), changes B's FIRST-contact choice. Live Paper 1.16.5 Minecraft world (not the mock), n = 50 receivers/arm, substrate-primary. Taught raw 0.84 [0.71, 0.92] and 0.80 bias-decisive vs isolated floor 0.22 raw / 0.00 decisive; satiated (zero-credit donor) 0.12 and dangling-half falsifier 0.12, both at floor. All four gates PASS: TRANSFERRED 0.80 >= 0.70, ABOVE-FLOOR 0.62 >= 0.20, WANT-NOT-FILE 0.72 >= 0.20, BOTH-HALVES -0.10 < 0.10, plus the anti-vacuity kit. 40 of 50 taught first contacts decided by the situation-keyed learned-bias channel. Scope: one campaign, one world layout, teacher-taught wants — not scaling (Exp 57), not hardware, not aversion, not cross-layout (R1). Re-baselined 2026-09-19 on Paper 1.20.4 (RB-1): PASS, every rate identical to the 1.16.5 campaign — a same-seed reproduction on the new platform, not an independent replication; one duplicated row from an operator restart is disclosed in the file and moves no gate.",
       "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/56_four_arm_sharing.md"
     },
     {
@@ -979,6 +979,39 @@
       "cluster": "substrate",
       "finding": "PREMISE-NULL. The minecraft_player world-owned drives (health homeostatic, food entropic, both drift_rate 0.0 — the game drains them, not the model) do not measurably move behaviour toward the corrective affordances, and the survival loop has three specific breaks. Per the rung's own pre-registered stop rule the dependent survival rungs R3/R4 do not run in 1.2; the three breaks become the 1.3 build list rather than a benchmark back-fitted onto a premise that does not hold. A null shipped as a null.",
       "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/r2_drive_premise_check.md"
+    },
+    {
+      "id": "60",
+      "file": "exp60_drowning_avoidance_prereg.md",
+      "title": "Drowning avoidance: learned, anticipatory fear from the game's own pain",
+      "date": "2026-09-16",
+      "status": "recorded",
+      "phase": null,
+      "cluster": "substrate",
+      "finding": "EARNED — the Wire-4 situation-fear mechanism's behavioural graduation, and the first Maxim result whose learning signal is the WORLD's rather than a teacher's. An agent held underwater until air-hunger pain, then rescued, books a fear keyed to the underwater situation and on later submersions leaves the water BEFORE the pain would fire; its yoked twin with the same pain exposure but the fear subscriber detached never does. Live Paper 1.20.4 water classroom, substrate-primary (no LLM in the action path), 5 seeds/arm, 6 pain-free placements per probe. All five frozen gates PASS: FEAR post P(surface) median 1.0 (from 0.0 pre, every seed) vs ABLATED 0.0 (zero executor calls in 30/30), exact permutation p = 1/252 (the floor for 5 v 5), specificity water fear -1.0 vs shore 0.0 on every seed. Latency to air median 1.72 s, inside the 4.34 s US-free window. Caveat recorded: after a seed's first escape the action also carries a positive causal link, so the fear-only read is the FIRST post placement per seed (5/5 surfaced, 2.9-3.3 s). Planned as 'dark = danger' and BLOCKED at the instrument (Exp 58) — the cue was swapped to water, which separates.",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/exp60_drowning_avoidance_prereg.md"
+    },
+    {
+      "id": "61",
+      "file": "exp61_shared_fear_prereg.md",
+      "title": "Shared survival fear: a learned fear transfers between independent agents",
+      "date": "2026-09-17",
+      "status": "recorded",
+      "phase": null,
+      "cluster": "substrate",
+      "finding": "EARNED — the 1.3 \"Oasis-2\" headline. A donor learns the drowning fear the hard way, exports its substrate through the shipped signed-bundle path, and a fresh receiver ingests it (discounted x0.75 at the ingest bound — vicarious fear is real and weaker than direct), reboots, and leaves the water on its FIRST loop-live submersion having never felt the pain. One campaign at one code hash, 121 rows, zero refusals: 12/12 transferred receivers vs 0/24 isolated, 0/12 cluster-not-fear (the ablated donor's cluster and percept valence shipped, the fear did not) and 0/24 dangling (fear dropped at ingest for want of its world node); Fisher one-sided p = 8.0e-10; all six frozen gates PASS. The loop-OFF representation gate read the discounted fear (-0.75) exactly on every receiver before any loop ran. NOT earned: extinction, scaling past one donor, the fear's reach to another pool (Exp 62, designed not run), hive-side promotion.",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/exp61_shared_fear_prereg.md"
+    },
+    {
+      "id": "R3",
+      "file": "r3_survival_benchmark_prereg.md",
+      "title": "Survival benchmark: what a carried drive buys at the lethal moment",
+      "date": "2026-09-18",
+      "status": "reference-only",
+      "phase": null,
+      "cluster": "substrate",
+      "finding": "An INSTRUMENT and a frozen baseline — nothing graduated. Five arms x 12 fresh agents, one unrescued submersion each on a depth-calibrated frozen gauntlet. Median time to air: A innate reflex only 28.0 s, B learns the fear in situ 8.6 s, C carries a self-learned fear 3.2 s, D carries a RECEIVED fear (the Exp 61 receiver) 3.1 s, E same pain exposure as C with the fear subscriber detached 28.1 s. Every agent in every arm survived — with regeneration on, survival is a declared CEILING and separates nothing. What the drive buys is the cost it removes: ~25 s of latency, ~11 hp and ~22 s of oxygen pain — NOT life. E == A (exposure without the subscriber buys nothing); D == C (the discounted vicarious fear escapes like the self-learned one, p 0.84). Reported with its instrument trouble in the open: the frozen report read INCOMPLETE on two rules that were facts about the instrument (a code-hash rule no bench could satisfy; a tick-period band that measured phase rather than cadence on few-second events); both amended post-data, instrument-only, two-lens reviewed, and published BESIDE the frozen report. The frozen band had refused the carried-fear arm's fastest rows, so restoring them moved that median 0.10 s in the claim's direction — the amendment rests on the instrument argument, not the rows' outcomes.",
+      "repo_href": "https://github.com/dennys246/Maxim/blob/main/docs/experiments/r3_survival_benchmark_prereg.md"
     }
   ]
 }

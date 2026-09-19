@@ -45,7 +45,7 @@ never require it:
 ```bash
 pip install 'pymaxim[sign]'
 
-maxim substrate keygen --identity alice        # mint + print the public key to share
+maxim substrate keygen --signer-id alice       # mint + print the public key to share
 maxim substrate export out.zip --session <id> --contributor-id alice --sign
 ```
 
@@ -78,6 +78,15 @@ from the archive's central directory, declared-slices-only reads, and a journal 
 dedupes by digest so a replay is an explicit choice. The merge itself aligns the
 donor's clusters onto the receiver's before folding, and a bias the receiver already
 holds negative can deepen but is never raised toward zero by an import.
+
+Since 1.3 a bundle can also carry a learned situation **fear** — the negative valence an
+agent booked against a situation that hurt it. It travels under its own rules: clamped
+and allowlisted on export, bounded on ingest, and multiplied by **0.75** on the way in,
+because a fear received second-hand is real but weaker than one the agent felt. A fear
+whose world node did not survive the merge is dropped rather than left dangling, and the
+ingest report says which. This is the path the
+[shared-fear result](/research/evidence/#a-survival-fear-transfers-between-agents) ran
+through. Pair 1.3 exporters with 1.3 receivers.
 
 This is the path Exp 56 ran through. It is worth being precise about what that
 bought: a bias key whose representation is missing is **dropped and reported**, not
