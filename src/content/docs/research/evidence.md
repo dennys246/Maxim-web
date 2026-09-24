@@ -280,7 +280,8 @@ nothing, and it fails loudly.
 **The caveats.** One campaign, one world layout, substrate-primary, in Minecraft,
 teacher-taught wants, n = 50 per arm. It is **not** scaling — that is Exp 57 below,
 and it is partial. It is not hardware: the two-Reachy cross-unit replication is its
-own pre-registration. It is not aversion transfer — only positive credit moved here.
+own pre-registration. It is not aversion transfer — only positive credit moved here
+(a learned fear's transfer is its own result, [Exp 61](#a-survival-fear-transfers-between-agents)).
 It is not cross-layout generalization: A trains and B probes the *same* seeded
 configuration, and the R1 null below says the current readout cannot do otherwise.
 And the want is taught by a contingent teacher, not acquired on the agent's own.
@@ -329,7 +330,8 @@ monotone decrease, not a functional form. The comparison that fails is deliberat
 the strict *serial sample-cost* one: those 84 agent-trials at N = 8 are spent by
 eight agents in parallel against one agent's 43 serially, so pooling can still win
 in wall-clock terms — that is simply not what this gate measured. Whether a
-coverage-preserving fold closes the cost is open 1.3 work, not a claim made here.
+coverage-preserving fold closes the cost is still open — 1.3 did not address it — and
+is not a claim made here.
 
 ### Learned, anticipatory avoidance from the game's own pain
 
@@ -534,9 +536,12 @@ different situation necessarily misses that key, so cross-layout generalization 
 unreachable in the current readout. This was resolved as a pre-registered structural
 null from the mechanism rather than by running a campaign that could only confirm it
 ([R1](https://github.com/dennys246/Maxim/blob/main/docs/experiments/r1_cross_layout.md),
-CACHE-CONFIRMED 2026-09-07), and it is a 1.3 design target rather than a defect. It
-is also the sharpest bound on the headline: transfer is demonstrated, generalization
-is not.
+CACHE-CONFIRMED 2026-09-07), and it is an open design question rather than a defect.
+1.3 shipped without a readout that changes it: Exp 62, which measures how far the
+drowning fear reaches into a second pool, is designed but not run, and generalization
+is the working direction of the 1.4 roadmap, not a result. It is also the sharpest
+bound on the headline — and on the shared-fear result: transfer is demonstrated,
+generalization is not.
 
 **World-owned drives do not, on their own, move behaviour.** The Minecraft player
 body's health and food drives — drained by the game rather than by the model — do not
@@ -563,8 +568,11 @@ separate and narrowly graduated result above.
   [Exp 56](#a-taught-want-transfers-between-independent-agents) at the scope stated
   there, and the exchange carrying it ships end to end ([the Oasis](/guides/oasis/)).
   What is still **not** earned: generalization to a world layout the want was not
-  taught at (the R1 null above), replication across two physical robots, transfer of
-  an *aversion* rather than a want, and scaling beyond the named partial. *The
+  taught at (the R1 null above), replication across two physical robots, and scaling
+  beyond the named partial. Since 1.3 a learned *fear* also transfers
+  ([Exp 61](#a-survival-fear-transfers-between-agents)), at one pool and one layout;
+  its reach to a different pool, its extinction, scaling to more donors and
+  hive-side promotion of a shared fear are not earned. *The
   correction below is dated 2026-09-03 and kept in full* — it is why the claim needed
   a live four-arm campaign before anyone could make it. Before 1.1.3, merging a foreign
   substrate produced a want that read out as exactly **0.0** on the receiver.
@@ -586,8 +594,11 @@ separate and narrowly graduated result above.
   halves:** `maxim substrate ingest` performs the validated cross-substrate merge
   from the command line, and Exp 56 measured what the merge does to an independent
   receiver's behaviour on a live world. What remains unearned is stated with the
-  claim: no cross-layout generalization, no hardware replication, no aversion
-  transfer, and scaling only as the partial above. The two-Reachy cross-unit
+  claim: no cross-layout generalization, no hardware replication, and scaling only as
+  the partial above. Aversion transfer, unearned when this was written, was earned in
+  1.3 by [Exp 61](#a-survival-fear-transfers-between-agents) at its own stated scope;
+  the fear's reach to another pool, extinction, scaling and hive-side promotion remain
+  unearned. The two-Reachy cross-unit
   replication is still its own pre-registration and has not run.
 - **The cradle harness wired end-to-end into substrate-primary mode** is planned.
   `--aut-mode substrate-primary` is opt-in; `--aut-mode llm-primary` remains the

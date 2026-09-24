@@ -153,8 +153,14 @@ fails loudly instead of degrading to permissive.
   directory of Oases and no automatic peering.
 - **Generalization across worlds.** A shared want is keyed on an exact cluster, so
   it fires where it was taught and not at a materially different layout. That is a
-  [pre-registered null](/research/evidence/#where-it-didnt-hold-up), not a bug, and
-  the readout that would change it is 1.3 work.
-- **Aversion transfer.** Only positive credit has been measured moving between
-  agents. The tighten-only clamp that would protect a learned aversion is shipped
-  and exercised, but negative-valence transfer is its own future experiment.
+  [pre-registered null](/research/evidence/#where-it-didnt-hold-up), not a bug. 1.3
+  shipped without a readout that changes it. Exp 62, which measures how far a
+  learned fear reaches into a second pool, is designed but has not run, and
+  generalization is the working direction of the 1.4 roadmap rather than a result.
+- **How far a shared fear reaches.** Since 1.3 a learned fear has been measured
+  moving between agents: a receiver that never felt the pain left the water on its
+  first loop-live submersion
+  ([Exp 61](/research/evidence/#a-survival-fear-transfers-between-agents)). That is
+  one pool, one world layout, substrate-primary. The fear's reach to a *different*
+  pool (Exp 62, designed, not run), its extinction, scaling to more donors, and
+  hive-side promotion of a shared fear are all untested.
