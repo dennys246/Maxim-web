@@ -333,6 +333,18 @@ showed the sharpest limit: when taught fear contradicts an LLM's baked-in
 the agent *acts* on it against its own priors is the open problem, and the
 motivation for [substrate-primary mode](/concepts/operating-modes/).
 
+**In substrate-primary mode, since 1.3 (2026-09-19).** With no language model
+choosing actions, a learned fear has now been shown to drive behavior. On a live
+Minecraft server (Paper 1.20.4), an agent that felt air-hunger underwater learned a
+fear of that situation and left the water *before* the pain on later submersions,
+while its yoked twin with the fear subscriber detached never did
+([Exp 60](/research/evidence/#learned-anticipatory-avoidance-from-the-games-own-pain)).
+The same fear, exported and ingested at a ×0.75 discount, made a receiver that never
+felt the pain leave the water on its first loop-live submersion
+([Exp 61](/research/evidence/#a-survival-fear-transfers-between-agents)). Both are one
+world layout, substrate-primary. They do not touch the LLM-primary problem above:
+there, the prior can still win.
+
 ### Run it yourself
 
 Any scenario with a pain-wired entity teaches the same way. The fire lesson
