@@ -544,14 +544,29 @@ bound on the headline — and on the shared-fear result: transfer is demonstrate
 generalization is not.
 
 **World-owned drives do not, on their own, move behaviour.** The Minecraft player
-body's health and food drives — drained by the game rather than by the model — do not
-measurably push the agent toward the corrective affordances, and the survival loop
-has three specific breaks. Rather than back-fit a survival benchmark onto a premise
-that does not hold, the dependent rungs were stopped by their own pre-registered stop
-rule and deferred to 1.3, where the loop gets designed and the three breaks are the
-build list
+body's health and food drives — drained by the game rather than by the model — did not
+measurably push the agent toward the corrective affordances, and the survival loop had
+three specific breaks. Rather than back-fit a survival benchmark onto a premise that
+does not hold, the dependent rungs were stopped by their own pre-registered stop rule
+and the loop went on the build list
 ([R2](https://github.com/dennys246/Maxim/blob/main/docs/experiments/r2_drive_premise_check.md),
 PREMISE-NULL 2026-09-07).
+
+*Dated update, 2026-09-24.* 1.3 built that loop, and all three breaks now close in
+engineering terms: a deficit derives a corrective need rather than a raw sensor
+reading, the relief an action actually produces reaches the credit path, and there is
+a live world where eating is an executable act. A smoke test drove the real loop
+against the real server and showed the three composing — hungry agent selects food,
+eats, food rises, relief is signalled. **R2 itself is unchanged and still
+PREMISE-NULL.** That run validates the composition, not the claim: it reads the relief
+signal without booking a reward, so no bias forms, and the question R2 actually asks —
+whether the world's own drives measurably move behaviour across many trials — needs a
+pre-registered measured run that has not happened. This is why 1.3's release notes
+still list eating when hungry as **prior-driven, not learned**, and why the earned 1.3
+results are about a *fear* the world taught rather than a want. The distinction is the
+honest one: the substrate prior already favoured the corrective action, so an agent
+eating when hungry demonstrates much less than an agent leaving water it has learned
+to fear.
 
 **The consequence for how Maxim is described.** The strong framing — that the
 substrate drives action selection through specific bio-mechanisms — is explicitly
