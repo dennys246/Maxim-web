@@ -392,7 +392,44 @@ substrate-primary throughout. "First loop-live submersion" is precise: the recei
 lifecycle submerges it once with the loop **off**, at that representation gate, before
 the measured run. The discount's magnitude is not tested by this measure — 0.75 clears
 the threshold, and so would other values. Extinction, scaling to more donors, the
-fear's reach to a *different* pool, and promotion on the sharing side are all untested.
+*received* fear's reach to a different pool, and promotion on the sharing side are all
+untested — Exp 62 later measured an agent's own fear crossing pools
+([below](#a-learned-fear-carries-to-a-second-pool-the-same-situation-a-different-place)),
+not a received one.
+
+### A learned fear carries to a second pool: the same situation, a different place
+
+**The claim.** An agent that learned the drowning fear in one pool leaves the water on its
+first live submersion in a *second* pool — one at a different altitude and a different
+distance from spawn. Nothing was shared, ingested or changed: no new mechanism, no new
+sensor. The fear is the agent's own, and it travels because the body reads the second pool
+as the same situation.
+
+**The evidence.** [Exp 62, rung A](https://github.com/dennys246/Maxim/blob/main/docs/experiments/exp62_pressure_interoception_prereg.md),
+EARNED 2026-09-20, the day after 1.3.0 shipped, on the shipped body. 27 rows, zero refusals,
+one code hash. Trained in pool 1 and tested in pool 2, **12 of 12** agents left the water; the
+same agents tested back in pool 1 also went 12 of 12; and **0 of 3** fear-ablated agents did,
+with zero executor calls. All five frozen gates pass, and the cross-pool arm beats the ablated
+one at Fisher one-sided p = 0.0022.
+
+**The interval is the number, not "100 %".** Both fear arms sit at the ceiling by design, so
+the informative figure is the Wilson lower bound: **at least 0.758** for the cross-pool arm.
+The two arms' latency intervals overlap; there is no evidence the second pool is slower.
+
+**The control is clean.** The ablated agents' pool-2 readings resolve to the *same* node as
+their training — the representation is identical, only the fear is removed — so the contrast
+is the fear alone.
+
+**What it does NOT say, and why it matters.** This is not a general generalization result,
+and the prereg says so outright. The apparatus has one world sensor that discriminates the
+situations — being in water or not, a binary flip — so its situation space has two points.
+What carried across is invariance to *place*, the two low-weight position readings; not
+invariance to a *changed situation*. The context wall still stands, and was measured: a night
+pool reads 0.799 against a 0.85 threshold, so **the learned fear misses at night**, for
+representational reasons the frozen-day protocol hides. The result is bounded to the
+sealed-shell, frozen-day class of pools it was run on, and it involves no sharing at all — a
+*received* fear's reach to another pool is still untested. Nothing here says Maxim is afraid of
+water anywhere.
 
 ### What a carried drive is worth: the R3 benchmark
 
@@ -537,11 +574,14 @@ unreachable in the current readout. This was resolved as a pre-registered struct
 null from the mechanism rather than by running a campaign that could only confirm it
 ([R1](https://github.com/dennys246/Maxim/blob/main/docs/experiments/r1_cross_layout.md),
 CACHE-CONFIRMED 2026-09-07), and it is an open design question rather than a defect.
-1.3 shipped without a readout that changes it: Exp 62, which measures how far the
-drowning fear reaches into a second pool, is designed but not run, and generalization
-is the working direction of the 1.4 roadmap, not a result. It is also the sharpest
-bound on the headline — and on the shared-fear result: transfer is demonstrated,
-generalization is not.
+[Exp 62](#a-learned-fear-carries-to-a-second-pool-the-same-situation-a-different-place),
+earned the day after 1.3.0 shipped, is consistent with it rather than an exception. A learned
+fear carried to a second pool because the second pool reads as the *same* situation in a
+different place; a night pool, which reads as a *different* situation (0.799 against a 0.85
+threshold), is exactly where the fear misses. Generalization across a changed situation is
+the working direction of the 1.4 roadmap, not a result. This remains the sharpest bound on the
+headline — and on the shared-fear result: transfer is demonstrated, generalization is not, and
+Exp 62 now measures both halves of that sentence.
 
 **World-owned drives do not, on their own, move behaviour.** The Minecraft player
 body's health and food drives — drained by the game rather than by the model — did not
@@ -612,8 +652,8 @@ separate and narrowly graduated result above.
   claim: no cross-layout generalization, no hardware replication, and scaling only as
   the partial above. Aversion transfer, unearned when this was written, was earned in
   1.3 by [Exp 61](#a-survival-fear-transfers-between-agents) at its own stated scope;
-  the fear's reach to another pool, extinction, scaling and hive-side promotion remain
-  unearned. The two-Reachy cross-unit
+  the transferred fear's reach to another pool, extinction, scaling and hive-side
+  promotion remain unearned. The two-Reachy cross-unit
   replication is still its own pre-registration and has not run.
 - **The cradle harness wired end-to-end into substrate-primary mode** is planned.
   `--aut-mode substrate-primary` is opt-in; `--aut-mode llm-primary` remains the
@@ -649,7 +689,9 @@ separate and narrowly graduated result above.
 - **A shared fear is not a shared concept, and its edges are named.** Extinction (a
   fear that fades when the danger stops), scaling past one donor, the fear's reach to a
   *different* pool, and promotion of a received fear on the sharing side are all
-  untested as of 1.3. The reach question is a designed, unrun experiment; nothing on
+  untested as of 1.3. An agent's *own* fear has since been measured crossing to a second
+  pool ([Exp 62](#a-learned-fear-carries-to-a-second-pool-the-same-situation-a-different-place)),
+  and it misses at night; a received fear's reach has not been tested at all. Nothing on
   this site should be read as "Maxim is afraid of water".
 - **Eating when hungry is prior-driven, not learned.** The world-owned drives move the
   agent toward food because the substrate prior already favours the corrective action,
