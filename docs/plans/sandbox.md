@@ -23,7 +23,7 @@
 >    is both ignorant and being hurt. Nothing about its situation leaves the machine, so hosting
 >    the Oasis reduces to publishing static signed releases — no broker, no containers, no cap.
 > 3. **The language line is deferred on a condition, not a date:**
->    [grounded word binding](https://github.com/dennys246/Maxim/blob/main/docs/plans/grounded_word_binding.md)
+>    [grounded word binding](https://github.com/dennys246/Maxim/blob/main/docs/plans/deferred/grounded_word_binding.md)
 >    waits behind a frozen, offline re-entry gate, and becomes a candidate 1.5 headline only if it
 >    passes. 1.4 keeps its own may-fail headline.
 >
