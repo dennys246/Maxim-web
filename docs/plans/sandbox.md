@@ -1,5 +1,53 @@
 # Maxim Sandbox — a hosted, ephemeral Console anyone can open from the landing page
 
+> **SUPERSEDED 2026-09-24 — kept as the record of what hosting a narrator costs.** The demo this
+> plan designs is not the demo the project should ship. Its central premise — that any
+> demo-worthy path needs a language model, so the model must run on our hardware — was measured
+> on engine 1.1.2 and was refuted by 1.3: Exp 60 and Exp 61 are substrate-primary, with no
+> language model anywhere in the action path, and they act. Almost every hard problem below
+> (per-visitor containers, the broker, the queue, the spend ceiling, key handling, the
+> two-sessions-per-machine cap, the latency gate) exists only to host that model.
+>
+> **Nothing single replaces it.** A five-lens review of the successor candidate — the engine's
+> grounded-word-binding plan — found it a sound research line but not a demo, and it was split
+> ([review round](https://github.com/dennys246/Maxim/tree/main/docs/plans/reviews/grounded_word_binding_demo/v3)).
+> Three decisions take this plan's place:
+>
+> 1. **The near-term public demo is something already earned:** a recorded clip of the Exp 61
+>    result — a fear crossing from an agent that felt the pain to one that never did — beside the
+>    offline water classroom, shipped as a clearly labelled smoke instrument and never presented
+>    as evidence.
+> 2. **The next thing worth building is the consult gate** —
+>    [social referencing](https://github.com/dennys246/Maxim/blob/main/docs/plans/social_referencing.md)
+>    (PROPOSED): an agent that reads a *local, signature-verified* mirror of the Oasis only when it
+>    is both ignorant and being hurt. Nothing about its situation leaves the machine, so hosting
+>    the Oasis reduces to publishing static signed releases — no broker, no containers, no cap.
+> 3. **The language line is deferred on a condition, not a date:**
+>    [grounded word binding](https://github.com/dennys246/Maxim/blob/main/docs/plans/deferred/grounded_word_binding.md)
+>    waits behind a frozen, offline re-entry gate, and becomes a candidate 1.5 headline only if it
+>    passes. 1.4 keeps its own may-fail headline.
+>
+> **Two corrections this document's successor work surfaced.** A substrate-primary agent is
+> model-free for the *fear* results, whose sensors are numbers — but not for the language track,
+> which needs the `semantic` extra (sentence-transformers, torch, spacy) and a text encoder. And
+> there is **no browser path**: the selection code would port, but the world feed runs real
+> threads over a TCP socket and the encoder needs torch.
+>
+> **What survives, and is why this file stays:** § Phase 0 results and § P21 re-run are the only
+> measured account of what a hosted narrator costs (26–71 s turns, two sessions per machine on a
+> 48 GB Mac mini, slot-cache luck worth 20 s). § Honest accounting stands as written, as do the
+> sandbox-mode attack-surface work, bearer and Host/Origin checks, and "take your agent home"
+> export. P21 shipped (pymaxim #623, ledger D80–D82). **P22** (native `llama-server` spawner and
+> slot pinning) and **P23** (proxy admission instead of 429) were levers for serving a narrator to
+> many sessions; they are not blockers for any current plan and should be re-justified on their own
+> merits before anyone builds them.
+>
+> **What does NOT carry over:** the substrate ships — pymaxim 1.3.0's wheel is pure Python, 20 MB,
+> zero compiled extensions — but **the world does not**. Exp 60 and 61 run against a live Paper
+> 1.20.4 server through a Mineflayer bridge, neither in the wheel, and a server plus a bridge per
+> visitor would be heavier than the narrator ever was. A visitor-driven world is out of scope;
+> the world-side artifact is recorded video.
+
 **Status:** Shell plan, drafted 2026-09-02; revised the same day with the hosting, seeding, agent-select and Party Mode decisions; revised again after a six-track code audit of pymaxim 1.1.2 and maxim-pulse (§ The pymaxim tangent, § The maxim-pulse tangent); **2026-09-04: the five open questions decided** (§ Decisions 13–17) — Mac-mini-first topology, playable Adventure at launch, instance-level moderation with Oasis admission control, a $10/month ceiling, and send-session via a bucket the Oasis will later consume.
 **Scope:** A gold "Sandbox" button under the hero on `pymaxim.bio` → a guide page with a live status widget → a short-lived, single-visitor Maxim Console running on our infrastructure. The visitor talks to the agent, watches or plays an Adventure, with the bundled local model or their own cloud-provider key. Nothing persists past the session unless they take it home.
 **Target:** After the pulse sandbox build flavour and the launch-marked items in both tangents. Launch gated on the Phase 0 measurements.
@@ -14,7 +62,20 @@
 Measured 2026-09-02 on engine 1.1.2:
 
 - The engine is a threaded, timer-paced Python pipeline: 13 threads on a bare `pip install pymaxim`, `fcntl`/`select`/`subprocess`/`multiprocessing` on the sim path, turn cadence set by bridge poll timers. Pyodide has no threads. An in-browser port needs a synchronous step seam in pymaxim first — months, not weeks.
+  > **Still stands 2026-09-24, for a narrower reason.** Re-checked on the 1.3.0 wheel: the agent
+  > loop's own selection code spawns no threads and would port, but the world feed does — a
+  > bridge reader thread and a state-sync thread over a raw TCP socket — and the language track's
+  > encoder needs torch. This is the *only* one of the three bullets that survives, and it bounds
+  > the in-browser route specifically, not the run-it-on-your-own-machine route.
 - Every demo-worthy path needs a language model. The "no LLM in the action path" cradle arcs still use a SmolLM-1.7B narrator, and with no model at all the substrate produced 0 actions in 6 turns. The only thing that would ever want a visitor's GPU is that model.
+  > **Refuted 2026-09-24, by 1.3.** This bullet is the plan's load-bearing premise and it no longer
+  > holds. Exp 60 (a learned, anticipatory drowning fear) and Exp 61 (that fear transferring to an
+  > agent that never felt the pain) are both substrate-primary with no language model anywhere in
+  > the action path, and both act — 1.0 against an ablated 0.0 on every seed, and 12/12 receivers
+  > against zero in three control arms. The 1.1.2 reading stands as measured: a *bare* substrate,
+  > with no body, world or loop, still proposes nothing. What changed is that the substrate now has
+  > a body and a world where its own pain is the learning signal, so "demo-worthy" and "needs a
+  > model" have come apart. A narrator is now a presentation choice, not a requirement.
 - The pulse Console already exists as thin presentation over `maxim serve`, with a `MockFacade`, an `EventClient` on `/ws`, and a `SetupWizard` cloud tab. A hosted sandbox is mostly plumbing around software that already runs.
 
 So: run `maxim serve` per visitor in a throwaway machine, put an authenticating proxy in front, and serve the existing Console bundle. The visitor's machine does nothing but render.
