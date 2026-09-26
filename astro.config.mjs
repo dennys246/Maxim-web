@@ -100,6 +100,7 @@ export default defineConfig({
 								{ label: 'Prompt system', slug: 'concepts/prompt-system' },
 								{ label: 'How the systems connect', slug: 'systems/overview' },
 								{ label: 'Memory & consolidation', slug: 'memory/overview' },
+								{ label: 'Engrams — what forms, what acts', slug: 'memory/engrams' },
 								{ label: 'Operating modes', slug: 'concepts/operating-modes' },
 								{ label: 'Communication & safety', slug: 'concepts/communication' },
 							],

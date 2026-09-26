@@ -38,9 +38,11 @@ memories involving "coffee mug" is an instant lookup.
 The Hippocampus also builds an **associative graph** where memories are nodes
 and recall-triggered connections are edges. When a new memory is captured, the
 system automatically recalls similar existing memories and forms bidirectional
-edges between them, mirroring how biological engram co-allocation creates
-associative links during encoding. Edge weight is a weighted sum of three
-mechanisms:
+edges between them. This is an analogy to engram co-allocation in neuroscience,
+where memories encoded close together come to share neurons and become linked;
+the analogy names the design idea, not a claim about how these links reach
+behaviour. For that, see [Engrams](/memory/engrams/). Edge weight is a weighted
+sum of three mechanisms:
 
 | Mechanism | Maxim analogue | Weight |
 | --- | --- | --- |

@@ -34,7 +34,9 @@ gripper` is a four-level entity tree, and the same nesting works for a dungeon
 temperature, a durability ratio, an NPC's trust. Reading it returns a value with
 a unit and a timestamp. Sensors with a numeric `range` are *scalar* and
 participate in the parts of the stack that reason over magnitudes — pain
-proximity, failure evaluation, engram similarity. Sensors with a `shape` (camera
+proximity, failure evaluation, and situation encoding (how the
+[EC](/systems/entorhinal-cortex/) clusters sensor readings into
+[situations](/memory/engrams/#the-situation-engram)). Sensors with a `shape` (camera
 frames, audio) are *non-scalar*: readable, but excluded from similarity and
 failure math.
 
@@ -342,10 +344,11 @@ mode itself is described under [operating modes](/concepts/operating-modes/).
 
 SEM is not a hardware protocol that happens to allow fiction — it is one
 abstraction that treats both the same. A sword, an NPC, or a door is just an
-Entity whose modulators are backed by software stubs (or a Cerebellum-backed
-modulator with an LLM fallback) instead of a motor driver. The Cerebellum, the
-[nucleus accumbens](/systems/nucleus-accumbens/), and the engram system learn
-from these interactions exactly as they learn from a joint.
+Entity whose modulators are backed by software stubs instead of a motor driver.
+(A Cerebellum-backed modulator with an LLM fallback is designed but
+[Dormant](/systems/cerebellum/#the-confidence-gate-designed-dormant).) The
+[nucleus accumbens](/systems/nucleus-accumbens/) and the Cerebellum's forward
+model learn from these interactions exactly as they learn from a joint.
 
 A **durability-sensing sword** reads `durability`, `sharpness`, and `weight`;
 acts through `slash`, `parry`, `throw`, `sharpen`, and `repair`; and fails by

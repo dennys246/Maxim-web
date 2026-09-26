@@ -74,7 +74,7 @@ The table lists every section the 1.1.2 builder can add, grouped the way the cod
 | `knowledge_context` | IMPORTANT | semantic knowledge matched | `=== Semantic Knowledge ===` |
 | `causal_context` | CRITICAL | NAc has predictions | `=== Causal Predictions (learned from experience) ===`, up to five |
 | `valence_context` | CRITICAL | learned valence exists | `=== Learned Associations (from experience) ===`, up to five, each marked as attractive, aversive, or neutral |
-| `motor_programs` | IMPORTANT | Cerebellum has programs | `=== Available Motor Programs ===`, steps and known risks |
+| `motor_programs` | IMPORTANT | Cerebellum has programs (never true in production today: no program is crystallized, [#909](https://github.com/dennys246/Maxim/issues/909)) | `=== Available Motor Programs ===`, steps and known risks |
 | `statistical_patterns` | NICE_TO_HAVE | the Statistician has confirmed patterns | Active patterns and ranked analysis suggestions |
 
 Two things stand out. The learned signal from experience — `causal_context`, `valence_context`, `body_state` — sits at `CRITICAL`, the same tier as identity and tools; it is the last bio content to go. And the sections that describe *rules* rather than *experience* — mode context, extended guidance, statistical patterns — are the first to go.
