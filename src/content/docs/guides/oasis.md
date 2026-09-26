@@ -156,7 +156,8 @@ fails loudly instead of degrading to permissive.
   [pre-registered null](/research/evidence/#where-it-didnt-hold-up), not a bug. Exp 62,
   earned the day after 1.3.0 shipped, is consistent with it: an agent's own fear carried to a
   second pool because that pool reads as the same situation in a different place, and it
-  missed at night, where the situation reads differently
+  misses in roughly the last 5% of each in-game day, where the clock's wrap makes the
+  situation read differently
   ([Exp 62](/research/evidence/#a-learned-fear-carries-to-a-second-pool-the-same-situation-a-different-place)).
   Generalization across a changed situation is the working direction of the 1.4 roadmap
   rather than a result.

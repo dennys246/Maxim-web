@@ -424,9 +424,12 @@ is the fear alone.
 and the prereg says so outright. The apparatus has one world sensor that discriminates the
 situations — being in water or not, a binary flip — so its situation space has two points.
 What carried across is invariance to *place*, the two low-weight position readings; not
-invariance to a *changed situation*. The context wall still stands, and was measured: a night
-pool reads 0.799 against a 0.85 threshold, so **the learned fear misses at night**, for
-representational reasons the frozen-day protocol hides. The result is bounded to the
+invariance to a *changed situation*. The context wall still stands, and was measured: a lit
+pond reads 0.588 against a 0.85 threshold. The records also carried a "night pool" reading of
+0.799, and a 2026-09-25 correction traced it to the in-game clock's daily wrap, not to night:
+midnight reads 0.903, inside the threshold ([#899](https://github.com/dennys246/Maxim/issues/899)). So **the learned fear misses in
+roughly the last 5% of each in-game day**, for representational reasons the frozen-day
+protocol hides ([Engrams](/memory/engrams/#its-two-limits)). The result is bounded to the
 sealed-shell, frozen-day class of pools it was run on, and it involves no sharing at all — a
 *received* fear's reach to another pool is still untested. Nothing here says Maxim is afraid of
 water anywhere.
@@ -577,8 +580,9 @@ CACHE-CONFIRMED 2026-09-07), and it is an open design question rather than a def
 [Exp 62](#a-learned-fear-carries-to-a-second-pool-the-same-situation-a-different-place),
 earned the day after 1.3.0 shipped, is consistent with it rather than an exception. A learned
 fear carried to a second pool because the second pool reads as the *same* situation in a
-different place; a night pool, which reads as a *different* situation (0.799 against a 0.85
-threshold), is exactly where the fear misses. Generalization across a changed situation is
+different place; a pool that reads as a *different* situation, such as a lit pond (0.588
+against a 0.85 threshold), is exactly where the fear misses. (A reading once recorded as a
+night miss turned out to be the in-game clock's daily wrap, [#899](https://github.com/dennys246/Maxim/issues/899).) Generalization across a changed situation is
 the working direction of the 1.4 roadmap, not a result. This remains the sharpest bound on the
 headline — and on the shared-fear result: transfer is demonstrated, generalization is not, and
 Exp 62 now measures both halves of that sentence.
@@ -691,7 +695,8 @@ separate and narrowly graduated result above.
   *different* pool, and promotion of a received fear on the sharing side are all
   untested as of 1.3. An agent's *own* fear has since been measured crossing to a second
   pool ([Exp 62](#a-learned-fear-carries-to-a-second-pool-the-same-situation-a-different-place)),
-  and it misses at night; a received fear's reach has not been tested at all. Nothing on
+  and it misses in roughly the last 5% of each in-game day, where the clock wraps; a received
+  fear's reach has not been tested at all. Nothing on
   this site should be read as "Maxim is afraid of water".
 - **Eating when hungry is prior-driven, not learned.** The world-owned drives move the
   agent toward food because the substrate prior already favours the corrective action,

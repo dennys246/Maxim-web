@@ -15,7 +15,9 @@ That sounds trivial until you notice what it replaces. Without it, every
 model — *what will this do?* — answered from scratch, at LLM latency, forever.
 The Cerebellum's job is to make the hundredth repetition of a known movement
 cost nothing but a dictionary lookup, and to keep the LLM in the loop only where
-the outcome is still genuinely uncertain.
+the outcome is still genuinely uncertain. That is the design. Today the forward
+model trains on real readings, but nothing reads its predictions yet, so the LLM
+is not yet spared any calls. The sections below mark which parts run.
 
 Be clear about the scope of the name. There are no climbing fibres here, no
 Purkinje cells, no timing circuitry. What is borrowed from the biological
@@ -33,13 +35,17 @@ through the SEM (Sensor-Entity-Modulator) protocol.
 Three things, in increasing order of time horizon.
 
 **Forward models** — per-affordance predictions of resulting sensor state,
-updated on every observation. This is the fast, continuous layer.
+updated on every observation. This is the fast, continuous layer, and the only
+one of the three that runs in production today: it trains on real readings, but
+nothing reads its predictions yet.
 
 **Motor programs** — sequences of SEM actions that have been repeated enough
 times, for the same goal, to be worth storing as a unit and replaying.
+**Dormant**: no production code calls it.
 
 **Motor engrams** — links from a motor program back to the hippocampal episode
-in which it mattered, so that context can modulate future execution.
+in which it mattered. **Dormant**: designed, not wired. See
+[Engrams](/memory/engrams/) for how each memory family scores.
 
 Alongside these, and sharing the same learning rule, the proprioception module
 runs a `FocusLearner` that calibrates the gain constants converting tracking
@@ -85,17 +91,28 @@ factory = cerebellum_modulator_factory(cb, fallback_factory=llm_mod_factory)
 attach_backends(root, modulator_factory=factory)
 ```
 
-In production this is automatic: `build_bio_stack` constructs
-`BioStack.cerebellum` and `build_executor(cerebellum=...)` forwards it to
-`generate_tools_for_entity`, so every generated affordance tool has a live
-Cerebellum behind it, with prediction, training, and reaction emission all
-wired.
+That snippet is the designed wiring, and no production code runs it. What
+production does: `build_bio_stack` constructs `BioStack.cerebellum`, and
+`build_executor(cerebellum=...)` forwards it to `generate_tools_for_entity`. So
+every generated affordance tool **trains** the forward model on the sensor
+readings that follow an action. Nothing in a running agent reads the forward
+model's predictions: `cerebellum_modulator_factory` and `Cerebellum.predict`
+have no production caller
+([#909](https://github.com/dennys246/Maxim/issues/909)).
 
-Other documented properties: per-key locks for thread-safe concurrent
-predict/observe, and persistence to `<persistence_dir>/cerebellum.json`
-(default `~/.maxim/memory/cerebellum.json`).
+The Cerebellum uses per-key locks, so concurrent predict and observe calls are
+thread-safe. **Its state is not saved yet.** `build_bio_stack` loads
+`<persistence_dir>/cerebellum.json` if the file exists, but it never gives the
+Cerebellum a path to save to. So `save_cerebellum()` does nothing, and what the forward
+model learns in one session does not carry into the next. The fix is tracked as
+[#908](https://github.com/dennys246/Maxim/issues/908).
 
-### The confidence gate
+### The confidence gate (designed; Dormant)
+
+This section describes the design. `CerebellumModulator` is built and tested,
+but no production code constructs it
+([#909](https://github.com/dennys246/Maxim/issues/909)), so a running agent
+never serves a cached prediction in place of the LLM.
 
 The `CerebellumModulator` is the decision point. It has a cached prediction and
 a confidence score, and one threshold:
@@ -152,27 +169,22 @@ commanded_yaw = error_yaw * yaw_gain
 Gains persist to disk, so calibration survives a restart rather than being
 relearned every session.
 
-### Motor programs and engrams
+### Motor programs and engrams: designed, not wired
 
-When the agent repeats the same SEM sequence three or more times for the same
-goal, the Cerebellum crystallizes it as a reusable `MotorProgram`. The
-`ProgramRegistry` indexes programs three ways — by goal, by entity, by
-affordance:
+**Dormant.** The code for motor programs and motor engrams exists and has unit
+tests, but nothing in a running agent calls it
+([#909](https://github.com/dennys246/Maxim/issues/909)). No program is ever
+crystallized, and no motor engram is ever formed or read. On the
+[engram scorecard](/memory/engrams/) the motor family scores zero of four.
 
-```python
-programs = cb.find_programs_for_entity("sword")     # by entity
-programs = cb.find_programs_for_affordance("slash") # by affordance
-programs = cb.find_related_programs("attack")       # unified search
-```
+The design, for the record: when the agent repeats the same SEM sequence three
+or more times for the same goal, `ProgramRegistry.observe_sequence` would store
+it as a reusable `MotorProgram`, indexed by goal, entity and affordance. A motor
+engram would then form on a significant outcome: pain or surprise (RPE) above
+0.3, novelty above 0.7, or program confidence below 0.3. It would link the
+program to the Hippocampus episode in which it mattered.
 
-The program executor replays steps with a pain gate checked before each one
-(abort if a sensor is near its failure threshold), a PainBus subscription for
-mid-sequence interrupts, and gate tightening of 10% per painful execution — so a
-program that keeps hurting becomes progressively harder to trigger.
-
-Motor engrams sit on top. They form only on significant outcomes — pain above
-0.3, surprise (RPE) above 0.3, or a genuinely novel program — and they decay
-after roughly two days unless reinforced. The division of labour:
+*Design intent only. None of this runs in production.*
 
 ```
    Cerebellum          engram link          Hippocampus
@@ -181,8 +193,10 @@ after roughly two days unless reinforced. The division of labour:
    program steps                              contextual episode
 ```
 
-Context therefore modulates motor execution without the motor store having to
-carry episodic data.
+The idea is that episodic context could shape a motor program without the motor
+store carrying episodic data. Whether to wire it or retire it is item E7 in the
+engine's [engram fix plan](https://github.com/dennys246/Maxim/blob/main/docs/plans/engram_formation.md),
+decided by the 1.4 graded-predictor audit.
 
 ## A worked example: orienting toward a sound
 
@@ -233,7 +247,9 @@ The embodiment write-up states that "in testing, LLM calls drop from 100 to ≤4
 over 100 actions" as the Cerebellum accumulates observations — the source for
 the frequently-quoted "60% reduction."
 
-Treat it as an illustration of the mechanism, not a benchmark. The source does
+Treat it as an illustration of the mechanism, not a benchmark. The mechanism it
+illustrates is the confidence gate, which is Dormant in production (see above), so
+the figure does not describe a running agent today. The source does
 not identify the scenario, the entity or body used, the model behind the
 fallback, the number of runs, or the variance across them. What the number
 demonstrates is the shape of the thing: with a 0.3 confidence threshold and
@@ -254,25 +270,29 @@ that someone's suite was green, and nothing more.
 ## How it connects
 
 ```
+  LIVE
   proprioception / SEM sensors
-            │  position, velocity, sensor reads
+            │  sensor readings after each action
             ▼
-     ┌─────────────┐   predict/observe    ┌──────────────┐
-     │ Cerebellum  │◄────────────────────►│ LLM fallback │
-     │ forward     │   confidence < 0.3   └──────────────┘
-     │ models      │
-     └──────┬──────┘
-            │ reactions (POSITIVE 0.1–0.3 / NEGATIVE 0.3–0.5)
-            ▼
-      ReactionBus ──┬──► NAc.distribute_reward   (reward learning, EC threshold)
-                    └──► hippocampus.capture_reaction (episode valence)
-            ▲
-            │ engram links program ↔ episode
-   PainBus ─┘   (pain > 0.3, RPE > 0.3, novelty; ~2-day decay)
+     ┌─────────────┐
+     │ Cerebellum  │   trains on every generated-tool action
+     │ forward     │   predictions: no reader yet
+     │ models      │   state: not saved yet (#908)
+     └─────────────┘
 
-   FearGatedExecutor wraps the executor outermost — unsafe actions
-   never reach the modulator at all.
+  DESIGNED, DORMANT (no production caller, #909)
+     forward model ──predict──► serve cached answer, or LLM fallback
+                                 when confidence < 0.3
+     CerebellumModulator ──reactions──► ReactionBus
+     motor engram links: program ↔ Hippocampus episode
+
+  FearGatedExecutor wraps the executor outermost — unsafe actions
+  never reach the modulator at all.
 ```
+
+In production the Cerebellum sends nothing onto the ReactionBus. Its reactions
+come from `CerebellumModulator`, which nothing constructs. The ReactionBus paths
+below describe how the substrate consumes reactions from other sources.
 
 - **Input** comes from SEM sensors and the proprioception module — position,
   velocity, acceleration, direction reversals, commanded-versus-actual error.
@@ -295,15 +315,15 @@ that someone's suite was green, and nothing more.
 
 For where this sits relative to the rest of the substrate, see the [systems
 overview](/systems/overview/) and [Architecture](/concepts/architecture/); for
-the storage side of what the engrams point at, [Memory
-systems](/memory/overview/). Timing context comes from the
+the storage side, [Memory systems](/memory/overview/); for which memory traces
+actually reach behaviour, [Engrams](/memory/engrams/). Timing context comes from the
 [SCN](/systems/suprachiasmatic-nucleus/), and quantitative pattern confirmation
 from the [Angular Gyrus](/systems/angular-gyrus/). To run any of this on real
 hardware, start with the [Reachy Mini guide](/guides/reachy-mini/).
 
 ## Going deeper
 
-- [`docs/embodiment_guide.md`](https://github.com/dennys246/Maxim/blob/main/docs/embodiment_guide.md) — the SEM protocol manual: forward models, motor programs, engrams, the learning loop
+- [`docs/embodiment_guide.md`](https://github.com/dennys246/Maxim/blob/main/docs/embodiment_guide.md) — the SEM protocol manual: forward models, motor programs, engrams, the learning loop (its motor-engram sections describe code with no production caller; the correction is [#909](https://github.com/dennys246/Maxim/issues/909))
 - [`docs/proprioception.md`](https://github.com/dennys246/Maxim/blob/main/docs/proprioception.md) — FocusLearner, MovementTracker, PainDetector, the two-layer pain architecture
 - [Embodiment](https://www.dennyschaedig.com/maxim/embodiment) — the design essay behind the forward-model layer
 - [Sound orientation](https://www.dennyschaedig.com/maxim/sound-orientation) — the full hardware case study, including the actuation bug

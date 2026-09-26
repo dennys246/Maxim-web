@@ -82,9 +82,11 @@ Each captured record is indexed by hash keys drawn from `indexed_keys`
 ## The associative graph
 
 When a memory is captured, `_form_associations()` recalls similar existing
-memories and creates bidirectional `ASSOCIATES` edges to them. This is the
-engineering analogue of engram co-allocation: things encoded near each other,
-about the same stuff, get linked at encoding time rather than at query time.
+memories and creates bidirectional `ASSOCIATES` edges to them. This is an
+engineering analogy to engram co-allocation in neuroscience: things encoded near
+each other, about the same stuff, get linked at encoding time rather than at query
+time. It is an analogy, not a claim. The traces it links reach behaviour only as
+LLM prompt text today; [Engrams](/memory/engrams/) scores each memory family.
 
 Edge weight is a fixed blend of three terms:
 

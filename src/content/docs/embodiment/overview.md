@@ -217,8 +217,9 @@ This section has several pages, each covering one part of the embodiment layer:
 - [**Reachy Mini guide**](/guides/reachy-mini/) — the worked hardware example:
   wiring the SEM model through to a live robot and learning a policy on it.
 - [**Cerebellum**](/systems/cerebellum/) — the motor-learning system underneath
-  the SEM layer: forward models, motor programs, and the confidence gate that
-  decides when to skip the LLM.
+  the SEM layer. The forward models train live; motor programs and the
+  confidence gate that would decide when to skip the LLM are designed and
+  Dormant (no production caller).
 
 ## Going deeper
 
