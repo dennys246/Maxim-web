@@ -1,0 +1,209 @@
+---
+// One short page per experiment, generated from the manifest. It gives every
+// experiment a single address on this site: what it found, its status, how it
+// relates to the entries around it, which pages discuss it — and a link to the
+// full record in the pymaxim repo, which this page summarizes and never replaces.
+//
+// A route here takes priority over Starlight's catch-all, so a slug equal to a
+// docs page under research/experiments/ would shadow it; the experiments-check
+// integration rejects those slugs.
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getCollection } from 'astro:content';
+import { manifest, experimentPath, NOTEBOOK_URL } from '../../../lib/experiments.mjs';
+
+export async function getStaticPaths() {
+	const docs = await getCollection('docs');
+	const pages = docs.map((d) => ({
+		title: d.data.title,
+		href: `/${d.id.replace(/(^|\/)index$/, '')}/`.replace(/\/+/g, '/'),
+		body: d.body ?? '',
+	}));
+	return manifest.experiments.map((e) => {
+		// A page discusses an experiment when it links to it — on this site or to
+		// its notebook record. Plain-text mentions ("Exp 62") are too ambiguous to
+		// count (two 37s, P4 ×8).
+		const needles = [experimentPath(e.slug), `docs/experiments/${e.file}`];
+		const discussedOn = pages
+			.filter((p) => p.href !== '/research/experiments/' && needles.some((n) => p.body.includes(n)))
+			.map(({ title, href }) => ({ title, href }));
+		return { params: { slug: e.slug }, props: { e, discussedOn } };
+	});
+}
+
+const { e, discussedOn } = Astro.props;
+const line = manifest.lines.find((l) => l.slug === e.line);
+const ref = (slug) => manifest.bySlug.get(slug);
+// Previous / Next walk the line in time order, so "Next" is what came after.
+const siblings = line.experiments; // newest first
+const i = siblings.indexOf(e);
+const later = siblings[i - 1];
+const earlier = siblings[i + 1];
+// A supersede is also a "builds on"; list each related entry once, under the
+// stronger relation.
+const without = (slugs, shown) => slugs.filter((s) => !shown.includes(s));
+const relations = [
+	['Superseded by', e.superseded_by],
+	['Supersedes', e.supersedes],
+	['Builds on', without(e.follows, e.supersedes)],
+	['Built on by', without(e.followed_by, e.superseded_by)],
+].filter(([, slugs]) => slugs.length);
+const facts = [
+	['Status', e.label],
+	['Date', e.date ?? 'undated'],
+	e.phase && ['Covers', e.phase],
+	['Notebook id', e.id],
+].filter(Boolean);
+---
+
+<StarlightPage
+	frontmatter={{
+		title: e.title,
+		description: e.short,
+		tableOfContents: false,
+		prev: earlier ? { link: experimentPath(earlier.slug), label: earlier.title } : false,
+		next: later ? { link: experimentPath(later.slug), label: later.title } : false,
+	}}
+>
+	<div class="exp-page">
+		<p class="exp-page-line">
+			Research line: <a href={`/research/experiments/#${line.anchor}`}>{line.title}</a>
+		</p>
+
+		<dl class="exp-facts">
+			{
+				facts.map(([k, v]) => (
+					<div>
+						<dt>{k}</dt>
+						<dd>
+							{k === 'Status' ? (
+								<span class={`exp-status exp-status--${e.status}`}>{v}</span>
+							) : k === 'Date' && e.date ? (
+								<time datetime={e.date}>{v}</time>
+							) : (
+								v
+							)}
+						</dd>
+					</div>
+				))
+			}
+		</dl>
+
+		{
+			e.retired && e.superseded_by.length > 0 && (
+				<p class="exp-retired">
+					Not a current finding. Read{' '}
+					{e.superseded_by.map((s, n) => (
+						<>
+							{n > 0 && ', '}
+							<a href={experimentPath(s)}>{ref(s).title}</a>
+						</>
+					))}{' '}
+					instead.
+				</p>
+			)
+		}
+
+		<h2>What it found</h2>
+		<p>{e.finding ?? e.short}</p>
+
+		<p class="exp-record">
+			<a href={e.repo_href} rel="noopener">Full record in the pymaxim notebook ↗</a> — hypotheses,
+			methods, raw data and reproduction commands. If this page and the record disagree, the record
+			wins.
+		</p>
+
+		{
+			relations.length > 0 && (
+				<>
+					<h2>Related experiments</h2>
+					<dl class="exp-rel">
+						{relations.map(([k, slugs]) => (
+							<div>
+								<dt>{k}</dt>
+								<dd>
+									<ul>
+										{slugs.map((s) => (
+											<li>
+												<a href={experimentPath(s)}>{ref(s).title}</a>{' '}
+												<span class={`exp-status exp-status--${ref(s).status}`}>{ref(s).label}</span>
+											</li>
+										))}
+									</ul>
+								</dd>
+							</div>
+						))}
+					</dl>
+				</>
+			)
+		}
+
+		{
+			(e.walkthrough || discussedOn.length > 0) && (
+				<>
+					<h2>Discussed on this site</h2>
+					<ul>
+						{e.walkthrough && (
+							<li>
+								<a href={e.walkthrough}>Walkthrough section</a>
+							</li>
+						)}
+						{discussedOn.map((p) => (
+							<li>
+								<a href={p.href}>{p.title}</a>
+							</li>
+						))}
+					</ul>
+				</>
+			)
+		}
+
+		<p class="exp-back">
+			<a href={`/research/experiments/#${e.slug}`}>← All experiments</a> ·
+			<a href={NOTEBOOK_URL} rel="noopener">The whole notebook ↗</a>
+		</p>
+	</div>
+</StarlightPage>
+
+<style>
+	.exp-page-line {
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-sm);
+	}
+	.exp-facts,
+	.exp-rel {
+		display: grid;
+		gap: 0.35rem;
+		margin: 1rem 0;
+	}
+	.exp-facts > div,
+	.exp-rel > div {
+		display: grid;
+		grid-template-columns: 9rem 1fr;
+		gap: 0.75rem;
+	}
+	dt {
+		font-weight: 600;
+	}
+	dd {
+		margin: 0;
+	}
+	.exp-rel ul {
+		margin: 0;
+		padding-left: 1rem;
+	}
+	.exp-retired {
+		border-left: 3px dashed var(--sl-color-gray-4);
+		padding-left: 0.75rem;
+	}
+	.exp-record,
+	.exp-back {
+		font-size: var(--sl-text-sm);
+	}
+	@media (max-width: 40rem) {
+		.exp-facts > div,
+		.exp-rel > div {
+			grid-template-columns: 1fr;
+			gap: 0;
+		}
+	}
+</style>

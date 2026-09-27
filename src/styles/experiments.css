@@ -32,3 +32,98 @@
 	width: auto;
 	min-width: 100%;
 }
+
+/* Status pills — used by the experiments index and every experiment page. The
+   vocabulary is pymaxim's 2026-09-13 status audit (src/lib/experiments.mjs). */
+.exp-status {
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	padding: 0.05em 0.45em;
+	border-radius: 999px;
+	border: 1px solid var(--sl-color-gray-5);
+	color: var(--sl-color-gray-2);
+	white-space: nowrap;
+}
+.exp-status--earned {
+	border-color: var(--sl-color-accent);
+	color: var(--sl-color-accent-high);
+}
+/* Ran, but deliberately not a settled finding — distinct from both an
+   earned result and a retired one. */
+.exp-status--partial,
+.exp-status--exploratory {
+	border-color: var(--sl-color-orange, var(--sl-color-gray-4));
+	color: var(--sl-color-orange-high, var(--sl-color-gray-2));
+}
+/* Retired: a dashed outline rather than reduced opacity, so the label keeps
+   full text contrast. */
+.exp-status--superseded,
+.exp-status--withdrawn,
+.exp-status--stale {
+	border-style: dashed;
+}
+
+/* Experiment rows — the index (ExperimentsLatest, ExperimentLine) and the
+   experiment pages share these, so they are global rather than scoped. */
+.exp-count,
+.exp-line-intro,
+.exp-best {
+	font-size: var(--sl-text-sm);
+}
+.exp-count,
+.exp-line-period {
+	color: var(--sl-color-gray-3);
+}
+.exp-list {
+	list-style: none;
+	padding: 0;
+	margin: 0.75rem 0 0;
+	display: grid;
+	gap: 0.75rem;
+}
+.exp-list > li + li {
+	margin-top: 0;
+}
+.exp-row {
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: 0.5rem;
+	padding: 0.75rem 1rem;
+	scroll-margin-top: calc(var(--sl-nav-height, 3.5rem) + 1rem);
+}
+/* Retired entries stay listed, outlined dashed — never dimmed, so the text
+   keeps full contrast. */
+.exp-row--retired {
+	border-style: dashed;
+}
+.exp-row:target {
+	border-color: var(--sl-color-accent-high);
+}
+.exp-head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 0.75rem;
+}
+.exp-title {
+	font-weight: 600;
+}
+.exp-title a {
+	text-decoration: none;
+}
+.exp-meta {
+	margin-top: 0.15rem;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	font-size: var(--sl-text-xs);
+	color: var(--sl-color-gray-3);
+}
+.exp-id {
+	font-family: var(--sl-font-mono, monospace);
+}
+.exp-finding,
+.exp-by {
+	margin: 0.4rem 0 0;
+	font-size: var(--sl-text-sm);
+}

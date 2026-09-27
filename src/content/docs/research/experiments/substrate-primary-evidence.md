@@ -53,13 +53,13 @@ unless noted. "SD" is the pre-registered standard-deviation shift `(B − A) / A
 
 | ID | Date | Status | Result |
 |----|------|--------|--------|
-| [42 — substrate-primary preference](https://github.com/dennys246/Maxim/blob/main/docs/experiments/42_substrate_primary_preference.md) | 2026-06-23 | GRADUATE #6 (result frozen; maintained 2026-07-29) | Unmasked substrate learns safe-vs-harmful preference from embodied pain |
-| [42b — re-validation after the drive-pain fold](https://github.com/dennys246/Maxim/blob/main/docs/experiments/42b_drive_pain_fold_revalidation.md) | 2026-07-29 | FIRED | Graduation holds post-refactor across 40 sub-sims; metric saturated, so it detects breakage but not degradation |
-| [41 — substrate-primary exploration](https://github.com/dennys246/Maxim/blob/main/docs/experiments/41_substrate_primary_exploration.md) | 2026-06-19 | VOID (exit 4) | Mechanism real, design inconclusive — harmful action never tempting |
-| [40 — counter-prior goldilocks](https://github.com/dennys246/Maxim/blob/main/docs/experiments/40_counter_prior_goldilocks.md) | 2026-06-16 | FIRED | Dominance replicates in the goldilocks zone; substrate signal vanishes under counter-prior |
-| [38 — counter-prior substrate](https://github.com/dennys246/Maxim/blob/main/docs/experiments/38_counter_prior_substrate.md) | 2026-06-11 → 06-13 | FIRED | Prior dominance across all four frontier models tested |
-| [39 — substrate-primary counter-prior](https://github.com/dennys246/Maxim/blob/main/docs/experiments/39_substrate_primary_counter_prior.md) | 2026-06-13 | SUPERSEDED (never run) | Pre-registered predecessor; the executable line continued through Exp 41 and 42 |
-| [37 — cross-session graduation](https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_session_graduation.md) | 2026-05-30 (fires 06-06 → 06-13) | PARTIAL | Behavioral delta appears at ≥32B but fails confound isolation; magnitudes not reproducible across time with code held fixed (L8) |
+| [42 — substrate-primary preference](/research/experiments/exp-42/) | 2026-06-23 | GRADUATE #6 (result frozen; maintained 2026-07-29) | Unmasked substrate learns safe-vs-harmful preference from embodied pain |
+| [42b — re-validation after the drive-pain fold](/research/experiments/exp-42b/) | 2026-07-29 | FIRED | Graduation holds post-refactor across 40 sub-sims; metric saturated, so it detects breakage but not degradation |
+| [41 — substrate-primary exploration](/research/experiments/exp-41/) | 2026-06-19 | VOID (exit 4) | Mechanism real, design inconclusive — harmful action never tempting |
+| [40 — counter-prior goldilocks](/research/experiments/exp-40/) | 2026-06-16 | FIRED | Dominance replicates in the goldilocks zone; substrate signal vanishes under counter-prior |
+| [38 — counter-prior substrate](/research/experiments/exp-38/) | 2026-06-11 → 06-13 | FIRED | Prior dominance across all four frontier models tested |
+| [39 — substrate-primary counter-prior](/research/experiments/exp-39/) | 2026-06-13 | SUPERSEDED (never run) | Pre-registered predecessor; the executable line continued through Exp 41 and 42 |
+| [37 — cross-session graduation](/research/experiments/exp-37-graduation/) | 2026-05-30 (fires 06-06 → 06-13) | PARTIAL | Behavioral delta appears at ≥32B but fails confound isolation; magnitudes not reproducible across time with code held fixed (L8) |
 
 ### Exp 37 — cross-session behavioral delta (the setup)
 
@@ -91,8 +91,8 @@ rule, so the overall verdict is **PARTIAL — investigation gate**. Only R1's
 clean Wire-A ablation (delta shrinks by 1.13 SD when the substrate voice is
 removed) even suggests a legible bio-mechanism, and only in a reasoning-trained
 model — while the three experiments that tested that mechanism head-on
-([Exp 30](https://github.com/dennys246/Maxim/blob/main/docs/experiments/30_wire_a_tau_validation.md), [33](https://github.com/dennys246/Maxim/blob/main/docs/experiments/33_wire_a_post_fix_a.md),
-[34](https://github.com/dennys246/Maxim/blob/main/docs/experiments/34_wire_a_post_fix_a_b.md)) each returned 0 on their pre-registered
+([Exp 30](/research/experiments/exp-30/), [33](/research/experiments/exp-33/),
+[34](/research/experiments/exp-34/)) each returned 0 on their pre-registered
 primary.
 
 The honest consequence: cross-session memory *infrastructure* graduates as EARNED
@@ -195,7 +195,7 @@ by delta-attribution (B8) plus pre-existing drive-affinity. B7 is marked dormant
 B8 becomes the priority follow-up.
 
 The result is frozen, and it was re-validated on 2026-07-29 after the channel-split
-drive-pain fold ([Exp 42b](https://github.com/dennys246/Maxim/blob/main/docs/experiments/42b_drive_pain_fold_revalidation.md)):
+drive-pain fold ([Exp 42b](/research/experiments/exp-42b/)):
 40 sub-sims, none failed, discrimination reproduced identically. One caveat travels
 with it — the preference metric is saturated at 0.98–1.00 with a standard deviation
 of 0.000 across every arm and configuration, so a green re-run demonstrates "not
@@ -264,12 +264,12 @@ Protocols, pre-registrations, data, and results live in the
 [Maxim experiments notebook](https://github.com/dennys246/Maxim/tree/main/docs/experiments).
 The relevant files:
 
-- [37_cross_session_graduation.md](https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_session_graduation.md)
-- [38_counter_prior_substrate.md](https://github.com/dennys246/Maxim/blob/main/docs/experiments/38_counter_prior_substrate.md)
-- [39_substrate_primary_counter_prior.md](https://github.com/dennys246/Maxim/blob/main/docs/experiments/39_substrate_primary_counter_prior.md)
-- [40_counter_prior_goldilocks.md](https://github.com/dennys246/Maxim/blob/main/docs/experiments/40_counter_prior_goldilocks.md)
-- [41_substrate_primary_exploration.md](https://github.com/dennys246/Maxim/blob/main/docs/experiments/41_substrate_primary_exploration.md)
-- [42_substrate_primary_preference.md](https://github.com/dennys246/Maxim/blob/main/docs/experiments/42_substrate_primary_preference.md)
+- [37_cross_session_graduation.md](/research/experiments/exp-37-graduation/)
+- [38_counter_prior_substrate.md](/research/experiments/exp-38/)
+- [39_substrate_primary_counter_prior.md](/research/experiments/exp-39/)
+- [40_counter_prior_goldilocks.md](/research/experiments/exp-40/)
+- [41_substrate_primary_exploration.md](/research/experiments/exp-41/)
+- [42_substrate_primary_preference.md](/research/experiments/exp-42/)
 
 The harness that runs these lives under `pymaxim`; see the
 [experiments index](/research/experiments/), the

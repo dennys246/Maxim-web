@@ -1,9 +1,10 @@
 ---
 title: Experiments
-description: Maxim's lab notebook — every experiment, newest first, with links to raw data and reproduction in the pymaxim repo.
+description: Maxim's lab notebook — every experiment, grouped by research line, with its status, what it found, and a link to the full record in the pymaxim repo.
 ---
 
-import ExperimentsIndex from '../../../../components/ExperimentsIndex.astro';
+import ExperimentsLatest from '../../../../components/experiments/ExperimentsLatest.astro';
+import ExperimentLine from '../../../../components/experiments/ExperimentLine.astro';
 
 Maxim is developed as a falsification-oriented research project: features earn their
 place through pre-registered experiments, and results that don't hold up are marked
@@ -27,13 +28,49 @@ status audit:
 - **Superseded** and **withdrawn** — replaced by a later entry, or a conclusion taken back.
   Exp 48 is the example: re-baselined onto a corrected apparatus, then superseded by Exp 52.
 
-Each title links to the full record in the
-[pymaxim repo](https://github.com/dennys246/Maxim/tree/main/docs/experiments) — hypotheses,
-methodology, raw JSON, and copy-paste reproduction commands pinned to a git hash. Where a
-walkthrough on this site discusses the experiment, the entry also links to that section.
-If this page and the linked record ever disagree, the record wins.
+Each title opens a short page for that experiment: what it found, how it relates to the
+experiments around it, which pages on this site discuss it, and a link to the full record in
+the [pymaxim repo](https://github.com/dennys246/Maxim/tree/main/docs/experiments) —
+hypotheses, methodology, raw JSON, and copy-paste reproduction commands pinned to a git hash.
+If this site and the record ever disagree, the record wins.
 
-<ExperimentsIndex />
+<ExperimentsLatest />
+
+## Survival and learned fear
+
+<ExperimentLine line="survival" />
+
+## Sharing a learned want (the Oasis)
+
+<ExperimentLine line="sharing" />
+
+## Orienting on the Reachy Mini
+
+<ExperimentLine line="hardware" />
+
+## The Cradle: caregiver-taught learning
+
+<ExperimentLine line="cradle" />
+
+## LLM prior vs. carried substrate
+
+<ExperimentLine line="prior" />
+
+## The Roy harness and EC drift
+
+<ExperimentLine line="roy" />
+
+## Cross-session recall
+
+<ExperimentLine line="cross-session" />
+
+## Mechanism and integration checks
+
+<ExperimentLine line="foundations" />
+
+## Grounded language: entry audits
+
+<ExperimentLine line="language" />
 
 ## Milestone walkthroughs
 

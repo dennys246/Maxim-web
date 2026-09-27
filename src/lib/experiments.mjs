@@ -36,9 +36,20 @@ export const SUMMARY_MAX = 200;
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
-/** Newest first; undated entries last; ties broken by slug for a stable order. */
+/**
+ * The id Starlight gives a Markdown heading (github-slugger) for plain text:
+ * lowercase, punctuation dropped, each space a hyphen. The experiments index
+ * writes each line's title as a `##` heading, and links target this id.
+ */
+export const headingSlug = (text) =>
+	text
+		.toLowerCase()
+		.replace(/[^a-z0-9 _-]/g, '')
+		.replace(/ /g, '-');
+
+/** Newest first; undated entries last; same-day ties by slug, descending (45c above 45b). */
 const byDateDesc = (a, b) =>
-	(b.date ?? '').localeCompare(a.date ?? '') || a.slug.localeCompare(b.slug);
+	(b.date ?? '').localeCompare(a.date ?? '') || b.slug.localeCompare(a.slug);
 
 function derive(raw) {
 	const experiments = raw.experiments.map((e) => ({
@@ -60,6 +71,7 @@ function derive(raw) {
 	experiments.sort(byDateDesc);
 	const lines = raw.lines.map((l) => ({
 		...l,
+		anchor: headingSlug(l.title),
 		experiments: experiments.filter((e) => e.line === l.slug),
 	}));
 	return { experiments, lines, bySlug };
@@ -136,3 +148,6 @@ export const manifest = derive(data);
 
 /** Newest dated entry that is a result (not an audit, bench or tooling note). */
 export const newestResult = manifest.experiments.find((e) => e.date && !NOT_NEWS.has(e.status));
+
+/** The site path of an experiment's own page. */
+export const experimentPath = (slug) => `/research/experiments/${slug}/`;

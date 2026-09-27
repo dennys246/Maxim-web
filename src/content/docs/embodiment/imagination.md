@@ -7,7 +7,7 @@ Maxim is a bio-inspired cognitive architecture. Most of what the agent can touch
 
 Imagination is the subsystem that handles that gap. When perception mentions something with no matching component, imagination designs an **ephemeral** SEM entity for it in real time, registers it for the current scene only, and marks everything it produces as imagined so the agent does not confuse a daydreamed object with a verified one.
 
-This page describes what is actually wired today versus what is planned, using the integration report in [experiment 07](https://github.com/dennys246/Maxim/blob/main/docs/experiments/07_imagination_wiring.md).
+This page describes what is actually wired today versus what is planned, using the integration report in [experiment 07](/research/experiments/exp-07/).
 
 ## What it does
 

@@ -43,13 +43,13 @@ tests.
 
 | ID | Date | Experiment | Status | Result |
 |----|------|-----------|--------|--------|
-| 37 | 2026-05-30 | [Cross-session graduation](https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_session_graduation.md) | Pre-registered → **PARTIAL** | Behavioral delta appears only at ≥32B scale; independence from LLM priors **not** isolated (Arm C confound). The recorded magnitudes are historical: the same commit on the same seeds did not reproduce its own June result in August 2026 (limit L8) |
-| 12 | 2026-04-30 | [V1 phased attribution](https://github.com/dennys246/Maxim/blob/main/docs/experiments/12_v1_phased_attribution.md) | Recorded — **CLEAN PASS** | Substrate alone recalls a planted token across sessions; 7/7 phases |
-| 10 | 2026-04-25 | [Cross-session enrichment](https://github.com/dennys246/Maxim/blob/main/docs/experiments/10_cross_session_enrichment.md) | Recorded — **EARNED** | Prior-session memories surface in resumed prompts (3 per turn) |
-| B4 | 2026-04-17 | [Organic learning, Tier 3](https://github.com/dennys246/Maxim/blob/main/docs/experiments/behavioral_convergence_exp4_tier3.md) | PASS (5/5) | Agent converges to optimal choice across sessions: 0% → 25% → 100% |
-| B3 | 2026-04-17 | [LLM acts on substrate, Tier 2](https://github.com/dennys246/Maxim/blob/main/docs/experiments/behavioral_convergence_exp3_tier2.md) | PASS (12/12) | Experienced agent picks antidote 10/10; fresh agent 0/10 |
-| B2 | 2026-04-17 | [Consumable learning](https://github.com/dennys246/Maxim/blob/main/docs/experiments/behavioral_convergence_exp2.md) | PASS (13/13) | Energy-driven valences persist to disk and reload |
-| HC | 2026-04-06 | [Hippocampal recall](https://github.com/dennys246/Maxim/blob/main/docs/experiments/hippocampal_recall_experiment.md) · [run notes](https://github.com/dennys246/Maxim/blob/main/docs/experiments/hippocampal_recall_run_notes.md) | Run notes | Memory survival 1.0; behavioral recall 0 |
+| 37 | 2026-05-30 | [Cross-session graduation](/research/experiments/exp-37-graduation/) | Pre-registered → **PARTIAL** | Behavioral delta appears only at ≥32B scale; independence from LLM priors **not** isolated (Arm C confound). The recorded magnitudes are historical: the same commit on the same seeds did not reproduce its own June result in August 2026 (limit L8) |
+| 12 | 2026-04-30 | [V1 phased attribution](/research/experiments/exp-12/) | Recorded — **CLEAN PASS** | Substrate alone recalls a planted token across sessions; 7/7 phases |
+| 10 | 2026-04-25 | [Cross-session enrichment](/research/experiments/exp-10/) | Recorded — **EARNED** | Prior-session memories surface in resumed prompts (3 per turn) |
+| B4 | 2026-04-17 | [Organic learning, Tier 3](/research/experiments/behavioral-convergence-exp4-tier3/) | PASS (5/5) | Agent converges to optimal choice across sessions: 0% → 25% → 100% |
+| B3 | 2026-04-17 | [LLM acts on substrate, Tier 2](/research/experiments/behavioral-convergence-exp3-tier2/) | PASS (12/12) | Experienced agent picks antidote 10/10; fresh agent 0/10 |
+| B2 | 2026-04-17 | [Consumable learning](/research/experiments/behavioral-convergence-exp2/) | PASS (13/13) | Energy-driven valences persist to disk and reload |
+| HC | 2026-04-06 | [Hippocampal recall](/research/experiments/hippocampal-recall-experiment/) · [run notes](/research/experiments/hippocampal-recall-run-notes/) | Run notes | Memory survival 1.0; behavioral recall 0 |
 
 ### Cross-session graduation (Experiment 37)
 
@@ -86,9 +86,9 @@ R1-Distill produced the only clean ablation (Wire-A off shrinks the delta by
 
 Read that ablation narrowly. It is a model-conditional secondary, and the three
 experiments that tested cluster-bias annotation *directly* all failed their
-pre-registered primary: [Exp 30](https://github.com/dennys246/Maxim/blob/main/docs/experiments/30_wire_a_tau_validation.md),
-[Exp 33](https://github.com/dennys246/Maxim/blob/main/docs/experiments/33_wire_a_post_fix_a.md) and
-[Exp 34](https://github.com/dennys246/Maxim/blob/main/docs/experiments/34_wire_a_post_fix_a_b.md) each required Arm A to produce at least
+pre-registered primary: [Exp 30](/research/experiments/exp-30/),
+[Exp 33](/research/experiments/exp-33/) and
+[Exp 34](/research/experiments/exp-34/) each required Arm A to produce at least
 one `sense_food_source` call and each returned **0**, with no cross-arm divergence
 (A = B = C = 0) — in Exp 33 and 34 even with the Wire-A text demonstrably reaching
 the LLM. So the +1.13 SD figure is suggestive of a mechanism, not an attribution
@@ -230,11 +230,11 @@ for a local LLM backend, `pip install 'pymaxim[llm-llama,llm-server]'`.
 ## Reproduce
 
 - Experiments index: [/research/experiments/](/research/experiments/)
-- Graduation protocol & results: [37_cross_session_graduation.md](https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_session_graduation.md)
-- Substrate-only recall: [12_v1_phased_attribution.md](https://github.com/dennys246/Maxim/blob/main/docs/experiments/12_v1_phased_attribution.md)
-- Enrichment (EARNED): [10_cross_session_enrichment.md](https://github.com/dennys246/Maxim/blob/main/docs/experiments/10_cross_session_enrichment.md)
-- Consumable / behavioral convergence: [B2](https://github.com/dennys246/Maxim/blob/main/docs/experiments/behavioral_convergence_exp2.md) · [B3](https://github.com/dennys246/Maxim/blob/main/docs/experiments/behavioral_convergence_exp3_tier2.md) · [B4](https://github.com/dennys246/Maxim/blob/main/docs/experiments/behavioral_convergence_exp4_tier3.md)
-- Interference: [hippocampal_recall_experiment.md](https://github.com/dennys246/Maxim/blob/main/docs/experiments/hippocampal_recall_experiment.md) · [run notes](https://github.com/dennys246/Maxim/blob/main/docs/experiments/hippocampal_recall_run_notes.md)
+- Graduation protocol & results: [37_cross_session_graduation.md](/research/experiments/exp-37-graduation/)
+- Substrate-only recall: [12_v1_phased_attribution.md](/research/experiments/exp-12/)
+- Enrichment (EARNED): [10_cross_session_enrichment.md](/research/experiments/exp-10/)
+- Consumable / behavioral convergence: [B2](/research/experiments/behavioral-convergence-exp2/) · [B3](/research/experiments/behavioral-convergence-exp3-tier2/) · [B4](/research/experiments/behavioral-convergence-exp4-tier3/)
+- Interference: [hippocampal_recall_experiment.md](/research/experiments/hippocampal-recall-experiment/) · [run notes](/research/experiments/hippocampal-recall-run-notes/)
 - User-facing guide with `maxim roy diff`: [cross-session-learning.md](https://github.com/dennys246/Maxim/blob/main/docs/user/cross-session-learning.md)
 - Deeper reading: [substrate-primary evidence](/research/experiments/substrate-primary-evidence/) · [memory systems](https://www.dennyschaedig.com/maxim/memory-systems) · [the benchmark harness](/guides/benchmarks/)
 
