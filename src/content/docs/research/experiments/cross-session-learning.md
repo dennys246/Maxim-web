@@ -101,9 +101,11 @@ Arm C = 0.527 ≈ Arm B, again outside the band. The effect generalizes across
 priors — it is not specific to memory of the fire failure. So the verdict is
 **PARTIAL**, an investigation gate: it confirms *substrate carries cross-session
 memory and shifts behavior at ≥32B scale*, but does **not** establish that the
-substrate drives behavior *independently* of the LLM prior. The strong claim is
-explicitly deferred to Experiment 38 (substrate-primary measurement with the
-LLM-prior confound removed) — see [substrate-primary evidence](/research/experiments/substrate-primary-evidence/).
+substrate drives behavior *independently* of the LLM prior. That question went
+two ways afterwards: Experiment 38 kept the LLM in the action path and gave it a
+*wrong* prior — the prior won on every model — and Experiment 42 removed the LLM
+from action selection, where the substrate did discriminate a safe from a harmful
+source. See [substrate-primary evidence](/research/experiments/substrate-primary-evidence/).
 
 ### Substrate recall, isolated (Experiment 12)
 
@@ -205,7 +207,9 @@ for a local LLM backend, `pip install 'pymaxim[llm-llama,llm-server]'`.
 - **Independent behavioral drive is NOT yet earned.** Experiment 37 is
   **PARTIAL** — its Arm C isolation test failed on every model where the primary
   metric passed, so "the substrate changes behavior *independently of the LLM
-  prior*" is deferred to Experiment 38.
+  prior*" was not established here. Experiment 38 found the prior dominant with
+  the LLM in the action path; Experiment 42 earned a narrower substrate-primary
+  claim with the LLM removed.
 - **Not reproducible across time.** Re-running Experiment 37's identical commit on the
   identical seeds in August 2026 gave 0.71 where June gave 0.42 — the serving
   environment moved the whole distribution more than the code did, and nothing in

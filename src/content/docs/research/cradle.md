@@ -15,8 +15,8 @@ autonomously.
 
 Maxim is a bio-inspired cognitive architecture (package `pymaxim`, imports as
 `maxim`), and the Cradle is the most explicitly *developmental* part of it. It
-borrows the framing of infant operant conditioning — a driveless infant learns
-to orient toward a sound purely because a caregiver feeds it when it turns the
+borrows the framing of infant operant conditioning — an infant with no built-in
+reason to face a sound learns to orient toward a sound purely because a caregiver feeds it when it turns the
 right way — and uses that as a clean testbed for one question: **can the
 substrate learn behavior on its own, with no language model in the action
 path?**
@@ -47,7 +47,7 @@ about which is which:
   [NAc page](/systems/nucleus-accumbens/) states this plainly — Phase 0
   (end-to-end wiring, cradle harness, telemetry) is *planned*, and the
   `--aut-mode substrate-primary` flag ships in 1.1 as an experimental opt-in. The
-  [`cradle_mother.md`](https://github.com/dennys246/Maxim/blob/main/docs/plans/cradle_mother.md)
+  [`cradle_mother.md`](https://github.com/dennys246/Maxim/blob/main/docs/plans/deferred/cradle_mother.md)
   design doc is largely a **plan and post-mortem**, not a description of a
   shipped feature.
 
@@ -68,7 +68,7 @@ one slice of the idea.
 
 ### 46 — operant orient: a mother teaches, a crèche pools
 
-The load-bearing result. **Scripted and deterministic on real substrate with a
+The scripted foundation the later embodied work builds on. **Scripted and deterministic on real substrate with a
 real Hivemind merge — no LLM in the action path.** An infant body has a hunger
 drive but a *null* intrinsic azimuth drive: it has no built-in reason to face a
 sound. External operant credit is applied via `NAc.credit_operant_reward()`
@@ -189,8 +189,10 @@ does **not** show "fed while hungry" in the everyday sense: the sign-only credit
 discriminates nonzero-from-zero relief (hunger at feed ≈ 0.05–0.1, far below the
 deprivation threshold). Not modeled: secondary reinforcement of the voice itself,
 or devaluation. Nothing here speaks to magnitude, loudness, the LLM-driven action
-path, or multi-turn credit. **Phase B is one session, n = 12 per arm** —
-cross-session replication is outstanding.
+path, or multi-turn credit. **Each Phase B run is one learning session, n = 12 per
+arm**; the whole run was repeated once (2026-09-02, above) and the arm means
+reproduced. Whether the learned want survives into a later session is a separate
+question, read out on hardware by exp 53b below.
 
 **Readout on hardware (exp 53b).** Three of these taught infants' persisted NAc + EC
 files, loaded unchanged onto a physical Reachy Mini with nothing crediting on the
@@ -365,7 +367,7 @@ This is forward-looking, experimental work. Treat the section headings as
 claims of *different strength*:
 
 - **Validated, scripted:** exp 46 (operant orient + federation) and exp 47
-  (habituation) are the solid ground. They are deterministic and do not depend
+  (habituation) are the most reproducible results here. They are deterministic and do not depend
   on the embodied simulator's artifacts.
 - **EARNED, embodied:** exp 52 is the graduation. On the shuffled apparatus
   with relief-sourced credit, the infant learns to orient from the mother's
@@ -384,7 +386,7 @@ claims of *different strength*:
   the learning. That design was **superseded**; the current design gives the
   infant *no* innate orient drive and exteroceptive perception only.
 - **Read the experiment record, not the plan doc:** the
-  [`cradle_mother.md`](https://github.com/dennys246/Maxim/blob/main/docs/plans/cradle_mother.md)
+  [`cradle_mother.md`](https://github.com/dennys246/Maxim/blob/main/docs/plans/deferred/cradle_mother.md)
   design doc is a plan and post-mortem that lags the experiment record. The
   authoritative dispositions live in
   [`52_nurture.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/52_nurture.md),
@@ -400,7 +402,7 @@ claims of *different strength*:
 
 ## Going deeper
 
-- Design doc and post-mortem: [`docs/plans/cradle_mother.md`](https://github.com/dennys246/Maxim/blob/main/docs/plans/cradle_mother.md)
+- Design doc and post-mortem: [`docs/plans/deferred/cradle_mother.md`](https://github.com/dennys246/Maxim/blob/main/docs/plans/deferred/cradle_mother.md)
 - Experiment log index: [`docs/experiments/README.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/README.md)
 - [`46_operant_orient_creche.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/46_operant_orient_creche.md)
 - [`47_habituation_novel_in_noise.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/47_habituation_novel_in_noise.md)

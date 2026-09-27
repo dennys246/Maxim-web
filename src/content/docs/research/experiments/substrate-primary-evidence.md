@@ -14,8 +14,10 @@ It is a walkthrough of **evidence**, not a feature announcement. The
 [substrate-primary operating mode](/concepts/operating-modes/) is experimental
 and phased; the [nucleus accumbens](/systems/nucleus-accumbens/) still ships as
 an advisory layer, not an action selector, in the default configuration. Nothing
-here changes that. What follows is the honest state of the measurements as of
-mid-2026.
+here changes that. What follows covers Exp 37 through Exp 42b (May–July 2026).
+Later substrate-primary results — the Reachy orienting runs, the Cradle, and the
+sharing and survival-fear experiments — are on the [evidence](/research/evidence/)
+page and the [experiments index](/research/experiments/).
 
 ## The question
 
@@ -55,8 +57,8 @@ unless noted. "SD" is the pre-registered standard-deviation shift `(B − A) / A
 | [42b — re-validation after the drive-pain fold](https://github.com/dennys246/Maxim/blob/main/docs/experiments/42b_drive_pain_fold_revalidation.md) | 2026-07-29 | FIRED | Graduation holds post-refactor across 40 sub-sims; metric saturated, so it detects breakage but not degradation |
 | [41 — substrate-primary exploration](https://github.com/dennys246/Maxim/blob/main/docs/experiments/41_substrate_primary_exploration.md) | 2026-06-19 | VOID (exit 4) | Mechanism real, design inconclusive — harmful action never tempting |
 | [40 — counter-prior goldilocks](https://github.com/dennys246/Maxim/blob/main/docs/experiments/40_counter_prior_goldilocks.md) | 2026-06-16 | FIRED | Dominance replicates in the goldilocks zone; substrate signal vanishes under counter-prior |
-| [38 — counter-prior substrate](https://github.com/dennys246/Maxim/blob/main/docs/experiments/38_counter_prior_substrate.md) | 2026-06-11 → 06-16 | FIRED | Prior dominance across all five models tested |
-| [39 — substrate-primary counter-prior](https://github.com/dennys246/Maxim/blob/main/docs/experiments/39_substrate_primary_counter_prior.md) | pending | PRE-REGISTERED | Frozen metric, not yet executed |
+| [38 — counter-prior substrate](https://github.com/dennys246/Maxim/blob/main/docs/experiments/38_counter_prior_substrate.md) | 2026-06-11 → 06-13 | FIRED | Prior dominance across all four frontier models tested |
+| [39 — substrate-primary counter-prior](https://github.com/dennys246/Maxim/blob/main/docs/experiments/39_substrate_primary_counter_prior.md) | 2026-06-13 | SUPERSEDED (never run) | Pre-registered predecessor; the executable line continued through Exp 41 and 42 |
 | [37 — cross-session graduation](https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_session_graduation.md) | 2026-05-30 (fires 06-06 → 06-13) | PARTIAL | Behavioral delta appears at ≥32B but fails confound isolation; magnitudes not reproducible across time with code held fixed (L8) |
 
 ### Exp 37 — cross-session behavioral delta (the setup)
@@ -77,7 +79,7 @@ positive_approach_engagement_fraction (Arm A fresh vs Arm B resumed)
 Qwen14B              0.533    0.517     -0.06       FAIL
 Qwen32B              0.420    0.800     +1.43       PASS   (Arm C 0.667, outside band -> confound)
 Mistral24B           1.000    0.600     -0.40       FAIL   (ceiling: A already optimal)
-R1-Distill-32B       0.259    0.566     +2.11       PASS   (Wire-A ablation -1.13 SD, clean)
+R1-Distill-32B       0.259    0.566     +2.11       PASS   (Wire-A ablation shrinks it +1.13 SD, clean)
 ```
 
 The signal is **scale-dependent**: it appears at 32B and above, not at 14B, and
@@ -105,8 +107,8 @@ If the prior itself is *wrong*, can carried experience correct it? Exp 38 built 
 `deceptive_fire`: an entity that looks like a safe warm hearth but whose
 `warm_self` affordance is inverted — touching it causes pain. A control
 `fire_pit` (prior-aligned, genuinely safe) runs alongside. Six arms × 5 trials =
-60 runs per model, across Claude Sonnet 4.6, GPT-4o, DeepSeek-V3,
-R1-Distill-Qwen-32B, and base Qwen32B. Primary 1 required the counter-prior
+60 runs per model, across four frontier models — Claude Sonnet 4.6, GPT-4o,
+DeepSeek-V3, and R1-Distill-Qwen-32B — with base Qwen32B added by Exp 40. Primary 1 required the counter-prior
 interaction to reach `≤ −1.0 SD` (substrate suppressing the harmful engagement);
 Primary 2 isolated first-contact cross-session transfer.
 
@@ -166,7 +168,7 @@ temptation, so the design could not adjudicate the strong claim. A "try-once and
 floor out" dynamic. The pre-registered 0.10 mechanism-readiness floor correctly
 blocked a false graduation.
 
-**Exp 42** (draft, not yet frozen) fixed the design flaw by measuring *terminal
+**Exp 42** fixed the design flaw by measuring *terminal
 preference* — the agent's final choice between a safe and a harmful warmth source
 when both are available — instead of a harm rate. N = 10 seeds per arm across two
 counterbalanced arcs (safety assignments swap between sources), ~40 turns,
@@ -201,19 +203,19 @@ broken" and cannot detect a moderate regression. A sensitivity-graded degradatio
 is the tracked follow-up. This limit is recorded as L4 in the project's
 [measurement-limits ledger](https://github.com/dennys246/Maxim/blob/main/docs/limits/README.md).
 
-**Exp 39** — the substrate-primary version of the counter-prior test — is
+**Exp 39** — the substrate-primary version of the counter-prior test — was
 **pre-registered** (`cradle_prelinguistic_deceptive` arc, N ≥ 5 seeds per arm,
-`propose_via_substrate` with no LLM prior in the action path) but **not yet
-executed**. It has a frozen primary metric and a triage gate (>1 EC cluster,
-NAc reward differentiation, functional proposals) that must pass before any run
-counts. There are no results to report.
+`propose_via_substrate` with no LLM prior in the action path) and **never run**.
+The notebook records it as the pre-registered predecessor: the executable line
+continued through Exp 41 and Exp 42, and Exp 39 is superseded. There are no
+results to report.
 
 ## What it shows
 
 Two clean findings, held apart honestly:
 
 1. **When the LLM is in the action path, the prior dominates.** Across Exp 37,
-   38, and 40 — six distinct models from 14B to frontier — carried experience
+   38, and 40 — seven distinct models from 14B to frontier — carried experience
    never overrode a contrary prior. The one place a substrate signal was real
    (Qwen32B, +1.43 SD) it collapsed the moment the prior was falsified.
    Prior-agreement is the gating variable, full stop.
@@ -222,13 +224,12 @@ Two clean findings, held apart honestly:
    Exp 42 shows an unmasked substrate learning a safe-source preference from
    embodied pain, tracking swapped safety assignments (+0.959 identity-flip). The
    substrate does real cognitive work here — but the *specific* mechanism was not
-   the one predicted (B8 delta-attribution, not B7 drive-gating), and the study
-   is still a draft.
+   the one predicted (B8 delta-attribution, not B7 drive-gating).
 
 What this does **not** show: that substrate-primary is a working default. It is
 not. The one graduated result lives in a narrow embodied-preference task with
-N = 10 and an unfrozen record, and the head-to-head substrate-primary
-counter-prior test (Exp 39) hasn't run. "The substrate can select actions in a
+N = 10, and the head-to-head substrate-primary counter-prior test (Exp 39)
+was never run. "The substrate can select actions in a
 toy preference task" is a long way from "the substrate should select actions in
 production."
 
@@ -247,7 +248,7 @@ production."
   Exp 42b (2026-07-29). Its own ablation reassigned the load-bearing mechanism
   from B7 to B8, and its metric is saturated, so re-runs detect breakage rather
   than degradation.
-- **Pending:** Exp 39 — pre-registered, unexecuted, no results.
+- **Superseded, never run:** Exp 39 — the pre-registered predecessor of Exp 41/42; no results.
 - **PARTIAL:** Exp 37 — behavioral delta gated by the Arm C confound, and its
   magnitudes are readings taken at one time: the identical commit and seeds gave
   0.71 in August 2026 against 0.42 in June (limit L8); the

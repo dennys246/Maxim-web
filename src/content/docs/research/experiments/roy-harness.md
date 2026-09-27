@@ -47,7 +47,7 @@ The methodology evolved through its failures more than its successes. Roy-1a est
 
 ## What was actually found
 
-**Cross-model results (1.0).** [`37_cross_model_results.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_model_results.md) ran the harness across model families with 60 trials per model (5 trials x 12 scenarios). The primary metric was `positive_approach_engagement_fraction` — the rate of safely warming near a fire. Arm A is a fresh agent (no substrate context); Arm B is a resumed agent carrying substrate history; Arm C is an isolation control with a peaceful prior. Completed fires:
+**Cross-model results (1.0).** [`37_cross_model_results.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_model_results.md) ran the harness across model families with 60 trials per model (5 trials x 12 scenarios). The primary metric was `positive_approach_engagement_fraction` — the rate of safely warming near a fire. Exp 37 reuses the letters with **different meanings** from the Roy-1a arms above: here Arm A is a fresh agent (no substrate context), Arm B is a resumed agent carrying substrate history, and Arm C is an isolation control with a peaceful prior. Completed fires:
 
 | Model | Arm A (mean ± SD) | Arm B (mean) | Δ (SD units) | Verdict |
 |---|---|---|---|---|
@@ -67,7 +67,7 @@ This is the **Goldilocks zone** finding, and it is the honest core of the whole 
 | Deceptive hearth | 0.50 | 0.52 |
 | Safe fire (control) | 0.31 | 0.29 |
 
-Primary 1 came in at +0.04 (+0.16 SD) — the wrong sign, nowhere near the ≤ −1.0 SD pass threshold. The verdict recorded is "COUNTER-PRIOR — dominance demonstrated." When the prior is falsified, the substrate signal that looked strong in Exp 37 **collapses too**. The gating variable is *prior-agreement*: the carried substrate survives only when task and prior already align. That is the disciplined conclusion — the substrate exists and is measurable, but the LLM prior dominates and overrides it. The [`39_substrate_primary_counter_prior`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/39_substrate_primary_counter_prior.md) protocol removes the LLM from the action path entirely to test whether the substrate can drive behavior unmasked; it is pre-registered with primaries frozen, and settles the behavioral graduation gate either way.
+Primary 1 came in at +0.04 (+0.16 SD) — the wrong sign, nowhere near the ≤ −1.0 SD pass threshold. The verdict recorded is "COUNTER-PRIOR — dominance demonstrated." When the prior is falsified, the substrate signal that looked strong in Exp 37 **collapses too**. The gating variable is *prior-agreement*: the carried substrate survives only when task and prior already align. That is the disciplined conclusion — the substrate exists and is measurable, but the LLM prior dominates and overrides it. The next question was whether the substrate can drive behavior with the LLM removed from the action path. The pre-registered [`39_substrate_primary_counter_prior`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/39_substrate_primary_counter_prior.md) design was never run; the line continued through Exp 41 (void) and Exp 42, which graduated a narrower claim — substrate-primary discrimination of a safe from a harmful source. See [substrate-primary evidence](/research/experiments/substrate-primary-evidence/).
 
 ## Status and caveats
 
