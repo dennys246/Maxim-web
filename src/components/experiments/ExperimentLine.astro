@@ -1,0 +1,29 @@
+---
+// One research line on the experiments index: its intro, its best current
+// result, and every entry in it, newest first. The section heading is written
+// in index.mdx, not here, so it reaches Starlight's table of contents.
+import { experimentPath, manifest } from '../../lib/experiments.mjs';
+import ExperimentRow from './ExperimentRow.astro';
+
+const { line: slug } = Astro.props;
+const line = manifest.lines.find((l) => l.slug === slug);
+if (!line) throw new Error(`ExperimentLine: unknown line "${slug}"`);
+const best = line.best ? manifest.bySlug.get(line.best) : null;
+---
+
+<div class="exp-line" data-line={line.slug}>
+	<p class="exp-line-intro">
+		<span class="exp-line-period">{line.period}</span> — {line.intro}
+	</p>
+	{
+		best && (
+			<p class="exp-best">
+				<strong>Best current result:</strong> <a href={experimentPath(best.slug)}>{best.title}</a>{' '}
+				<span class={`exp-status exp-status--${best.status}`}>{best.label}</span>
+			</p>
+		)
+	}
+	<ol class="exp-list">
+		{line.experiments.map((e) => <ExperimentRow e={e} />)}
+	</ol>
+</div>

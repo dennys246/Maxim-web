@@ -124,7 +124,7 @@ Each one was pre-registered and run live in a Minecraft water classroom on Paper
 no LLM in the action path.
 
 **Exp 60: a fear learned from the game's own pain**
-([prereg](https://github.com/dennys246/Maxim/blob/main/docs/experiments/exp60_drowning_avoidance_prereg.md),
+([prereg](/research/experiments/exp-60/),
 EARNED 2026-09-16). An agent that felt air-hunger pain underwater later left the water
 before the pain arrived. Its yoked twin had the same pain with the fear detached, and
 never left. Five frozen seeds per arm; all five gates passed.
@@ -141,7 +141,7 @@ never left. Five frozen seeds per arm; all five gates passed.
   learned beyond the ablation, or persistence and extinction after a delay.
 
 **Exp 61: the fear transfers to an agent that never felt it**
-([prereg](https://github.com/dennys246/Maxim/blob/main/docs/experiments/exp61_shared_fear_prereg.md),
+([prereg](/research/experiments/exp-61/),
 EARNED 2026-09-17). A receiver ingested a donor's exported fear through the real CLI
 and left the water on its first loop-live submersion. All six frozen gates passed.
 
@@ -157,7 +157,7 @@ and left the water on its first loop-live submersion. All six frozen gates passe
   or promotion on the sharing side.
 
 **Exp 62, rung A: the fear carries to a second pool**
-([prereg](https://github.com/dennys246/Maxim/blob/main/docs/experiments/exp62_pressure_interoception_prereg.md),
+([prereg](/research/experiments/exp-62/),
 EARNED 2026-09-20). An agent that learned the fear in pool 1 left the water on its
 first submersion in pool 2, at a different altitude and spawn distance. There was no
 mechanism change, no new sensor and no ingest. All five frozen gates passed.

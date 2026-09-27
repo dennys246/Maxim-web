@@ -29,7 +29,7 @@ states the half that failed before anything else.
 session opens with the prior session's store intact and surfaces roughly three
 relevant memories per turn, accumulating causal links rather than re-deriving them.
 
-**The evidence.** [Exp 10](https://github.com/dennys246/Maxim/blob/main/docs/experiments/10_cross_session_enrichment.md),
+**The evidence.** [Exp 10](/research/experiments/exp-10/),
 status EARNED. Re-validated in the August 2026 heartbeat walk — the cleanest pass
 the row has recorded: phase 2 resumed phase 1's session with the hippocampus opening
 at exactly its closing store, hit the roughly-three-per-turn bar on eight of eight
@@ -47,10 +47,10 @@ substrate learns from embodied pain to prefer a safe warmth source over a harmfu
 one — and tracks *which source is currently safe* rather than latching onto a fixed
 identity.
 
-**The evidence.** [Exp 42](https://github.com/dennys246/Maxim/blob/main/docs/experiments/42_substrate_primary_preference.md),
+**The evidence.** [Exp 42](/research/experiments/exp-42/),
 GRADUATE, at ten seeds per arm with a counterbalance that swaps the safe source and
 confirms preference follows the swap. Re-validated after a later refactor by
-[Exp 42b](https://github.com/dennys246/Maxim/blob/main/docs/experiments/42b_drive_pain_fold_revalidation.md)
+[Exp 42b](/research/experiments/exp-42b/)
 across 40 sub-sims with none failed.
 
 **The caveat.** Two, both material. The experiment's own gating-OFF ablation
@@ -70,15 +70,15 @@ in the action path, and carried it across sessions. A third arm merged two
 independently trained substrates; it has since been downgraded — see the first
 caveat below for what it did and did not show.
 
-**The evidence.** The [Exp 45 series](https://github.com/dennys246/Maxim/blob/main/docs/experiments/45_reachy_orient_live.md).
+**The evidence.** The [Exp 45 series](/research/experiments/exp-45/).
 Three pre-registered arms passed at the time: a learning curve from chance to perfect
 in about ten trials, cross-session transfer probing correct at trial zero, and the
 merge arm (downgraded 2026-09-01, below). Later arms extended this to magnitude —
-[45b](https://github.com/dennys246/Maxim/blob/main/docs/experiments/45b_orient_magnitude.md),
-[45c](https://github.com/dennys246/Maxim/blob/main/docs/experiments/45c_flip_bins.md),
-[45d](https://github.com/dennys246/Maxim/blob/main/docs/experiments/45d_magnitude_replication.md)
+[45b](/research/experiments/exp-45b/),
+[45c](/research/experiments/exp-45c/),
+[45d](/research/experiments/exp-45d/)
 (replication across three seeds), and
-[45e](https://github.com/dennys246/Maxim/blob/main/docs/experiments/45e_orient_s4_population_readout.md)
+[45e](/research/experiments/exp-45e/)
 (resolving a coverage ceiling via a population-vector readout).
 
 **The caveats.** Several, and they matter more than the headline.
@@ -132,7 +132,7 @@ toward its mother's voice when — and only when — her feeding relieves its hu
 Same feed events, same contingency, no need → no learning. No LLM in the action
 path. This is the result the 1.1 "Sensorimotor" release was reopened to test.
 
-**The evidence.** [Exp 52 (Nurture)](https://github.com/dennys246/Maxim/blob/main/docs/experiments/52_nurture.md),
+**The evidence.** [Exp 52 (Nurture)](/research/experiments/exp-52/),
 EARNED 2026-08-25 and re-validated 2026-09-02, pre-registered with gates frozen
 before the data. Phase A (scripted substrate, 8 seeds × 600 ticks): taught **0.892** against satiated 0.496,
 yoked 0.496 and no-feed 0.496 — the satiated and no-feed curves are identical to the
@@ -183,7 +183,7 @@ nothing is credited on the robot — turn toward the speaker. The never-hungry
 controls, loaded the same way, do not. The want was learned in the nursery; the
 robot only reads it out.
 
-**The evidence.** [Exp 53b](https://github.com/dennys246/Maxim/blob/main/docs/experiments/53_cross_context_readout.md), EARNED 2026-08-26 and re-validated on the
+**The evidence.** [Exp 53b](/research/experiments/exp-53/), EARNED 2026-08-26 and re-validated on the
 robot 2026-09-02, pre-registered with an instrument gate that could stop the run and a
 transfer gate frozen before the data.
 Gate I (instrument): all three taught seeds pass; 60 of 60 live, speech-gated
@@ -197,7 +197,7 @@ invalid reads; the files were SHA-verified unchanged before and after. This is t
 cross-context half of the 1.1 claim — learning that carries across sessions *and*
 contexts without fine-tuning; the cross-session half rests on Exp 45 above.
 
-[Exp 53](https://github.com/dennys246/Maxim/blob/main/docs/experiments/53_cross_context_readout.md) ran the same files first with δ = 0.55 rad: direction correct in
+[Exp 53](/research/experiments/exp-53/) ran the same files first with δ = 0.55 rad: direction correct in
 36 of 36, but delivered directedness 0.75 per seed, and every miss was the −0.2 target
 — an overshoot. That is the pre-registered **APPARATUS** verdict (no verdict on the
 claim), recorded beside 53b as the finding that motivated the one declared change.
@@ -255,7 +255,7 @@ cluster ids. At B's **first contact** with that situation, B chooses A's taught
 action. This is the 1.2 headline: learning is transferable between minds, over the
 shipped path, without B ever having experienced the contingency.
 
-**The evidence.** [Exp 56](https://github.com/dennys246/Maxim/blob/main/docs/experiments/56_four_arm_sharing.md),
+**The evidence.** [Exp 56](/research/experiments/exp-56/),
 EARNED 2026-09-06, pre-registered with its gate constants frozen before any run and
 all four amendments dated before the confirmatory data. A four-arm campaign on a
 **live** Paper 1.16.5 Minecraft world — not the mock — n = 50 receivers per arm, one
@@ -318,7 +318,7 @@ recovers coverage but dilutes signal one agent accumulates undiluted. Anything t
 says pooling beats centralizing outright is wrong; the honest sentence is *faster
 per participant, at a total-experience cost*.
 
-**The evidence.** [Exp 57](https://github.com/dennys246/Maxim/blob/main/docs/experiments/57_dose_response_ladder.md),
+**The evidence.** [Exp 57](/research/experiments/exp-57/),
 PARTIAL 2026-09-08, gate constants frozen at the pre-registration merge rather than
 from pilot data. One confirmatory ladder run on the live Minecraft apparatus, four
 rungs × three conditions × 20 cohorts (9,200 committed rows), substrate-primary. The
@@ -341,7 +341,7 @@ later submersions it leaves the water **before** the pain would fire. The learni
 signal is the game's, not a teacher's: no one rewards the agent, and no language model
 is anywhere in the action path.
 
-**The evidence.** [Exp 60](https://github.com/dennys246/Maxim/blob/main/docs/experiments/exp60_drowning_avoidance_prereg.md),
+**The evidence.** [Exp 60](/research/experiments/exp-60/),
 EARNED 2026-09-16, pre-registered and frozen before any trial. A live Paper 1.20.4
 water classroom, five seeds per arm, six pain-free probe placements each. The trained
 arm surfaced on **1.0** of placements against **0.0** for the ablated twin, on every
@@ -370,7 +370,7 @@ felt the pain, through the shipped signed-bundle path, and changes what that age
 the first time its own loop runs underwater. This is the 1.3 headline, and it is the
 1.2 transfer claim moved from a want a teacher installed to a fear the world taught.
 
-**The evidence.** [Exp 61](https://github.com/dennys246/Maxim/blob/main/docs/experiments/exp61_shared_fear_prereg.md),
+**The evidence.** [Exp 61](/research/experiments/exp-61/),
 EARNED 2026-09-17, one campaign at one code hash, 121 rows, zero refusals. A donor
 learns the fear, exports its substrate, and a fresh receiver ingests it — **discounted
 by a quarter at the ingest boundary**, because a fear you were told about is real but
@@ -405,7 +405,7 @@ distance from spawn. Nothing was shared, ingested or changed: no new mechanism, 
 sensor. The fear is the agent's own, and it travels because the body reads the second pool
 as the same situation.
 
-**The evidence.** [Exp 62, rung A](https://github.com/dennys246/Maxim/blob/main/docs/experiments/exp62_pressure_interoception_prereg.md),
+**The evidence.** [Exp 62, rung A](/research/experiments/exp-62/),
 EARNED 2026-09-20, the day after 1.3.0 shipped, on the shipped body. 27 rows, zero refusals,
 one code hash. Trained in pool 1 and tested in pool 2, **12 of 12** agents left the water; the
 same agents tested back in pool 1 also went 12 of 12; and **0 of 3** fear-ablated agents did,
@@ -467,7 +467,7 @@ The frozen band had been refusing the carried-fear arm's *fastest* rows, so rest
 them moved that median 0.10 s in the claim's own favour — which is exactly why the
 amendment rests on the instrument argument and not on the rows' outcomes, and why both
 reports ship.
-([R3](https://github.com/dennys246/Maxim/blob/main/docs/experiments/r3_survival_benchmark_prereg.md).)
+([R3](/research/experiments/r3/).)
 
 ### Two-joint centering
 
@@ -476,7 +476,7 @@ motor-bound body-turn affordances can center them; a head-only agent cannot, and
 plateaus at the neck limit. The LLM chooses a direction-correct first body turn, and
 measured relief credit matches true direction-progress.
 
-**The evidence.** [Exp 49](https://github.com/dennys246/Maxim/blob/main/docs/experiments/49_two_joint_centering.md),
+**The evidence.** [Exp 49](/research/experiments/exp-49/),
 COMPLETE, all three hypotheses met. Head-only centered zero of ten trials with 60%
 parked at the neck envelope; the first body turn was direction-correct in ten of ten;
 credit sign accuracy passed on both the LLM and substrate arms.
@@ -506,14 +506,14 @@ exact, seed-invariant twelfth, and at the lowest exploration weight **the arms
 inverted** while the control moved with no teaching at all. The metric was measuring
 phase alignment between the turn cycle and the stimulus cycle, not orienting skill.
 
-**Where it stands.** [Exp 48](https://github.com/dennys246/Maxim/blob/main/docs/experiments/48_cradle_mother_seam.md)
+**Where it stands.** [Exp 48](/research/experiments/exp-48/)
 is **complete but not graduated** for the constant-credit apparatus it measured —
 it landed on the PARTIAL branch it had pre-registered in advance, and that verdict
 stands. The caregiver effect on that apparatus is real and causal, but the honest
 description is credit-tipped attractor selection rather than graded skill; the
 result is not retracted and it is not a code regression. The next step it called
 for — randomised stimulus order under a v3 gate frozen before the data — was run
-as [Exp 52](https://github.com/dennys246/Maxim/blob/main/docs/experiments/52_nurture.md) with the credit sourced from the infant's actual relief, and
+as [Exp 52](/research/experiments/exp-52/) with the credit sourced from the infant's actual relief, and
 graduated (see [above](#caregiver-taught-orienting-through-hunger-relief)). Exp 48 is
 therefore **superseded**: read it as the apparatus case study — v1 contest → v2
 re-baseline → sweep → shuffle — that made that measurement possible. The
@@ -525,11 +525,11 @@ mitigation the shuffle has now measured. Full walkthrough: [the Cradle](/researc
 **Status: exploratory, not a result.** Exp 44 asked whether a learned substrate
 steers the language model, and its first arms completed — but it carries modest-N and
 residual caveats, and the follow-up
-[Exp 44b pilot](https://github.com/dennys246/Maxim/blob/main/docs/experiments/44b_pilot.md)
+[Exp 44b pilot](/research/experiments/exp-44b/)
 (one seed per arm, explicitly not a result) found that its transplant control is
 name-mismatched and that its two reported axes encode the same entity/affordance pair
 rather than independent effects. The confirmatory campaign is not frozen. Treat
-[Exp 44](https://github.com/dennys246/Maxim/blob/main/docs/experiments/44_substrate_counterfactual.md)
+[Exp 44](/research/experiments/exp-44/)
 as in-flight work, not evidence.
 
 ## Where it didn't hold up
@@ -541,7 +541,7 @@ where the prior is *wrong* — a hearth whose warming action hurts — an agent 
 direct cross-session pain from that exact hearth still warmed at it. This was tested
 across four frontier models with a matched safe-fire control to isolate substrate
 specificity, and the prior dominated in all of them.
-([Exp 38](https://github.com/dennys246/Maxim/blob/main/docs/experiments/38_counter_prior_substrate.md).)
+([Exp 38](/research/experiments/exp-38/).)
 The reasoning-trained model was sharpest and worst: its substrate was demonstrably
 load-bearing, but it amplified the carried association rather than the corrective
 pain.
@@ -552,7 +552,7 @@ priors left headroom between first-encounter and optimal behavior — a "Goldilo
 zone" governed by training method at least as much as parameter count. One model
 failed because its priors were too weak to leverage the substrate; another failed
 because it already solved the task perfectly, leaving nothing to improve.
-([Exp 37 cross-model results](https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_model_results.md).)
+([Exp 37 cross-model results](/research/experiments/exp-37-cross-model/).)
 A further limit bounds those numbers: re-running the identical commit on the
 identical seeds in August 2026 did not reproduce its own June result (0.71 against
 0.42) — the serving environment moved the whole distribution more than the code
@@ -568,14 +568,14 @@ there is nothing for a fear to key on — a dilution of the same kind the
 describes, and verified unfixable by an encoding remedy. The mechanism was kept and the
 *cue* was swapped to drowning, which does separate. That is why the earned result is
 about water. Recorded as blocked rather than quietly re-aimed
-([Exp 58](https://github.com/dennys246/Maxim/blob/main/docs/experiments/exp58_survival_wants_prereg.md)).
+([Exp 58](/research/experiments/exp-58/)).
 
 **A shared want is a cache entry, not a concept.** The want Exp 56 transfers is
 keyed on an exact cluster: a world layout different enough to be a genuinely
 different situation necessarily misses that key, so cross-layout generalization is
 unreachable in the current readout. This was resolved as a pre-registered structural
 null from the mechanism rather than by running a campaign that could only confirm it
-([R1](https://github.com/dennys246/Maxim/blob/main/docs/experiments/r1_cross_layout.md),
+([R1](/research/experiments/r1/),
 CACHE-CONFIRMED 2026-09-07), and it is an open design question rather than a defect.
 [Exp 62](#a-learned-fear-carries-to-a-second-pool-the-same-situation-a-different-place),
 earned the day after 1.3.0 shipped, is consistent with it rather than an exception. A learned
@@ -593,7 +593,7 @@ measurably push the agent toward the corrective affordances, and the survival lo
 three specific breaks. Rather than back-fit a survival benchmark onto a premise that
 does not hold, the dependent rungs were stopped by their own pre-registered stop rule
 and the loop went on the build list
-([R2](https://github.com/dennys246/Maxim/blob/main/docs/experiments/r2_drive_premise_check.md),
+([R2](/research/experiments/r2/),
 PREMISE-NULL 2026-09-07).
 
 *Dated update, 2026-09-24.* 1.3 built that loop, and all three breaks now close in

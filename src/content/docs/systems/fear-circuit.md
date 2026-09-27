@@ -309,7 +309,7 @@ differently.
 
 That end-to-end chain — affordance → sensor breach → pain → causal link →
 changed action choice — is validated as the
-[SEM pain cascade PoC](https://github.com/dennys246/Maxim/blob/main/docs/experiments/p2_sem_pain_cascade.md):
+[SEM pain cascade PoC](/research/experiments/p2-sem-pain-cascade/):
 after one pain-learning cycle on a shattering sword, the agent's policy flips
 from `slash` (predicted negative, confidence ~0.55) to `drop_weapon`, and
 repeated pain strengthens the link monotonically (0.55 → 0.64 → 0.67).
@@ -317,7 +317,7 @@ repeated pain strengthens the link monotonically (0.55 → 0.64 → 0.67).
 ### What the fire experiment showed — and didn't
 
 The full fire study is
-[Experiment 37](https://github.com/dennys246/Maxim/blob/main/docs/experiments/37_cross_session_graduation.md),
+[Experiment 37](/research/experiments/exp-37-graduation/),
 a pre-registered, paired fresh-vs-resume design: Arm A meets the fire for the
 first time, Arm B resumes carrying a prior session's burn, Arm C resumes from a
 peaceful prior session as the confound control. The taught fear demonstrably
@@ -326,7 +326,7 @@ behavioral verdict is deliberately kept honest on the
 [cross-session learning](/research/experiments/cross-session-learning/) page:
 the fresh-vs-resume behavioral delta appeared only at larger model scale, and
 the confound arm failed isolation. And the
-[deceptive-hearth variant](https://github.com/dennys246/Maxim/blob/main/docs/experiments/38_counter_prior_substrate.md)
+[deceptive-hearth variant](/research/experiments/exp-38/)
 — a hearth identical in description but whose `warm_self` secretly burns —
 showed the sharpest limit: when taught fear contradicts an LLM's baked-in
 `fire → warm` prior, the prior often wins. Teaching fear works; guaranteeing

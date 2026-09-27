@@ -1,0 +1,114 @@
+---
+// The top of the experiments index: the count, the newest headline results,
+// and the per-visitor "New" badges (which mark every row on the page dated after
+// the reader's last visit, in whichever line it sits).
+import { manifest, newestResult, NOTEBOOK_URL } from '../../lib/experiments.mjs';
+import ExperimentRow from './ExperimentRow.astro';
+
+const latest = manifest.experiments.filter((e) => e.headline && e.date).slice(0, 3);
+---
+
+<div class="exp-latest" data-newest={newestResult?.date ?? ''}>
+	<p class="exp-count">
+		{manifest.experiments.length} experiments in {manifest.lines.length} research lines. Each links
+		to a short page here and to its full record in the <a href={NOTEBOOK_URL} rel="noopener"
+			>pymaxim notebook</a
+		>.
+	</p>
+	<h2 id="latest">Latest results</h2>
+	<ul class="exp-list">
+		{latest.map((e) => <ExperimentRow e={e} anchor={false} />)}
+	</ul>
+</div>
+
+<script>
+	// Per-visitor "New" badges. Progressive enhancement: with JS off, no badges
+	// appear but every experiment is still listed and linkable.
+	const KEY = 'maxim:experimentsSeen';
+	const root = document.querySelector('[data-newest]');
+	if (root) {
+		const newest = root.getAttribute('data-newest') || '';
+		let seen = '';
+		try {
+			seen = localStorage.getItem(KEY) || '';
+		} catch {}
+		const commit = () => {
+			try {
+				if (newest) localStorage.setItem(KEY, newest);
+			} catch {}
+		};
+
+		let badged = 0;
+		if (seen && seen < newest) {
+			document.querySelectorAll('.exp-row').forEach((row) => {
+				const d = row.getAttribute('data-date') || '';
+				if (d && d > seen) {
+					const b = document.createElement('span');
+					b.className = 'exp-new';
+					b.textContent = 'New';
+					const titleEl = row.querySelector('.exp-title');
+					if (titleEl) titleEl.appendChild(b);
+					badged++;
+				}
+			});
+		}
+
+		if (!badged) {
+			// Nothing was marked — either a first-ever visitor (everything would be
+			// new, so badging all of it is noise) or nothing has shipped since the
+			// last visit. Record the watermark now; there is nothing to miss.
+			commit();
+		} else {
+			// Only retire the badges once they have actually been on screen for a
+			// few seconds. Committing on load meant a single stray page open — or a
+			// visit while the badge was mis-rendering — silently burned the markers
+			// for good, with no way for the reader to get them back.
+			const DWELL_MS = 4000;
+			let elapsed = 0;
+			let since = document.visibilityState === 'visible' ? Date.now() : 0;
+			let done = false;
+			const tick = () => {
+				if (done) return;
+				if (since) elapsed += Date.now() - since;
+				if (elapsed >= DWELL_MS) {
+					done = true;
+					commit();
+				}
+			};
+			const timer = setInterval(() => {
+				tick();
+				since = document.visibilityState === 'visible' ? Date.now() : 0;
+				if (done) clearInterval(timer);
+			}, 1000);
+			document.addEventListener('visibilitychange', () => {
+				tick();
+				since = document.visibilityState === 'visible' ? Date.now() : 0;
+			});
+		}
+	}
+</script>
+
+<style>
+	/* :global is required, not stylistic. This badge is created by the script
+	   above at runtime, so it never receives Astro's scoping class — a scoped
+	   rule compiles to `.exp-new:where(.astro-xxxx)` and silently fails to
+	   match, leaving an unstyled span butted against the title ("seamNew"). */
+	:global(.exp-new) {
+		display: inline-block;
+		margin-left: 0.5rem;
+		padding: 0.05em 0.45em;
+		font-size: 0.7rem;
+		font-weight: 700;
+		line-height: 1.5;
+		border-radius: 999px;
+		/* Both tokens invert together per theme, so this one pairing stays legible
+		   in both: a dark navy pill with light text in light mode, a light blue
+		   pill with dark text in dark mode (13.5:1 and 10.6:1).
+		   Note --sl-color-black is #fff in Starlight's LIGHT theme — pairing the
+		   plain --sl-color-accent with it silently drops to 3.89:1 in dark mode. */
+		background: var(--sl-color-accent-high);
+		color: var(--sl-color-black);
+		vertical-align: middle;
+		white-space: nowrap;
+	}
+</style>

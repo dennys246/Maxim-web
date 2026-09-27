@@ -299,7 +299,7 @@ Whether that record changes what the agent *does* in a later session is the open
 question here, not the guarantee — see the limitation below.
 
 The cascade's plumbing is validated end to end in the
-[SEM pain cascade PoC](https://github.com/dennys246/Maxim/blob/main/docs/experiments/p2_sem_pain_cascade.md)
+[SEM pain cascade PoC](/research/experiments/p2-sem-pain-cascade/)
 — affordance use → sensor failure → `PainBus` → NAc causal learning →
 `nac.predict` → policy pick, with no mocks in the middle. Note what that PoC ran
 on, though: a scripted `PoCAgent` driving `weapons/rusty_sword` past its `shatter`
@@ -307,14 +307,14 @@ threshold, in one session, with no LLM in the loop. That is the *scripted
 `failure_mode`* path — the one this example is explicitly not using. The
 homeostatic-drive route described above has no equivalent end-to-end run, and the
 closest thing to a behavioural test of it went the other way: the drive-gating arm
-in [Exp 42](https://github.com/dennys246/Maxim/blob/main/docs/experiments/42_substrate_primary_preference.md)
+in [Exp 42](/research/experiments/exp-42/)
 graduated identically with gating switched **off** (`safe_pref` 0.984 vs 0.965),
 so drive gating was not load-bearing for the preference it was meant to produce.
 You can still drive a body cold yourself with a test sequence in
 [simulation](/guides/simulation/).
 
 :::caution[Known limitation: priors can override learned pain]
-The [deceptive-hearth counter-prior study](https://github.com/dennys246/Maxim/blob/main/docs/experiments/38_counter_prior_substrate.md)
+The [deceptive-hearth counter-prior study](/research/experiments/exp-38/)
 exposes a real limit of the system today. An agent carries cross-session burn pain
 from a hearth that warms but then harms — yet across four frontier models, a strong
 LLM's baked-in `fire → warm` prior **dominated the freshly learned substrate**, and

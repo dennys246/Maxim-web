@@ -1,0 +1,36 @@
+---
+// One compact row: title (to the experiment's own page), status, date, id and
+// the short summary. In its line the row's id is the slug, so
+// /research/experiments/#<slug> deep-links to it; a repeat of the row elsewhere
+// on the page (the Latest strip) passes anchor={false} to keep ids unique.
+import { experimentPath, manifest } from '../../lib/experiments.mjs';
+
+const { e, anchor = true } = Astro.props;
+const by = e.superseded_by.map((s) => manifest.bySlug.get(s));
+---
+
+<li id={anchor ? e.slug : undefined} class:list={['exp-row', { 'exp-row--retired': e.retired }]} data-date={e.date ?? ''}>
+	<div class="exp-head">
+		<span class="exp-title"><a href={experimentPath(e.slug)}>{e.title}</a></span>
+		<span class={`exp-status exp-status--${e.status}`}>{e.label}</span>
+	</div>
+	<div class="exp-meta">
+		<span class="exp-id">{e.id}</span>
+		{e.date && <time datetime={e.date}>{e.date}</time>}
+		{e.phase && <span>{e.phase}</span>}
+	</div>
+	<p class="exp-finding">{e.short}</p>
+	{
+		by.length > 0 && (
+			<p class="exp-by">
+				Superseded by{' '}
+				{by.map((o, n) => (
+					<>
+						{n > 0 && ', '}
+						<a href={`#${o.slug}`}>{o.id === '—' ? o.title : `Exp ${o.id}`}</a>
+					</>
+				))}
+			</p>
+		)
+	}
+</li>
