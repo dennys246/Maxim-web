@@ -32,9 +32,12 @@ maxim-web/
 ├─ src/
 │  ├─ pages/index.astro    # the landing (hero + links) at the apex
 │  ├─ components/          # ExperimentsIndex.astro, ComponentCatalog.tsx (the one React island)
-│  ├─ data/                # experiments.json, components.json — generated, never hand-edited
+│  ├─ data/                # components.json (generated) · experiments.json (curated; see below)
+│  ├─ lib/experiments.mjs  # experiments manifest: validation + derived fields
+│  ├─ integrations/        # experiments-check: fails the build on a bad manifest or dead link
 │  └─ content/docs/        # Starlight docs
 ├─ scripts/build-components.mjs  # regenerates src/data/components.json from the engine registry
+├─ scripts/sync-experiments.mjs  # lists notebook entries experiments.json is missing
 ├─ public/                 # favicon.svg, og.png placeholder, static assets
 ├─ LICENSE                 # Apache-2.0 (copy from pymaxim); optional CC-BY-4.0 for docs content
 └─ README.md
@@ -57,6 +60,25 @@ pnpm build:components -- \
 The output is deterministic (no timestamps); a regenerate with no registry change is a no-op
 diff. A normal run **always overwrites `src/data/components.json`**, whatever `--source`
 pointed at — add `--dry-run` to inspect a registry (say, engine `main`) without publishing it.
+
+### Keeping the experiments index current
+
+`src/data/experiments.json` is **curated by hand** from the pymaxim lab notebook
+(`docs/experiments/`). It is not generated: the notebook files have no frontmatter and state
+their status in several header styles, and the manifest's summaries, research lines and
+headline flags are presentation that belongs here. Each entry's `status` uses the verdicts of
+the notebook's 2026-09-13 status audit; where the two disagree, the notebook record wins.
+
+When the notebook gains an entry, run the helper against a checkout of pymaxim `main`:
+
+```bash
+pnpm sync:experiments -- --source ../Maxim/docs/experiments   # add --check to exit 1 on gaps
+```
+
+It prints a draft entry for every notebook file the manifest is missing and never writes the
+manifest. `astro build` validates the manifest (unique slugs, known statuses and lines,
+summaries ≤ 200 chars, `supersedes` / `follows` pointing at real entries) and, after the
+build, that every walkthrough link lands on a real heading. Both fail the build.
 
 ## Domains
 
