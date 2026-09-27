@@ -71,6 +71,8 @@ export default function experimentsCheck() {
 				for (const l of manifest.lines) {
 					const problem = await anchorExists(dir, `/research/experiments/#${l.anchor}`);
 					if (problem) errs.push(`line ${l.slug}: index heading "${l.title}" — ${problem}`);
+					const walk = l.walkthrough && (await anchorExists(dir, l.walkthrough));
+					if (walk) errs.push(`line ${l.slug}: walkthrough ${l.walkthrough} — ${walk}`);
 				}
 				for (const e of manifest.experiments) {
 					if (!e.walkthrough) continue;

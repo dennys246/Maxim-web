@@ -330,7 +330,7 @@ rather than only advising a model that overrules it. Longer term, the plan is to
 substrate instead of overriding it with baked-in priors, so the two stop fighting. Both
 are experimental/roadmap, not shipped; the current results, including where substrate
 helps and where priors still win, are laid out in
-[Substrate-primary evidence](/research/experiments/substrate-primary-evidence/), and the
+[The Roy harness: LLM prior vs. carried substrate](/research/experiments/roy-harness/), and the
 mode itself is described under [operating modes](/concepts/operating-modes/).
 :::
 

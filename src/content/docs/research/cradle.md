@@ -3,6 +3,14 @@ title: The Cradle
 description: Maxim's developmental-training harness — raising an agent's substrate through staged, caregiver-driven simulations before autonomy — and the operant-orient, habituation, and cradle-mother experiments that test whether it works.
 ---
 
+:::note[At a glance]
+- **Line status:** closed in simulation; the taught want continues on the robot ([hardware orienting](/research/experiments/hardware-orienting/)) and between agents ([world seam](/research/experiments/world-seam/)).
+- **Dates:** 2026-04-26 to 2026-09-02.
+- **Releases:** 1.0 (infrastructure) and 1.1 "Sensorimotor".
+- **Experiments covered:** [Exp 52](/research/experiments/exp-52/) · [Exp 48](/research/experiments/exp-48/) · [Exp 47](/research/experiments/exp-47/) · [Exp 46](/research/experiments/exp-46/) · [Exp 13](/research/experiments/exp-13/) · [Exp 11](/research/experiments/exp-11/)
+- **Current as of 2026-09-26.**
+:::
+
 The **Cradle** (also called the *crèche*) is Maxim's idea of a *developmental
 training harness*: instead of dropping a fresh agent into an open task and
 hoping the base model behaves, you raise its **substrate** — the learned
@@ -41,11 +49,11 @@ about which is which:
   → v2 re-baseline → sweep → shuffle — that made exp 52's measurement possible.
 - **Built infrastructure, not a behavioral claim:** the generative cradle
   simulator that narrates developmental scenes ([exp 11](#11--cradle-sensorimotor-poc)),
-  and the Phase 0 harness smoke test.
-- **Design / planned:** the *cradle harness wired end-to-end into
-  substrate-primary mode* as a standard way to raise an agent. The
-  [NAc page](/systems/nucleus-accumbens/) states this plainly — Phase 0
-  (end-to-end wiring, cradle harness, telemetry) is *planned*, and the
+  and the Phase 0 harness smoke test ([exp 13](/research/experiments/exp-13/)):
+  the pre-linguistic cradle harness shipped on 2026-05-09 and ran in
+  substrate-primary mode, clearing its success criterion with no behavioral claim.
+- **Design / planned:** the *cradle harness as a validated, standard way to
+  raise an agent*. Phase 0's harness exists; its validation is pending, and the
   `--aut-mode substrate-primary` flag ships in 1.1 as an experimental opt-in. The
   [`cradle_mother.md`](https://github.com/dennys246/Maxim/blob/main/docs/plans/deferred/cradle_mother.md)
   design doc is largely a **plan and post-mortem**, not a description of a
@@ -59,12 +67,12 @@ one slice of the idea.
 
 | ID | Experiment | Date | Status | Headline result |
 |----|-----------|------|--------|-----------------|
-| 52 | [nurture: orienting through hunger relief](#52--nurture-caregiver-taught-orienting-through-hunger-relief) | 2026-08-25, re-validated 2026-09-02 | **COMPLETE — EARNED, reproduced** | Taught 0.878 vs satiated 0.441 (fed, never hungry) vs no-feed 0.413 on the shuffled apparatus v3, 12 seeds/arm; re-run 0.837 / 0.413 / 0.413, GRADUATE reproduced; scripted phase 0.892 vs 0.496 for every control |
-| 48 | [cradle-mother seam (embodied)](#48--cradle-mother-seam-the-embodied-infant) | re-baselined 2026-08-14, sweep completed 2026-08-18 | **COMPLETE — not graduated; superseded by 52** | Mother effect re-earned on apparatus v2 — taught 0.649 vs no-feed 0.167 (+0.482) — but LEARNED-v2 missed and the sweep attributes the gap to phase-locked attractor selection |
-| 47 | [habituation, novel sound in noise](#47--habituation-a-novel-sound-in-a-wall-of-noise) | 2026-07-22 | Complete (scripted) | Habituating 1.00 catch-rate vs 0.04 control at 40-noise density |
-| 46 | [operant orient / crèche](#46--operant-orient-a-mother-teaches-a-crèche-pools) | 2026-07-22 | Complete (scripted) | Taught 0.90 vs none 0.50; 12 merged infants reach 1.00 |
-| 13 | phase0 harness smoke | 2026-05-09 | Recorded | Phase 0 harness clears success criterion; no behavioral claim |
-| 11 | [cradle sensorimotor PoC](#11--cradle-sensorimotor-poc) | 2026-04-26 | Recorded (infra) | Narrator generates all 10 developmental scenes |
+| [52](/research/experiments/exp-52/) | [nurture: orienting through hunger relief](#52--nurture-caregiver-taught-orienting-through-hunger-relief) | 2026-08-25, re-validated 2026-09-02 | **COMPLETE — EARNED, reproduced** | Taught 0.878 vs satiated 0.441 (fed, never hungry) vs no-feed 0.413 on the shuffled apparatus v3, 12 seeds/arm; re-run 0.837 / 0.413 / 0.413, GRADUATE reproduced; scripted phase 0.892 vs 0.496 for every control |
+| [48](/research/experiments/exp-48/) | [cradle-mother seam (embodied)](#48--cradle-mother-seam-the-embodied-infant) | re-baselined 2026-08-14, sweep completed 2026-08-18 | **COMPLETE — not graduated; superseded by 52** | Mother effect re-earned on apparatus v2 — taught 0.649 vs no-feed 0.167 (+0.482) — but LEARNED-v2 missed and the sweep attributes the gap to phase-locked attractor selection |
+| [47](/research/experiments/exp-47/) | [habituation, novel sound in noise](#47--habituation-a-novel-sound-in-a-wall-of-noise) | 2026-07-22 | Complete (scripted) | Habituating 1.00 catch-rate vs 0.04 control at 40-noise density |
+| [46](/research/experiments/exp-46/) | [operant orient / crèche](#46--operant-orient-a-mother-teaches-a-crèche-pools) | 2026-07-22 | Complete (scripted) | Taught 0.90 vs none 0.50; 12 merged infants reach 1.00 |
+| [13](/research/experiments/exp-13/) | phase0 harness smoke | 2026-05-09 | Recorded | Phase 0 harness clears success criterion; no behavioral claim |
+| [11](/research/experiments/exp-11/) | [cradle sensorimotor PoC](#11--cradle-sensorimotor-poc) | 2026-04-26 | Recorded (infra) | Narrator generates all 10 developmental scenes |
 
 ### 46 — operant orient: a mother teaches, a crèche pools
 
@@ -204,7 +212,8 @@ reproduced exactly (1.00 / 0.00 / 0.50) — on a platform that emitted 85
 actuator-degradation warnings across 180 trials, all roll and pitch, never yaw, the
 axis azimuth readout rides on. A pass on a platform that was warning, not a clean
 win. Details and the apparatus finding from exp 53
-are on the [evidence page](/research/evidence/#cross-context-readout-on-hardware);
+are on the [hardware orienting](/research/experiments/hardware-orienting/) page and in the
+[claim ledger](/research/evidence/#cross-context-readout-on-hardware);
 record: [`53_cross_context_readout.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/53_cross_context_readout.md).
 
 Record: [`52_nurture.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/52_nurture.md) ·
@@ -332,18 +341,20 @@ several systems documented elsewhere.
               │
               │  substrate-primary: NAc selects actions, no LLM in path
               ▼
-   Substrate-primary mode (planned Phase 0 harness)
+   Substrate-primary mode (Phase 0 harness shipped, exp 13;
+                           validation pending)
               │
               ▼
-   Real hardware orient (Reachy Mini): chance → 100% in ~10 trials
+   Real hardware orient (Reachy Mini): 0.00 → 1.00 in ~10 trials
 ```
 
 - **[Nucleus accumbens](/systems/nucleus-accumbens/)** — every cradle result
   runs through the NAc. Credit is applied with `NAc.credit_operant_reward()`,
   and the "no LLM in the action path" property *is* the substrate-primary
   mechanism the NAc page describes. That page is also the honest source on what
-  is shipped (the selection method, "Phase −1") versus planned (the cradle
-  harness, Phase 0).
+  is shipped (the selection method, "Phase −1"). Note that its Phase 0 status
+  lags the engine: the cradle harness itself shipped on 2026-05-09
+  ([exp 13](/research/experiments/exp-13/)); what remains is its validation.
 - **Roy harness methodology** — the cradle experiments follow the same
   scripted, seeded, control-armed, substrate-diffable discipline used
   throughout the lab. Provenance and `maxim roy diff` on the resulting
@@ -351,15 +362,16 @@ several systems documented elsewhere.
   already knew." See the [Roy harness write-up](/research/experiments/roy-harness/).
 - **Real-hardware orient** — the crèche's sound-orienting task is the
   simulation counterpart of the [Reachy Mini](/guides/reachy-mini/) work, where
-  direction learning went from chance to 100% correct within about ten trials.
-  A third arm merged two independently trained substrates, but it has since
-  been downgraded to a vacuous guard — its two learners shared one agent id and
-  one cluster space. The cradle federation results (twelve infants → 1.00) are
+  direction learning went from 0.00 (the fresh policy abstains — not chance) to
+  1.00 probe correctness within about ten trials. A third arm merged two
+  independently trained substrates; it was downgraded on 2026-09-01 to a vacuous
+  guard (D62) — its two learners shared one agent id and one cluster space. The cradle federation results (twelve infants → 1.00) are
   that same shared-key configuration at scale in simulation, not a test of
   sharing between independent agents (see the correction under exp 46).
 - **Evidence index** — for the broader substrate-primary evidence base, see
-  [substrate-primary evidence](/research/experiments/substrate-primary-evidence/)
-  and the full [experiments log](/research/experiments/).
+  the [Roy harness](/research/experiments/roy-harness/) page, the
+  [claim ledger](/research/evidence/) and the full
+  [experiments log](/research/experiments/).
 
 ## Status & caveats
 
@@ -394,9 +406,9 @@ claims of *different strength*:
   and the
   [behavioral-graduation ledger](https://github.com/dennys246/Maxim/blob/main/docs/plans/behavioral_graduation_candidates.md).
   Where any two disagree, the experiment record and the ledger win.
-- **Planned, not shipped:** the cradle harness wired end-to-end into
-  substrate-primary mode. Per the NAc page this is Phase 0 of a multi-phase
-  roadmap, with `--aut-mode substrate-primary` shipped in 1.1 as an experimental opt-in;
+- **Shipped as a harness, not validated:** the Phase 0 cradle harness runs in
+  substrate-primary mode (smoke-tested in exp 13, 2026-05-09), but its validation
+  is pending, with `--aut-mode substrate-primary` shipped in 1.1 as an experimental opt-in;
   `--aut-mode llm-primary` remains the default indefinitely. Do not read "raise
   an agent in the cradle before autonomy" as an available workflow yet.
 
@@ -411,25 +423,13 @@ claims of *different strength*:
 - [`11_cradle_sensorimotor_poc.md`](https://github.com/dennys246/Maxim/blob/main/docs/experiments/11_cradle_sensorimotor_poc.md)
 - Framing: [Substrate-primary mode](https://www.dennyschaedig.com/maxim/substrate-primary) and [Sound orientation](https://www.dennyschaedig.com/maxim/sound-orientation)
 
+## What came next
 
-## Run it yourself
-
-Every experiment's exact, copy-paste reproduction commands live beside its raw data in
-the pymaxim repo, each pinned to a git hash:
-
-- Protocols (runnable command sequences): [docs/experiments/protocols/](https://github.com/dennys246/Maxim/tree/main/docs/experiments/protocols)
-- Raw results (machine-readable JSON): [docs/experiments/results/](https://github.com/dennys246/Maxim/tree/main/docs/experiments/results)
-
-For a quick local smoke run, the simulation harness needs no hardware:
-
-```bash
-pip install 'pymaxim[all]'
-maxim --sim "test memory recall under interference"
-```
-
-:::tip[Running it long-term]
-To watch substrate accumulate across many sessions — rather than a one-shot sim — drive
-Maxim from [maxim-pulse](https://github.com/dennys246/maxim-pulse), the Console app built
-to observe and steer agents over time. This site links to it; the runs happen there, not
-here.
-:::
+The taught want left the nursery. Three of exp 52's infants were read out, unchanged, on a
+physical Reachy Mini ([exp 53 / 53b](/research/experiments/exp-53/)), and the nursery was
+re-run on the robot's own body and action keys ([exp 54](/research/experiments/exp-54/), Phase
+A earned; its hardware phases have not run) — both on the
+[hardware orienting](/research/experiments/hardware-orienting/) page. Sharing a taught want
+between genuinely independent agents, which the crèche federation here never tested, is on
+the [world seam](/research/experiments/world-seam/) page. Each experiment's page links its
+record and how to reproduce it.

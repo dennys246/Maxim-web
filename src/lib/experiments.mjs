@@ -91,6 +91,9 @@ export function validate(raw = data) {
 		if (lineSlugs.has(l.slug)) err(`line ${l.slug}`, 'duplicate line slug');
 		lineSlugs.add(l.slug);
 		for (const k of ['title', 'intro']) if (!l[k]) err(`line ${l.slug}`, `missing ${k}`);
+		if (l.walkthrough != null && !/^\/[^\s#]*\/$/.test(l.walkthrough)) {
+			err(`line ${l.slug}`, `walkthrough "${l.walkthrough}" must be a site path ending in "/"`);
+		}
 	}
 	const slugs = new Set();
 	const files = new Set();

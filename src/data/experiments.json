@@ -6,6 +6,7 @@
       "title": "Survival and learned fear",
       "period": "Sep 2026 · 1.3",
       "intro": "Learning from the world's own pain rather than a teacher's credit: a drowning fear learned in Minecraft, shared between agents, carried to a second pool, and priced in a survival benchmark.",
+      "walkthrough": "/research/experiments/world-seam/",
       "best": "exp-62"
     },
     {
@@ -13,6 +14,7 @@
       "title": "Sharing a learned want (the Oasis)",
       "period": "Sep 2026 · 1.2",
       "intro": "Whether one agent's taught want can be exported as a signed bundle and change an independent agent's first choice — and what pooling many learners costs.",
+      "walkthrough": "/research/experiments/world-seam/",
       "best": "exp-56"
     },
     {
@@ -20,6 +22,7 @@
       "title": "Orienting on the Reachy Mini",
       "period": "Jul–Aug 2026 · 1.1",
       "intro": "Substrate-primary learning on a physical robot: turn toward a sound, by how much, with which joint — and whether a want taught in simulation reads out on the hardware.",
+      "walkthrough": "/research/experiments/hardware-orienting/",
       "best": "exp-53"
     },
     {
@@ -27,6 +30,7 @@
       "title": "The Cradle: caregiver-taught learning",
       "period": "Apr–Aug 2026",
       "intro": "Developmental simulations with no LLM in the action path: an infant learns to orient because a mother's feeding relieves its hunger.",
+      "walkthrough": "/research/cradle/",
       "best": "exp-52"
     },
     {
@@ -34,6 +38,7 @@
       "title": "LLM prior vs. carried substrate",
       "period": "Jun–Aug 2026 · 1.0",
       "intro": "Whether carried experience can beat a language model's prior. With the LLM choosing actions, the prior won; with the LLM removed from selection, the substrate learned a narrow preference.",
+      "walkthrough": "/research/experiments/roy-harness/",
       "best": "exp-42"
     },
     {
@@ -41,6 +46,7 @@
       "title": "The Roy harness and EC drift",
       "period": "May 2026",
       "intro": "The three-arm method for telling substrate transfer apart from LLM role-play, and the run of mostly-null iterations that traced the gap to encoder and EC drift.",
+      "walkthrough": "/research/experiments/roy-harness/",
       "best": "exp-36"
     },
     {
@@ -48,6 +54,7 @@
       "title": "Cross-session recall",
       "period": "Apr–Jun 2026",
       "intro": "The headline claim at its base: memory persists across sessions and can shift behavior. The 1.0 graduation gate came back partial.",
+      "walkthrough": "/research/experiments/cross-session-learning/",
       "best": "exp-12"
     },
     {
@@ -79,7 +86,8 @@
       "finding": "53b EARNED (delta 0.30 rad): the Exp 52 Phase B infants' persisted NAc+EC, loaded unchanged onto the physical Reachy Mini with nothing crediting on the robot, read out as taught 1.00/1.00/1.00 delivered directedness (36/36 toward, chosen direction 36/36), satiated 0.00 (no action 36/36), no_feed 0.50 (turn_right 54/54, zero learned bias). Gate I 3/3, 120/120 live percepts pattern-complete across both runs. Exp 53 (delta 0.55 rad) recorded the pre-registered APPARATUS verdict: direction 36/36 but delivered 0.75 per seed, every miss the -0.2 target (overshoot) — the finding that motivated 53b's one declared change. Readout, not learning; one session, one room, n = 3 seeds/arm, fixed step, front hemisphere; the exploratory +0.2 placement turns the wrong way 18/18 (predicted pre-data: the three-bin representation's centre bin, -0.4..+0.3, carries turn_left); nothing about magnitude or loudness. Re-validated on the robot 2026-09-02 post-D53 with the original agent files SHA-verified unchanged: reproduced exactly (taught 1.00 / satiated 0.00 / no_feed 0.50, Gate I PASS, +0.2 wrong-way 9/9, -0.6 toward 9/9). Caveat that travels with it: 85 actuator-degradation warnings across 180 trials, all roll/pitch and never yaw, the axis azimuth readout rides on - a PASS on a platform that was warning; roll/pitch recalibration owed before the next hardware block.",
       "follows": [
         "exp-52"
-      ]
+      ],
+      "walkthrough": "/research/experiments/hardware-orienting/#exp-53--53b--a-want-taught-in-simulation-reads-out-on-the-robot"
     },
     {
       "slug": "exp-52",
@@ -107,7 +115,8 @@
       "line": "hardware",
       "headline": false,
       "summary": "Sound level is one daemon read away on the live Reachy Mini. A bench note, not a result; loudness salience was deferred and hasn't shipped.",
-      "finding": "Bench note, not a behavioral result: one 75 s trace on the live Reachy Mini shows the XVF3800's pre-AGC speech energy and the AGC gain readback are both served by the daemon's existing REST parameter endpoint, so a level is one read away. Loudness / onset salience is NOT part of 1.1; the design was deferred and neither 1.1.1 nor 1.1.2 shipped it."
+      "finding": "Bench note, not a behavioral result: one 75 s trace on the live Reachy Mini shows the XVF3800's pre-AGC speech energy and the AGC gain readback are both served by the daemon's existing REST parameter endpoint, so a level is one read away. Loudness / onset salience is NOT part of 1.1; the design was deferred and neither 1.1.1 nor 1.1.2 shipped it.",
+      "walkthrough": "/research/experiments/hardware-orienting/#h2--the-loudness-bench"
     },
     {
       "slug": "exp-50",
@@ -119,7 +128,8 @@
       "line": "hardware",
       "headline": false,
       "summary": "Designed, not run: does an orient policy trained on the old robot show savings on replaced hardware? Waits on the healthy-hardware baseline.",
-      "finding": "Pre-registered, no results yet: asks whether an orient policy trained on the pre-repair robot shows motor-adaptation-style savings on replaced hardware. Runs strictly after the healthy-hardware H1 baseline, whose measured constants filled the single permitted amendment slot."
+      "finding": "Pre-registered, no results yet: asks whether an orient policy trained on the pre-repair robot shows motor-adaptation-style savings on replaced hardware. Runs strictly after the healthy-hardware H1 baseline, whose measured constants filled the single permitted amendment slot.",
+      "walkthrough": "/research/experiments/hardware-orienting/#exp-50--re-adaptation-after-the-repair-designed-not-run"
     },
     {
       "slug": "exp-49",
@@ -131,7 +141,8 @@
       "line": "hardware",
       "headline": false,
       "summary": "Head-only agents cannot center sounds past the neck limit (0/10); body-turning agents can. The LLM crosses the front/back fold; the substrate is ~20× faster where its policy applies.",
-      "finding": "COMPLETE, all three hypotheses met: a head-only agent cannot center sounds past the neck limit (0/10) while motor-bound agents can, the LLM chose a direction-correct first body turn in 10/10 trials, and measured relief credit matched true direction-progress on both arms (1.00 LLM, 0.969 substrate). The front/back fold splits the two intelligences — the LLM crosses it, the substrate is ~20x faster where its policy applies."
+      "finding": "COMPLETE, all three hypotheses met: a head-only agent cannot center sounds past the neck limit (0/10) while motor-bound agents can, the LLM chose a direction-correct first body turn in 10/10 trials, and measured relief credit matched true direction-progress on both arms (1.00 LLM, 0.969 substrate). The front/back fold splits the two intelligences — the LLM crosses it, the substrate is ~20x faster where its policy applies.",
+      "walkthrough": "/research/experiments/hardware-orienting/#exp-49--two-joints-and-the-fold-between-the-two-intelligences"
     },
     {
       "slug": "exp-48",
@@ -162,7 +173,8 @@
       "finding": "PILOT, explicitly not a result — one seed per arm. The shakedown found the transplant control is name-mismatched and that the two reported axes encode the same entity/affordance pair rather than independent effects, so the Exp 44 confirmatory campaign is not frozen. S4 non-stationarity measurement (2026-08-24, descriptive, one seed per arm): the treatment is not stationary within a run — in every arm the non-target tools' reward bands fall from strongly to mildly rewarding by the second half while the target holds — and the free determinism probe found 0 flips on 11 identical-prompt pairs.",
       "follows": [
         "exp-44"
-      ]
+      ],
+      "walkthrough": "/research/experiments/roy-harness/#exp-43-44-and-44b--does-a-learned-substrate-steer-the-llm"
     },
     {
       "slug": "exp-42b",
@@ -178,7 +190,7 @@
       "follows": [
         "exp-42"
       ],
-      "walkthrough": "/research/experiments/substrate-primary-evidence/#exp-41--42--substrate-primary-preference-removing-the-llm-from-selection"
+      "walkthrough": "/research/experiments/roy-harness/#exp-42-and-42b--substrate-primary-preference"
     },
     {
       "slug": "exp-44",
@@ -190,7 +202,8 @@
       "line": "prior",
       "headline": false,
       "summary": "Exploratory: a counterbalanced positive at modest N, not a result. The 44b pilot then found flaws in the control, so the confirmatory run is not frozen.",
-      "finding": "EXPLORATORY, not a graduated result. Arm A and the counterbalance completed, but modest N and residual-color caveats stand, and the 44b pilot later found a name-mismatched transplant control and non-independent axes. Read alongside 44b; the confirmatory campaign is not frozen."
+      "finding": "EXPLORATORY, not a graduated result. Arm A and the counterbalance completed, but modest N and residual-color caveats stand, and the 44b pilot later found a name-mismatched transplant control and non-independent axes. Read alongside 44b; the confirmatory campaign is not frozen.",
+      "walkthrough": "/research/experiments/roy-harness/#exp-43-44-and-44b--does-a-learned-substrate-steer-the-llm"
     },
     {
       "slug": "exp-45e",
@@ -206,7 +219,8 @@
       "finding": "COMPLETE on live Reachy Mini with no LLM in the action path: a population-vector readout resolves the single-far-bin cell-starvation ceiling that 45d characterized. The fix is readout-independent — it bootstraps exploration into the starved cell, after which plain argmax reads the correct magnitude. n=1 (seed 3); multi-seed replication outstanding.",
       "follows": [
         "exp-45d"
-      ]
+      ],
+      "walkthrough": "/research/experiments/hardware-orienting/#exp-45e--a-population-readout-unsticks-a-starved-cell"
     },
     {
       "slug": "exp-45d",
@@ -220,7 +234,8 @@
       "finding": "On live Reachy Mini, the substrate-primary magnitude policy replicates at 0.75-1.00 (mode 0.75) across seeds and transfers to a fresh hardware session without degradation.",
       "follows": [
         "exp-45c"
-      ]
+      ],
+      "walkthrough": "/research/experiments/hardware-orienting/#exp-45d--replication-and-the-magnitude-policy-across-sessions"
     },
     {
       "slug": "exp-47",
@@ -264,7 +279,8 @@
       "finding": "The 45b ceiling was representational, not motivational: a derived bin boundary that fixed the state representation took magnitude from 0.75 to 1.00.",
       "follows": [
         "exp-45b"
-      ]
+      ],
+      "walkthrough": "/research/experiments/hardware-orienting/#exp-45c--a-derived-boundary"
     },
     {
       "slug": "exp-45b",
@@ -280,7 +296,8 @@
       "finding": "The substrate learned to size rotation actions to target distance and not to overshoot, hitting the pre-registered magnitude score of 0.75 from relief-based credit alone with no LLM, effort cost, or new mechanism.",
       "follows": [
         "exp-45"
-      ]
+      ],
+      "walkthrough": "/research/experiments/hardware-orienting/#exp-45b--how-far-not-just-which-way"
     },
     {
       "slug": "exp-45",
@@ -292,8 +309,9 @@
       "phase": "Layer 1",
       "line": "hardware",
       "headline": true,
-      "summary": "On the physical robot, with no LLM choosing actions: learned to orient from zero in ~10 trials, kept it across sessions, and merged learners. All three arms passed.",
-      "finding": "All three pre-registered arms passed: the substrate learned a real-hardware closed-loop orientation policy from zero in ~10 trials, persisted it across sessions, and merged learners; a head-frame bug affected magnitude estimates but not directional learning."
+      "summary": "On the physical robot, no LLM choosing actions: learned to orient in ~10 trials and kept it across sessions. The merge arm was later downgraded (a vacuous guard, D62).",
+      "finding": "All three pre-registered arms passed: the substrate learned a real-hardware closed-loop orientation policy from zero in ~10 trials, persisted it across sessions, and merged learners; a head-frame bug affected magnitude estimates but not directional learning.",
+      "walkthrough": "/research/experiments/hardware-orienting/#exp-45--learning-to-turn-toward-a-voice-from-zero"
     },
     {
       "slug": "exp-43",
@@ -305,7 +323,8 @@
       "line": "prior",
       "headline": false,
       "summary": "Simulation feasibility study: on unseen individuals a lookup table hits chance while the EC substrate transfers at 0.938. No production behavior claim.",
-      "finding": "Sim feasibility study for Maxim's first job: a dict lookup hits chance (-0.005) on unseen individuals while the EntorhinalCortex substrate reaches 0.938 transfer accuracy, so the substrate's decisive advantage is visual-category generalization to novel instances."
+      "finding": "Sim feasibility study for Maxim's first job: a dict lookup hits chance (-0.005) on unseen individuals while the EntorhinalCortex substrate reaches 0.938 transfer accuracy, so the substrate's decisive advantage is visual-category generalization to novel instances.",
+      "walkthrough": "/research/experiments/roy-harness/#exp-43-44-and-44b--does-a-learned-substrate-steer-the-llm"
     },
     {
       "slug": "exp-41",
@@ -320,7 +339,7 @@
       "follows": [
         "exp-39"
       ],
-      "walkthrough": "/research/experiments/substrate-primary-evidence/#exp-41--42--substrate-primary-preference-removing-the-llm-from-selection"
+      "walkthrough": "/research/experiments/roy-harness/#exp-39-and-41--taking-the-llm-out-of-selection"
     },
     {
       "slug": "exp-40",
@@ -336,7 +355,7 @@
       "follows": [
         "exp-38"
       ],
-      "walkthrough": "/research/experiments/substrate-primary-evidence/#exp-38--40--counter-prior-does-the-substrate-override-a-contrary-prior"
+      "walkthrough": "/research/experiments/roy-harness/#exp-38-and-40--the-counter-prior"
     },
     {
       "slug": "exp-37-cross-model",
@@ -351,7 +370,8 @@
       "finding": "PARTIAL (pymaxim audit 2026-09-13): four open-source-model fires complete; the cloud-model arm was deferred and is not a result. Substrate visibility is Goldilocks-dependent; the R1 variant produced the first clean Wire-A attribution.",
       "follows": [
         "exp-37-graduation"
-      ]
+      ],
+      "walkthrough": "/research/experiments/roy-harness/#exp-37-cross-model--the-goldilocks-zone"
     },
     {
       "slug": "exp-38",
@@ -367,7 +387,7 @@
       "follows": [
         "exp-37-graduation"
       ],
-      "walkthrough": "/research/experiments/substrate-primary-evidence/#exp-38--40--counter-prior-does-the-substrate-override-a-contrary-prior"
+      "walkthrough": "/research/experiments/roy-harness/#exp-38-and-40--the-counter-prior"
     },
     {
       "slug": "exp-37-graduation",
@@ -391,8 +411,8 @@
       "status": "earned",
       "line": "roy",
       "headline": true,
-      "summary": "The EC drift fix (threshold 0.40 → 0.44), not the naming-event scaffold, closed the Roy-5b gap. Supersedes Roy-5b.",
-      "finding": "Branch A decisive: the EC drift fix (threshold 0.40 → 0.44) is the dominant cause of Roy-5b's gap closure; the naming-event scaffold contributes zero on the recognition metric. Supersedes Roy-5b's reading.",
+      "summary": "The EC drift fix (threshold 0.40 → 0.44), not the naming-event scaffold, closed Roy-5b's recognition gap. Whether that changes behavior was left open. Supersedes Roy-5b.",
+      "finding": "Branch A decisive: the EC drift fix (threshold 0.40 → 0.44) is the dominant cause of Roy-5b's gap closure on the recognition metric (EC node overlap); the naming-event scaffold contributes zero. Whether it changes behavior was left open — Exp 27 found the drift fix did not change Roy-2c's behavior. Supersedes Roy-5b's reading.",
       "supersedes": [
         "exp-35"
       ],
@@ -400,7 +420,7 @@
         "exp-35",
         "exp-25"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#the-arc-of-iterations"
+      "walkthrough": "/research/experiments/roy-harness/#exp-35-and-36--roy-5b-and-its-confound-isolation"
     },
     {
       "slug": "exp-35",
@@ -411,12 +431,12 @@
       "status": "superseded",
       "line": "roy",
       "headline": false,
-      "summary": "Superseded by Exp 36. A conditional pass at the time — pre-registered row 1 passed, but with the EC-drift confound unresolved; Exp 36 showed the scaffold wasn't the cause.",
+      "summary": "Superseded by Exp 36. A conditional pass at the time — pre-registered row 1 passed, with the EC-drift confound unresolved; Exp 36 showed the scaffold wasn't the cause.",
       "finding": "Superseded by Roy-5b confound isolation (Exp 36). At the time: a conditional pass — the literal pre-registered row 1 passed, but on a (drive, drive) intra-modal edge with the EC-drift confound unresolved. Exp 36 then showed the EC drift fix, not the naming-event scaffold, closed the gap. The conditional pass stands as recorded; it is not evidence for the scaffold.",
       "follows": [
         "exp-22"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#the-arc-of-iterations"
+      "walkthrough": "/research/experiments/roy-harness/#exp-35-and-36--roy-5b-and-its-confound-isolation"
     },
     {
       "slug": "exp-34",
@@ -430,7 +450,8 @@
       "finding": "With fixes A and B applied, the failure mode narrows to a substrate-to-scene-entity semantic mismatch.",
       "follows": [
         "exp-33"
-      ]
+      ],
+      "walkthrough": "/research/experiments/roy-harness/#exp-29-to-34--the-bisect-and-getting-wire-a-into-the-prompt"
     },
     {
       "slug": "exp-33",
@@ -444,7 +465,8 @@
       "finding": "After fix A, Wire-A demonstrably reaches the LLM for the first time.",
       "follows": [
         "exp-32"
-      ]
+      ],
+      "walkthrough": "/research/experiments/roy-harness/#exp-29-to-34--the-bisect-and-getting-wire-a-into-the-prompt"
     },
     {
       "slug": "exp-32",
@@ -458,7 +480,8 @@
       "finding": "Result is ambiguous-with-wiring-bug: W1/W2 merges leave the outcome uninterpretable until the wiring bug is fixed.",
       "follows": [
         "exp-31"
-      ]
+      ],
+      "walkthrough": "/research/experiments/roy-harness/#exp-29-to-34--the-bisect-and-getting-wire-a-into-the-prompt"
     },
     {
       "slug": "exp-31",
@@ -472,7 +495,8 @@
       "finding": "A convergence/divergence audit of the Roy runs is completed.",
       "follows": [
         "exp-30"
-      ]
+      ],
+      "walkthrough": "/research/experiments/roy-harness/#exp-29-to-34--the-bisect-and-getting-wire-a-into-the-prompt"
     },
     {
       "slug": "exp-30",
@@ -486,7 +510,8 @@
       "finding": "Null outcome: the primary Wire-A tau validation failed.",
       "follows": [
         "exp-29"
-      ]
+      ],
+      "walkthrough": "/research/experiments/roy-harness/#exp-29-to-34--the-bisect-and-getting-wire-a-into-the-prompt"
     },
     {
       "slug": "exp-29",
@@ -501,7 +526,7 @@
       "follows": [
         "exp-23"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#the-arc-of-iterations"
+      "walkthrough": "/research/experiments/roy-harness/#exp-29-to-34--the-bisect-and-getting-wire-a-into-the-prompt"
     },
     {
       "slug": "exp-27",
@@ -515,7 +540,8 @@
       "finding": "Behavioral phase shows the centroid drift was real but NOT the dominant Roy mechanism.",
       "follows": [
         "exp-28"
-      ]
+      ],
+      "walkthrough": "/research/experiments/roy-harness/#exp-24-to-28--ec-centroid-drift"
     },
     {
       "slug": "exp-28",
@@ -529,7 +555,8 @@
       "finding": "SHIP verdict: NAc parameterization improves P2 rather than regressing it.",
       "follows": [
         "exp-26"
-      ]
+      ],
+      "walkthrough": "/research/experiments/roy-harness/#exp-24-to-28--ec-centroid-drift"
     },
     {
       "slug": "exp-26",
@@ -543,7 +570,8 @@
       "finding": "The P1+P2 regression guard passes.",
       "follows": [
         "exp-25"
-      ]
+      ],
+      "walkthrough": "/research/experiments/roy-harness/#exp-24-to-28--ec-centroid-drift"
     },
     {
       "slug": "exp-25",
@@ -554,10 +582,12 @@
       "status": "diagnostic",
       "line": "roy",
       "headline": false,
-      "finding": "Phase 1 matrix sweep finds the recognition threshold 0.40 -> 0.44 is the sweet spot.",
+      "summary": "Matrix sweep: raising the EC pattern-completion threshold 0.40 → 0.50 won; Exp 26 refined it to 0.44 after 0.50 failed a regression check.",
+      "finding": "Phase 1 matrix sweep: the winning cell raised the EC pattern-completion threshold 0.40 → 0.50 (decomposition and frozen text centroid off). Exp 26 then refined it to 0.44 after 0.50 failed the P1 regression tolerance.",
       "follows": [
         "exp-24"
-      ]
+      ],
+      "walkthrough": "/research/experiments/roy-harness/#exp-24-to-28--ec-centroid-drift"
     },
     {
       "slug": "exp-24",
@@ -568,7 +598,8 @@
       "status": "diagnostic",
       "line": "roy",
       "headline": false,
-      "finding": "Diagnostic identifies a CENTROID_DRIFT_COLLAPSE failure and authorizes the Phase 1 matrix sweep."
+      "finding": "Diagnostic identifies a CENTROID_DRIFT_COLLAPSE failure and authorizes the Phase 1 matrix sweep.",
+      "walkthrough": "/research/experiments/roy-harness/#exp-24-to-28--ec-centroid-drift"
     },
     {
       "slug": "exp-23",
@@ -583,7 +614,7 @@
       "follows": [
         "exp-22"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#the-arc-of-iterations"
+      "walkthrough": "/research/experiments/roy-harness/#exp-23--roy-3-the-annotation-that-never-rendered"
     },
     {
       "slug": "exp-22",
@@ -598,7 +629,7 @@
       "follows": [
         "exp-21"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#the-arc-of-iterations"
+      "walkthrough": "/research/experiments/roy-harness/#exp-21-and-22--roy-4-and-roy-5a-the-gap-is-in-the-encoders"
     },
     {
       "slug": "exp-21",
@@ -613,7 +644,7 @@
       "follows": [
         "exp-20"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#the-arc-of-iterations"
+      "walkthrough": "/research/experiments/roy-harness/#exp-21-and-22--roy-4-and-roy-5a-the-gap-is-in-the-encoders"
     },
     {
       "slug": "exp-20",
@@ -621,14 +652,15 @@
       "file": "20_roy_2c.md",
       "title": "Roy-2c",
       "date": "2026-05-13",
-      "status": "earned",
+      "status": "diagnostic",
       "line": "roy",
       "headline": false,
-      "finding": "H1 confirmed: the substrate-primary proposer consumes the cluster wire when the cold-start gate is bypassed.",
+      "summary": "With the confidence gate dropped to 0.0, still no food-seeking proposals: the block is the encoder → EC alignment, not the gate.",
+      "finding": "H1 confirmed: with the min_confidence gate dropped to 0.0, still zero sense_food_source proposals — so the block is the LinguisticEncoder → EC alignment, not the gate (H2 cleanly refuted). Wire-A is the only architectural fix.",
       "follows": [
         "exp-19"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#the-arc-of-iterations"
+      "walkthrough": "/research/experiments/roy-harness/#exp-18-to-20--roy-2-a-positive-control-and-the-gate"
     },
     {
       "slug": "exp-19",
@@ -636,14 +668,15 @@
       "file": "19_roy_2pc.md",
       "title": "Roy-2 positive control",
       "date": "2026-05-13",
-      "status": "null",
+      "status": "diagnostic",
       "line": "roy",
       "headline": false,
-      "finding": "Positive control passes on an engineered fixture.",
+      "summary": "The positive control came out A ≈ B ≈ C — the pre-registered diagnostic outcome, on a thin sample. It made the min_confidence probe (Roy-2c) load-bearing.",
+      "finding": "The positive control on an engineered-overlap fixture came out A ≈ B ≈ C — the pre-registered diagnostic outcome: either a wire bug or the min_confidence gate was filtering even primed-cluster proposals. Arms B and C each captured one test-phase episode, so the sample is thin. Made Roy-2c load-bearing.",
       "follows": [
         "exp-18"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#the-arc-of-iterations"
+      "walkthrough": "/research/experiments/roy-harness/#exp-18-to-20--roy-2-a-positive-control-and-the-gate"
     },
     {
       "slug": "exp-18",
@@ -658,7 +691,7 @@
       "follows": [
         "exp-17"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#the-arc-of-iterations"
+      "walkthrough": "/research/experiments/roy-harness/#exp-18-to-20--roy-2-a-positive-control-and-the-gate"
     },
     {
       "slug": "exp-17",
@@ -674,7 +707,7 @@
       "follows": [
         "exp-16"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#the-arc-of-iterations"
+      "walkthrough": "/research/experiments/roy-harness/#exp-16-and-17--roy-1a-and-roy-1b-a-symmetric-gap"
     },
     {
       "slug": "exp-16",
@@ -690,7 +723,7 @@
       "follows": [
         "exp-15"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#the-arc-of-iterations"
+      "walkthrough": "/research/experiments/roy-harness/#exp-16-and-17--roy-1a-and-roy-1b-a-symmetric-gap"
     },
     {
       "slug": "exp-15",
@@ -702,7 +735,7 @@
       "line": "roy",
       "headline": false,
       "finding": "The substrate-primary cluster_id reward-feedback wire is confirmed live.",
-      "walkthrough": "/research/experiments/roy-harness/#the-arc-of-iterations"
+      "walkthrough": "/research/experiments/roy-harness/#exp-14-and-15--the-harness-and-its-first-wire-roy-0"
     },
     {
       "slug": "exp-14",
@@ -714,7 +747,7 @@
       "line": "roy",
       "headline": false,
       "finding": "The G3 fail-fast preflight probe is shipped.",
-      "walkthrough": "/research/experiments/roy-harness/#the-arc-of-iterations"
+      "walkthrough": "/research/experiments/roy-harness/#exp-14-and-15--the-harness-and-its-first-wire-roy-0"
     },
     {
       "slug": "exp-13",
@@ -760,7 +793,9 @@
       "status": "poc",
       "line": "cross-session",
       "headline": false,
-      "finding": "Prior-session memories injected into the prompt produce measurably different behavior."
+      "summary": "Resumed sessions surface prior-session memories and behave measurably differently from a fresh start. The ledger counts persistence as earned, re-validated cleanly.",
+      "finding": "Prior-session memories injected into the prompt produce measurably different behavior. The graduation ledger counts the persistence claim as earned and records a clean re-validation: the resumed session opened with the prior store (108 episodes) and surfaced 3 memories per turn on 8 of 8 turns.",
+      "walkthrough": "/research/experiments/cross-session-learning/#exp-10--cross-session-enrichment"
     },
     {
       "slug": "exp-09-percept-reflex",
@@ -1147,7 +1182,8 @@
       "status": "superseded",
       "line": "cross-session",
       "headline": false,
-      "finding": "Superseded (pymaxim audit 2026-09-13): the plan document, frozen at \"ready to run\". The runs themselves are in the hippocampal recall run notes."
+      "finding": "Superseded (pymaxim audit 2026-09-13): the plan document, frozen at \"ready to run\". The runs themselves are in the hippocampal recall run notes.",
+      "walkthrough": "/research/experiments/cross-session-learning/#memory-recall-under-interference-hippocampal-recall"
     },
     {
       "slug": "temporal-credit-validation",
@@ -1157,7 +1193,8 @@
       "status": "stale",
       "line": "cross-session",
       "headline": false,
-      "finding": "STALE (pymaxim audit 2026-09-13). The protocol and runner shipped around 2026-04 but were never run; the provisional SCN temporal-coupling tag rests on nothing here. No result."
+      "finding": "STALE (pymaxim audit 2026-09-13). The protocol and runner shipped around 2026-04 but were never run; the provisional SCN temporal-coupling tag rests on nothing here. No result.",
+      "walkthrough": "/research/experiments/cross-session-learning/#temporal-credit-validation-never-run"
     },
     {
       "slug": "exp-42",
@@ -1176,7 +1213,7 @@
       "follows": [
         "exp-41"
       ],
-      "walkthrough": "/research/experiments/substrate-primary-evidence/#exp-41--42--substrate-primary-preference-removing-the-llm-from-selection"
+      "walkthrough": "/research/experiments/roy-harness/#exp-42-and-42b--substrate-primary-preference"
     },
     {
       "slug": "exp-39",
@@ -1187,7 +1224,8 @@
       "status": "superseded",
       "line": "prior",
       "headline": false,
-      "finding": "Superseded without being run: the frozen counter-prior design was the pre-registered predecessor, and the executable line continued through Exp 41 and Exp 42."
+      "finding": "Superseded without being run: the frozen counter-prior design was the pre-registered predecessor, and the executable line continued through Exp 41 and Exp 42.",
+      "walkthrough": "/research/experiments/roy-harness/#exp-39-and-41--taking-the-llm-out-of-selection"
     },
     {
       "slug": "exp-56",
@@ -1199,7 +1237,8 @@
       "line": "sharing",
       "headline": true,
       "summary": "One agent's taught want, shared as a signed bundle, changed an independent agent's first choice: 0.80 vs a 0.00 floor, n = 50/arm. Transfer, not generalization.",
-      "finding": "EARNED — the 1.2 \"Oasis\" headline. Agent A's teacher-taught, world-keyed operant bias, exported as a signed bundle and ingested into an independent agent B (different agent_id, separately built EC + SensorEncoder, disjoint cluster ids), changes B's FIRST-contact choice. Live Paper 1.16.5 Minecraft world (not the mock), n = 50 receivers/arm, substrate-primary. Taught raw 0.84 [0.71, 0.92] and 0.80 bias-decisive vs isolated floor 0.22 raw / 0.00 decisive; satiated (zero-credit donor) 0.12 and dangling-half falsifier 0.12, both at floor. All four gates PASS: TRANSFERRED 0.80 >= 0.70, ABOVE-FLOOR 0.62 >= 0.20, WANT-NOT-FILE 0.72 >= 0.20, BOTH-HALVES -0.10 < 0.10, plus the anti-vacuity kit. 40 of 50 taught first contacts decided by the situation-keyed learned-bias channel. Scope: one campaign, one world layout, teacher-taught wants — not scaling (Exp 57), not hardware, not aversion, not cross-layout (R1). Re-baselined 2026-09-19 on Paper 1.20.4 (RB-1): PASS, every rate identical to the 1.16.5 campaign — a same-seed reproduction on the new platform, not an independent replication; one duplicated row from an operator restart is disclosed in the file and moves no gate."
+      "finding": "EARNED — the 1.2 \"Oasis\" headline. Agent A's teacher-taught, world-keyed operant bias, exported as a signed bundle and ingested into an independent agent B (different agent_id, separately built EC + SensorEncoder, disjoint cluster ids), changes B's FIRST-contact choice. Live Paper 1.16.5 Minecraft world (not the mock), n = 50 receivers/arm, substrate-primary. Taught raw 0.84 [0.71, 0.92] and 0.80 bias-decisive vs isolated floor 0.22 raw / 0.00 decisive; satiated (zero-credit donor) 0.12 and dangling-half falsifier 0.12, both at floor. All four gates PASS: TRANSFERRED 0.80 >= 0.70, ABOVE-FLOOR 0.62 >= 0.20, WANT-NOT-FILE 0.72 >= 0.20, BOTH-HALVES -0.10 < 0.10, plus the anti-vacuity kit. 40 of 50 taught first contacts decided by the situation-keyed learned-bias channel. Scope: one campaign, one world layout, teacher-taught wants — not scaling (Exp 57), not hardware, not aversion, not cross-layout (R1). Re-baselined 2026-09-19 on Paper 1.20.4 (RB-1): PASS, every rate identical to the 1.16.5 campaign — a same-seed reproduction on the new platform, not an independent replication; one duplicated row from an operator restart is disclosed in the file and moves no gate.",
+      "walkthrough": "/research/experiments/world-seam/#exp-56--a-taught-want-transfers-between-independent-agents"
     },
     {
       "slug": "exp-57",
@@ -1214,7 +1253,8 @@
       "finding": "PARTIAL by pre-registration — the 1.2 scaling claim, run as its may-fail second claim; both halves are load-bearing. MONOTONICITY (primary) PASS in its robust form: per-agent trials-to-criterion fall 21 / 21 / 15.5 / 10.5 across N = 1/2/4/8 (Jonckheere-Terpstra permutation p ~ 1e-4, surviving the drop-censored-rungs guard), driven by endpoint coverage widening 0.25 -> 0.50 -> 0.75 -> 0.75 — a lone agent never reaches the 3-of-4 criterion in 20 trials, an agent in a creche of 8 reaches it in ~10.5 of its own. NOT-JUST-MORE-DATA FAIL: N x tau = 42 / 62 / 84 vs a matched single agent's 41 / 46 / 43, so the pool spends MORE total experience than one agent given all of it — convex-combination merge overhead, named as the 1.3 audit target. Collective learning is a per-participant win, not a total-sample free lunch. Live Minecraft, 4 rungs x 3 conditions x 20 cohorts (9,200 rows), substrate-primary. Not a scaling law; the failing gate is the strict serial sample-cost comparison, not wall-clock.",
       "follows": [
         "exp-56"
-      ]
+      ],
+      "walkthrough": "/research/experiments/world-seam/#exp-57--pooling-partial-learners-faster-per-participant-at-a-total-experience-cost"
     },
     {
       "slug": "r1",
@@ -1229,7 +1269,8 @@
       "finding": "CACHE-CONFIRMED (structural null). Asks whether Exp 56's shared want carries a generalizable representation or a cached association: does a want taught at one world layout fire at a layout the receiver never trained on? It does not — the shared want is an exact-key cluster cache with no cross-layout generalization channel, knowable from the substrate mechanism without a live campaign. Bounds the 1.2 headline: transfer is demonstrated, generalization is not. A 1.3 readout design target, not a defect; a null shipped as a null.",
       "follows": [
         "exp-56"
-      ]
+      ],
+      "walkthrough": "/research/experiments/world-seam/#r1--a-structural-null-a-cache-not-a-representation"
     },
     {
       "slug": "r2",
@@ -1241,7 +1282,8 @@
       "line": "survival",
       "headline": false,
       "summary": "Null. The game's drives don't move behavior toward eating or healing; the survival loop has three breaks, which became the 1.3 build list.",
-      "finding": "PREMISE-NULL. The minecraft_player world-owned drives (health homeostatic, food entropic, both drift_rate 0.0 — the game drains them, not the model) do not measurably move behaviour toward the corrective affordances, and the survival loop has three specific breaks. Per the rung's own pre-registered stop rule the dependent survival rungs R3/R4 do not run in 1.2; the three breaks become the 1.3 build list rather than a benchmark back-fitted onto a premise that does not hold. A null shipped as a null."
+      "finding": "PREMISE-NULL. The minecraft_player world-owned drives (health homeostatic, food entropic, both drift_rate 0.0 — the game drains them, not the model) do not measurably move behaviour toward the corrective affordances, and the survival loop has three specific breaks. Per the rung's own pre-registered stop rule the dependent survival rungs R3/R4 do not run in 1.2; the three breaks become the 1.3 build list rather than a benchmark back-fitted onto a premise that does not hold. A null shipped as a null.",
+      "walkthrough": "/research/experiments/world-seam/#r2--the-premise-null-that-became-the-13-build-list"
     },
     {
       "slug": "exp-60",
@@ -1256,7 +1298,8 @@
       "finding": "EARNED — the Wire-4 situation-fear mechanism's behavioural graduation, and the first Maxim result whose learning signal is the WORLD's rather than a teacher's. An agent held underwater until air-hunger pain, then rescued, books a fear keyed to the underwater situation and on later submersions leaves the water BEFORE the pain would fire; its yoked twin with the same pain exposure but the fear subscriber detached never does. Live Paper 1.20.4 water classroom, substrate-primary (no LLM in the action path), 5 seeds/arm, 6 pain-free placements per probe. All five frozen gates PASS: FEAR post P(surface) median 1.0 (from 0.0 pre, every seed) vs ABLATED 0.0 (zero executor calls in 30/30), exact permutation p = 1/252 (the floor for 5 v 5), specificity water fear -1.0 vs shore 0.0 on every seed. Latency to air median 1.72 s, inside the 4.34 s US-free window. Caveat recorded: after a seed's first escape the action also carries a positive causal link, so the fear-only read is the FIRST post placement per seed (5/5 surfaced, 2.9-3.3 s). Planned as 'dark = danger' and BLOCKED at the instrument (Exp 58) — the cue was swapped to water, which separates.",
       "follows": [
         "exp-58"
-      ]
+      ],
+      "walkthrough": "/research/experiments/world-seam/#exp-60--learned-drowning-avoidance-from-the-games-own-pain"
     },
     {
       "slug": "exp-61",
@@ -1268,10 +1311,11 @@
       "line": "survival",
       "headline": true,
       "summary": "A learned drowning fear, shared as a bundle, sent receivers out of the water on first contact: 12/12 vs 0/24 isolated (p = 8e-10). One donor, one campaign.",
-      "finding": "EARNED — the 1.3 \"Oasis-2\" headline. A donor learns the drowning fear the hard way, exports its substrate through the shipped signed-bundle path, and a fresh receiver ingests it (discounted x0.75 at the ingest bound — vicarious fear is real and weaker than direct), reboots, and leaves the water on its FIRST loop-live submersion having never felt the pain. One campaign at one code hash, 121 rows, zero refusals: 12/12 transferred receivers vs 0/24 isolated, 0/12 cluster-not-fear (the ablated donor's cluster and percept valence shipped, the fear did not) and 0/24 dangling (fear dropped at ingest for want of its world node); Fisher one-sided p = 8.0e-10; all six frozen gates PASS. The loop-OFF representation gate read the discounted fear (-0.75) exactly on every receiver before any loop ran. NOT earned: extinction, scaling past one donor, the fear's reach to another pool (Exp 62, designed not run), hive-side promotion.",
+      "finding": "EARNED — the 1.3 \"Oasis-2\" headline. A donor learns the drowning fear the hard way, exports its substrate through the shipped signed-bundle path, and a fresh receiver ingests it (discounted x0.75 at the ingest bound — vicarious fear is real and weaker than direct), reboots, and leaves the water on its FIRST loop-live submersion having never felt the pain. One campaign at one code hash, 121 rows, zero refusals: 12/12 transferred receivers vs 0/24 isolated, 0/12 cluster-not-fear (the ablated donor's cluster and percept valence shipped, the fear did not) and 0/24 dangling (fear dropped at ingest for want of its world node); Fisher one-sided p = 8.0e-10; all six frozen gates PASS. The loop-OFF representation gate read the discounted fear (-0.75) exactly on every receiver before any loop ran. NOT earned: extinction, scaling past one donor, a received fear's reach to another pool (Exp 62 tested only the agent's own fear), hive-side promotion.",
       "follows": [
         "exp-60"
-      ]
+      ],
+      "walkthrough": "/research/experiments/world-seam/#exp-61--a-learned-fear-transfers-between-independent-agents"
     },
     {
       "slug": "r3",
@@ -1287,7 +1331,8 @@
       "follows": [
         "exp-60",
         "exp-61"
-      ]
+      ],
+      "walkthrough": "/research/experiments/world-seam/#r3--what-a-carried-drive-is-worth-cost-not-life"
     },
     {
       "slug": "exp-62",
@@ -1303,7 +1348,8 @@
       "finding": "Rung A EARNED, the day after 1.3.0 shipped, on the shipped minecraft_player body with no mechanism change, no new sensor and no ingest. An agent that learned the drowning fear in pool 1 left the water on its first live submersion in pool 2 (different altitude and spawn distance): cross-pool 12/12 (Wilson lower bound 0.758 — the interval is the number, not 100%), same-pool 12/12, fear-ablated 0/3 with zero executor calls; five frozen gates PASS; Fisher one-sided cross v ablated p = 0.0022. The ablated agents resolve to the SAME node with fear 0, so the contrast is the fear alone. NOT a general generalization result: one discriminating world sensor (is_in_water, binary), a two-point situation space; what carried is invariance to place, not to a changed situation. The context wall stands and was measured: a lit pond reads 0.588 against the 0.85 threshold. The 0.799 'night pool' reading was corrected 2026-09-25 to the time_of_day wrap (#899): midnight reads 0.903, and the fear misses only in roughly the last 5% of each in-game day. Bounded to the sealed-shell, frozen-day pool class. The agent's OWN fear — a received fear's reach to another pool is untested. Rung B is designed, not built.",
       "follows": [
         "exp-60"
-      ]
+      ],
+      "walkthrough": "/research/experiments/world-seam/#exp-62--a-learned-fear-carries-to-a-second-pool-rung-a"
     },
     {
       "slug": "exp-54",
@@ -1319,7 +1365,8 @@
       "finding": "Phase A EARNED; Phases B (readout on the physical Reachy) and C (the user path) have not run. The Exp 52 nursery re-run on the robot's own body and action keys: taught late 0.858 vs satiated 0.472 and no_feed 0.514 — mother-taught +0.34, hunger-necessary +0.39, all pre-registered gates, 12 seeds/arm. Magnitude NOT resolved: the taught agents prefer the normal step in every bin. The prerequisite for sharing a taught want on hardware.",
       "follows": [
         "exp-53"
-      ]
+      ],
+      "walkthrough": "/research/experiments/hardware-orienting/#exp-54--the-nursery-on-the-robots-own-body-phase-a-only"
     },
     {
       "slug": "exp-58",
@@ -1330,11 +1377,12 @@
       "status": "null",
       "line": "survival",
       "headline": false,
-      "summary": "Null with cause: danger and safety never formed distinct world clusters, so the fear had nothing to key on. Exp 60 re-ran it on water.",
-      "finding": "NULL-WITH-CAUSE (instrument-blocked). The Wire-4 fear mechanism fired end to end in a live dry run, but the danger and safe situations never formed distinct world clusters — under light, depth, or depth plus a hostile mob — so the situation-keyed fear had nothing to key on. No behavioural claim. Exp 60 re-ran the question on a cue that does separate: water.",
+      "summary": "Null with cause: danger and safety never formed distinct world clusters, so the fear had nothing to key on. The fear's read path was never shown live. Exp 60 re-ran it on water.",
+      "finding": "NULL-WITH-CAUSE (instrument-blocked). The fear's write side worked live — pain wrote a fear onto the world cluster — but the danger and safe situations never formed distinct world clusters under light, depth, or depth plus a hostile mob, so the fear had nothing to key on. The loop-executed read was never shown live on this line (correction 2026-09-16: the staircase flee was a preflight actuation check, not the agent loop). No behavioural claim. Exp 60 re-ran the question on a cue that does separate: water.",
       "follows": [
         "r2"
-      ]
+      ],
+      "walkthrough": "/research/experiments/world-seam/#exp-58--dark-means-danger-a-null-with-cause-blocked-at-the-instrument"
     },
     {
       "slug": "r2-learned-bias-v1",
@@ -1349,7 +1397,8 @@
       "finding": "Superseded without data (pymaxim audit 2026-09-13). The raw-flip design was caught confounded pre-data and replaced by v2; the question was then resolved offline — the cluster credit is a behavioural messenger, not a cause.",
       "follows": [
         "r2"
-      ]
+      ],
+      "walkthrough": "/research/experiments/world-seam/#r2-bias-v1-and-v2--the-learned-bias-pre-registrations-superseded-withdrawn"
     },
     {
       "slug": "r2-learned-bias-v2",
@@ -1363,7 +1412,8 @@
       "finding": "Superseded at the design-review gate; no harness was built and no data taken. Its reasoning is kept in the design review.",
       "supersedes": [
         "r2-learned-bias-v1"
-      ]
+      ],
+      "walkthrough": "/research/experiments/world-seam/#r2-bias-v1-and-v2--the-learned-bias-pre-registrations-superseded-withdrawn"
     },
     {
       "slug": "paired-data-audit",

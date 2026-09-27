@@ -14,6 +14,7 @@ const best = line.best ? manifest.bySlug.get(line.best) : null;
 <div class="exp-line" data-line={line.slug}>
 	<p class="exp-line-intro">
 		<span class="exp-line-period">{line.period}</span> — {line.intro}
+		{line.walkthrough && <a href={line.walkthrough}>Read the walkthrough →</a>}
 	</p>
 	{
 		best && (

@@ -1,73 +1,153 @@
 ---
 title: Cross-session learning
-description: The experimental record behind Maxim's headline claim — that agents accumulate substrate knowledge across sessions and recall it later with no gradient updates — stated precisely, with the earned line kept sharp against what remains unproven.
+description: The experiments behind Maxim's headline claim — that substrate persists across sessions and is recalled later with no gradient updates — with the earned recall kept separate from the partial behavioural claim.
 ---
 
-This is Maxim's most important claim, and its most over-claimable one. This page
-states it exactly, walks the experiments that support and bound it, and shows
-you how to reproduce the inspection yourself. Maxim is a bio-inspired cognitive
-architecture built on the Python package `pymaxim`; nothing here involves
-touching model weights.
+:::note[At a glance]
+- **Line status:** closed. Its open question moved to the [Roy harness](/research/experiments/roy-harness/) page.
+- **Dates:** 2026-04-06 to 2026-05-30 (Exp 37 re-fired 2026-08-21/22).
+- **Releases:** the 1.0 research claim.
+- **Experiments covered:** [Exp 37](/research/experiments/exp-37-graduation/) · [Exp 12](/research/experiments/exp-12/) · [Exp 10](/research/experiments/exp-10/) · [B2](/research/experiments/behavioral-convergence-exp2/) · [B3](/research/experiments/behavioral-convergence-exp3-tier2/) · [B4](/research/experiments/behavioral-convergence-exp4-tier3/) · [Hippocampal recall](/research/experiments/hippocampal-recall-run-notes/) · [Temporal credit](/research/experiments/temporal-credit-validation/)
+- **Current as of 2026-09-26.**
+:::
+
+## The question
+
+Does what an agent experiences in one session survive to the next — with the language model
+untouched — and, if it does, does it change what the agent does? Maxim is a bio-inspired
+cognitive architecture built on the Python package `pymaxim`; nothing here involves touching
+model weights.
 
 ## The claim, stated precisely
 
-Cross-session learning without fine-tuning means one thing:
+> The **substrate** — episodes, causal links, and concepts — persists to disk during a
+> session and is **recalled in later sessions** as natural-language context, with **no
+> gradient updates** to the language model.
 
-> The **substrate** — episodes, causal links, and concepts — persists to disk
-> during a session and is **recalled in later sessions** as natural-language
-> context, with **no gradient updates** to the language model.
+**Recall is earned.** [Exp 10](/research/experiments/exp-10/) showed prior-session memories
+surfacing on resume (about three per turn), re-validated in August 2026, and
+[Exp 12](/research/experiments/exp-12/) reproduced cross-session recall with every scaffold
+removed. The LLM that runs session two is byte-for-byte the LLM that ran session one; what
+changes is the context assembled around it from the [Hippocampus](/systems/hippocampus/),
+[Nucleus Accumbens](/systems/nucleus-accumbens/) and
+[Anterior Temporal Lobe](/systems/anterior-temporal-lobe/) after they were saved and
+reloaded. **Behavioural change is partial:** the pre-registered 1.0 gate,
+[Exp 37](/research/experiments/exp-37-graduation/), found a shift only at ≥32B and could not
+separate it from the LLM's prior.
 
-Read the negations as carefully as the assertion:
+## What it does not show
 
-- It is **not weight modification.** No parameter is trained, adapted, or
-  fine-tuned. The LLM that runs session two is byte-for-byte the LLM that ran
-  session one. What changes is the context assembled around it, drawn from the
-  [Hippocampus](/systems/hippocampus/), [Nucleus Accumbens](/systems/nucleus-accumbens/),
-  and [Anterior Temporal Lobe](/systems/anterior-temporal-lobe/) after they were
-  saved and reloaded.
-- It is **not a guarantee that recalled context changes behavior.** This is the
-  "1.0 finding," and it is the honest core of the whole program: **strong LLM
-  priors often dominate the substrate signal.** A recalled memory can be present
-  in the prompt and change nothing about what the agent does, because the base
-  model already had a strong opinion.
-
-So the reliable signal is *recall* — that prior-session substrate demonstrably
-resurfaces. *Behavioral change* is a separate, harder, and only partially
-demonstrated claim. The experiments below keep those two apart on purpose.
+- **Not weight modification.** No parameter is trained, adapted or fine-tuned.
+- **Not a guarantee that recalled context changes behaviour.** This is the "1.0 finding":
+  strong LLM priors often dominate the substrate signal. A recalled memory can sit in the
+  prompt and change nothing, because the base model already had a strong opinion. The
+  hippocampal recall run shows it directly — memory survival 1.0, behavioural recall 0.
+- **Not independent behavioural drive.** Exp 37's isolation arm failed on every model where
+  the primary passed, so "the substrate changes behaviour independently of the LLM prior" is
+  not established here.
+- **Not reproducible across time.** Exp 37's identical commit on identical seeds gave 0.71 in
+  August 2026 where June gave 0.42; its magnitudes are readings taken at one time
+  ([L8](/research/limits/)).
+- **Small N.** Exp 37 arms are 5 trials each; B3 is N = 10 per condition; the interference
+  runs are single observational runs. Effects are model- and scenario-dependent, inside a
+  narrow "Goldilocks" headroom band.
+- **No Arm-C-style control in B2–B4**, and they run at 14B, where Exp 37 found the prior too
+  weak for its own scenario. The 14B wins and the 14B graduation FAIL use different scenarios
+  with different prior strength — read them together, not as a contradiction.
 
 ## The experiments
 
-Reverse-chronological. "EARNED" marks a result the record treats as sound;
-"PARTIAL" marks a claim that is only half-supported by its own falsification
-tests.
+Newest first. Each experiment's page links its record and how to reproduce it; the
+`maxim roy diff` workflow for inspecting substrate divergence between two sessions is in the
+[user guide](https://github.com/dennys246/Maxim/blob/main/docs/user/cross-session-learning.md).
 
-| ID | Date | Experiment | Status | Result |
-|----|------|-----------|--------|--------|
-| 37 | 2026-05-30 | [Cross-session graduation](/research/experiments/exp-37-graduation/) | Pre-registered → **PARTIAL** | Behavioral delta appears only at ≥32B scale; independence from LLM priors **not** isolated (Arm C confound). The recorded magnitudes are historical: the same commit on the same seeds did not reproduce its own June result in August 2026 (limit L8) |
-| 12 | 2026-04-30 | [V1 phased attribution](/research/experiments/exp-12/) | Recorded — **CLEAN PASS** | Substrate alone recalls a planted token across sessions; 7/7 phases |
-| 10 | 2026-04-25 | [Cross-session enrichment](/research/experiments/exp-10/) | Recorded — **EARNED** | Prior-session memories surface in resumed prompts (3 per turn) |
-| B4 | 2026-04-17 | [Organic learning, Tier 3](/research/experiments/behavioral-convergence-exp4-tier3/) | PASS (5/5) | Agent converges to optimal choice across sessions: 0% → 25% → 100% |
-| B3 | 2026-04-17 | [LLM acts on substrate, Tier 2](/research/experiments/behavioral-convergence-exp3-tier2/) | PASS (12/12) | Experienced agent picks antidote 10/10; fresh agent 0/10 |
-| B2 | 2026-04-17 | [Consumable learning](/research/experiments/behavioral-convergence-exp2/) | PASS (13/13) | Energy-driven valences persist to disk and reload |
-| HC | 2026-04-06 | [Hippocampal recall](/research/experiments/hippocampal-recall-experiment/) · [run notes](/research/experiments/hippocampal-recall-run-notes/) | Run notes | Memory survival 1.0; behavioral recall 0 |
+| Exp | Date | Status | n per arm | Result |
+|---|---|---|---|---|
+| [37](/research/experiments/exp-37-graduation/) | 2026-05-30 | partial | 5 trials, four models | Behavioural delta only at ≥32B; independence from the prior not isolated (Arm C); magnitudes did not reproduce in August (L8) |
+| [12](/research/experiments/exp-12/) | 2026-04-30 | earned | one session pair per phase, 7 phases | Substrate alone recalls a planted token across sessions, 7 of 7 phases |
+| [10](/research/experiments/exp-10/) | 2026-04-25 | proof of concept (the persistence claim is earned in the graduation ledger) | single three-phase run, re-run August 2026 | Prior-session memories surface on resume, 3 per turn |
+| [B4](/research/experiments/behavioral-convergence-exp4-tier3/) | 2026-04-17 | earned | one run per session, four sessions | Teal-vial selection 0% → 25% → 100% across sessions; fresh control 0% |
+| [B3](/research/experiments/behavioral-convergence-exp3-tier2/) | 2026-04-17 | earned | 10 per condition | Experienced agent picks the antidote 10/10; fresh agent 0/10 |
+| [B2](/research/experiments/behavioral-convergence-exp2/) | 2026-04-17 | earned | experienced vs control agents | Energy-driven valences persist to disk and reload |
+| [Hippocampal recall](/research/experiments/hippocampal-recall-run-notes/) | 2026-04-06 | partial (run notes); the [plan](/research/experiments/hippocampal-recall-experiment/) is superseded | single runs | Memory survival 1.0; behavioural recall 0 |
+| [Temporal credit](/research/experiments/temporal-credit-validation/) | — | never run | — | Protocol and runner shipped; never executed. No result |
+
+## The arc
+
+### Memory recall under interference (Hippocampal recall)
+
+The interference study seeds a password — "Verath" — in Act 1, inserts unrelated narrative
+turns (ferryman, bandits, merchant), then in Act 3 presents an indirect cue (a door beneath a
+silver elm) and asks whether the agent retrieves it. A weaker AUT (Mistral-7B) is used
+deliberately, so that recall past its attention span must be the Hippocampus doing the work
+rather than the context window.
+
+The run notes (2026-04-06, orchestrator Qwen2.5-14B, AUT Mistral-7B, 7-turn campaign,
+3 interference turns) produced the program's defining distinction: **memory survival rate
+1.0, behavioural recall 0.** Verath survived in the hippocampus and the agent recited it
+accurately in an epilogue reflection — but at the door itself it reached for `read_file`
+instead of speaking the word. The substrate remembered; the behaviour did not follow. This
+is the 1.0 finding observed directly: persistence and action are two claims, not one. The
+plan document stayed frozen at "ready to run" and is superseded by these notes.
+
+### Consumable / affordance learning (Experiments B2–B4)
+
+Three convergence experiments on 2026-04-17, all Qwen2.5-14B, escalate from "the substrate
+learns" to "the LLM acts on what it learned":
+
+- **B2 (13/13)** — energy-driven consumable learning. After energy-depletion episodes,
+  learned valences persist to disk and reload: food ration +0.700 edge → +0.753 on
+  retrieval, water flask +0.500 → +0.135, poison vial −0.900 → −0.495. Control agents show
+  0.000 across all entities.
+- **B3 (12/12)** — the substrate changes the LLM's choice. Masked vials with arbitrary
+  descriptions (no pretraining semantics): teal +0.933, purple +0.540, orange −0.552. At
+  temperature 0.3, N = 10 per condition, the experienced agent chose the antidote
+  **10/10 (100%)** and the fresh agent **0/10 (0%)** — the fresh agent defaulted to purple
+  70% of the time on aesthetics alone.
+- **B4 (5/5)** — organic learning across four sessions. Teal-vial selection climbs 0%
+  (fresh, death) → 25% (persistent, escape) → 100% (persistent, one-turn solve), with a
+  fresh control back at 0% (death).
+
+These are the strongest LLM-path behavioural results in the record, with the caveat they
+carry themselves: they run at 14B, where Exp 37 later found the prior *too weak* for its
+fire scenario, and none has a peaceful-prior control.
+
+### Exp 10 — cross-session enrichment
+
+On 2026-04-25 a resumed session first surfaced prior-session memories in the LLM prompt: after
+fixes to goal threading and retrieval, the resume phase showed **3 memories per turn** while a
+fresh start showed none, and a garden scenario resumed from the same dungeon session was not
+dominated by dungeon memories. Five scaffolds (prompt preambles, an acting coach, sandbox
+text, a default persona and embodiment) were all active, so the result could not say which
+part was doing the recalling — Exp 12 answered that. The August 2026 heartbeat re-run is the
+row's cleanest pass: phase 2 opened at exactly phase 1's closing store (108), hit three per
+turn on 8 of 8 turns, and grew the store to 535. The original April raw logs were written to
+`/tmp` and are lost; the surviving raw record is that re-run.
+
+### Substrate recall, isolated (Experiment 12)
+
+Exp 12 (2026-04-30) stripped the scaffolds out. Across seven phases — Phase A disables all
+five contributors, Phases B–F re-enable each one individually, Phase G is the all-defaults
+control — each phase plants the token `BLUE-7-DAWN` in an 8-turn session, then attempts
+retrieval in a separate 8-turn session sharing one isolated data directory.
+
+All 7 phases recalled the token (7/7). Critically, **Phase A (substrate-only)** succeeded:
+cross-session recall reproduces with none of the five scaffolds present. Memory counts grew
+193 → 421 and causal links 142 → 310 across the pair, and the trace shows the agent querying
+`memory_recall` and then answering with the token — retrieval, not hallucination. This is the
+cleanest evidence for the recall half of the claim: a **clean pass**.
 
 ### Cross-session graduation (Experiment 37)
 
-This is the pre-registered "1.0 gate": a paired fresh-vs-resume measurement in
-the Cradle harness. Scenario, metric, and ablations were locked before any trial
-ran. The design is three arms plus ablations, five trials each — Arm A (fresh
-agent), Arm B (resumed from a *failure*-prior session), Arm C (resumed from a
-*peaceful*-prior session, the confound control), plus three Arm-B ablations
-(Wire-A off, Wire-1 off, NAc-bias zeroed). Total target: 60 baseline + 20 local
-Qwen replication = 80 runs.
-
-The primary metric is `positive_approach_engagement_fraction` — the share of
-fire-pit actions that are safe affordances (observe/examine). The acceptance
-test is a standard-deviation shift: `(B − A) / A.sd ≥ +1.0`. Arm C exists to
-catch a general-caution confound: if resuming from *any* prior (not just the
-failure) shifts behavior, the effect is not memory of the failure.
-
-The result is model-dependent, and that is the finding:
+The pre-registered "1.0 gate" (2026-05-30): a paired fresh-vs-resume measurement in the
+Cradle harness, with scenario, metric and ablations locked before any trial. Three arms plus
+ablations, five trials each — Arm A (fresh), Arm B (resumed from a *failure*-prior session),
+Arm C (resumed from a *peaceful*-prior session, the confound control), plus three Arm-B
+ablations (Wire-A off, Wire-1 off, NAc-bias zeroed). The primary metric is
+`positive_approach_engagement_fraction` — the share of fire-pit actions that are safe
+affordances — and the test is `(B − A) / A.sd ≥ +1.0`. Arm C catches a general-caution
+confound: if resuming from *any* prior shifts behaviour, the effect is not memory of the
+failure.
 
 | Model | Date | Arm A | Arm B | Δ (SD) | Primary |
 |-------|------|-------|-------|--------|---------|
@@ -76,187 +156,56 @@ The result is model-dependent, and that is the finding:
 | Mistral-Small-24B | 2026-06-11 | 1.000 | 0.600 | wrong dir. | **FAIL** (ceiling) |
 | DeepSeek-R1-Distill-Qwen-32B | 2026-06-13 | 0.259 | 0.566 | **+2.11** | **PASS** |
 
-The cross-model pattern is a "Goldilocks zone": the transfer signal is only
-detectable when the base model's priors leave headroom between naive and optimal
-behavior. Qwen-14B's priors were too weak for the signal to emerge; Mistral's
-were strong enough to already solve the scenario (Arm A = 1.000, no headroom);
-the two 32B models sat in the detectable range, and the reasoning-trained
-R1-Distill produced the only clean ablation (Wire-A off shrinks the delta by
-+1.13 SD).
+The transfer signal is only detectable when the base model's priors leave headroom between
+naive and optimal behaviour: Qwen-14B's priors were too weak; Mistral's already solved the
+scenario (Arm A = 1.000); the two 32B models sat in the detectable range, and R1-Distill
+produced the only clean ablation (Wire-A off shrinks the delta by +1.13 SD). Read that
+ablation narrowly: the three experiments that tested cluster-bias annotation *directly* —
+[Exp 30](/research/experiments/exp-30/), [Exp 33](/research/experiments/exp-33/) and
+[Exp 34](/research/experiments/exp-34/) — each returned **0** `sense_food_source` calls in
+Arm A against a required one, with no cross-arm divergence, in 33 and 34 even with the Wire-A
+text demonstrably reaching the LLM. The +1.13 SD is suggestive of a mechanism, not an
+attribution, and the engine's ledger records the cluster-bias-annotation claim as dropped.
 
-Read that ablation narrowly. It is a model-conditional secondary, and the three
-experiments that tested cluster-bias annotation *directly* all failed their
-pre-registered primary: [Exp 30](/research/experiments/exp-30/),
-[Exp 33](/research/experiments/exp-33/) and
-[Exp 34](/research/experiments/exp-34/) each required Arm A to produce at least
-one `sense_food_source` call and each returned **0**, with no cross-arm divergence
-(A = B = C = 0) — in Exp 33 and 34 even with the Wire-A text demonstrably reaching
-the LLM. So the +1.13 SD figure is suggestive of a mechanism, not an attribution
-of one; the engine's own ledger records the cluster-bias-annotation claim as
-dropped on that evidence.
+The isolation test failed on **every** fire where the primary passed: on Qwen-32B, Arm C =
+0.667, outside Arm A's [0.033, 0.660] band; on R1-Distill, Arm C = 0.527 ≈ Arm B. So the
+verdict is **partial**: substrate carries cross-session memory and shifts behaviour at ≥32B,
+but not *independently* of the LLM prior.
 
-But the isolation test failed on **every** fire where the primary passed. On
-Qwen-32B, Arm C = 0.667, outside Arm A's [0.033, 0.660] band; on R1-Distill,
-Arm C = 0.527 ≈ Arm B, again outside the band. The effect generalizes across
-priors — it is not specific to memory of the fire failure. So the verdict is
-**PARTIAL**, an investigation gate: it confirms *substrate carries cross-session
-memory and shifts behavior at ≥32B scale*, but does **not** establish that the
-substrate drives behavior *independently* of the LLM prior. That question went
-two ways afterwards: Experiment 38 kept the LLM in the action path and gave it a
-*wrong* prior — the prior won on every model — and Experiment 42 removed the LLM
-from action selection, where the substrate did discriminate a safe from a harmful
-source. See [substrate-primary evidence](/research/experiments/substrate-primary-evidence/).
+*Dated corrections, 2026-08-21/22.* A 1.1 heartbeat re-fire on Qwen-32B read A = 0.750,
+B = 0.567 — inconclusive, because the baseline had moved and roughly 145 PRs separated the
+fires. Re-running the anchor fire's identical commit on its identical seeds then gave
+Arm A = 0.71 where June gave 0.42: the serving environment moved the whole distribution more
+than the code did, and nothing in the run records lets anyone reconstruct why. The Qwen-32B
++1.43 SD pass cannot currently be re-derived — unverifiable, not refuted (limit L8).
 
-### Substrate recall, isolated (Experiment 12)
+### Temporal credit validation (never run)
 
-Experiment 10 first showed 3 memories surfacing per turn on resume, but with
-five scaffolds firing at once (prompt preambles, an acting coach, sandbox text,
-a default persona, and embodiment). Experiment 12 stripped them out. Across
-seven phases — Phase A disables all five contributors, Phases B–F re-enable each
-one individually, Phase G is the all-defaults control — each phase plants the
-token `BLUE-7-DAWN` in an 8-turn session, then attempts retrieval in a separate
-8-turn session sharing one isolated data directory.
+A protocol and runner for validating temporal credit shipped around April 2026 and were never
+run. The provisional SCN temporal-coupling tag rests on nothing here.
 
-All 7 phases recalled the token (7/7). Critically, **Phase A (substrate-only)**
-succeeded: cross-session recall reproduces with none of the five scaffolds
-present. Memory counts grew 193 → 421 and causal links 142 → 310 across the pair,
-and the trace shows the agent querying `memory_recall` and then answering with
-the token — retrieval, not hallucination. This is the cleanest evidence for the
-recall half of the claim: a **CLEAN PASS**.
+## Bounds
 
-### Consumable / affordance learning (Experiments B2–B4)
+- **[L8](/research/limits/)** — Exp 37's magnitudes are not reproducible across time; a
+  re-fire needs the matching git hash and should gate on `B − C` rather than `B − A`.
+- **Headroom is a property of the (model, task, apparatus) triple**, not of the model, so a
+  per-model Goldilocks map has a shelf life (L8 amends L6).
+- **Re-run triggers** (graduation ledger): the persistence row re-runs on an encoder swap, a
+  hippocampus persistence schema change, or a minor-version heartbeat; Exp 37 re-runs on an
+  encoder swap, a prompt-construction change, or a Wire-A / Wire-1 / NAc-bias refactor.
+- **Lost raw data** — Exp 10's original April logs are gone; the August re-run is the
+  surviving record.
 
-Three convergence experiments, all Qwen2.5-14B, escalate from "the substrate
-learns" to "the LLM acts on what it learned":
+## What came next
 
-- **B2 (13/13)** — energy-driven consumable learning. After energy-depletion
-  episodes, learned valences persist to disk and reload: food ration +0.700 edge
-  → +0.753 on retrieval, water flask +0.500 → +0.135, poison vial −0.900 →
-  −0.495. Control agents show 0.000 across all entities.
-- **B3 (12/12)** — the substrate changes the LLM's choice. Masked vials with
-  arbitrary descriptions (no pretraining semantics): teal +0.933, purple +0.540,
-  orange −0.552. At temperature 0.3, N = 10 per condition, the experienced agent
-  chose the antidote **10/10 (100%)** and the fresh agent **0/10 (0%)** — the
-  fresh agent defaulted to purple 70% of the time on aesthetics alone.
-- **B4 (5/5)** — organic learning across four sessions, described as "the
-  ultimate proof." Teal-vial selection climbs 0% (fresh, death) → 25%
-  (persistent, escape) → 100% (persistent, one-turn solve), with a fresh control
-  back at 0% (death).
-
-These are the strongest behavioral results in the record. Note the honest caveat
-they carry themselves: they run at 14B, where Experiment 37 later found the base
-prior *too weak* for its fire scenario — the effect size depends heavily on the
-scenario and the model, and none of B2–B4 include an Arm-C-style peaceful-prior
-control.
-
-### Memory recall under interference (Hippocampal recall)
-
-The interference study seeds a password — "Verath" — in Act 1, inserts unrelated
-narrative turns (ferryman, bandits, merchant), then in Act 3 presents an indirect
-cue (a door beneath a silver elm) and asks whether the agent retrieves it. A
-weaker AUT (Mistral-7B) is used deliberately, so that recall past its attention
-span must be the Hippocampus doing the work rather than the context window.
-
-The run notes (2026-04-06, orchestrator Qwen2.5-14B, AUT Mistral-7B, 7-turn
-campaign, 3 interference turns) produced the program's defining distinction:
-**memory survival rate 1.0, behavioral recall 0.** Verath survived in the
-hippocampus and the agent recited it accurately in an epilogue reflection — but
-at the door itself it reached for `read_file` instead of speaking the word. The
-substrate remembered; the behavior did not follow. This is exactly the 1.0
-finding, observed directly: persistence and action are two claims, not one.
-
-## How to see it yourself
-
-The inspection workflow is the `roy diff` command, which compares the substrate
-divergence between two recorded sessions (see the [Roy harness](/research/experiments/roy-harness/)).
-The exact syntax, verified against the user guide:
-
-```bash
-# Run a learning session with substrate persistence enabled
-MAXIM_SUBSTRATE_PATH=1 maxim --sim "learn that gripping the rusty blade causes pain" \
-  --embodiment weapons/rusty_sword \
-  --interactive false \
-  --sim-max-turns 12
-
-# Compare two recorded sessions for divergence
-maxim roy diff sim_20260606_140510_z9y8 sim_20260606_141203_a1b2
-
-# Machine-readable output
-maxim roy diff sim_20260606_140510_z9y8 sim_20260606_141203_a1b2 --json
-
-# Resume a later session with the prior session's learning loaded
-MAXIM_SUBSTRATE_PATH=1 maxim --sim "decide whether to grip the rusty blade again" \
-  --embodiment weapons/rusty_sword \
-  --resume-sim sim_20260606_141203_a1b2 \
-  --interactive false \
-  --sim-max-turns 8
-```
-
-`maxim roy diff <session_a> <session_b>` takes two session ids positionally and
-prints how the substrate diverged; add `--json` for a parseable form. The
-`--resume-sim <session_id>` flag is what loads prior-session substrate into a new
-run. For quality memory, install the semantic extras:
-`pip install 'pymaxim[all,semantic]'` plus `python -m spacy download en_core_web_sm`;
-for a local LLM backend, `pip install 'pymaxim[llm-llama,llm-server]'`.
-
-## Status and caveats
-
-- **Recall is EARNED.** Experiments 10 and 12 establish that substrate persists
-  and resurfaces across sessions with no gradient updates. Experiment 12 Phase A
-  isolates this to the substrate alone.
-- **Independent behavioral drive is NOT yet earned.** Experiment 37 is
-  **PARTIAL** — its Arm C isolation test failed on every model where the primary
-  metric passed, so "the substrate changes behavior *independently of the LLM
-  prior*" was not established here. Experiment 38 found the prior dominant with
-  the LLM in the action path; Experiment 42 earned a narrower substrate-primary
-  claim with the LLM removed.
-- **Not reproducible across time.** Re-running Experiment 37's identical commit on the
-  identical seeds in August 2026 gave 0.71 where June gave 0.42 — the serving
-  environment moved the whole distribution more than the code did, and nothing in
-  the run records lets anyone reconstruct why. Read every Exp 37 number as a reading
-  taken at one time, not a constant (limit
-  [L8](https://github.com/dennys246/Maxim/blob/main/docs/limits/README.md)).
-- **Small N.** Experiment 37 arms are 5 trials each; B3 is N = 10 per condition;
-  the interference run notes are single observational runs, not a formal
-  statistical analysis. Effects are model- and scenario-dependent, living inside
-  a narrow "Goldilocks" headroom band.
-- **Persistence ≠ behavior.** The hippocampal run notes show memory survival 1.0
-  with behavioral recall 0 — the sharpest reminder that a recalled memory need
-  not move the agent.
-- The 14B behavioral wins (B2–B4) and the 14B graduation FAIL are not in tension:
-  they use different scenarios with different prior strength. Read them together,
-  not as a contradiction.
-
-## Reproduce
-
-- Experiments index: [/research/experiments/](/research/experiments/)
-- Graduation protocol & results: [37_cross_session_graduation.md](/research/experiments/exp-37-graduation/)
-- Substrate-only recall: [12_v1_phased_attribution.md](/research/experiments/exp-12/)
-- Enrichment (EARNED): [10_cross_session_enrichment.md](/research/experiments/exp-10/)
-- Consumable / behavioral convergence: [B2](/research/experiments/behavioral-convergence-exp2/) · [B3](/research/experiments/behavioral-convergence-exp3-tier2/) · [B4](/research/experiments/behavioral-convergence-exp4-tier3/)
-- Interference: [hippocampal_recall_experiment.md](/research/experiments/hippocampal-recall-experiment/) · [run notes](/research/experiments/hippocampal-recall-run-notes/)
-- User-facing guide with `maxim roy diff`: [cross-session-learning.md](https://github.com/dennys246/Maxim/blob/main/docs/user/cross-session-learning.md)
-- Deeper reading: [substrate-primary evidence](/research/experiments/substrate-primary-evidence/) · [memory systems](https://www.dennyschaedig.com/maxim/memory-systems) · [the benchmark harness](/guides/benchmarks/)
-
-
-## Run it yourself
-
-Every experiment's exact, copy-paste reproduction commands live beside its raw data in
-the pymaxim repo, each pinned to a git hash:
-
-- Protocols (runnable command sequences): [docs/experiments/protocols/](https://github.com/dennys246/Maxim/tree/main/docs/experiments/protocols)
-- Raw results (machine-readable JSON): [docs/experiments/results/](https://github.com/dennys246/Maxim/tree/main/docs/experiments/results)
-
-For a quick local smoke run, the simulation harness needs no hardware:
-
-```bash
-pip install 'pymaxim[all]'
-maxim --sim "test memory recall under interference"
-```
-
-:::tip[Running it long-term]
-To watch substrate accumulate across many sessions — rather than a one-shot sim — drive
-Maxim from [maxim-pulse](https://github.com/dennys246/maxim-pulse), the Console app built
-to observe and steer agents over time. This site links to it; the runs happen there, not
-here.
-:::
+The question Exp 37 could not settle — does carried substrate move behaviour independently of
+the LLM's prior? — moved to the [Roy harness](/research/experiments/roy-harness/) page. With
+the LLM in the action path and given a *wrong* prior, the prior won on every model
+([Exp 38](/research/experiments/exp-38/)); with the LLM removed from action selection, the
+substrate earned a narrower claim, discriminating a safe from a harmful source
+([Exp 42](/research/experiments/exp-42/)). Cross-session persistence of a *learned want* was
+later read out on a physical robot ([Exp 53b](/research/experiments/exp-53/),
+[hardware orienting](/research/experiments/hardware-orienting/)) and shared between agents
+([Exp 56](/research/experiments/exp-56/), [Exp 61](/research/experiments/exp-61/),
+[world seam](/research/experiments/world-seam/)). The [claim ledger](/research/evidence/)
+states where each stands.

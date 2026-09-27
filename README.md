@@ -31,7 +31,8 @@ maxim-web/
 ├─ pnpm-workspace.yaml     # pnpm allowBuilds for esbuild/sharp
 ├─ src/
 │  ├─ pages/index.astro    # the landing (hero + links) at the apex
-│  ├─ components/          # ExperimentsIndex.astro, ComponentCatalog.tsx (the one React island)
+│  ├─ pages/research/experiments/[slug].astro  # one generated page per experiment
+│  ├─ components/          # experiments/ (index rows, lines, Latest) · ComponentCatalog.tsx (the one React island)
 │  ├─ data/                # components.json (generated) · experiments.json (curated; see below)
 │  ├─ lib/experiments.mjs  # experiments manifest: validation + derived fields
 │  ├─ integrations/        # experiments-check: fails the build on a bad manifest or dead link
