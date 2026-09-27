@@ -705,7 +705,7 @@ separate and narrowly graduated result above.
   signed Queen-tier releases and accept contributions into an experimental tier, but
   nothing promotes a contribution to Queen tier: the gauntlet battery that would
   score one does not exist yet, so the blocker is
-  [recorded](https://github.com/dennys246/Maxim/blob/main/docs/plans/hivemind_p2p_scope.md)
+  [recorded](https://github.com/dennys246/Maxim/blob/main/docs/plans/archive/hivemind_p2p_scope.md)
   rather than shipping a gate that cannot gate. `maxim hive contribute` is
   write-only. See [the Oasis](/guides/oasis/).
 - **Fear gating** is opt-in and off in the stable Python API — see

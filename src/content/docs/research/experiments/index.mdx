@@ -9,22 +9,29 @@ Maxim is developed as a falsification-oriented research project: features earn t
 place through pre-registered experiments, and results that don't hold up are marked
 rather than quietly removed. This page is the readable front door to that lab notebook.
 
-The status on each entry is load-bearing. **Recorded** means the run completed and its
-pre-registered gates were met. **Partial** means it ran and some gates failed.
-Exp 57 is the current example and a deliberate one: pooling partial learners passed its
-primary scaling gate robustly and failed its total-experience gate, so it ships as a named
-partial rather than rounded up to a win. Exp 48 is the older example, re-baselined onto a
-corrected apparatus with its earlier headline numbers retired and since superseded by
-Exp 52 on the shuffled apparatus. **Exploratory** and **pilot** mean the instrument ran but the
-campaign was never frozen, so the numbers are not a result. **Pre-registered** means the
-design is committed and published but no data exists yet. **Superseded**, **invalidated**,
-and **archived** mark work that was withdrawn or replaced.
+The status on each entry is load-bearing, and uses the verdicts from the notebook's own
+status audit:
 
-The full record — hypotheses, methodology, raw JSON, and copy-paste reproduction
-commands, each pinned to a git hash — lives in the
-[pymaxim repo](https://github.com/dennys246/Maxim/tree/main/docs/experiments). The
-milestone clusters below have a guided walkthrough on this site; everything else links
-straight to its notebook entry.
+- **Earned** — the run met its stated gates. Scope is still whatever the entry says it is.
+- **Partial** — it ran and some gates failed. Exp 57 is the deliberate example: pooling
+  passed its primary scaling gate and failed its total-experience gate, so it ships as a
+  named partial rather than rounded up to a win.
+- **Null** — it ran and the answer was no. A null is a result, not a failure to report.
+- **Proof of concept**, **infrastructure**, **diagnostic** — the pipeline worked, the tooling
+  shipped, or a cause was traced. None of these is a behavioral claim.
+- **Reference** — a measurement or benchmark with no pass/fail gate.
+- **Exploratory** — the instrument ran but the campaign was never frozen, so the numbers are
+  not a result.
+- **Pre-registered** — the design is committed; no data exists yet. **Never run** — designed,
+  and then not run.
+- **Superseded** and **withdrawn** — replaced by a later entry, or a conclusion taken back.
+  Exp 48 is the example: re-baselined onto a corrected apparatus, then superseded by Exp 52.
+
+Each title links to the full record in the
+[pymaxim repo](https://github.com/dennys246/Maxim/tree/main/docs/experiments) — hypotheses,
+methodology, raw JSON, and copy-paste reproduction commands pinned to a git hash. Where a
+walkthrough on this site discusses the experiment, the entry also links to that section.
+If this page and the linked record ever disagree, the record wins.
 
 <ExperimentsIndex />
 
@@ -33,6 +40,7 @@ straight to its notebook entry.
 - [The Roy harness](/research/experiments/roy-harness/) — the three-arm method for telling substrate transfer apart from LLM priors
 - [Substrate-primary evidence](/research/experiments/substrate-primary-evidence/) — where carried substrate changed behavior, and where priors won
 - [Cross-session learning](/research/experiments/cross-session-learning/) — evidence for the headline claim, stated precisely
+- [The Cradle](/research/cradle/) — the developmental simulations: a mother teaches, a crèche pools, a nursery feeds
 
 ## A note on reading results
 

@@ -145,7 +145,7 @@ fails loudly instead of degrading to permissive.
 - **Queen-tier promotion.** An Oasis accepts contributions into the experimental
   tier and never promotes them. The gauntlet battery that would score a bundle for
   promotion does not exist yet, so the blocker is
-  [recorded](https://github.com/dennys246/Maxim/blob/main/docs/plans/hivemind_p2p_scope.md)
+  [recorded](https://github.com/dennys246/Maxim/blob/main/docs/plans/archive/hivemind_p2p_scope.md)
   rather than shipping a gate that cannot gate. In practice `maxim hive contribute`
   is write-only in 1.2: your bundle lands, tagged with its provenance, and a human
   decides what happens next.

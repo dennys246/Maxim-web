@@ -4,13 +4,25 @@
 // (generated from the pymaxim repo's experiments/README.md lab notebook).
 import data from '../data/experiments.json';
 
-// Milestone clusters have a full walkthrough page on this site; everything else
-// links out to its entry in the repo.
-const MILESTONE = {
-	roy: '/research/experiments/roy-harness/',
-	substrate: '/research/experiments/substrate-primary-evidence/',
-	'cross-session': '/research/experiments/cross-session-learning/',
-	cradle: '/research/cradle/',
+// Every row links to its own notebook entry in the pymaxim repo. An entry that a
+// walkthrough page on this site actually discusses also carries that page's
+// section as a second link (`walkthrough` in the manifest) — set per entry, never
+// per cluster, so a row can't point at a page that doesn't mention it.
+
+// Display labels for the verdict vocabulary (pymaxim's 2026-09-13 status audit).
+const LABEL = {
+	earned: 'earned',
+	partial: 'partial',
+	null: 'null',
+	poc: 'proof of concept',
+	infra: 'infrastructure',
+	diagnostic: 'diagnostic',
+	reference: 'reference',
+	exploratory: 'exploratory',
+	prereg: 'pre-registered',
+	stale: 'never run',
+	superseded: 'superseded',
+	withdrawn: 'withdrawn',
 };
 
 const experiments = [...(data.experiments ?? [])].sort(
@@ -24,12 +36,11 @@ const latest = experiments.slice(0, 3);
 const rest = experiments.slice(3);
 
 // Status values that mean "don't read this as a current finding".
-const STALE = new Set(['superseded', 'invalidated', 'archived']);
+const STALE = new Set(['superseded', 'withdrawn', 'stale']);
 
 const rows = experiments.map((e) => ({
 	...e,
-	href: MILESTONE[e.cluster] ?? e.repo_href,
-	local: Boolean(MILESTONE[e.cluster]),
+	label: LABEL[e.status] ?? e.status,
 	stale: STALE.has(e.status),
 	inLatest: latest.includes(e),
 }));
@@ -51,16 +62,20 @@ const rows = experiments.map((e) => ({
 					<li class="exp-row" data-date={e.date ?? ''}>
 						<div class="exp-head">
 							<span class="exp-title">
-								<a href={e.href} rel={e.local ? null : 'noopener'}>
+								<a href={e.repo_href} rel="noopener">
 									{e.title}
 								</a>
 							</span>
-							<span class={`exp-status exp-status--${e.status}`}>{e.status}</span>
+							<span class={`exp-status exp-status--${e.status}`}>{e.label}</span>
 						</div>
 						<div class="exp-meta">
 							<span class="exp-id">{e.id}</span>
 							{e.date && <span class="exp-date">{e.date}</span>}
-							{e.local && <span class="exp-badge">walkthrough</span>}
+							{e.walkthrough && (
+								<a class="exp-walk" href={e.walkthrough}>
+									Walkthrough on this site
+								</a>
+							)}
 						</div>
 						{e.finding && <p class={e.stale ? 'exp-finding exp-finding--stale' : 'exp-finding'}>{e.finding}</p>}
 					</li>
@@ -79,16 +94,20 @@ const rows = experiments.map((e) => ({
 							<li class="exp-row" data-date={e.date ?? ''}>
 								<div class="exp-head">
 									<span class="exp-title">
-										<a href={e.href} rel={e.local ? null : 'noopener'}>
+										<a href={e.repo_href} rel="noopener">
 											{e.title}
 										</a>
 									</span>
-									<span class={`exp-status exp-status--${e.status}`}>{e.status}</span>
+									<span class={`exp-status exp-status--${e.status}`}>{e.label}</span>
 								</div>
 								<div class="exp-meta">
 									<span class="exp-id">{e.id}</span>
 									{e.date && <span class="exp-date">{e.date}</span>}
-									{e.local && <span class="exp-badge">walkthrough</span>}
+									{e.walkthrough && (
+										<a class="exp-walk" href={e.walkthrough}>
+											Walkthrough on this site
+										</a>
+									)}
 								</div>
 								{e.finding && (
 									<p class={e.stale ? 'exp-finding exp-finding--stale' : 'exp-finding'}>
@@ -212,7 +231,7 @@ const rows = experiments.map((e) => ({
 	.exp-id {
 		font-family: var(--sl-font-mono, monospace);
 	}
-	.exp-badge {
+	.exp-walk {
 		color: var(--sl-color-accent-high);
 	}
 	.exp-finding {
@@ -232,23 +251,23 @@ const rows = experiments.map((e) => ({
 		color: var(--sl-color-gray-2);
 		white-space: nowrap;
 	}
-	.exp-status--recorded {
+	.exp-status--earned {
 		border-color: var(--sl-color-accent);
 		color: var(--sl-color-accent-high);
 	}
-	/* Ran, but deliberately not a settled finding — distinct from both a
-	   recorded result and a stale/withdrawn one. */
+	/* Ran, but deliberately not a settled finding — distinct from both an
+	   earned result and a retired one. */
 	.exp-status--partial,
-	.exp-status--exploratory,
-	.exp-status--pilot,
-	.exp-status--in-flight {
+	.exp-status--exploratory {
 		border-color: var(--sl-color-orange, var(--sl-color-gray-4));
 		color: var(--sl-color-orange-high, var(--sl-color-gray-2));
 	}
+	/* Retired: a dashed outline rather than reduced opacity, so the label keeps
+	   full text contrast. */
 	.exp-status--superseded,
-	.exp-status--invalidated,
-	.exp-status--archived {
-		opacity: 0.7;
+	.exp-status--withdrawn,
+	.exp-status--stale {
+		border-style: dashed;
 	}
 	/* :global is required, not stylistic. This badge is created by the script
 	   below at runtime, so it never receives Astro's scoping class — a scoped
