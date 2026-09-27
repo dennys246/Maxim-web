@@ -1,49 +1,19 @@
 ---
-// Reverse-chronological index of Maxim experiments.
-// Data comes from the build-time manifest at src/data/experiments.json
-// (generated from the pymaxim repo's experiments/README.md lab notebook).
-import data from '../data/experiments.json';
-
+// Reverse-chronological index of Maxim experiments, from the curated manifest
+// (src/data/experiments.json, derived in src/lib/experiments.mjs).
+//
 // Every row links to its own notebook entry in the pymaxim repo. An entry that a
 // walkthrough page on this site actually discusses also carries that page's
 // section as a second link (`walkthrough` in the manifest) — set per entry, never
 // per cluster, so a row can't point at a page that doesn't mention it.
+import { manifest, newestResult } from '../lib/experiments.mjs';
 
-// Display labels for the verdict vocabulary (pymaxim's 2026-09-13 status audit).
-const LABEL = {
-	earned: 'earned',
-	partial: 'partial',
-	null: 'null',
-	poc: 'proof of concept',
-	infra: 'infrastructure',
-	diagnostic: 'diagnostic',
-	reference: 'reference',
-	exploratory: 'exploratory',
-	prereg: 'pre-registered',
-	stale: 'never run',
-	superseded: 'superseded',
-	withdrawn: 'withdrawn',
-};
-
-const experiments = [...(data.experiments ?? [])].sort(
-	(a, b) =>
-		(b.date ?? '').localeCompare(a.date ?? '') ||
-		String(b.id).localeCompare(String(a.id)),
-);
-
-const newest = experiments.find((e) => e.date)?.date ?? '';
+const experiments = manifest.experiments;
+const newest = newestResult?.date ?? '';
 const latest = experiments.slice(0, 3);
 const rest = experiments.slice(3);
 
-// Status values that mean "don't read this as a current finding".
-const STALE = new Set(['superseded', 'withdrawn', 'stale']);
-
-const rows = experiments.map((e) => ({
-	...e,
-	label: LABEL[e.status] ?? e.status,
-	stale: STALE.has(e.status),
-	inLatest: latest.includes(e),
-}));
+const rows = experiments.map((e) => ({ ...e, inLatest: latest.includes(e) }));
 ---
 
 <div class="exp-index" data-newest={newest}>
@@ -77,7 +47,7 @@ const rows = experiments.map((e) => ({
 								</a>
 							)}
 						</div>
-						{e.finding && <p class={e.stale ? 'exp-finding exp-finding--stale' : 'exp-finding'}>{e.finding}</p>}
+						{e.finding && <p class={e.retired ? 'exp-finding exp-finding--stale' : 'exp-finding'}>{e.finding}</p>}
 					</li>
 				))
 		}
@@ -110,7 +80,7 @@ const rows = experiments.map((e) => ({
 									)}
 								</div>
 								{e.finding && (
-									<p class={e.stale ? 'exp-finding exp-finding--stale' : 'exp-finding'}>
+									<p class={e.retired ? 'exp-finding exp-finding--stale' : 'exp-finding'}>
 										{e.finding}
 									</p>
 								)}

@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "build:components": "node scripts/build-components.mjs"
+    "build:components": "node scripts/build-components.mjs",
+    "sync:experiments": "node scripts/sync-experiments.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.4",

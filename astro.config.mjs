@@ -2,7 +2,9 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import react from '@astrojs/react';
-import experimentsData from './src/data/experiments.json' with { type: 'json' };
+// The newest result (not an audit or bench note) drives the sidebar "New" badge.
+import { newestResult } from './src/lib/experiments.mjs';
+import experimentsCheck from './src/integrations/experiments-check.mjs';
 
 /**
  * Wrap every Markdown table in a horizontally scrollable, focusable container.
@@ -35,11 +37,6 @@ function rehypeScrollableTables() {
 	return (tree) => walk(tree);
 }
 
-// The newest experiment drives the sidebar note + the per-visitor "New" marker.
-const newestExperiment = [...experimentsData.experiments]
-	.filter((e) => e.date)
-	.sort((a, b) => b.date.localeCompare(a.date))[0];
-
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://pymaxim.bio',
@@ -71,7 +68,7 @@ export default defineConfig({
 				{ tag: 'meta', attrs: { name: 'twitter:image', content: 'https://pymaxim.bio/og.png' } },
 				{
 					tag: 'script',
-					content: `(function(){try{var seen=localStorage.getItem('maxim:experimentsSeen');if(seen&&seen>=${JSON.stringify(newestExperiment.date)}){document.documentElement.setAttribute('data-exp-seen','');}}catch(e){}})();`,
+					content: `(function(){try{var seen=localStorage.getItem('maxim:experimentsSeen');if(seen&&seen>=${JSON.stringify(newestResult.date)}){document.documentElement.setAttribute('data-exp-seen','');}}catch(e){}})();`,
 				},
 				{
 					// Starlight makes overflowing code blocks keyboard-scrollable at
@@ -216,5 +213,6 @@ export default defineConfig({
 			],
 		}),
 		react(),
+		experimentsCheck(),
 	],
 });
