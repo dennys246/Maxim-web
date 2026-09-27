@@ -72,12 +72,18 @@ If this site and the record ever disagree, the record wins.
 
 <ExperimentLine line="language" />
 
-## Milestone walkthroughs
+## Walkthroughs
 
-- [The Roy harness](/research/experiments/roy-harness/) — the three-arm method for telling substrate transfer apart from LLM priors
-- [Substrate-primary evidence](/research/experiments/substrate-primary-evidence/) — where carried substrate changed behavior, and where priors won
-- [Cross-session learning](/research/experiments/cross-session-learning/) — evidence for the headline claim, stated precisely
-- [The Cradle](/research/cradle/) — the developmental simulations: a mother teaches, a crèche pools, a nursery feeds
+Each research line with a story worth telling in order has a walkthrough: the question, the
+claim stated precisely, what it does not show, and the arc — failures included.
+
+- [Sharing and survival on the world seam](/research/experiments/world-seam/) — a taught want and a learned fear, shared between independent agents (1.2–1.3)
+- [Orienting on the Reachy Mini](/research/experiments/hardware-orienting/) — substrate-primary learning on a physical robot (1.1)
+- [The Cradle](/research/cradle/) — a mother teaches, a crèche pools, a nursery feeds
+- [The Roy harness: LLM prior vs. carried substrate](/research/experiments/roy-harness/) — where the language model's prior won, and the narrow place the substrate did not need it
+- [Cross-session recall](/research/experiments/cross-session-learning/) — the headline claim at its base
+
+The [evidence](/research/evidence/) page is the claim ledger across all of them.
 
 ## A note on reading results
 
@@ -85,3 +91,25 @@ Sample sizes are often small (N in the single or low double digits), and the rec
 1.0 finding is sobering: a strong LLM's prior frequently dominates whatever the carried
 substrate contributes. Treat each entry as one data point with its stated scope, not a
 settled conclusion.
+
+## Run it yourself
+
+Every experiment's page links its full record, where the exact copy-paste reproduction
+commands live beside the raw data, each pinned to a git hash:
+
+- Protocols (runnable command sequences): [docs/experiments/protocols/](https://github.com/dennys246/Maxim/tree/main/docs/experiments/protocols)
+- Raw results (machine-readable JSON): [docs/experiments/results/](https://github.com/dennys246/Maxim/tree/main/docs/experiments/results)
+
+For a quick local smoke run, the simulation harness needs no hardware:
+
+```bash
+pip install 'pymaxim[all]'
+maxim --sim "test memory recall under interference"
+```
+
+:::tip[Running it long-term]
+To watch substrate accumulate across many sessions — rather than a one-shot sim — drive
+Maxim from [maxim-pulse](https://github.com/dennys246/maxim-pulse), the Console app built
+to observe and steer agents over time. This site links to it; the runs happen there, not
+here.
+:::

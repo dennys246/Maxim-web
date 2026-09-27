@@ -134,7 +134,9 @@ never left. Five frozen seeds per arm; all five gates passed.
   30 placements.
 - Exact permutation test: **p = 1/252 = 0.004**, the floor for five seeds against five.
 - Specific: water fear **−1.0** and shore fear **0.0** on every seed.
-- Median latency to surface **1.72 s**, a median 3.4 s before the pain.
+- Median latency to surface **1.72 s** over all 30 post-training placements, measured from placement —
+  inside the 4.34 s pain-free window, a median 3.4 s before the pain. The fear-only read, the first
+  post placement per seed, surfaced 5/5 at 2.9–3.3 s.
 - **Caveat:** after each seed's first escape, the escape action also carried a positive
   causal link. Only the first placement per seed (5/5 surfaced) reads the fear alone.
 - **Not claimed:** transfer between agents, other bodies of water, innate versus

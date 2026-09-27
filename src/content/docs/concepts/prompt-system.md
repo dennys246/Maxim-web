@@ -101,7 +101,7 @@ Every entity's sensors are listed; a sensor that is a drive is tagged `DRIVE:` w
 
 The NAc reaches the prompt through four sections: `causal_context` (its predictions for candidate actions), `valence_context` (learned attraction and aversion), `cluster_bias_annotations` (aggregated per-tool reward bias, surfaced so the model can read substrate signal across situations the substrate did not directly drill), and `grayscale_tools` (tools it favours that are not currently available). `bio_enrichment` adds the focused, per-percept associations that the enrichment pipeline pulls from Hippocampus, NAc, EC, Cerebellum, and SCN.
 
-None of these sections issue commands. They are evidence placed in front of the model, and the model still chooses. The substrate-primary mode where the NAc *selects* actions is a separate, opt-in path described under [operating modes](/concepts/operating-modes/) and [substrate-primary evidence](/research/experiments/substrate-primary-evidence/).
+None of these sections issue commands. They are evidence placed in front of the model, and the model still chooses. The substrate-primary mode where the NAc *selects* actions is a separate, opt-in path described under [operating modes](/concepts/operating-modes/) and [the Roy harness walkthrough](/research/experiments/roy-harness/).
 
 ## The Acting Coach
 

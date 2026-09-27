@@ -40,6 +40,10 @@ function rehypeScrollableTables() {
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://pymaxim.bio',
+	// The Roy harness and substrate-primary walkthroughs were merged into one page.
+	redirects: {
+		'/research/experiments/substrate-primary-evidence/': '/research/experiments/roy-harness/',
+	},
 	markdown: {
 		rehypePlugins: [rehypeScrollableTables],
 	},
@@ -151,13 +155,20 @@ export default defineConfig({
 						{ label: 'Asset Foundry', slug: 'embodiment/asset-foundry' },
 						{ label: 'Imagination', slug: 'embodiment/imagination' },
 						{ label: 'Reachy Mini (robot)', slug: 'guides/reachy-mini' },
+						{
+							label: 'Behaviors (reflexes)',
+							items: [
+								{ label: 'Overview', slug: 'research/behaviors/overview' },
+								{ label: 'Vision (shipped)', slug: 'research/behaviors/vision' },
+								{ label: 'Audio (planned)', slug: 'research/behaviors/audio' },
+							],
+						},
 					],
 				},
 				{
 					label: 'Research',
 					items: [
-						{ label: 'Evidence', slug: 'research/evidence' },
-						{ label: 'Measurement limits', slug: 'research/limits', badge: { text: 'New', variant: 'success' } },
+						{ label: 'Evidence — the claim ledger', slug: 'research/evidence' },
 						{
 							label: 'Experiments',
 							items: [
@@ -167,23 +178,15 @@ export default defineConfig({
 									attrs: { 'data-experiments-link': '' },
 									badge: { text: 'New', variant: 'success' },
 								},
-								{ label: 'The Roy harness', slug: 'research/experiments/roy-harness' },
-								{
-									label: 'Substrate-primary evidence',
-									slug: 'research/experiments/substrate-primary-evidence',
-								},
-								{ label: 'Cross-session learning', slug: 'research/experiments/cross-session-learning' },
+								// Walkthroughs, one per research line, newest line first.
+								{ label: 'Sharing and survival', slug: 'research/experiments/world-seam' },
+								{ label: 'Orienting on the Reachy Mini', slug: 'research/experiments/hardware-orienting' },
+								{ label: 'The Cradle', slug: 'research/cradle' },
+								{ label: 'The Roy harness: prior vs. substrate', slug: 'research/experiments/roy-harness' },
+								{ label: 'Cross-session recall', slug: 'research/experiments/cross-session-learning' },
 							],
 						},
-						{
-							label: 'Behaviors',
-							items: [
-								{ label: 'Overview', slug: 'research/behaviors/overview' },
-								{ label: 'Vision (shipped)', slug: 'research/behaviors/vision' },
-								{ label: 'Audio (planned)', slug: 'research/behaviors/audio' },
-							],
-						},
-						{ label: 'The Cradle', slug: 'research/cradle' },
+						{ label: 'Measurement limits', slug: 'research/limits' },
 					],
 				},
 				{
