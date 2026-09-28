@@ -58,7 +58,7 @@ The table lists every section the 1.1.2 builder can add, grouped the way the cod
 | `reasoning_carryover` | IMPORTANT | prior reasoning carried | Compressed reasoning from earlier turns |
 | `prefetch_context` | — | prefetched material | Pre-fetched documents, truncatable |
 | `coding_guidelines` | IMPORTANT | coding tools in play | Repository coding conventions |
-| `foundational` | IMPORTANT | see note | Constitutional principles and agent behaviour rules. The text is a hardcoded paraphrase in `llm_context.py`, gated on finding a `CONSTITUTION.md`/`AGENTS.md` above the package — so **a pip-installed agent gets an empty preamble**, and the file and the prompt can drift. Filed as [defect D32](https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md) |
+| `foundational` | IMPORTANT | always | Constitutional principles and agent behaviour rules, read from the Constitution's own Runtime Preamble section. Since 1.3.1 the Constitution ships inside the wheel, so a pip-installed agent gets the preamble too (through 1.3.0 it got none, [defect D32](https://github.com/dennys246/Maxim/blob/main/docs/bugs/README.md)), and it carries the four §1 hard constraints word for word, including "Never operate actuators at speeds that could cause injury", which the old paraphrase omitted. The behaviour-rules header reads `=== AGENT BEHAVIOR RULES ===` |
 | `mode_context` | NICE_TO_HAVE | the mode has one | The mode's own instructions — filesystem rules, cognitive tools. Frequently the first thing dropped |
 | `observation` | IMPORTANT | a current percept | Detected objects, attention target, novelty and salience |
 | `speech` | NICE_TO_HAVE | speech detected | Last three utterances |

@@ -291,9 +291,12 @@ avoids warming at the hearth on first contact, before any pain in its own sessio
 | Qwen2.5-32B (Exp 40) | +0.16 | pass, on a one-trial margin | dominance (primaries disagree) |
 
 No model met both primaries — "B keeps warming the deceptive hearth." R1 is the sharpest case:
-its ablations cut hearth-warming from B's 0.60 to 0.40, 0.34 and 0.21, below a fresh agent, so
-its substrate is causally load-bearing — but it amplifies the generic fire-means-warmth
-association, not the pain it carries.
+its Wire-A and Wire-1 ablations cut hearth-warming from B's 0.60 to 0.40 and 0.34, below a
+fresh agent, so its substrate is causally load-bearing — but it amplifies the generic
+fire-means-warmth association, not the pain it carries. A third arm, NAc-bias-off (0.21), is
+void: as in Exp 37 it left the reward bias on (correction 2026-09-27,
+[#889](https://github.com/dennys246/Maxim/issues/889)), so it says nothing about whether the
+NAc reward bias drives the warming. The dominance verdict does not rest on it.
 
 Exp 40 filled the last cell with Qwen2.5-32B, the one model with a positive Exp 37 signal (60
 sub-simulations, about 30 hours, local). Warming at the deceptive hearth: 0.50 fresh, 0.52
@@ -372,7 +375,7 @@ From the [measurement limits](/research/limits/):
   preference, but bodies whose tools are not twins get answers pre-installed. Re-measure on any
   edit to `_DRIVE_TOOL_AFFINITIES`.
 
-Known defects and corrections: the NAc-bias-off arm (#889, 2026-09-25); the Exp 23 and Exp 30
+Known defects and corrections: the NAc-bias-off arm in Exp 37 (#889, 2026-09-25) and Exp 38 (2026-09-27); the Exp 23 and Exp 30
 annotation claims (2026-05-27); Exp 42's turn count (2026-07-28); a protocol that omitted
 `MAXIM_SUBSTRATE_PATH=1` and wasted one Roy-5b run. Roy iterations are single-seed; Exp 37/38/40
 are N = 5, so their first-contact primaries are low-power sign tests. The Roy plan revives only

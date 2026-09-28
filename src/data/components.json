@@ -1,5 +1,5 @@
 {
-	"source_label": "pymaxim 1.3.0 (PyPI wheel)",
+	"source_label": "pymaxim 1.3.1 (PyPI wheel)",
 	"registry_path": "src/maxim/_data/components/**/*.yaml",
 	"count": 97,
 	"categories": [
@@ -630,7 +630,7 @@
 				"player body",
 				"minecraft avatar"
 			],
-			"description": "The Minecraft player body (1.1.4 world seam, docs/plans/world_seam_1_1_4.md\nPR 3). World-state sensors declare `modality: world` — the first body to\nfeed the A4-gained, frozen-centroid world channel (which RE-fires L11's\nre-measure trigger when this body first runs; see the L11 note). Every\nworld sensor is written by the bridge's MEASURED game snapshots\n(MinecraftWorldBackend world-owns them; the modeled self_effect on those\nkeys is filtered on live), so none carries drift (`drift_rate: 0` on the\ndrive-bearing ones, no drive on the rest) — the drift loop must never\nfight the writer. `food` additionally carries an entropic hunger-style\ndrive and `health` a homeostatic one, so real game state feeds the drive\nsystem: world-truth pain, the same dual world+interoception pattern as a\ndrive-bearing azimuth. Affordance self_effects are the STUB model for\nbridge-less runs; on live the game's readback is the truth.",
+			"description": "The Minecraft player body (1.1.4 world seam, docs/plans/archive/world_seam_1_1_4.md\nPR 3). World-state sensors declare `modality: world` — the first body to\nfeed the A4-gained, frozen-centroid world channel (which RE-fires L11's\nre-measure trigger when this body first runs; see the L11 note). Every\nworld sensor is written by the bridge's MEASURED game snapshots\n(MinecraftWorldBackend world-owns them; the modeled self_effect on those\nkeys is filtered on live), so none carries drift (`drift_rate: 0` on the\ndrive-bearing ones, no drive on the rest) — the drift loop must never\nfight the writer. `food` additionally carries an entropic hunger-style\ndrive and `health` a homeostatic one, so real game state feeds the drive\nsystem: world-truth pain, the same dual world+interoception pattern as a\ndrive-bearing azimuth. Affordance self_effects are the STUB model for\nbridge-less runs; on live the game's readback is the truth.",
 			"archetype": "humanoid",
 			"extends": "",
 			"entity_type": "body",

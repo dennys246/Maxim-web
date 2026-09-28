@@ -310,7 +310,7 @@ print(result.choices_made)   # [{"encounter": ..., "choice": ..., "turn": ...}, 
 print(result.flags)
 ```
 
-Pass an absolute path; relative paths resolve against the current working directory. `party_mode=` is accepted and stored on the campaign definition, but per the section above nothing reads it. `npc_model=` and `prompt_handler=` used to be accepted and silently ignored; **as of 1.1.1 they raise `NotImplementedError`** instead — the honest failure, since the party-mode runtime they would configure does not exist. `interactive=` is honoured.
+Pass an absolute path; relative paths resolve against the current working directory. `party_mode=` is accepted and stored on the campaign definition, but per the section above nothing reads it. `npc_model=` used to be accepted and silently ignored; **as of 1.1.1 it raises `NotImplementedError`** instead — the honest failure, since the party-mode runtime it would configure does not exist. `prompt_handler=` raised the same way until **1.3.1, where it works**: the handler receives the agent's `request_interaction` prompts. A run with a handler is not interactive, so `interactive=True` together with `prompt_handler=` raises `ValueError`. `interactive=` is honoured.
 
 ## Validation
 

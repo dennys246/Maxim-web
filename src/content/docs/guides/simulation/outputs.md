@@ -147,12 +147,17 @@ silently makes the stored vectors unreachable.
 ## Loading a run back
 
 ```python
+from pathlib import Path
+
 import maxim
 
 s = maxim.load.session("20260902_21")          # prefix match, newest first
 s.observe("memory", keyword="food")             # hippocampus + NAc from that directory
-nac = maxim.load.nac("~/.maxim/sim_reports/20260902_210107/aut_nac.json")
+nac = maxim.load.nac(str(Path.home() / ".maxim/sim_reports/20260902_210107/aut_nac.json"))
 ```
+
+The `load.*` functions take the path as written, so a literal `"~/..."` is not expanded:
+`load.nac` then raises, and `load.hippocampus` returns an empty store without raising.
 
 A disk-loaded `Session` is metadata plus `observe()`, not a replay: turn counts and durations read as
 zero. There is no `maxim.load.ec` at 1.1.3. `maxim.observe(...)` at the top level reads the **agent

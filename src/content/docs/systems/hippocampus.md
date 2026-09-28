@@ -33,16 +33,23 @@ An episodic memory is a complete cycle, assembled from five record types:
 | Outcome | `Outcome` | Result and feedback |
 | Context | `Context` | Environmental state at the time |
 
+### Capturing a memory
+
 ```python
+from pathlib import Path
+
 from maxim.memory import Hippocampus, HippocampusConfig, Perception
+from maxim.memory.encoding import EncodingSignals
+
+store = Path("my_hippocampus.json").resolve()  # a scratch store, not the agent's own
 
 config = HippocampusConfig(
     max_nodes=10_000,
-    persistence_path="~/.maxim/memory/hippocampus.json",
+    persistence_path=str(store),
     indexed_keys=frozenset({"goal", "tool", "object", "person"}),
 )
 
-hippo = Hippocampus(config)
+hippo = Hippocampus(config)  # starts EMPTY, even if the file exists (see below)
 
 perception = Perception(
     observations={"scene": "office", "confidence": 0.95},
@@ -53,8 +60,39 @@ perception = Perception(
     salience=0.8,
     novelty=0.6,
 )
-memory_id = hippo.capture(perception)
+memory_id = hippo.capture(
+    perception,
+    encoding=EncodingSignals.unmeasured("api"),  # required since 1.3.1
+)
+hippo.save()
 ```
+
+**`encoding=` is required since 1.3.1** on `capture()`, `capture_from_loop()` (and its
+async form) and `store()`, and a call without it raises `TypeError`. It records which
+importance signals were actually measured at the capture — salience, novelty, surprise,
+pain — and where the capture came from. `EncodingSignals.unmeasured("api")` is the
+honest declaration that you measured none of them. Under the default retention strategy
+the record changes nothing (see [what 1.3.1 records](#what-131-records-and-does-not-yet-use)).
+
+:::caution[Opening an existing store]
+`Hippocampus(config)` does **not** read the file at `persistence_path`. It starts empty,
+and its next `save()` overwrites what was there — on 1.3.1, three saved memories, reopened
+this way, are gone after the next save; only what the new instance captured is kept. `maxim.create.hippocampus(persistence_path=...)` does
+the same (engine issue [#939](https://github.com/dennys246/Maxim/issues/939), open). To
+reopen a store, load it:
+
+```python
+import maxim
+
+hippo = maxim.load.hippocampus(str(store))
+```
+
+Check `len(hippo)` before you save: given a `"~/..."` path, `load.hippocampus` returns an
+empty store instead of raising. Paths are used as written, so pass absolute ones — a
+`persistence_path` of `"~/..."` is not expanded either, and saves into a directory named
+`~` under your working directory. And do not point an example at `~/.maxim/memory/hippocampus.json`, which is
+the running agent's own store.
+:::
 
 In the live agent loop, capture happens through `capture_from_loop()` (and its
 async variant) rather than a direct `capture()` call. That is the *only*
@@ -113,6 +151,11 @@ store and dominates capture cost at roughly 50–200 ms once the store passes
 Four retrieval paths, each answering a different question:
 
 ```python
+import time
+
+# Continuing from the capture example above.
+current_perception = perception
+
 # Filtered recall: goal, tool, success, mode, time range
 memories = hippo.recall(goal="find_book")
 recent = hippo.recall(time_after=time.time() - 3600, time_before=time.time())
@@ -176,7 +219,13 @@ class HippocampusConfig:
     compression_age: float = 24 * 3600             # 1 day
     retention_threshold: float = 0.3
     compression_threshold: float = 0.6
-    memory_strategy: str = "access_based"
+    memory_strategy: str = "access_based"  # or importance_based, composite, strength
+
+    # The opt-in storage-strength model (memory_strategy="strength"), in experience µs
+    strength_s_base: float = 10_000_000.0
+    strength_k: float = 1.0
+    retro_tau_us: int = 10_000_000
+    retro_cutoff_us: int = 30_000_000
 
     # Long-term memory consolidation
     consolidate_during_sleep: bool = True
@@ -190,6 +239,7 @@ class HippocampusConfig:
     enable_associative_graph: bool = True
     association_limit: int = 5
     association_threshold: float = 0.5
+    dedup_window_s: float = 30.0
     spreading_activation_decay: float = 0.5
     spreading_activation_max_depth: int = 3
     spreading_activation_threshold: float = 0.05
@@ -198,21 +248,41 @@ class HippocampusConfig:
     capture_queue_size: int = 100
 ```
 
-Retention scoring is pluggable. `AccessBasedStrategy` (recency + access
-frequency + graph centrality) is the default; `ImportanceBasedStrategy`
-(novelty, salience, success, user interaction), `TemporalAwareStrategy`
-(SCN-rhythm aware, boosting sole representatives of a time bin), and
-`CompositeStrategy` (weighted combination) are the alternatives.
+Retention scoring is chosen by name, through `memory_strategy`. `access_based`
+(recency + access frequency + graph centrality) is the default; `importance_based`
+(novelty, salience, success, user interaction) and `composite` (a fixed 0.6 / 0.4 blend
+of the two) are the alternatives. When an SCN is connected, the chosen strategy is
+wrapped in `TemporalAwareStrategy`, which boosts the sole representatives of a time bin.
+An unknown name raises rather than quietly falling back to the default — at the first
+`sleep()` in Python, and at once from `maxim config set`.
 
 ```python
-from maxim.memory import AccessBasedStrategy, ImportanceBasedStrategy, CompositeStrategy
+from maxim.memory import Hippocampus, HippocampusConfig
 
-strategy = CompositeStrategy([
-    (AccessBasedStrategy(), 0.4),
-    (ImportanceBasedStrategy(), 0.6),
-])
-hippo = Hippocampus(config, strategy=strategy)
+hippo = Hippocampus(HippocampusConfig(memory_strategy="composite"))
 ```
+
+The same choice is a config key for the whole agent:
+`maxim config set memory.strategy composite`. The fourth name, `strength`, selects the
+storage-strength model described next; it is an uncalibrated placeholder, not a
+setting to run a campaign on.
+
+## What 1.3.1 records, and does not yet use
+
+1.3.1 lands the first phases of a memory-strength model as **recording**. Every new
+memory now records when it happened on the agent's experience clock, how strongly it
+encoded, the body's drive pressure and relief at the time, and the situation it happened
+in; a strong moment tags the memories just before it in the same situation; and recall by
+situation is wired, though nothing consumes it yet. Under the default strategy none of
+this changes what is kept, compressed or forgotten. It persists and survives a reload —
+the engine's cross-session memory re-run checked the new fields on all 100 carried
+memories.
+
+Only `memory_strategy="strength"` reads it, and its defaults are a worked example rather
+than a calibration: an untagged memory that is not recalled is removed after roughly 12
+seconds of run experience, at the next `sleep()`. Treat it as a way to look at the model, not as a
+feature. The design is the engine's
+[memory-strength plan](https://github.com/dennys246/Maxim/blob/main/docs/plans/memory_strength_and_forgetting.md).
 
 The store persists to JSON (`~/.maxim/memory/hippocampus.json` by default),
 carrying `_format_version`, memories, context index, stats, the associative
@@ -220,6 +290,14 @@ graph, episodes, and `next_episode_ordinal`. Access is guarded by a
 writer-priority `RWLock`. Clear it with `maxim --clear-memory hippo`.
 
 ## Staged formation
+
+:::note[Designed, not running]
+Steps 2–4 below have **no production caller**: the engine marks them Dormant
+([#817](https://github.com/dennys246/Maxim/issues/817)), so a forming entry never
+completes on its own, and 1.3.1 caps the pool at its newest 32 entries so it cannot grow
+without bound. The live loop stores memories through `capture_from_loop()` instead. This
+section describes the design.
+:::
 
 Memories are not born whole. The MemoryAgent builds an `EpisodicMemory`
 incrementally across the pipeline, wrapped in a `WorkingMemoryEntry[T]` that

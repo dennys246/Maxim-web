@@ -29,7 +29,7 @@ Strongest evidence first. "n" is per arm unless stated.
 | [Substrate-primary safe-vs-harm discrimination](#substrate-primary-safe-vs-harm-discrimination) | earned | [Exp 42](/research/experiments/exp-42/), [42b](/research/experiments/exp-42b/) | 10 seeds; 40 sub-sims on re-run | [Roy harness](/research/experiments/roy-harness/) |
 | [A learned fear carries to a second pool](#a-learned-fear-carries-to-a-second-pool-the-same-situation-a-different-place) | earned (rung A) | [Exp 62](/research/experiments/exp-62/) | 12 cross-pool, 12 same-pool, 3 ablated | [World seam](/research/experiments/world-seam/) |
 | [Learned, anticipatory avoidance from the game's own pain](#learned-anticipatory-avoidance-from-the-games-own-pain) | earned | [Exp 60](/research/experiments/exp-60/) | 5 seeds × 6 placements | [World seam](/research/experiments/world-seam/) |
-| [Cross-session memory persistence](#cross-session-memory-persistence) | earned | [Exp 10](/research/experiments/exp-10/), [Exp 12](/research/experiments/exp-12/) | single multi-phase runs, re-run once | [Cross-session recall](/research/experiments/cross-session-learning/) |
+| [Cross-session memory persistence](#cross-session-memory-persistence) | maintained (narrow), 2026-09-27 | [Exp 10](/research/experiments/exp-10/), [Exp 12](/research/experiments/exp-12/) | single multi-phase runs, re-run twice | [Cross-session recall](/research/experiments/cross-session-learning/) |
 | [Sensorimotor learning on real hardware](#sensorimotor-learning-on-real-hardware) | earned (merge arm downgraded) | [Exp 45](/research/experiments/exp-45/)–[45e](/research/experiments/exp-45e/) | mostly single hardware sessions; 45d three seeds | [Hardware orienting](/research/experiments/hardware-orienting/) |
 | [Cross-context readout on hardware](#cross-context-readout-on-hardware) | earned | [Exp 53b](/research/experiments/exp-53/) | 3 seeds, 180 trials | [Hardware orienting](/research/experiments/hardware-orienting/) |
 | [Two-joint centering](#two-joint-centering) (simulated) | earned | [Exp 49](/research/experiments/exp-49/) | 10 trials | [Hardware orienting](/research/experiments/hardware-orienting/) |
@@ -50,7 +50,8 @@ block and dated correction is listed under
 ### A taught want transfers between independent agents
 
 **Claim.** Agent A is taught by a contingent teacher that one action pays off at one world
-situation. A's substrate is exported as a signed bundle and ingested into agent B — a
+situation. A's substrate is exported as a bundle — unsigned, through the shipped export and
+ingest path — and ingested into agent B — a
 different `agent_id`, a separately built entorhinal cortex and sensor encoder, disjoint
 cluster ids. At B's **first contact** with that situation, B chooses A's taught action. The
 1.2 headline.
@@ -76,7 +77,7 @@ replication.
 ### A survival fear transfers between agents
 
 **Claim.** A fear one agent learned from pain travels to an agent that never felt it, through
-the shipped signed-bundle path, and changes what that agent does the first time its own loop
+the shipped export and ingest path, and changes what that agent does the first time its own loop
 runs underwater. The 1.3 headline: the 1.2 transfer claim moved from a taught want to a fear
 the world taught.
 
@@ -140,6 +141,9 @@ live submersion in a *second* pool, at a different altitude and distance from sp
 shared, ingested or changed — no new mechanism, no new sensor. The fear travels because the
 body reads the second pool as the same situation.
 
+**Status.** Earned on the engine's ledger. It is **not a claim of the 1.3.1 release** until
+a second reader's review of it is recorded.
+
 **Evidence.** [Exp 62, rung A](/research/experiments/exp-62/), earned 2026-09-20 on the
 shipped 1.3.0 body; 27 rows, zero refusals, one code hash. Cross-pool **12 of 12**, same-pool
 **12 of 12**, fear-ablated **0 of 3** with zero executor calls (their readings resolve to the
@@ -186,16 +190,29 @@ before the 5.09 s pain edge. That median includes placements 2–6, which are li
 prior session's store intact, surfaces roughly three relevant memories per turn, and
 accumulates causal links rather than re-deriving them.
 
-**Evidence.** [Exp 10](/research/experiments/exp-10/), earned in the graduation ledger.
-Re-validated in the August 2026 heartbeat walk, the row's cleanest pass: phase 2 opened at
-exactly phase 1's closing store, hit the three-per-turn bar on 8 of 8 turns, and grew the
-store; a third phase in a different setting showed no negative transfer.
+**Status: MAINTAINED (narrow), 2026-09-27.** 1.3.1 changed what the memory store saves,
+which fired this row's re-run trigger, so [Exp 10](/research/experiments/exp-10/) was run
+again before release, at engine commit `a1ba1e5d` (operator-attested). What it showed: both resumed sessions reloaded the saved
+store exactly (100 memories); the fields the persistence change added came back unchanged
+on all 100; and 3 memories surfaced on every resume turn observed. What it did not: each
+resumed phase ran only **one turn**, against eight in August, because every run stopped
+early on a known planning defect (D13, engine issue
+[#935](https://github.com/dennys246/Maxim/issues/935)); and link accumulation was not
+re-shown, since no run was long enough for a link to be observed twice. The discarded and
+disclosed attempts are in the
+[re-run record](https://github.com/dennys246/Maxim/blob/main/docs/experiments/data/rerun_exp10_2026-09-27/README.md).
+
+**Earlier evidence.** The August 2026 heartbeat walk was the row's cleanest pass: phase 2
+opened at exactly phase 1's closing store, hit the three-per-turn bar on 8 of 8 turns, and
+grew the store; a third phase in a different setting showed no negative transfer.
 [Exp 12](/research/experiments/exp-12/) isolates recall to the substrate alone (7 of 7
 phases, including the one with every scaffold disabled).
 
 **What it does not show.**
 - Persistence, not behavioural override. That remembering changes what the agent does is a separate, much more qualified claim — [see below](#carried-memory-shifts-an-llm-driven-agents-behaviour).
-- Single runs, not a statistical campaign. The original April raw logs were written to `/tmp` and lost; the surviving raw record is the August re-run.
+- Single runs, not a statistical campaign. The original April raw logs were written to `/tmp` and lost; the surviving raw records are the August and September re-runs.
+- "3 per turn" is the enrichment cap filled from carried memories, not a relevance measure.
+- The September re-run is too thin to test negative transfer: its third phase took one action.
 
 ### Sensorimotor learning on real hardware
 
@@ -406,7 +423,10 @@ carries its record.
 - **2026-09-12 — R2 learned-bias line resolved offline:** the cluster credit is a messenger, not a cause; v1 superseded and v2 withdrawn, both without live data ([v1](/research/experiments/r2-learned-bias-v1/), [v2](/research/experiments/r2-learned-bias-v2/)).
 - **2026-09-14 — Exp 58 blocked at the instrument** ([Exp 58](/research/experiments/exp-58/)); **2026-09-16 correction:** its dry run never showed the loop-executed read, only the write side.
 - **2026-09-18 — R3 post-data instrument amendment**, published beside the frozen report ([R3](/research/experiments/r3/)).
+- **2026-09-25 / 2026-09-27 — Exp 37's NAc-bias-off arm voided, then Exp 38's** ([#889](https://github.com/dennys246/Maxim/issues/889)): it left the reward bias on and in effect switched off Wire-A's annotation instead, so the Wire-A and Wire-1 arms are the only valid ablations ([Exp 37](/research/experiments/exp-37-graduation/), [Exp 38](/research/experiments/exp-38/)).
 - **2026-09-25 — Exp 62 "night pool" corrected** ([#899](https://github.com/dennys246/Maxim/issues/899)): the 0.799 reading was the in-game clock's wrap (time 0.99), not night; midnight reads 0.903. The fear misses only at time ≈ 0.94–0.99. The lit-pond miss (0.588) stands ([Exp 62](/research/experiments/exp-62/)).
+- **2026-09-27 — Exp 56 and Exp 61 were unsigned.** Both harnesses exported through the real CLI without `--sign`; the claims rest on the shipped export and ingest path, not on signing ([Exp 56](/research/experiments/exp-56/), [Exp 61](/research/experiments/exp-61/)).
+- **2026-09-27 — Exp 10 re-run: maintained, narrow.** Exact reload and 3 memories per observed resume turn, but one turn per phase (D13) and link accumulation not re-shown ([above](#cross-session-memory-persistence)).
 - **Undated — the original cradle-mother design superseded.** Its intrinsic "centeredness drive" oriented the infant at 1.000 with no mother present ([the Cradle](/research/cradle/)).
 
 ## Not shipped, not claimed
