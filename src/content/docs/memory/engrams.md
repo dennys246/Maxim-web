@@ -112,7 +112,7 @@ success, and it decays as the agent runs.
 `NAc.recommend_action` reads the fear or want, and the substrate chooses the action.
 The LLM is not in that path.
 
-**It travels.** A cluster's fear and want can be exported in a signed bundle and
+**It travels.** A cluster's fear and want can be exported in a bundle, signed or not, and
 re-keyed onto another agent's own clusters (see [The Oasis](/guides/oasis/)).
 
 ## The evidence

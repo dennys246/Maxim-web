@@ -1,13 +1,13 @@
 ---
 title: The Oasis — sharing substrate
-description: How one agent's learned substrate reaches another — signed bundles, the exchange endpoints, the oasis and hive CLIs, and the trust defaults that decide what a receiver will admit.
+description: How one agent's learned substrate reaches another — bundles and signed releases, the exchange endpoints, the oasis and hive CLIs, and the trust defaults that decide what a receiver will admit.
 ---
 
 Two Maxim agents can share what they have learned. Not their episodes and not their
 prompts — their **substrate**: the NAc reward biases that say what is worth doing,
 and the EC concept clusters those biases are keyed on. One agent exports that as a
-signed bundle; another validates it, aligns it onto its own cluster space, and folds
-it in. The Oasis is the peer-to-peer exchange that moves those bundles between
+bundle, signed or not; another validates it, aligns it onto its own cluster space, and
+folds it in. The Oasis is the peer-to-peer exchange that moves those bundles between
 machines, and it shipped end to end in 1.2.
 
 This is a different axis from [networking and mesh](/guides/networking/). That guide
@@ -18,7 +18,8 @@ leader is not obliged to serve substrate.
 **Why this matters is measured, not assumed.** A taught want transferring into an
 independent agent and changing its first-contact behaviour is the earned 1.2 claim —
 [Exp 56](/research/evidence/#a-taught-want-transfers-between-independent-agents), on
-a live Minecraft world at n = 50 per arm. Pooling several partial learners is the
+a live Minecraft world at n = 50 per arm, with an unsigned bundle through the shipped
+export and ingest path. Pooling several partial learners is the
 partial one: faster per participant, at a
 [total-experience cost](/research/evidence/#pooling-partial-learners--faster-per-participant-at-a-total-experience-cost).
 Read both before deciding what an Oasis buys you.
@@ -27,7 +28,7 @@ Read both before deciding what an Oasis buys you.
 
 | Piece | What it does |
 | --- | --- |
-| **Bundle** | A zip of NAc + EC slices with a manifest, optionally `ed25519`-signed |
+| **Bundle** | A zip of NAc + EC slices with a manifest. Signed, it is a **release** (below) |
 | **Oasis** | A server holding two tiers: signed **releases**, and received **experimental** contributions |
 | **Hive registry** | A client-side list of Oases you trust, at `~/.config/maxim/hive.json` |
 | **Ingest** | The receiver-side validation and merge — ten duties, then the aligned fold |
@@ -37,7 +38,7 @@ a signature; pulling from it verifies that signature against keys **you** regist
 and contributing to an Oasis puts a bundle in a holding tier that nothing promotes
 out of. A receiver decides what it admits, and the default answer is *very little*.
 
-## Signing a bundle
+## Signing a release
 
 Signature support is an optional extra, because the base compose and ingest paths
 never require it:
@@ -46,14 +47,29 @@ never require it:
 pip install 'pymaxim[sign]'
 
 maxim substrate keygen --signer-id alice       # mint + print the public key to share
-maxim substrate export out.zip --session <id> --contributor-id alice --sign
+maxim substrate export release.zip --session <id> --contributor-id alice \
+  --sign --license CDLA-Permissive-2.0
 ```
 
-Verification covers the manifest and the raw slice bytes, so a tampered byte, the
-wrong key, an untrusted signer, or an unknown algorithm is refused outright rather
-than admitted with clamps. Private keys are written `0600` from creation. Unsigned
-bundles still ingest when nobody asked for a signature — that is the experimental
-tier's normal case.
+Since 1.3.1 a signed export is a **release** in format v2: a detached signature over
+every file in it, a signed index of its entries (`maxim substrate inspect --entries`
+prints them), its signer, its place in the signing key's sequence, and the license it is
+published under — which is why `--license` is required. The sequence comes from a
+per-host counter for each key. A key you signed with before 1.3.1 is unknown to that
+counter, so its first 1.3.1 release needs `--release-sequence N` once. Keep a Queen key
+apart from your development key with `--key-file`.
+
+Verification covers every file's raw bytes, so a tampered byte, the wrong key, an
+untrusted signer, or an unknown algorithm is refused outright rather than admitted with
+clamps. Private keys are written `0600` from creation. Unsigned bundles still ingest
+when nobody asked for a signature — that is the experimental tier's normal case, and
+the path both sharing experiments ran through.
+
+**The format is frozen.** Both shapes — a signed release and an unsigned bundle — are
+public format 1: every 1.x release reads them as published, and changing either needs a
+recorded decision
+([what is and is not promised](https://github.com/dennys246/Maxim/blob/main/docs/plans/public_format_freeze.md)).
+Unsigned bundles stay readable by 1.3.0.
 
 ## Ingesting one
 
@@ -61,15 +77,18 @@ tier's normal case.
 default**:
 
 ```bash
-maxim substrate ingest bundle.zip \
-  --session <receiver-id> --receiver-body <body_ref> \
+maxim substrate ingest release.zip \
+  --session <receiver-id> --trust alice --receiver-body <body_ref> \
+  --receiver-agent-id <your-agent-id> \
   --require-signed --trust-key alice=<pubkey>
 
-maxim substrate ingest bundle.zip --session <receiver-id> \
-  --receiver-body <body_ref> --apply          # actually write
+# the same command with --apply actually writes
 ```
 
-The receiver must be at rest, and the pair is backed up and journalled before
+`--trust` names the contributors you admit, and anyone else's bundle is refused.
+`--receiver-agent-id` re-keys the donor's rows to your own agent; a release is refused
+without it. `--session` takes a simulation's session ID, a `maxim.create.agent()` name,
+or a path. The receiver must be at rest, and the pair is backed up and journalled before
 anything is written. Behind the verb is the validation contract: contributor trust
 and provenance stamping, numeric bounds with NaN and infinity refused at parse time,
 count and confidence caps, strict geometry that refuses unstamped foreign nodes, a
@@ -78,6 +97,27 @@ from the archive's central directory, declared-slices-only reads, and a journal 
 dedupes by digest so a replay is an explicit choice. The merge itself aligns the
 donor's clusters onto the receiver's before folding, and a bias the receiver already
 holds negative can deepen but is never raised toward zero by an import.
+
+**What a receiver remembers (1.3.1).** A verified ingest journals the signer's key, its
+sequence and the digest of what it admitted. A `--require-signed` ingest then refuses a
+second, different payload claiming the same key and sequence — equivocation — and a
+legacy v1 bundle from a key whose v2 release it already admitted — a downgrade. Every
+ingest, signed or not, also recognises a re-zipped or padded copy of a bundle it already
+merged. The journal is per receiver session and records only verified admissions, so a
+release first taken without verification seeds neither rule.
+
+**What merging keeps (1.3.1).** Ingest used to pair causal links by outcome alone, so a
+receiver's own links that differed only in context overwrote one another on every
+ingest, even from a donor that brought nothing: one real store went from 607 links to
+443 ([#913](https://github.com/dennys246/Maxim/issues/913)). Links now pair on outcome
+and context, so every receiver link survives. When several donor situations align onto
+one of yours, they fold together — mean want, the most aversive fear — instead of the
+last one winning, and a donor's decay-exempt marker can no longer attach to a bias you
+learned yourself ([#914](https://github.com/dennys246/Maxim/issues/914)).
+
+**What an export leaves out.** The export scrub is an allowlist at every level, so a field
+the scrub does not name never ships; a signed release carries no local agent id; and an
+unsigned export ships only your own learning, not material you ingested from others.
 
 Since 1.3 a bundle can also carry a learned situation **fear** — the negative valence an
 agent booked against a situation that hurt it. It travels under its own rules: clamped
@@ -88,17 +128,22 @@ ingest report says which. This is the path the
 [shared-fear result](/research/evidence/#a-survival-fear-transfers-between-agents) ran
 through. Pair 1.3 exporters with 1.3 receivers.
 
-This is the path Exp 56 ran through. It is worth being precise about what that
+This is the path Exp 56 ran through, with an unsigned bundle. It is worth being precise about what that
 bought: a bias key whose representation is missing is **dropped and reported**, not
 silently landed, which is exactly what the experiment's falsifier arm measured.
 
 ## Running an Oasis
 
 ```bash
-maxim oasis serve                       # start the exchange endpoints
-maxim oasis publish signed-bundle.zip   # add a signed bundle to the release tier
-maxim oasis status                      # tier counts
+maxim oasis serve                                         # start the exchange endpoints
+maxim oasis publish release.zip --queen-key alice=<pubkey>   # verify, then add to the release tier
+maxim oasis status                                        # tier counts
 ```
+
+`publish` refuses anything that is not a verified v2 release signed by a `--queen-key`,
+and anything that contradicts a release it already holds. A release's id is the digest
+of its signed payload, so an id from before 1.3.1 changes; re-pin any
+`hive pull --release <id>`.
 
 `oasis serve` injects a store into the existing leader proxy and exposes three
 authenticated routes on it — list releases, download a bundle by id, submit a
@@ -112,15 +157,22 @@ bearer key is refused unless you pass `--insecure`, which you should not.
 ```bash
 maxim hive add friends https://oasis.example --queen-key alice=<pubkey> --domain orient
 maxim hive list
-maxim hive pull --from friends --session <receiver-id> --receiver-body <body_ref>
-maxim hive pull --from friends --session <receiver-id> --receiver-body <body_ref> --apply
-maxim hive contribute bundle.zip --to friends
+maxim hive pull --from friends --session <receiver-id> --receiver-body <body_ref> \
+  --receiver-agent-id <your-agent-id> --api-key <key>
+# the same command with --apply actually writes
+maxim hive contribute bundle.zip --to friends --api-key <key>
 ```
 
-`hive pull` fetches signed releases and then **delegates to `substrate ingest`** —
-the verification, the ten duties and the journal are reused rather than
-reimplemented — and it is a dry run until `--apply`. A release whose signer is not a
-Queen key you registered for that Oasis is refused before anything is unpacked.
+`hive pull` fetches signed releases, in sequence order, and then **delegates to
+`substrate ingest`** — the verification, the ten duties and the journal are reused
+rather than reimplemented — and it is a dry run until `--apply`. A release whose signer
+is not a Queen key you registered for that Oasis is refused before anything is
+unpacked. `--api-key` is the Oasis's bearer key: since 1.3.1 your local leader key is
+sent only to an Oasis on this machine, so a remote or LAN Oasis needs its own.
+
+This flow was run on the 1.3.1 wheel against an Oasis on the same machine: a signed export,
+`publish`, then `pull`, which verified the release and reported the received fear
+discounted ×0.75. Without `--receiver-agent-id` the pull is refused.
 
 ## What a receiver trusts by default
 
@@ -133,7 +185,11 @@ Both refusals are opt-outs, per Oasis, and both are deliberate:
 maxim hive trust friends --inherent            # admit the decay-exempt class
 maxim hive trust friends --trust-source alice  # allow-list contributor ids
 maxim hive trust friends --allow-unsigned      # DISABLES signature verification
+maxim hive trust friends --accept-v1           # admit legacy v1-signed releases
 ```
+
+An Oasis added since 1.3.1 refuses legacy v1 signatures by default; one added before
+keeps accepting them.
 
 `--allow-unsigned` turns signature checking off for that Oasis's release stream. It
 is not a subscription to a lower tier; it is the check itself, off. Contradictory

@@ -70,6 +70,7 @@ RTX 50-series (Blackwell) GPUs have a known GStreamer/CUDA incompatibility. Maxi
 | YOLOv8 | `pip install 'pymaxim[yolo]'` | YOLOv8 vision engine via Ultralytics (AGPL-3.0). Default engine is RTMDet-m (Apache 2.0) |
 | Reachy | `pip install 'pymaxim[reachy]'` | Reachy Mini robot support — see the [Reachy Mini guide](/guides/reachy-mini/) |
 | Console | `pip install 'pymaxim[console]'` | The local Console backend, `maxim serve` — see the [CLI reference](/reference/cli/#console-server) |
+| Sign | `pip install 'pymaxim[sign]'` | Signing and verifying substrate bundles — see [the Oasis](/guides/oasis/#signing-a-release) |
 
 ## First Run (No Robot)
 
@@ -86,3 +87,52 @@ maxim --mode exploration
 ```
 
 From here, configure your instance with [`maxim config`](/configuration/) and explore the rest of the command surface in the [CLI Reference](/reference/cli/).
+
+## Upgrading to 1.3.1
+
+```sh
+pip install --upgrade pymaxim
+```
+
+1.3.1 changes some behaviour on purpose. If you call the Python memory API, share
+substrate, or run the agent from the CLI or `maxim.run()`, check these first:
+
+- **Memory capture needs an `encoding=` argument.** `Hippocampus.capture()`,
+  `capture_from_loop()` (and its async form) and `store()` now require a keyword-only
+  `encoding=`, which records what the capture was measured with. A 1.3.0 call without
+  it raises `TypeError`. If you measured nothing, say so:
+  `encoding=EncodingSignals.unmeasured("api")`, with
+  `from maxim.memory.encoding import EncodingSignals`. `capture_from_loop()` also needs
+  `situation=`. See the [Hippocampus example](/systems/hippocampus/#capturing-a-memory).
+- **Passive mode is now enforced.** The plain CLI agent and `maxim.run()` start in
+  passive mode, as before, but passive now refuses the tools that act on the host
+  (`bash`, `edit_file`, `git_commit`, `run_tests`, `execute_file` and others). Say or
+  type "maxim active" to switch. See [operating modes](/concepts/operating-modes/#enforced-since-131).
+- **Sharing substrate:**
+  - `maxim hive pull` needs `--receiver-agent-id` for a release in the new format;
+  - `hive pull` and `hive contribute` need `--api-key` for a remote or LAN Oasis (the
+    local leader key is sent only to an Oasis on this machine);
+  - `maxim substrate export --sign` needs `--license`, and a signing key you used
+    before 1.3.1 needs `--release-sequence N` once;
+  - `maxim oasis publish` needs `--queen-key`, and release ids are now digests of the
+    signed payload, so re-pin any `--release <id>`;
+  - a newly added Oasis refuses legacy v1 signatures unless you run
+    `maxim hive trust <name> --accept-v1`.
+
+  The [Oasis guide](/guides/oasis/) has the full, runnable flow.
+- **`--session <id>`** on `maxim substrate` and `maxim hive pull` now finds a
+  simulation's session under `~/.maxim/sim_reports/`, and, for `ingest` and `hive pull`,
+  a `maxim.create.agent()` name under `~/.maxim/agents/`. An ID found in more than one
+  place is refused.
+- **`maxim.diagnose()`** runs the same checks as `maxim doctor`. On a machine configured
+  as a peer, that includes real network probes.
+- **Internet policy now takes effect.** An internet toggle you left off, or a
+  hand-written `util/internet_policy.json`, now applies, and a policy file that cannot be
+  read or has the wrong types fails closed. Web fetches the model chooses no longer go
+  through `HTTP(S)_PROXY`, so they fail behind a mandatory proxy.
+- **Config downgrade.** A `config.json` written by 1.3.1 carries a `memory` section that
+  older builds refuse.
+
+The engine's
+[1.3.1 notes](https://github.com/dennys246/Maxim/blob/main/docs/announcements/release_1_3_1.md#upgrading)
+have the complete list, including the sandbox, validation and removed internals.

@@ -27,11 +27,13 @@ MaximState:
 A sleeping agent retains its operational mode and wakes automatically when
 user input arrives, resuming exactly where it left off.
 
-> **Naming note:** older material referred to the levels as *passive*,
-> *active*, and *singularity*. The canonical names in the codebase
-> (`AutonomyLevel` in `src/maxim/agents/autonomy.py`) are `planning`,
-> `supervised`, and `autonomous`; the old names survive only as voice-command
-> aliases.
+> **Naming note:** each level has two names, and both are live in the code. The
+> operational modes that define permissions and are enforced at dispatch
+> (`OperationalMode` in `src/maxim/modes/definitions.py`) are *passive*, *active* and
+> *singularity*; the autonomy levels that `--autonomy` takes (`AutonomyLevel` in
+> `src/maxim/agents/autonomy.py`) are `planning`, `supervised` and `autonomous`. They
+> map one to one: passive is planning, active is supervised, singularity is
+> autonomous.
 
 ## Autonomy levels
 
@@ -47,19 +49,24 @@ proactive).
 
 ### Planning
 
-The default mode. The agent observes, understands, and proposes actions
-without unilateral execution — it waits for your approval before acting.
+The default mode, and the one the plain CLI agent and `maxim.run()` start in. The
+agent observes, understands, and proposes actions without unilateral execution.
 
 - **Max initiative:** 0.3 (mostly reactive)
 
 | Permission | Access |
 |------------|--------|
-| Sandbox (`.maxim_sandbox/`) | Always writable |
-| CWD files | Read only, edits require approval |
+| Workspace (`.maxim_workspace/`) | Always writable — drafts, notes, plans |
+| CWD files | Read only; proposed edits go to the workspace as drafts |
+| Commands, tests, edits, commits | Refused (since 1.3.1) |
 | Code execution | Not allowed |
 | Network | Allowed |
 
-Forbidden tools: `execute_file`, `maxim_command`, `request_directory_change`
+Forbidden tools: `execute_file`, `maxim_command`, `request_directory_change`. Since
+1.3.1 passive also refuses every tool that acts on the host — `bash`, `edit_file`,
+`git_commit`, `run_tests`, `execute_file`, `execute_sandbox_script`,
+`request_directory_change`, `internet_access_toggle` and `maxim_command` — at the
+moment the tool would run, not only by leaving it out of the prompt.
 
 ### Supervised
 
@@ -166,25 +173,70 @@ You do not have to restart Maxim to change modes.
 
 - "Maxim sleep" — enter sleep (calls the `sleep` tool)
 - "Maxim wake up" — wake from sleep
-- "Maxim passive" — switch to `planning` mode
-- "Maxim active" — switch to `supervised` mode
-- "Maxim singularity" — switch to `autonomous` mode
+- "Maxim passive" — switch to passive (`planning`)
+- "Maxim active" — switch to active (`supervised`)
 
-(The passive/active/singularity phrasings are the legacy aliases mentioned
-above, kept for voice ergonomics.)
+"Maxim singularity" is **refused** since 1.3.1, spoken or typed: any audio in the room —
+a video, the robot's own speech — could say it. Starting Maxim in a mode deliberately is
+unchanged.
 
 ### Agent tools
 
 - **`mode_switch`** — switch between operational modes. Logs switches with
-  timestamps and reasoning.
+  timestamps and reasoning. Since 1.3.1 it refuses a switch into any mode that can
+  execute code (today, singularity), and records the refusal.
 - **`autonomy_level`** — request autonomy changes. Dropping to a more
-  restrictive level is always allowed; requesting *more* autonomy goes
-  through a proposal queue and requires human approval.
+  restrictive level is always allowed. Requesting *more* autonomy needs a human
+  approver, and no shipped runtime attaches one yet: since 1.3.1
+  ([#827](https://github.com/dennys246/Maxim/issues/827)) such a request fails with that
+  reason instead of waiting forever in a queue nothing reads. The approval surface is
+  engine issue [#922](https://github.com/dennys246/Maxim/issues/922).
 - **`sleep`** — enter the sleep processing state. The agent wakes
   automatically when user input arrives.
 
 An emergency halt drops the agent to `planning` immediately and pauses
 execution until a human resumes it.
+
+## Enforced since 1.3.1
+
+Before 1.3.1 a mode's limits were applied to the prompt only: a tool the mode
+excluded still ran if the model named it. 1.3.1 enforces them where tools run, and
+closes the ways the agent could raise its own authority. What that buys, and what it
+does not:
+
+- **The executor checks the live mode at every tool call** (engine
+  [#826](https://github.com/dennys246/Maxim/issues/826)). It refuses the mode's
+  forbidden tools, the tools its capabilities exclude, and — in passive — the tools that
+  act on the host. Memory, introspection and protocol tools, and tools you register with
+  `maxim.register_tool`, work in every mode.
+- **The agent cannot put itself into singularity**
+  ([#821](https://github.com/dennys246/Maxim/issues/821),
+  [#828](https://github.com/dennys246/Maxim/issues/828)). The mode tool and the CLI
+  refuse a self-requested switch into any mode that can execute code, and so does the
+  spoken phrase.
+- **The honest limit: passive → active is not gated**
+  ([#924](https://github.com/dennys246/Maxim/issues/924), open). Active mode runs shell
+  and sandbox tools under approval, and a non-interactive run answers every
+  confirmation "yes", so an unattended passive agent can still switch itself to active
+  and act. Treat passive as a default, not a boundary, until #924 and the approval
+  surface (#922) land.
+- **The sandbox runs what was approved, and only inside the sandbox**
+  ([#800](https://github.com/dennys246/Maxim/issues/800)–[#802](https://github.com/dennys246/Maxim/issues/802)).
+  Python scripts now run at all (the restricted wrapper used to block its own imports);
+  containment compares resolved paths and does not follow a symlink out; what runs is
+  the content that was approved, not whatever is at the path later. A script that needs
+  approval, with no approver attached, does not run. The Python import restrictions are
+  defense in depth, not a boundary — the resource limits and the container are. No
+  shipped runtime wires the sandbox tools today.
+- **A web fetch the model chooses connects only to the public address it checked**
+  ([#824](https://github.com/dennys246/Maxim/issues/824)), which closes DNS
+  rebinding, and the byte cap now bounds the download itself
+  ([#825](https://github.com/dennys246/Maxim/issues/825)). These fetches no longer use
+  `HTTP(S)_PROXY`.
+- **Tool output reaches the model fenced as untrusted data**
+  ([#823](https://github.com/dennys246/Maxim/issues/823)), so a fetched page's own
+  "instructions" no longer look like the prompt's. Fencing cannot stop a model from
+  choosing to follow injected text.
 
 ## See also
 

@@ -13,7 +13,7 @@
       "slug": "sharing",
       "title": "Sharing a learned want (the Oasis)",
       "period": "Sep 2026 · 1.2",
-      "intro": "Whether one agent's taught want can be exported as a signed bundle and change an independent agent's first choice — and what pooling many learners costs.",
+      "intro": "Whether one agent's taught want can be exported as a bundle and change an independent agent's first choice — and what pooling many learners costs.",
       "walkthrough": "/research/experiments/world-seam/",
       "best": "exp-56"
     },
@@ -367,7 +367,7 @@
       "line": "prior",
       "headline": false,
       "summary": "Partial. Four open-model runs complete; the cloud arm was deferred. Substrate visibility depends on prior headroom; R1-Distill gave the first clean Wire-A ablation.",
-      "finding": "PARTIAL (pymaxim audit 2026-09-13): four open-source-model fires complete; the cloud-model arm was deferred and is not a result. Substrate visibility is Goldilocks-dependent; the R1 variant produced the first clean Wire-A attribution.",
+      "finding": "PARTIAL (pymaxim audit 2026-09-13): four open-source-model fires complete; the cloud-model arm was deferred and is not a result. Substrate visibility is Goldilocks-dependent; the R1 variant produced the first clean Wire-A attribution. The NAc-bias-off ablation arm is void (#889, 2026-09-25): it left the reward bias on, so the Wire-A and Wire-1 arms are the only valid ablations.",
       "follows": [
         "exp-37-graduation"
       ],
@@ -793,8 +793,8 @@
       "status": "poc",
       "line": "cross-session",
       "headline": false,
-      "summary": "Resumed sessions surface prior-session memories and behave measurably differently from a fresh start. The ledger counts persistence as earned, re-validated cleanly.",
-      "finding": "Prior-session memories injected into the prompt produce measurably different behavior. The graduation ledger counts the persistence claim as earned and records a clean re-validation: the resumed session opened with the prior store (108 episodes) and surfaced 3 memories per turn on 8 of 8 turns.",
+      "summary": "Resumed sessions surface prior-session memories and behave measurably differently from a fresh start. The persistence claim is maintained, narrowly, after a 2026-09-27 re-run.",
+      "finding": "Prior-session memories injected into the prompt produce measurably different behavior. The graduation ledger records a clean August re-validation (the resumed session opened with the prior store, 108 episodes, and surfaced 3 memories per turn on 8 of 8 turns) and a 2026-09-27 re-run for 1.3.1, MAINTAINED (narrow): both resumes reloaded the store exactly (100 memories), the new persistence fields round-tripped on all 100, and 3 memories surfaced on every resume turn observed; but each resumed phase ran one turn, because every run stopped early on a known planning defect (D13, #935), and link accumulation was not re-shown.",
       "walkthrough": "/research/experiments/cross-session-learning/#exp-10--cross-session-enrichment"
     },
     {
@@ -1236,8 +1236,8 @@
       "status": "earned",
       "line": "sharing",
       "headline": true,
-      "summary": "One agent's taught want, shared as a signed bundle, changed an independent agent's first choice: 0.80 vs a 0.00 floor, n = 50/arm. Transfer, not generalization.",
-      "finding": "EARNED — the 1.2 \"Oasis\" headline. Agent A's teacher-taught, world-keyed operant bias, exported as a signed bundle and ingested into an independent agent B (different agent_id, separately built EC + SensorEncoder, disjoint cluster ids), changes B's FIRST-contact choice. Live Paper 1.16.5 Minecraft world (not the mock), n = 50 receivers/arm, substrate-primary. Taught raw 0.84 [0.71, 0.92] and 0.80 bias-decisive vs isolated floor 0.22 raw / 0.00 decisive; satiated (zero-credit donor) 0.12 and dangling-half falsifier 0.12, both at floor. All four gates PASS: TRANSFERRED 0.80 >= 0.70, ABOVE-FLOOR 0.62 >= 0.20, WANT-NOT-FILE 0.72 >= 0.20, BOTH-HALVES -0.10 < 0.10, plus the anti-vacuity kit. 40 of 50 taught first contacts decided by the situation-keyed learned-bias channel. Scope: one campaign, one world layout, teacher-taught wants — not scaling (Exp 57), not hardware, not aversion, not cross-layout (R1). Re-baselined 2026-09-19 on Paper 1.20.4 (RB-1): PASS, every rate identical to the 1.16.5 campaign — a same-seed reproduction on the new platform, not an independent replication; one duplicated row from an operator restart is disclosed in the file and moves no gate.",
+      "summary": "One agent's taught want, shared as a bundle, changed an independent agent's first choice: 0.80 vs a 0.00 floor, n = 50/arm. Transfer, not generalization.",
+      "finding": "EARNED — the 1.2 \"Oasis\" headline. Agent A's teacher-taught, world-keyed operant bias, exported as a bundle (unsigned: the harness exports through the real CLI without --sign; corrected 2026-09-27) and ingested into an independent agent B (different agent_id, separately built EC + SensorEncoder, disjoint cluster ids), changes B's FIRST-contact choice. Live Paper 1.16.5 Minecraft world (not the mock), n = 50 receivers/arm, substrate-primary. Taught raw 0.84 [0.71, 0.92] and 0.80 bias-decisive vs isolated floor 0.22 raw / 0.00 decisive; satiated (zero-credit donor) 0.12 and dangling-half falsifier 0.12, both at floor. All four gates PASS: TRANSFERRED 0.80 >= 0.70, ABOVE-FLOOR 0.62 >= 0.20, WANT-NOT-FILE 0.72 >= 0.20, BOTH-HALVES -0.10 < 0.10, plus the anti-vacuity kit. 40 of 50 taught first contacts decided by the situation-keyed learned-bias channel. Scope: one campaign, one world layout, teacher-taught wants — not scaling (Exp 57), not hardware, not aversion, not cross-layout (R1). Re-baselined 2026-09-19 on Paper 1.20.4 (RB-1): PASS, every rate identical to the 1.16.5 campaign — a same-seed reproduction on the new platform, not an independent replication; one duplicated row from an operator restart is disclosed in the file and moves no gate.",
       "walkthrough": "/research/experiments/world-seam/#exp-56--a-taught-want-transfers-between-independent-agents"
     },
     {
@@ -1311,7 +1311,7 @@
       "line": "survival",
       "headline": true,
       "summary": "A learned drowning fear, shared as a bundle, sent receivers out of the water on first contact: 12/12 vs 0/24 isolated (p = 8e-10). One donor, one campaign.",
-      "finding": "EARNED — the 1.3 \"Oasis-2\" headline. A donor learns the drowning fear the hard way, exports its substrate through the shipped signed-bundle path, and a fresh receiver ingests it (discounted x0.75 at the ingest bound — vicarious fear is real and weaker than direct), reboots, and leaves the water on its FIRST loop-live submersion having never felt the pain. One campaign at one code hash, 121 rows, zero refusals: 12/12 transferred receivers vs 0/24 isolated, 0/12 cluster-not-fear (the ablated donor's cluster and percept valence shipped, the fear did not) and 0/24 dangling (fear dropped at ingest for want of its world node); Fisher one-sided p = 8.0e-10; all six frozen gates PASS. The loop-OFF representation gate read the discounted fear (-0.75) exactly on every receiver before any loop ran. NOT earned: extinction, scaling past one donor, a received fear's reach to another pool (Exp 62 tested only the agent's own fear), hive-side promotion.",
+      "finding": "EARNED — the 1.3 \"Oasis-2\" headline. A donor learns the drowning fear the hard way, exports its substrate through the shipped export and ingest path (unsigned: corrected 2026-09-27 — the 1.3.0 notes said \"signed-bundle path\"), and a fresh receiver ingests it (discounted x0.75 at the ingest bound — vicarious fear is real and weaker than direct), reboots, and leaves the water on its FIRST loop-live submersion having never felt the pain. One campaign at one code hash, 121 rows, zero refusals: 12/12 transferred receivers vs 0/24 isolated, 0/12 cluster-not-fear (the ablated donor's cluster and percept valence shipped, the fear did not) and 0/24 dangling (fear dropped at ingest for want of its world node); Fisher one-sided p = 8.0e-10; all six frozen gates PASS. The loop-OFF representation gate read the discounted fear (-0.75) exactly on every receiver before any loop ran. NOT earned: extinction, scaling past one donor, a received fear's reach to another pool (Exp 62 tested only the agent's own fear), hive-side promotion.",
       "follows": [
         "exp-60"
       ],

@@ -104,7 +104,7 @@ Isolated execution with resource limits, plus cross-instance file exchange.
 
 | Tool | Does | Notes |
 |---|---|---|
-| `ExecuteSandboxScriptTool` | Run Python in an isolated sandbox with resource limits | |
+| `ExecuteSandboxScriptTool` | Run a Python or shell script in the sandbox with resource limits | Runs only the approved content; with no approver attached, a script that needs approval is refused (1.3.1). No shipped runtime wires it today |
 | `CreateSandboxScriptTool` | Create a script file in the sandbox | |
 | `ReadSandboxFileTool` | Read a file from within the sandbox | |
 | `WriteSandboxFileTool` | Write a file within the sandbox | |
@@ -126,7 +126,7 @@ Change the agent's own runtime disposition. See [operating modes](/concepts/oper
 
 | Tool | Does | Notes |
 |---|---|---|
-| `ModeSwitchTool` | Switch operating mode at runtime (passive/active/singularity) | |
+| `ModeSwitchTool` | Switch operating mode at runtime (passive/active; since 1.3.1 it refuses a switch into singularity) | |
 | `AutonomyLevelTool` | Adjust autonomy (planning/supervised/autonomous) | |
 | `SleepTool` | Enter sleep processing; wakes on user input | Background consolidation runs; LLM skipped |
 
@@ -265,6 +265,11 @@ expect to do something. A whitespace-only `goal` raises `ConfigurationError`.
 Two more contract facts worth knowing: only one `maxim.run()` may be active per
 process, and `robot=` requires `headless=False` — connecting hardware from headless
 mode raises rather than silently skipping the robot.
+
+`run()` starts in passive mode, and since 1.3.1 passive is enforced: tools that act on
+the host (`bash`, `edit_file`, `git_commit`, `run_tests`, `execute_file` and the like)
+are refused when the model calls them. Tools you register yourself keep working in
+every mode. See [operating modes](/concepts/operating-modes/#enforced-since-131).
 :::
 
 A few things worth knowing, all of which are code-adjacent and may drift with the source — confirm against the repo before pinning:

@@ -22,12 +22,34 @@ such as the Reachy robot.
 pip install pymaxim
 ```
 
-That resolves to the current stable release, **1.3.0 "Oasis-2"** (published
-2026-09-19 UTC) —
-[release notes](https://github.com/dennys246/Maxim/blob/main/docs/announcements/release_1_3_0.md) ·
+That resolves to the current stable release, **1.3.1 "Hardening"** (published
+2026-09-27 UTC) —
+[release notes](https://github.com/dennys246/Maxim/blob/main/docs/announcements/release_1_3_1.md) ·
 [changelog](https://github.com/dennys246/Maxim/blob/main/CHANGELOG.md) ·
-[GitHub release](https://github.com/dennys246/Maxim/releases/tag/v1.3.0) ·
-[PyPI](https://pypi.org/project/pymaxim/1.3.0/).
+[GitHub release](https://github.com/dennys246/Maxim/releases/tag/v1.3.1) ·
+[PyPI](https://pypi.org/project/pymaxim/1.3.1/).
+
+1.3.1 makes **no new behavioural claim**. It fixes what a review of 1.3.0 found, and
+each fix ships with the guard that holds it — a test, a lint, a CI lane or a required
+check. What it hardens:
+
+- **Security.** The sandbox now runs Python scripts, runs only the content that was
+  approved, and keeps them inside the sandbox; with no approver attached, a script that
+  needs approval does not run. A mode's limits are enforced when a tool runs, not only
+  in the prompt. The agent cannot switch itself, or be switched by a spoken phrase, into
+  singularity. Details and the honest limits are on
+  [operating modes](/concepts/operating-modes/#enforced-since-131).
+- **Sharing.** The public bundle format is frozen as a compatibility promise, signed
+  releases carry their signer, sequence and license, and a receiver that requires
+  signatures refuses a contradictory or downgraded release. Merging no longer destroys a receiver's own
+  causal links. See [the Oasis](/guides/oasis/).
+- **The Python API does what its docs say** — which means some calls now need
+  arguments they did not before. Read [upgrading to 1.3.1](/installation/#upgrading-to-131)
+  before you upgrade.
+
+It also corrects three things 1.3.0 said, listed below with the 1.3.0 claims.
+
+### 1.3.0 "Oasis-2", which 1.3.1 leaves standing
 
 1.3.0 moves the **learning signal** from a teacher to the world. In 1.2 a teacher put
 a want into one agent and it travelled to another; here the signal is the game's own
@@ -43,9 +65,9 @@ states the agent can be measured in. Nothing here says Maxim plays the game.
   fear subscriber detached, never does.
   ([Exp 60](/research/evidence/#learned-anticipatory-avoidance-from-the-games-own-pain).)
 - **That fear transfers to an agent that never felt the pain — earned, the headline.**
-  A donor's fear, exported through the shipped signed-bundle path and discounted at
-  ingest because a fear you were told about is weaker than one you felt, drives a
-  fresh receiver out of the water on its first live submersion.
+  A donor's fear, exported and ingested through the shipped export and ingest path,
+  and discounted at ingest because a fear you were told about is weaker than one you
+  felt, drives a fresh receiver out of the water on its first live submersion.
   ([Exp 61](/research/evidence/#a-survival-fear-transfers-between-agents).)
 - **What a carried drive is worth, measured.** A frozen five-arm benchmark puts fresh
   agents through one unrescued submersion. Every agent survives — survival is a
@@ -62,6 +84,19 @@ scaling and hive-side promotion are untested. So is a *received* fear's reach to
 pool; an agent's *own* fear has since been measured crossing to one, the day after release,
 and it misses in roughly the last 5% of each in-game day, where the clock wraps
 ([Exp 62](/research/evidence/#a-learned-fear-carries-to-a-second-pool-the-same-situation-a-different-place)).
+That result is on the engine's evidence ledger, but it is not a claim of 1.3.1 until a
+second reader's review of it is recorded.
+
+**Corrected in 1.3.1.** The 1.3.0 notes said the fear travelled through the "signed-bundle
+path". It did not: the experiment exported **unsigned** bundles through the real CLI, so
+the claim rests on the shipped export and ingest path, not on signing. Signing exists and
+is tested on its own. (The engine's ledger records that 1.2's Exp 56, below, also exported
+unsigned bundles; the matching correction to the 1.2.0 notes is pending in the engine.) The
+1.3.0 upgrade step for
+stale Minecraft world nodes was also missing its arguments; the runnable form is on the
+[CLI reference](/reference/cli/#substrate-bundles). And an ablation arm in the older Exp 37
+and 38 runs did not ablate what it named
+([details](/research/experiments/cross-session-learning/#cross-session-graduation-experiment-37)).
 
 1.2.0's claims stand unchanged, and 1.3 did not revisit them — though its headline,
 the taught-want transfer, was re-run on the new Minecraft version and reproduced row
@@ -71,7 +106,8 @@ the plumbing that connects them:
 
 - **A taught want transfers between independent agents — earned.** One agent is
   taught that a specific action pays off in a specific situation; its substrate is
-  exported as a signed bundle and ingested into a second agent built separately.
+  exported as a bundle (unsigned, through the shipped CLI) and ingested into a second
+  agent built separately.
   At the second agent's first contact with that situation, it chooses the taught
   action, and three controls show the choice needed the taught representation
   rather than the mere arrival of a bundle.
@@ -117,8 +153,13 @@ import maxim
 
 result = maxim.imagine(goal="test safety boundaries", mode="adversarial")
 state = maxim.observe("memory")
-report = maxim.diagnose()
+report = maxim.diagnose()   # the same checks as `maxim doctor`
 ```
+
+Since 1.3.1, `diagnose()` runs exactly what `maxim doctor` runs. On a machine configured
+as a peer of another leader, that includes the peer checks, which make real network
+calls: about 12 seconds against an unreachable leader, longer if the leader accepts
+connections but does not respond.
 
 ## Where next
 

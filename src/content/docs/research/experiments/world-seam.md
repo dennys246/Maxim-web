@@ -6,7 +6,7 @@ description: The two research lines measured in a live Minecraft world — a tau
 :::note[At a glance]
 - **Lines:** `sharing` — closed with 1.2; its headline was re-run on the 1.3 platform
   and reproduced. `survival` — active; Exp 62 rung B is designed, not built.
-- **Dates:** 2026-09-06 to 2026-09-20; one correction dated 2026-09-25.
+- **Dates:** 2026-09-06 to 2026-09-20; corrections dated 2026-09-25 and 2026-09-27.
 - **Releases:** 1.2.0 "Oasis" (2026-09-09) and 1.3.0 "Oasis-2" (2026-09-19).
 - **Experiments covered:** [Exp 56](/research/experiments/exp-56/),
   [R1](/research/experiments/r1/), [Exp 57](/research/experiments/exp-57/),
@@ -40,7 +40,7 @@ asked both again with a fear the game taught.
 ### The claim, stated precisely
 
 A want taught to one agent — one action pays off in one world situation — can be exported
-as a signed bundle and ingested into a second, independent agent. That transfer changes
+as a bundle and ingested into a second, independent agent. That transfer changes
 the receiver's first choice when it meets that situation: 0.80 of first contacts were
 decided by the transferred want, against 0.00 in every control arm, with n = 50 receivers
 per arm. This is **earned**, and it is the 1.2 headline ([Exp 56](/research/experiments/exp-56/)).
@@ -81,7 +81,10 @@ The subsections below run in date order.
 Agent A is taught by a contingent teacher. When A's pending action is the target and the
 contingency situation is active, the teacher feeds it, relieving its drive. The credit
 lands on A's world cluster for that situation. A's substrate is exported as a bundle and
-ingested into agent B through the shipped 1.2 path (`maxim substrate ingest`). B is
+ingested into agent B through the shipped 1.2 path (`maxim substrate ingest`). The
+bundle was **unsigned**: the harness exports through the real CLI without `--sign`
+(corrected 2026-09-27; the 1.2.0 notes said "signed"). The claim rests on the shipped
+export and ingest path, not on signing, which is tested on its own. B is
 independent by construction: a different `agent_id`, a separately built EC and sensor
 encoder, and disjoint cluster ids. The earlier federation results passed only because
 every participant shared one agent id and one encoder. This is the first cross-agent
@@ -182,7 +185,7 @@ leaves the water before the pain would fire ([Exp 60](/research/experiments/exp-
 earned, 5 seeds per arm). This is the first Maxim result whose learning signal is the
 world's rather than a teacher's.
 
-That fear, exported through the shipped signed-bundle path, drives a fresh receiver out of
+That fear, exported and ingested through the shipped export and ingest path, drives a fresh receiver out of
 the water on its first loop-live submersion. The receiver has never felt the pain: 12/12
 transferred receivers against 0/24 isolated ([Exp 61](/research/experiments/exp-61/),
 earned, the 1.3 headline). Exp 61 is one campaign, and each receiver ingested one donor's
@@ -323,7 +326,9 @@ median 3.4 s before the agent's own air-hunger pain would have fired.
 ### Exp 61 — a learned fear transfers between independent agents
 
 The 1.3 headline is the 1.2 transfer moved from a want a teacher installed to a fear the
-world taught. Donors learned the fear by the Exp 60 protocol and exported their substrate.
+world taught. Donors learned the fear by the Exp 60 protocol and exported their substrate
+through the real CLI, unsigned — the harness is Exp 56's (corrected 2026-09-27; the 1.3.0
+notes said "signed-bundle path").
 A fresh receiver ingested it through the real CLI, discounted ×0.75 at the ingest bound,
 since a fear you were told about is real but weaker than one you felt. The receiver then
 rebooted and met the water. Its lifecycle first submerges it once with the loop **off**,

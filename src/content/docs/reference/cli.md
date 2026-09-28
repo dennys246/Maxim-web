@@ -123,12 +123,14 @@ MAXIM_HEARTBEAT=1 maxim                # System health every 10s
 never episodes — between installs as a zip bundle, optionally signed. Seven verbs:
 
 ```bash
-maxim substrate export out.zip --session <id|dir> --contributor-id <id> [--domain <tag>] [--sign]
-maxim substrate inspect out.zip                        # print the manifest, extract nothing
+maxim substrate export out.zip --session <id|dir> --contributor-id <id> [--domain <tag>]
+maxim substrate export out.zip --session <id|dir> --contributor-id <id> --sign --license <SPDX-ID>
+maxim substrate inspect out.zip [--entries]            # print the manifest, extract nothing
 maxim substrate import out.zip --output-dir <dir>      # extract the bundle; does NOT merge it
-maxim substrate ingest out.zip --session <id|dir> --receiver-body <ref> [--apply]
-maxim substrate keygen --signer-id <id>                # mint + print the signing public key
-maxim substrate invalidate --session <id|dir> --modality <name> [--apply]
+maxim substrate ingest out.zip --session <id|dir> --trust <contributor-id> \
+    --receiver-body <ref> --receiver-agent-id <your-agent-id> [--apply]
+maxim substrate keygen --signer-id <id> [--key-file <file>]  # mint + print the signing public key
+maxim substrate invalidate --session <id|dir> [--modality <name> --drop-geometry <tag> --apply]
 maxim substrate merge-nac policy.json [--into ~/.maxim/memory/nac.json] --source-id <id>
 ```
 
@@ -140,10 +142,14 @@ maxim substrate merge-nac policy.json [--into ~/.maxim/memory/nac.json] --source
   receiver's, the donor's biases re-keyed through that map, then folded, with a
   tighten-only clamp so an import can deepen a learned aversion but never raise it
   toward zero. It is a **dry run until `--apply`**, the receiver must be at rest, and
-  the pair is backed up and journalled before any write. Add `--require-signed
-  --trust-key <id>=<pubkey>` to refuse anything not signed by a key you name. This is
-  the path the [Exp 56 transfer result](/research/evidence/#a-taught-want-transfers-between-independent-agents)
-  ran through; the network wrapper around it is [the Oasis](/guides/oasis/).
+  the pair is backed up and journalled before any write. `--trust` is required: it
+  names the contributor ids you admit, and a bundle from anyone else is refused. Add
+  `--require-signed --trust-key <id>=<pubkey>` to refuse anything not signed by a key
+  you name. `--receiver-agent-id` re-keys the donor's rows to your agent; a signed
+  release is refused without it. This is the path the
+  [Exp 56 transfer result](/research/evidence/#a-taught-want-transfers-between-independent-agents)
+  ran through, with an unsigned bundle; the network wrapper around it is
+  [the Oasis](/guides/oasis/).
 - **Since 1.3, a bundle can carry a learned situation *fear*, not only a want.** The
   export clamps it and allows only a named set of failure modes through; ingest bounds
   it, refuses an out-of-allowlist mode rather than stripping it, and multiplies what it
@@ -152,16 +158,37 @@ maxim substrate merge-nac policy.json [--into ~/.maxim/memory/nac.json] --source
   report counts what happened (`fear_rekeyed`, `fear_dropped`, `fear_below_floor`); a
   fear whose world node did not survive the merge is dropped rather than left dangling.
   Pair 1.3 exporters with 1.3 receivers.
+- **Since 1.3.1, `--sign` produces a release, and the format is frozen.** A signed
+  export is a v2 release: a detached signature over every file, a signed index of its
+  entries (`inspect --entries` prints them), its signer, its place in the signing key's
+  sequence and its license, so `--license` is required. The sequence comes from a
+  per-host counter for each key; a key you signed with before 1.3.1 needs
+  `--release-sequence N` once. Unsigned bundles are unchanged and stay readable by 1.3.0.
+  Both shapes are frozen as public format 1: every 1.x release reads them as published.
+  A receiver journals the releases it admitted, and a `--require-signed` ingest refuses
+  a second, different payload under the same key and sequence, and an older-format
+  bundle from a key whose new-format release it already took. The journal is per receiver
+  session and records only verified admissions.
+- **Since 1.3.1, a merge keeps the receiver's own links.** Ingest used to pair causal
+  links by outcome alone, so a receiver's links that differed only in context overwrote
+  each other, even when the donor brought nothing — one real store went from 607 links to
+  443. Links now pair on outcome and context, and several donor situations that align
+  with one of yours fold together instead of the last one winning. The export scrub is
+  an allowlist at every level, and an unsigned export ships only your own learning, not
+  material you ingested.
 - **Upgrading to 1.3 restales stored Minecraft world nodes.** A gained modality's
   geometry tag now includes the sensors' declared ranges, so world nodes written before
   1.3 load with a one-line warning. Interoception and audio are untouched. To drop the
-  stale nodes, run the census first and pass the tag it prints — the flag does not work
-  alone:
+  stale nodes, run the census first, then name the modality and the tag it prints — the
+  flag does not work alone:
 
   ```bash
-  maxim substrate invalidate --session <id|dir>                      # dry-run census; prints the stale tags
-  maxim substrate invalidate --session <id|dir> --drop-geometry <tag> --apply
+  maxim substrate invalidate --session <id|dir>        # dry-run census; prints the stale tags
+  maxim substrate invalidate --session <id|dir> --modality world --drop-geometry <stale-tag> --apply
   ```
+
+  *(Corrected 2026-09-27: this recipe was published without `--modality world`, as was
+  the 1.3.0 upgrade step it came from.)*
 
 - **`import` extracts and stops.** It writes the bundle's `nac.json` / `ec.json`
   slices to a directory and leaves what to do with them to you — use `ingest` to
@@ -183,20 +210,27 @@ side, `maxim hive` is the client. Full walkthrough on [the Oasis](/guides/oasis/
 
 ```bash
 maxim oasis serve [--root <dir>] [--port <n>] [--bind-host <addr>]
-maxim oasis publish signed-bundle.zip     # add to the Queen-tier release store (refuses unsigned)
+maxim oasis publish release.zip --queen-key <id>=<pubkey>   # verify, then add to the release tier
 maxim oasis status                        # release / experimental tier counts
 
 maxim hive add <name> <url> --queen-key <id>=<pubkey> [--domain <tag>]
 maxim hive list | maxim hive remove <name>
-maxim hive trust <name> [--allow-unsigned] [--inherent] [--trust-source <id>]
-maxim hive pull --from <name> --session <id|dir> --receiver-body <ref> [--apply]
-maxim hive contribute bundle.zip --to <name>
+maxim hive trust <name> [--allow-unsigned] [--inherent] [--trust-source <id>] [--accept-v1]
+maxim hive pull --from <name> --session <id|dir> --receiver-body <ref> \
+    --receiver-agent-id <your-agent-id> [--api-key <key>] [--apply]
+maxim hive contribute bundle.zip --to <name> [--api-key <key>]
 ```
 
 - **`pull` delegates to `substrate ingest`** rather than reimplementing it, so the
   signature check, the validation duties and the journal are the same ones above. It
   is a dry run until `--apply`, and it refuses a release whose signer is not a Queen
-  key registered for that Oasis.
+  key registered for that Oasis. It pulls releases in sequence order.
+- **Keys go only where they belong (1.3.1).** Without `--api-key`, `pull` and
+  `contribute` send the local leader key only to an Oasis on this machine; a remote or
+  LAN Oasis needs its own key. `oasis publish` refuses anything that is not a verified
+  release signed by a `--queen-key`, and release ids are digests of the signed payload.
+- **A newly added Oasis refuses legacy v1 signatures** unless you run
+  `hive trust <name> --accept-v1`; Oases added before 1.3.1 keep accepting them.
 - **Trust defaults to Queen-only.** `hive trust --allow-unsigned` disables signature
   verification for that Oasis's release stream — it is the check itself, off, not a
   lower tier. Contradictory flags error rather than granting the looser setting.
@@ -315,7 +349,7 @@ All voice commands begin with the wake word *"Maxim"*:
 | "Maxim explore" | Switch to explore strategy |
 | "Maxim assist" | Switch to assist strategy |
 | "Maxim reflect" | Switch to reflect strategy |
-| "Maxim passive" / "active" / "singularity" | Switch operational mode |
+| "Maxim passive" / "active" | Switch operational mode ("Maxim singularity" is refused since 1.3.1: any audio in the room could say it) |
 | "Maxim shutdown" | Clean shutdown |
 
 See the [Operating Modes](/concepts/operating-modes/#switching-modes-at-runtime) page for the full list. Custom voice commands can be added in `~/.maxim/util/phrase_responses.json`.
@@ -380,7 +414,9 @@ use `--trace`, `--debug`, or `--sim-debug` instead.
 ### Inspecting Learned State
 
 ```python
-# Python: inspect memory
+# Python: inspect memory (read-only: load() never writes)
+
+from pathlib import Path
 
 from maxim.memory.hippocampus import Hippocampus
 
@@ -389,7 +425,8 @@ hippo.load(str(Path.home() / ".maxim" / "memory" / "hippocampus.json"))
 print(f"Total memories: {len(hippo._memories)}")
 
 for mem_id, mem in list(hippo._memories.items())[:5]:
-    print(f"  {mem.action.tool_name} → {mem.outcome.success}")
+    if mem.action and mem.outcome:  # a perception-only memory has neither
+        print(f"  {mem.action.tool_name} → {mem.outcome.success}")
 
 # Python: inspect NAc learning
 
