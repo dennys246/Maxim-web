@@ -342,7 +342,11 @@ while its yoked twin with the fear subscriber detached never did
 The same fear, exported and ingested at a ×0.75 discount, made a receiver that never
 felt the pain leave the water on its first loop-live submersion
 ([Exp 61](/research/evidence/#a-survival-fear-transfers-between-agents)). Both are one
-world layout, substrate-primary. They do not touch the LLM-primary problem above:
+world layout, substrate-primary. Both are **partial since October 2026**: a plain tabular
+learner with no bio layers escaped as well on Exp 60's task, and Exp 61's floor was judged
+to match by the same argument (not run), so they show this fear
+learner working in a live loop (and, for Exp 61, surviving transport between agents), not
+behaviour beyond a no-bio learner ([the floors](/research/evidence/#the-floors-the-first-comparison-with-a-no-bio-learner)). They do not touch the LLM-primary problem above:
 there, the prior can still win.
 
 ### Run it yourself

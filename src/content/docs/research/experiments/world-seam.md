@@ -182,23 +182,39 @@ up.
 In a live Minecraft water classroom, an agent held underwater until air-hunger pain,
 then rescued, learns a fear keyed to the underwater situation. On later submersions it
 leaves the water before the pain would fire ([Exp 60](/research/experiments/exp-60/),
-earned, 5 seeds per arm). This is the first Maxim result whose learning signal is the
-world's rather than a teacher's.
+5 seeds per arm; partial (narrow: floor matched) since 2026-10-14). This is the first Maxim
+result whose learning signal is the world's rather than a teacher's.
 
 That fear, exported and ingested through the shipped export and ingest path, drives a fresh receiver out of
 the water on its first loop-live submersion. The receiver has never felt the pain: 12/12
 transferred receivers against 0/24 isolated ([Exp 61](/research/experiments/exp-61/),
-earned, the 1.3 headline). Exp 61 is one campaign, and each receiver ingested one donor's
+the 1.3 headline; partial (floor matched, analytical) since 2026-10-15). Exp 61 is one campaign, and each receiver ingested one donor's
 bundle.
 
 An agent's own fear also carries to a second pool at a different altitude and spawn
 distance: 12/12, Wilson lower bound 0.758, against 0/3 ablated
-([Exp 62](/research/experiments/exp-62/) rung A, earned). A frozen benchmark prices what
+([Exp 62](/research/experiments/exp-62/) rung A; partial (floor matched, analytical)
+since 2026-10-15). A frozen benchmark prices what
 the carried fear buys. About 25 s of latency, about 11 health points and about 22 s of
 oxygen pain — **cost, not life** ([R3](/research/experiments/r3/), a reference; nothing
 graduated).
 
+**Then the floor.** In October 2026 the engine began requiring every behavioural claim to
+beat a no-bio learner, not only its own ablation. On 2026-10-14
+[B1](/research/experiments/b1-exp60-floor/) ran a tabular Q-learner and a random agent in
+Exp 60's task: at the first placement after training FEAR surfaced 8 of 8, the Q-learner 8
+of 8, random 2 of 8. FEAR beat random (p = 0.0035) and did not beat the Q-learner (p = 1.0).
+Its one edge was efficiency: the Q-learner executed a median of 31 actions before it first
+got out, and FEAR executed none during training. Exp 61 and Exp 62 followed by argument the
+next day, because they rest on the same fear and their floors match by construction. All
+three still beat their ablations. What they show is a fear learner running correctly in a
+live loop (Exp 60) and surviving transport between agents (Exp 61), not behaviour beyond a
+no-bio learner ([the floors](/research/evidence/#the-floors-the-first-comparison-with-a-no-bio-learner)).
+
 ### What it does not show
+
+- **Behaviour beyond a no-bio learner.** A tabular learner on the same situation keys
+  matched Exp 60, and matches Exp 61 and 62 by construction (above).
 
 - **Extinction.** Nothing writes fear back down. Fear has no per-tick decay and decays by
   wall clock only when saved state is loaded. The record states this as a mechanism gap.
@@ -223,10 +239,11 @@ graduated).
 
 | Exp | Date | Status | n per arm | Result |
 |---|---|---|---|---|
-| [Exp 62](/research/experiments/exp-62/) (rung A) | 2026-09-20 | earned | 12 cross / 12 same / 3 ablated | The agent's own fear carried to a second pool: 12/12 (Wilson [0.758, 1.000]) against 0/3 ablated, p = 0.0022. |
+| [B1](/research/experiments/b1-exp60-floor/) | 2026-10-14 | reference | 8 seeds × 5 arms | The Exp 60 floor: FEAR 8/8, tabular Q-learner 8/8, random 2/8. FEAR > random shown (p = 0.0035); FEAR > Q-learner not shown (p = 1.0). |
+| [Exp 62](/research/experiments/exp-62/) (rung A) | 2026-09-20 | partial (floor matched, analytical) | 12 cross / 12 same / 3 ablated | The agent's own fear carried to a second pool: 12/12 (Wilson [0.758, 1.000]) against 0/3 ablated, p = 0.0022. |
 | [R3](/research/experiments/r3/) | 2026-09-18 | reference | 12 × 5 arms | Median time to air: A 28.0 s, B 8.6 s, C 3.2 s, D 3.1 s, E 28.1 s. Everyone survived, so the fear buys cost, not life. |
-| [Exp 61](/research/experiments/exp-61/) | 2026-09-17 | earned | 24 isolated / 12 transferred / 12 cluster-not-fear / 24 dangling | A received fear drove 12/12 receivers out of the water, against 0/24 isolated (p = 8.0 × 10⁻¹⁰). |
-| [Exp 60](/research/experiments/exp-60/) | 2026-09-16 | earned | 5 seeds (6 placements per probe) | Learned, anticipatory escape: 1.0 against 0.0 for the yoked twin, p = 1/252. |
+| [Exp 61](/research/experiments/exp-61/) | 2026-09-17 | partial (floor matched, analytical) | 24 isolated / 12 transferred / 12 cluster-not-fear / 24 dangling | A received fear drove 12/12 receivers out of the water, against 0/24 isolated (p = 8.0 × 10⁻¹⁰). |
+| [Exp 60](/research/experiments/exp-60/) | 2026-09-16 | partial (floor matched) | 5 seeds (6 placements per probe) | Learned, anticipatory escape: 1.0 against 0.0 for the yoked twin, p = 1/252. |
 | [Exp 58](/research/experiments/exp-58/) | 2026-09-14 | null | none (no gated data) | Blocked at the instrument: dark and safe never formed distinct clusters. |
 | [R2 learned-bias v2](/research/experiments/r2-learned-bias-v2/) | 2026-09-12 | withdrawn | none | Stopped at design review. No harness and no data. |
 | [R2 learned-bias v1](/research/experiments/r2-learned-bias-v1/) | 2026-09-12 | superseded | none | The design was caught confounded before any data. |
@@ -293,6 +310,9 @@ The cue was swapped to water for Exp 60, because water does separate.
 
 ### Exp 60 — learned drowning avoidance from the game's own pain
 
+**Status: partial (narrow: floor matched), 2026-10-14.** The ablation result below stands;
+a tabular Q-learner matched the behaviour in [B1](/research/evidence/#the-floors-the-first-comparison-with-a-no-bio-learner).
+
 Water separates because of a binary `is_in_water` sensor. The underwater situation is
 then its own cluster before any pain arrives (the run-authorizing cosine was 0.787). An
 `oxygen` drive makes air-hunger publish pain, and an `escape_water` actuator bypasses the
@@ -324,6 +344,10 @@ median 3.4 s before the agent's own air-hunger pain would have fired.
   that never executes a body action.
 
 ### Exp 61 — a learned fear transfers between independent agents
+
+**Status: partial (narrow: floor matched, analytical), 2026-10-15.** The results below
+stand against their controls; what they show beyond them is the transport, not behaviour
+beyond a no-bio learner ([the floors](/research/evidence/#the-floors-the-first-comparison-with-a-no-bio-learner)).
 
 The 1.3 headline is the 1.2 transfer moved from a want a teacher installed to a fear the
 world taught. Donors learned the fear by the Exp 60 protocol and exported their substrate
@@ -394,6 +418,10 @@ argument, not on the rows' outcomes.
 
 ### Exp 62 — a learned fear carries to a second pool (rung A)
 
+**Status: partial (rung A: floor matched, analytical), 2026-10-15.** The results below stand
+against the ablation; the cross-pool transfer lives in the situation key, which a no-bio
+floor shares ([the floors](/research/evidence/#the-floors-the-first-comparison-with-a-no-bio-learner)).
+
 Exp 62 ran the day after 1.3.0 shipped, on the shipped body, with no mechanism change, no
 new sensor and no ingest. Agents that learned the fear in pool 1 (floor y 35) were tested
 in pool 2 (floor y 90, a different distance from spawn). The pools were the same
@@ -445,7 +473,7 @@ Rung B — the context wall and what crossing it would take — is **designed, n
 - **Exact-key read (R1).** It bounds every transfer on this page. A different situation is
   a different key.
 - **The daily clock wrap
-  ([#899](https://github.com/dennys246/Maxim/issues/899)).** The earned fear misses in
+  ([#899](https://github.com/dennys246/Maxim/issues/899)).** The drowning fear misses in
   roughly the last 5% of each in-game day. Encoding the clock without a wrap is owned by
   the 1.4 keying work.
 - **No fear extinction mechanism.** Nothing writes fear down. A received fear holds

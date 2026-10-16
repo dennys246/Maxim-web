@@ -17,33 +17,114 @@ disagree:
 - [Measurement limits](https://github.com/dennys246/Maxim/blob/main/docs/limits/README.md) — what the instruments themselves cannot resolve ([summary on this site](/research/limits/))
 - [All experiments](/research/experiments/) — the full lab notebook, grouped by research line
 
+## How a claim is earned
+
+A claim is **earned** when an experiment passes gates that were written down and frozen before
+its data. Until October 2026, the comparison behind every earned claim was one of Maxim's own
+ablations: the same agent with one mechanism detached. Exp 60's control, for example, is a
+twin with the fear pathway removed. That shows the mechanism does the work *inside* Maxim. It
+does not show that Maxim does better than a plain agent without the bio layers, which is the
+first thing a reviewer asks. Since 2026-10-10 the engine holds itself to a stricter rule
+(owner decision BF2, in the
+[baseline floors plan](https://github.com/dennys246/Maxim/blob/main/docs/plans/baseline_floors.md)):
+a new behavioural claim is earned only if it also beats a **floor**, an agent with no bio
+layers. Where no language model acts, the floors are a tabular Q-learner (a simple
+trial-and-error learner that keeps a lookup table of how good each action is in each
+situation) and a random agent, both reading the same situations Maxim does. Where a language model acts, they are the same model in a bare loop
+and, for a cross-session claim, the same loop with generic notes. A claim that only matches
+its floor becomes **partial (narrow: floor matched)**: its ablation result still stands, and
+its status says which simpler learner matches it. Claims earned before the rule keep their
+status until their next re-run, and the table below marks their floor *not measured*.
+
+The first floor ran on 2026-10-14, and Maxim did not beat it: on Exp 60 the floor matched
+FEAR, and Exp 61 and 62 followed by argument. [The floors](#the-floors-the-first-comparison-with-a-no-bio-learner) says what that
+removes and what still stands.
+
 ## Summary
 
-Strongest evidence first. "n" is per arm unless stated.
+Strongest evidence first. "n" is per arm unless stated. **Ablation** is the claim's
+comparison with Maxim's own mechanism detached; **floor** is its comparison with a no-bio
+learner.
 
-| Claim | Status | Key experiment(s) | n | Full story |
-|---|---|---|---|---|
-| [A taught want transfers between independent agents](#a-taught-want-transfers-between-independent-agents) | earned | [Exp 56](/research/experiments/exp-56/) | 50 receivers | [World seam](/research/experiments/world-seam/) |
-| [A survival fear transfers between agents](#a-survival-fear-transfers-between-agents) | earned | [Exp 61](/research/experiments/exp-61/) | 12 transferred vs 24 isolated, 12 + 24 falsifiers | [World seam](/research/experiments/world-seam/) |
-| [Caregiver-taught orienting through hunger relief](#caregiver-taught-orienting-through-hunger-relief) | earned, reproduced | [Exp 52](/research/experiments/exp-52/) | 12 seeds (embodied, run twice); 8 seeds (scripted) | [The Cradle](/research/cradle/) |
-| [Substrate-primary safe-vs-harm discrimination](#substrate-primary-safe-vs-harm-discrimination) | earned | [Exp 42](/research/experiments/exp-42/), [42b](/research/experiments/exp-42b/) | 10 seeds; 40 sub-sims on re-run | [Roy harness](/research/experiments/roy-harness/) |
-| [A learned fear carries to a second pool](#a-learned-fear-carries-to-a-second-pool-the-same-situation-a-different-place) | earned (rung A) | [Exp 62](/research/experiments/exp-62/) | 12 cross-pool, 12 same-pool, 3 ablated | [World seam](/research/experiments/world-seam/) |
-| [Learned, anticipatory avoidance from the game's own pain](#learned-anticipatory-avoidance-from-the-games-own-pain) | earned | [Exp 60](/research/experiments/exp-60/) | 5 seeds × 6 placements | [World seam](/research/experiments/world-seam/) |
-| [Cross-session memory persistence](#cross-session-memory-persistence) | maintained (narrow), 2026-09-27 | [Exp 10](/research/experiments/exp-10/), [Exp 12](/research/experiments/exp-12/) | single multi-phase runs, re-run twice | [Cross-session recall](/research/experiments/cross-session-learning/) |
-| [Sensorimotor learning on real hardware](#sensorimotor-learning-on-real-hardware) | earned (merge arm downgraded) | [Exp 45](/research/experiments/exp-45/)–[45e](/research/experiments/exp-45e/) | mostly single hardware sessions; 45d three seeds | [Hardware orienting](/research/experiments/hardware-orienting/) |
-| [Cross-context readout on hardware](#cross-context-readout-on-hardware) | earned | [Exp 53b](/research/experiments/exp-53/) | 3 seeds, 180 trials | [Hardware orienting](/research/experiments/hardware-orienting/) |
-| [Two-joint centering](#two-joint-centering) (simulated) | earned | [Exp 49](/research/experiments/exp-49/) | 10 trials | [Hardware orienting](/research/experiments/hardware-orienting/) |
-| [Pooling partial learners](#pooling-partial-learners--faster-per-participant-at-a-total-experience-cost) | partial | [Exp 57](/research/experiments/exp-57/) | 20 cohorts per rung | [World seam](/research/experiments/world-seam/) |
-| [Carried memory shifts an LLM-driven agent's behaviour](#carried-memory-shifts-an-llm-driven-agents-behaviour) | partial | [Exp 37](/research/experiments/exp-37-graduation/) | 5 trials, four models | [Cross-session recall](/research/experiments/cross-session-learning/) |
-| [What a carried drive is worth](#what-a-carried-drive-is-worth-the-r3-benchmark) | reference (nothing graduated) | [R3](/research/experiments/r3/) | 12 agents × 5 arms | [World seam](/research/experiments/world-seam/) |
-| Carried substrate overrides a contrary LLM prior | null | [Exp 38](/research/experiments/exp-38/), [Exp 40](/research/experiments/exp-40/) | five models (four in Exp 38, one in Exp 40) | [Roy harness](/research/experiments/roy-harness/) |
-| A shared want generalizes to a new layout | null | [R1](/research/experiments/r1/) | structural (no campaign) | [World seam](/research/experiments/world-seam/) |
-| The world's own drives move behaviour | null | [R2](/research/experiments/r2/) | premise check | [World seam](/research/experiments/world-seam/) |
-| "Dark means danger" can be learned | null (blocked at the instrument) | [Exp 58](/research/experiments/exp-58/) | dry run | [World seam](/research/experiments/world-seam/) |
+| Claim | Status | Floor | Key experiment(s) | n | Full story |
+|---|---|---|---|---|---|
+| [A taught want transfers between independent agents](#a-taught-want-transfers-between-independent-agents) | earned | not measured | [Exp 56](/research/experiments/exp-56/) | 50 receivers | [World seam](/research/experiments/world-seam/) |
+| [Caregiver-taught orienting through hunger relief](#caregiver-taught-orienting-through-hunger-relief) | earned, reproduced | not measured | [Exp 52](/research/experiments/exp-52/) | 12 seeds (embodied, run twice); 8 seeds (scripted) | [The Cradle](/research/cradle/) |
+| [Substrate-primary safe-vs-harm discrimination](#substrate-primary-safe-vs-harm-discrimination) | earned | not measured | [Exp 42](/research/experiments/exp-42/), [42b](/research/experiments/exp-42b/) | 10 seeds; 40 sub-sims on re-run | [Roy harness](/research/experiments/roy-harness/) |
+| [Cross-session memory persistence](#cross-session-memory-persistence) | maintained (narrow), 2026-09-27 | not measured | [Exp 10](/research/experiments/exp-10/), [Exp 12](/research/experiments/exp-12/) | single multi-phase runs, re-run twice | [Cross-session recall](/research/experiments/cross-session-learning/) |
+| [Sensorimotor learning on real hardware](#sensorimotor-learning-on-real-hardware) | earned (merge arm downgraded) | not measured | [Exp 45](/research/experiments/exp-45/)–[45e](/research/experiments/exp-45e/) | mostly single hardware sessions; 45d three seeds | [Hardware orienting](/research/experiments/hardware-orienting/) |
+| [Cross-context readout on hardware](#cross-context-readout-on-hardware) | earned | not measured | [Exp 53b](/research/experiments/exp-53/) | 3 seeds, 180 trials | [Hardware orienting](/research/experiments/hardware-orienting/) |
+| [Two-joint centering](#two-joint-centering) (simulated) | earned | not measured | [Exp 49](/research/experiments/exp-49/) | 10 trials | [Hardware orienting](/research/experiments/hardware-orienting/) |
+| [Learned, anticipatory avoidance from the game's own pain](#learned-anticipatory-avoidance-from-the-games-own-pain) | partial (narrow: floor matched), 2026-10-14 | **matched**, measured ([B1](/research/experiments/b1-exp60-floor/)) | [Exp 60](/research/experiments/exp-60/) | 5 seeds × 6 placements; floor run 8 seeds × 5 arms | [World seam](/research/experiments/world-seam/) |
+| [A survival fear transfers between agents](#a-survival-fear-transfers-between-agents) | partial (narrow: floor matched, analytical), 2026-10-15 | **matched**, argued, not run | [Exp 61](/research/experiments/exp-61/) | 12 transferred vs 24 isolated, 12 + 24 falsifiers | [World seam](/research/experiments/world-seam/) |
+| [A learned fear carries to a second pool](#a-learned-fear-carries-to-a-second-pool-the-same-situation-a-different-place) | partial (rung A: floor matched, analytical), 2026-10-15 | **matched**, argued, not run | [Exp 62](/research/experiments/exp-62/) | 12 cross-pool, 12 same-pool, 3 ablated | [World seam](/research/experiments/world-seam/) |
+| [Pooling partial learners](#pooling-partial-learners--faster-per-participant-at-a-total-experience-cost) | partial | not measured | [Exp 57](/research/experiments/exp-57/) | 20 cohorts per rung | [World seam](/research/experiments/world-seam/) |
+| [Carried memory shifts an LLM-driven agent's behaviour](#carried-memory-shifts-an-llm-driven-agents-behaviour) | stale since 2026-10-02 (was partial) | not measured (owed in its re-run) | [Exp 37](/research/experiments/exp-37-graduation/) | 5 trials, four models | [Cross-session recall](/research/experiments/cross-session-learning/) |
+| [What a carried drive is worth](#what-a-carried-drive-is-worth-the-r3-benchmark) | reference (nothing graduated) | — | [R3](/research/experiments/r3/) | 12 agents × 5 arms | [World seam](/research/experiments/world-seam/) |
+| Carried substrate overrides a contrary LLM prior | null | — | [Exp 38](/research/experiments/exp-38/), [Exp 40](/research/experiments/exp-40/) | five models (four in Exp 38, one in Exp 40) | [Roy harness](/research/experiments/roy-harness/) |
+| A shared want generalizes to a new layout | null | — | [R1](/research/experiments/r1/) | structural (no campaign) | [World seam](/research/experiments/world-seam/) |
+| The world's own drives move behaviour | null | — | [R2](/research/experiments/r2/) | premise check | [World seam](/research/experiments/world-seam/) |
+| "Dark means danger" can be learned | null (blocked at the instrument) | — | [Exp 58](/research/experiments/exp-58/) | dry run | [World seam](/research/experiments/world-seam/) |
 
 The nulls are explained under [where it didn't hold up](#where-it-didnt-hold-up); every null,
 block and dated correction is listed under
 [nulls, retractions and corrections](#nulls-retractions-and-corrections).
+
+## The floors: the first comparison with a no-bio learner
+
+**What ran.** [B1](/research/experiments/b1-exp60-floor/) put no-bio learners into Exp 60's
+drowning task on 2026-10-14, under a design frozen before any gated data
+([pre-registration](https://github.com/dennys246/Maxim/blob/main/docs/experiments/b1_exp60_floor_prereg.md)).
+Five arms ran on seeds 11–18: FEAR (Maxim's fear pathway), a random agent, and a tabular
+Q-learner in three variants. The Q-learner was keyed on the same situation the agent
+perceives, armed only while in water, and allowed to act and explore. All 40 arm-seeds ran
+clean on their first attempt, and none were refused.
+
+**What it found.** The measure was whether the agent surfaced before the pain on the
+**first** placement after training, the one read that reflects the fear alone.
+
+- FEAR surfaced on 8 of 8 seeds, the Q-learner on 8 of 8, and the random agent on 2 of 8.
+- FEAR beat random: exact permutation test, one-sided p = 0.0035.
+- **FEAR did not beat the Q-learner:** the difference was 0, p = 1.0. A tie is reported as
+  *not shown*, never as *equivalent*.
+- The verdict is `FLOOR_MATCHED_Q`
+  ([verdict record](https://github.com/dennys246/Maxim/blob/main/docs/experiments/data/b1_exp60_floor_48ce40118c20_verdict.json)),
+  and Exp 60 moved to **partial (narrow: floor matched)** (engine PR
+  [#1283](https://github.com/dennys246/Maxim/pull/1283)).
+
+There is one real difference, and it is about efficiency, not behaviour. The Q-learner
+executed a median of **31** actions (range 23–46) before it first got out. FEAR executed
+**none** during training: it learned from pain it suffered passively. Given the same built-in
+defensive prior as FEAR, the Q-learner needed a median of 16.
+
+**Exp 61 and Exp 62 were moved by argument, not by a run.** The engine's owner decided on
+2026-10-15 that both rest on the same fear and that their floors match by construction
+([#1294](https://github.com/dennys246/Maxim/pull/1294),
+[#1296](https://github.com/dennys246/Maxim/pull/1296)):
+
+- In B1, a floor that the harness switches on only in water, so that the harness and not
+  the learner supplies *when*, escaped on its first-ever submersion with no experience at all
+  when given the same defensive prior (8 of 8).
+- The fair floor for learning *when* to act from pain an agent did not cause is a
+  state-value learner. Given the same prior, that learner *is* Maxim's fear mechanism, by
+  construction.
+- Exp 62's cross-pool transfer lives in the state key, which the floors share.
+
+**What still stands.** Every one of the three experiments beats its ablation: the same agent
+with only the fear pathway detached never left the water.
+
+**What is gone.** None of the three shows behaviour that a no-bio learner could not produce.
+
+**What they show instead.** Exp 60 shows that a live, embodied loop runs a context-conditioned
+fear learner correctly, learning *when* to act from pain alone. Exp 61 shows that the fear survives
+transport between independent agents: export, ingest, re-keying and the discount. Exp 62
+shows that the situation key carries the situation across pools, which the floors share.
+
+**What has not run.** No floor exists yet where a language model acts. The bare-LLM floor is
+Stage B2, and it waits on a refactor of the simulation orchestrator. Until it exists, no new
+claim on the language-model path can be earned. Stage B4 re-runs Exp 37 with its floors in
+1.4. The full plan is
+[`baseline_floors.md`](https://github.com/dennys246/Maxim/blob/main/docs/plans/baseline_floors.md).
 
 ## The claims
 
@@ -81,7 +162,16 @@ the shipped export and ingest path, and changes what that agent does the first t
 runs underwater. The 1.3 headline: the 1.2 transfer claim moved from a taught want to a fear
 the world taught.
 
-**Evidence.** [Exp 61](/research/experiments/exp-61/), earned 2026-09-17, one campaign at one
+**Status: partial (narrow: floor matched, analytical), 2026-10-15.** It passed its gates on
+2026-09-17 against its ablations, and those results stand. It was moved by argument, not a
+run: in B1, a tabular learner that the harness switched on in water, given the same
+defensive prior, escaped on its first-ever submersion with no experience; and a learner that
+must learn *when* from pain it did not cause is, with that prior, Maxim's fear mechanism by
+construction ([the floors](#the-floors-the-first-comparison-with-a-no-bio-learner)). What it
+shows beyond its controls is the **transport**: a learned fear surviving export, ingest,
+re-keying and the discount between independent agents.
+
+**Evidence.** [Exp 61](/research/experiments/exp-61/), gates passed 2026-09-17, one campaign at one
 code hash, 121 rows, zero refusals. The received fear is **discounted by a quarter at
 ingest** (a fear you were told about is weaker than one you felt). **12 of 12** transferred
 receivers left the water, against **0 of 24** isolated, **0 of 12** where the donor's cluster
@@ -141,10 +231,13 @@ live submersion in a *second* pool, at a different altitude and distance from sp
 shared, ingested or changed — no new mechanism, no new sensor. The fear travels because the
 body reads the second pool as the same situation.
 
-**Status.** Earned on the engine's ledger. It is **not a claim of the 1.3.1 release** until
-a second reader's review of it is recorded.
+**Status: partial (rung A: floor matched, analytical), 2026-10-15.** It passed its gates on
+2026-09-20 against its ablation, and that result stands. It was moved by argument, not a run:
+the transfer lives in the situation key, which a no-bio learner on the same key shares
+([the floors](#the-floors-the-first-comparison-with-a-no-bio-learner)). It was never a claim
+of the 1.3.1 release, and a second reader's review of it is still not recorded.
 
-**Evidence.** [Exp 62, rung A](/research/experiments/exp-62/), earned 2026-09-20 on the
+**Evidence.** [Exp 62, rung A](/research/experiments/exp-62/), gates passed 2026-09-20 on the
 shipped 1.3.0 body; 27 rows, zero refusals, one code hash. Cross-pool **12 of 12**, same-pool
 **12 of 12**, fear-ablated **0 of 3** with zero executor calls (their readings resolve to the
 *same* node, so the contrast is the fear alone). All five frozen gates pass; cross-pool vs
@@ -166,7 +259,13 @@ to *that situation* — not to the place, not to a written rule — and on later
 leaves the water **before** the pain would fire. The learning signal is the game's: no
 teacher, no LLM in the action path.
 
-**Evidence.** [Exp 60](/research/experiments/exp-60/), earned 2026-09-16, frozen before any
+**Status: partial (narrow: floor matched), 2026-10-14.** Against its ablation it still holds:
+re-run on 2026-10-12 at a pinned engine commit, it passed all five frozen gates again. Against a no-bio
+floor it does not: in [B1](#the-floors-the-first-comparison-with-a-no-bio-learner) a tabular
+Q-learner on the same state keys also escaped at the first placement after training, 8 of 8,
+as FEAR did. FEAR's only edge was that it needed no training actions.
+
+**Evidence.** [Exp 60](/research/experiments/exp-60/), gates first passed 2026-09-16, frozen before any
 trial. Live Paper 1.20.4 water classroom, five seeds per arm, six pain-free placements each.
 The trained arm surfaced on **1.0** of placements (from 0.0 before training, every seed)
 against **0.0** for its yoked ablated twin — same water, pain, episodes, actuator and loop,
@@ -179,6 +278,8 @@ before the 5.09 s pain edge. That median includes placements 2–6, which are li
 2.9–3.3 s**, still inside the window.
 
 **What it does not show.**
+- Behaviour beyond a no-bio learner: the floor matched it ([B1](#the-floors-the-first-comparison-with-a-no-bio-learner)).
+- *Which* action the fear selects comes from a built-in defensive prior, not from learning; what the fear learns is *when* to act.
 - Five seeds per arm.
 - After a seed's first escape the escape action also carries a positive causal link, so placements 2–6 read fear *plus* that link; only the first placement per seed reads fear alone, and no per-placement decomposition is measured.
 - Nothing about other geometries or bodies of water, persistence or extinction after a delay, or innate versus learned beyond the ablation.
@@ -213,6 +314,7 @@ phases, including the one with every scaffold disabled).
 - Single runs, not a statistical campaign. The original April raw logs were written to `/tmp` and lost; the surviving raw records are the August and September re-runs.
 - "3 per turn" is the enrichment cap filled from carried memories, not a relevance measure.
 - The September re-run is too thin to test negative transfer: its third phase took one action.
+- **Exp 12 ran with two simulator defects found in October 2026.** Its narrator saw delivery receipts instead of the agent's words ([#1261](https://github.com/dennys246/Maxim/issues/1261)), and the agent was told `respond` was unavailable ([#1260](https://github.com/dennys246/Maxim/issues/1260)); both are fixed ([#1289](https://github.com/dennys246/Maxim/pull/1289), [#1299](https://github.com/dennys246/Maxim/pull/1299)). Its recall headline was scored from the agent's tool arguments, so the receipts do not decide it, but its raw scoring files were never committed, so it cannot be re-derived from the repository. A re-assessment of every run recorded before the fixes is open ([#1301](https://github.com/dennys246/Maxim/issues/1301)).
 
 ### Sensorimotor learning on real hardware
 
@@ -310,13 +412,22 @@ pre-registration merge. One ladder on live Minecraft, 4 rungs × 3 conditions ×
 
 ### Carried memory shifts an LLM-driven agent's behaviour
 
-**Partial.** [Exp 37](/research/experiments/exp-37-graduation/), the pre-registered 1.0 gate,
+**Stale since 2026-10-02; partial before that.** A change to how the agent's prompt is built
+fired this row's re-run trigger, and the re-run has not happened, so the row carries no
+current claim. Its re-run, with the language-model floors beside it, is Stage B4 of the
+[baseline floors plan](https://github.com/dennys246/Maxim/blob/main/docs/plans/baseline_floors.md),
+planned for 1.4.
+
+[Exp 37](/research/experiments/exp-37-graduation/), the pre-registered 1.0 gate,
 found a cross-session behavioural shift only at ≥32B, and only where the model's prior left
 headroom (a "Goldilocks zone" across four
-[model fires](/research/experiments/exp-37-cross-model/)). The isolation arm failed on every
-fire where the primary passed, so independence from the LLM prior is not established; the
-identical commit on identical seeds did not reproduce its own June result in August (0.71
-against 0.42, limit [L8](/research/limits/)). Details under
+[model fires](/research/experiments/exp-37-cross-model/)). That map is **unverifiable, not
+refuted**: the identical commit on identical seeds did not reproduce its own June result in
+August (0.71 against 0.42, limit [L8](/research/limits/)), and the run records cannot say
+why. The isolation arm failed on every
+fire where the primary passed, so independence from the LLM prior is not established. These
+runs also ran with the #1260 defect (the agent was told `respond` was unavailable), listed under
+[nulls, retractions and corrections](#nulls-retractions-and-corrections) (2026-10-15). Details under
 [where it didn't hold up](#where-it-didnt-hold-up) and on
 [Cross-session recall](/research/experiments/cross-session-learning/).
 
@@ -357,7 +468,8 @@ behaviour, governed by training method at least as much as parameter count: one 
 priors were too weak to use the substrate, another already solved the task. Those magnitudes
 are readings taken at one time, not constants: the serving environment moved the whole
 distribution more than the code did, and the run records cannot reconstruct why
-([L8](/research/limits/)).
+([L8](/research/limits/)). The map is unverifiable, not refuted, and the row it belongs to has
+been stale since 2026-10-02.
 
 **"Dark means danger" was blocked at the instrument.** On the shipped sensors the dark and
 safe situations never form distinct clusters, so a fear has nothing to key on — a dilution
@@ -427,14 +539,19 @@ carries its record.
 - **2026-09-25 — Exp 62 "night pool" corrected** ([#899](https://github.com/dennys246/Maxim/issues/899)): the 0.799 reading was the in-game clock's wrap (time 0.99), not night; midnight reads 0.903. The fear misses only at time ≈ 0.94–0.99. The lit-pond miss (0.588) stands ([Exp 62](/research/experiments/exp-62/)).
 - **2026-09-27 — Exp 56 and Exp 61 were unsigned.** Both harnesses exported through the real CLI without `--sign`; the claims rest on the shipped export and ingest path, not on signing ([Exp 56](/research/experiments/exp-56/), [Exp 61](/research/experiments/exp-61/)).
 - **2026-09-27 — Exp 10 re-run: maintained, narrow.** Exact reload and 3 memories per observed resume turn, but one turn per phase (D13) and link accumulation not re-shown ([above](#cross-session-memory-persistence)).
+- **2026-10-02 — Exp 37 stale.** A prompt-construction change fired its re-run trigger; the re-run, with floors, is planned for 1.4 ([above](#carried-memory-shifts-an-llm-driven-agents-behaviour)).
+- **2026-10-14 — Exp 60 floor matched.** A tabular Q-learner on the same state keys escaped as FEAR did (8 of 8 each; random 2 of 8). Exp 60 moved to partial (narrow: floor matched); its ablation result stands ([the floors](#the-floors-the-first-comparison-with-a-no-bio-learner)).
+- **2026-10-15 — Exp 61 and Exp 62 floor matched, by argument.** Both rest on Exp 60's fear, and their floors match by construction; both moved to partial. Their ablation results stand ([the floors](#the-floors-the-first-comparison-with-a-no-bio-learner)).
+- **2026-10-15 — two simulator defects in narrator-driven runs from 2026-04-03 until the fixes (2026-10-15/16 UTC).** The narrator saw delivery receipts instead of the agent's words ([#1261](https://github.com/dennys246/Maxim/issues/1261)), and the agent was told `respond` was unavailable, with a follow-up each time it used it anyway ([#1260](https://github.com/dennys246/Maxim/issues/1260)). Both are fixed ([#1289](https://github.com/dennys246/Maxim/pull/1289), [#1299](https://github.com/dennys246/Maxim/pull/1299)). Exp 12's Acting Coach count ("3 respond hits against 1") counted `respond` calls by an agent told `respond` was unavailable, so it reflects that contradiction and the extra follow-ups, not only the coach. Its ledger row (T3-11) was already dropped on 2026-08-30. A re-assessment of every affected claim is open ([#1301](https://github.com/dennys246/Maxim/issues/1301)).
 - **Undated — the original cradle-mother design superseded.** Its intrinsic "centeredness drive" oriented the infant at 1.000 with no mother present ([the Cradle](/research/cradle/)).
 
 ## Not shipped, not claimed
 
-- **Peer substrate sharing: transfer is earned; generalization, hardware and scale are not.**
-  A taught want ([Exp 56](#a-taught-want-transfers-between-independent-agents)) and a learned
-  fear ([Exp 61](#a-survival-fear-transfers-between-agents)) transfer at their stated scopes, over
-  an exchange that ships end to end ([the Oasis](/guides/oasis/)). Not earned: cross-layout
+- **Peer substrate sharing: transfer is shown; generalization, hardware and scale are not.**
+  A taught want ([Exp 56](#a-taught-want-transfers-between-independent-agents), earned; floor not
+  measured) and a learned fear ([Exp 61](#a-survival-fear-transfers-between-agents), partial:
+  the transport holds, behaviour beyond a no-bio learner does not) transfer at their stated
+  scopes, over an exchange that ships end to end ([the Oasis](/guides/oasis/)). Not earned: cross-layout
   generalization (R1), replication across two physical robots (its own pre-registration, not
   run), scaling beyond the named partial, and — for a shared fear — its reach to a different
   pool, extinction, scaling past one donor and hive-side promotion. *Correction, 2026-09-03:*
@@ -490,3 +607,14 @@ experience in the default LLM-primary path, so an agent's substrate stays curren
 rather than only being pre-loaded before a run. The first phase of that work has landed in
 the engine; the behavioural validation that it produces a better agent is future work, and
 nothing on this site should be read as claiming it yet.
+
+**The 1.4 survival rungs owe more than the fear rows did.** After B1, each of 1.4's planned
+rungs E1–E3 must run the *mechanism twin* (a plain state-value learner given the same prior,
+which is what Maxim's fear mechanism reduces to) as an arm, and a rung that is to be earned
+over the floor needs a contingency that a reasonable floor can lose; the candidate is generalization to situations that a plain lookup key treats as new
+([`baseline_floors.md`](https://github.com/dennys246/Maxim/blob/main/docs/plans/baseline_floors.md),
+"Why this plan exists"). That is planned work; nothing is claimed for it. Two engineering
+changes on the engine's main branch bear on it, neither a behavioural claim: the simulator's
+narrator now hears the agent's own words, and 1.4.0 cannot be released until the agent-loop and
+simulator decomposition is complete, a gate enforced in CI
+([#1300](https://github.com/dennys246/Maxim/pull/1300)).
