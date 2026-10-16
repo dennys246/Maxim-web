@@ -51,7 +51,7 @@ learner.
 | [A taught want transfers between independent agents](#a-taught-want-transfers-between-independent-agents) | earned | not measured | [Exp 56](/research/experiments/exp-56/) | 50 receivers | [World seam](/research/experiments/world-seam/) |
 | [Caregiver-taught orienting through hunger relief](#caregiver-taught-orienting-through-hunger-relief) | earned, reproduced | not measured | [Exp 52](/research/experiments/exp-52/) | 12 seeds (embodied, run twice); 8 seeds (scripted) | [The Cradle](/research/cradle/) |
 | [Substrate-primary safe-vs-harm discrimination](#substrate-primary-safe-vs-harm-discrimination) | earned | not measured | [Exp 42](/research/experiments/exp-42/), [42b](/research/experiments/exp-42b/) | 10 seeds; 40 sub-sims on re-run | [Roy harness](/research/experiments/roy-harness/) |
-| [Cross-session memory persistence](#cross-session-memory-persistence) | maintained (narrow), 2026-09-27 | not measured | [Exp 10](/research/experiments/exp-10/), [Exp 12](/research/experiments/exp-12/) | single multi-phase runs, re-run twice | [Cross-session recall](/research/experiments/cross-session-learning/) |
+| [Cross-session memory persistence](#cross-session-memory-persistence) | earned (narrow), 2026-10-04 | not measured | [Exp 63](/research/experiments/exp-63/) (supersedes [Exp 10](/research/experiments/exp-10/)), [Exp 12](/research/experiments/exp-12/) | one run, 8 resume turns | [Cross-session recall](/research/experiments/cross-session-learning/) |
 | [Sensorimotor learning on real hardware](#sensorimotor-learning-on-real-hardware) | earned (merge arm downgraded) | not measured | [Exp 45](/research/experiments/exp-45/)–[45e](/research/experiments/exp-45e/) | mostly single hardware sessions; 45d three seeds | [Hardware orienting](/research/experiments/hardware-orienting/) |
 | [Cross-context readout on hardware](#cross-context-readout-on-hardware) | earned | not measured | [Exp 53b](/research/experiments/exp-53/) | 3 seeds, 180 trials | [Hardware orienting](/research/experiments/hardware-orienting/) |
 | [Two-joint centering](#two-joint-centering) (simulated) | earned | not measured | [Exp 49](/research/experiments/exp-49/) | 10 trials | [Hardware orienting](/research/experiments/hardware-orienting/) |
@@ -288,20 +288,30 @@ before the 5.09 s pain edge. That median includes placements 2–6, which are li
 ### Cross-session memory persistence
 
 **Claim.** The substrate carries memory across sessions. A resumed session opens with the
-prior session's store intact, surfaces roughly three relevant memories per turn, and
-accumulates causal links rather than re-deriving them.
+prior session's store intact, and the carried memories take part in recall on every turn,
+ranked by the same rule as new ones.
 
-**Status: MAINTAINED (narrow), 2026-09-27.** 1.3.1 changed what the memory store saves,
-which fired this row's re-run trigger, so [Exp 10](/research/experiments/exp-10/) was run
-again before release, at engine commit `a1ba1e5d` (operator-attested). What it showed: both resumed sessions reloaded the saved
-store exactly (100 memories); the fields the persistence change added came back unchanged
-on all 100; and 3 memories surfaced on every resume turn observed. What it did not: each
-resumed phase ran only **one turn**, against eight in August, because every run stopped
-early on a known planning defect (D13, engine issue
-[#935](https://github.com/dennys246/Maxim/issues/935)); and link accumulation was not
-re-shown, since no run was long enough for a link to be observed twice. The discarded and
-disclosed attempts are in the
-[re-run record](https://github.com/dennys246/Maxim/blob/main/docs/experiments/data/rerun_exp10_2026-09-27/README.md).
+**Status: earned (narrow), 2026-10-04, by [Exp 63](/research/experiments/exp-63/)**, which
+replaced Exp 10's claim on current code. Exp 63 was pre-registered and run once, on mistral-7b.
+The carried store reloaded exactly (84 memories, none missing, no field changed), and on every
+one of 8 resume turns the carried memories took part in recall as full candidates: the memories
+shown were exactly those the shipped ranker picks, and that ranker reads nothing about a
+memory's origin or age except a recency tiebreak. On the first resume turn all three memories
+shown were carried ones. "Narrow" is load-bearing: the ranker matches goal keywords, not
+meaning ([#1064](https://github.com/dennys246/Maxim/issues/1064)), and nothing here says
+carried memory changes what the agent does. It ran with the narrator defect
+[#1260](https://github.com/dennys246/Maxim/issues/1260); its agent never spoke, and the
+fix's walk found none of its re-run triggers touched. It was earned before the floor rule, so
+its floor is not measured.
+
+**Exp 10's September re-run, for the record.** 1.3.1 changed what the memory store saves, so
+[Exp 10](/research/experiments/exp-10/) was run again at engine commit `a1ba1e5d`
+(operator-attested): both resumed sessions reloaded the store exactly (100 memories) and
+surfaced 3 memories on every resume turn observed, but each resumed phase ran only **one
+turn**, because every run stopped early on a known planning defect (D13,
+[#935](https://github.com/dennys246/Maxim/issues/935)). On 2026-09-30 the engine marked the
+row stale, since a typed abort cannot back a status, and Exp 63 replaced it
+([re-run record](https://github.com/dennys246/Maxim/blob/main/docs/experiments/data/rerun_exp10_2026-09-27/README.md)).
 
 **Earlier evidence.** The August 2026 heartbeat walk was the row's cleanest pass: phase 2
 opened at exactly phase 1's closing store, hit the three-per-turn bar on 8 of 8 turns, and
@@ -313,6 +323,7 @@ phases, including the one with every scaffold disabled).
 - Persistence, not behavioural override. That remembering changes what the agent does is a separate, much more qualified claim — [see below](#carried-memory-shifts-an-llm-driven-agents-behaviour).
 - Single runs, not a statistical campaign. The original April raw logs were written to `/tmp` and lost; the surviving raw records are the August and September re-runs.
 - "3 per turn" is the enrichment cap filled from carried memories, not a relevance measure.
+- Not shown on current code: link accumulation across sessions, recall reconsolidation, or negative transfer. Exp 63 is one run on one model.
 - The September re-run is too thin to test negative transfer: its third phase took one action.
 - **Exp 12 ran with two simulator defects found in October 2026.** Its narrator saw delivery receipts instead of the agent's words ([#1261](https://github.com/dennys246/Maxim/issues/1261)), and the agent was told `respond` was unavailable ([#1260](https://github.com/dennys246/Maxim/issues/1260)); both are fixed ([#1289](https://github.com/dennys246/Maxim/pull/1289), [#1299](https://github.com/dennys246/Maxim/pull/1299)). Its recall headline was scored from the agent's tool arguments, so the receipts do not decide it, but its raw scoring files were never committed, so it cannot be re-derived from the repository. A re-assessment of every run recorded before the fixes is open ([#1301](https://github.com/dennys246/Maxim/issues/1301)).
 
@@ -539,6 +550,7 @@ carries its record.
 - **2026-09-25 — Exp 62 "night pool" corrected** ([#899](https://github.com/dennys246/Maxim/issues/899)): the 0.799 reading was the in-game clock's wrap (time 0.99), not night; midnight reads 0.903. The fear misses only at time ≈ 0.94–0.99. The lit-pond miss (0.588) stands ([Exp 62](/research/experiments/exp-62/)).
 - **2026-09-27 — Exp 56 and Exp 61 were unsigned.** Both harnesses exported through the real CLI without `--sign`; the claims rest on the shipped export and ingest path, not on signing ([Exp 56](/research/experiments/exp-56/), [Exp 61](/research/experiments/exp-61/)).
 - **2026-09-27 — Exp 10 re-run: maintained, narrow.** Exact reload and 3 memories per observed resume turn, but one turn per phase (D13) and link accumulation not re-shown ([above](#cross-session-memory-persistence)).
+- **2026-09-30 / 2026-10-04 — Exp 10 stale, then superseded** by Exp 63, a new pre-registered run on current code ([above](#cross-session-memory-persistence)).
 - **2026-10-02 — Exp 37 stale.** A prompt-construction change fired its re-run trigger; the re-run, with floors, is planned for 1.4 ([above](#carried-memory-shifts-an-llm-driven-agents-behaviour)).
 - **2026-10-14 — Exp 60 floor matched.** A tabular Q-learner on the same state keys escaped as FEAR did (8 of 8 each; random 2 of 8). Exp 60 moved to partial (narrow: floor matched); its ablation result stands ([the floors](#the-floors-the-first-comparison-with-a-no-bio-learner)).
 - **2026-10-15 — Exp 61 and Exp 62 floor matched, by argument.** Both rest on Exp 60's fear, and their floors match by construction; both moved to partial. Their ablation results stand ([the floors](#the-floors-the-first-comparison-with-a-no-bio-learner)).

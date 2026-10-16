@@ -4,7 +4,8 @@ description: The session directory every simulation writes, what each file holds
 ---
 
 Every simulation writes one directory. This page is the reader's guide to it, verified against the
-1.1.3 code and against real session directories.
+1.1.3 code and against real session directories, and updated for what 1.3.2 changed in paths, the
+action log and loading.
 
 ## Where it lives
 
@@ -13,16 +14,18 @@ home is redirected. The session id is a timestamp, `YYYYMMDD_HHMMSS`, minted whe
 directory name equals the `session_id` on every log event of that run.
 
 :::note[`~/.maxim/sessions/` is not where sessions go]
-That directory exists and is empty. Nothing at 1.1.3 writes to it; one docstring in `api.py` still says
-otherwise. If a tool or doc points you there, it is stale.
+No simulation writes there. Through 1.3.1, `maxim.run(learning=True)` kept its agent's files there;
+since 1.3.2 that agent lives in `<data home>/agents/api_agent/`, and the first 1.3.2 run moves the old
+files once. If a tool or doc points you at `sessions/` for a simulation, it is stale.
 :::
 
 Two things a run writes **outside** the session directory. The full simulation trace lands at
 `sim_sandbox/sim_agent_<timestamp>.jsonl` under the data home (`~/.maxim/sim_sandbox/`, or
 `$MAXIM_DATA_HOME/sim_sandbox/`) — *since 1.1.4*; through 1.1.3 it was `data/sim_sandbox/` relative to the
 working directory, a defect the engine fixed as D69. Research mode's `research_result.json`,
-`bus_history.json` and `paper.md` still land under `data/sim_reports/research_<id>/` relative to the
-working directory, not the data home. This surprises pip-installed users; it is how the code is today.
+`bus_history.json` and `paper.md` land under `<data home>/sim_reports/research_<id>/` since 1.3.2; through 1.3.1 they
+went to `data/sim_reports/research_<id>/` relative to the working directory, and existing directories
+there are left alone.
 
 ## The files
 
@@ -68,15 +71,21 @@ adds no fields.
 Line one is a header; skip any line whose `_record_kind` is `header` before reading records.
 
 ```jsonl
-{"_format_version": "1.1", "_record_kind": "header", "session_id": "20260902_210107"}
+{"_format_version": "1.2", "_record_kind": "header", "session_id": "20260902_210107"}
 {"timestamp": 1788404617.408, "tool": "sense_food_source", "params": {}, "success": true,
  "output": "{'portions': {'value': 5.0, 'unit': 'count'}, ...}", "error": null,
  "blocked": false, "block_reason": null, "agent_id": "sim_aut",
- "session_id": "20260902_210107", "entity_class": null}
+ "session_id": "20260902_210107", "entity_class": null,
+ "rpe": null, "pain": null, "nac_failure_booked": null}
 ```
 
 `output` is truncated to 1000 characters. `agent_id`, `session_id` and `entity_class` can be `null` on
 older runs or when the entity could not be derived from the parameters; that is normal.
+
+**Since 1.3.2 (format 1.2)** each record also carries the credit the action booked: `rpe` (the reward
+surprise), `pain`, and `nac_failure_booked` (whether the failure was booked as a learned link). Each is
+`null` where the action carried none. A file with a `1.1` header predates them: read it as "credit not
+recorded", not "no credit".
 
 ## The two JSONL streams
 
@@ -151,13 +160,15 @@ from pathlib import Path
 
 import maxim
 
-s = maxim.load.session("20260902_21")          # prefix match, newest first
+s = maxim.load.session("20260902_210107")      # an exact id, or a path
 s.observe("memory", keyword="food")             # hippocampus + NAc from that directory
 nac = maxim.load.nac(str(Path.home() / ".maxim/sim_reports/20260902_210107/aut_nac.json"))
 ```
 
-The `load.*` functions take the path as written, so a literal `"~/..."` is not expanded:
-`load.nac` then raises, and `load.hippocampus` returns an empty store without raising.
+A prefix still works when it matches one run; since 1.3.2 a prefix that matches several raises
+`maxim.RunDirAmbiguous` and lists them (before, the newest was loaded silently). An id that also names
+a directory in your working directory is refused as ambiguous, so pass a path to be exact. `"~/..."`
+paths are expanded since 1.3.2, and a missing store file raises `FileNotFoundError`.
 
 A disk-loaded `Session` is metadata plus `observe()`, not a replay: turn counts and durations read as
 zero. There is no `maxim.load.ec` at 1.1.3. `maxim.observe(...)` at the top level reads the **agent

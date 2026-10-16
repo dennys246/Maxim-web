@@ -92,7 +92,8 @@ campaign's percepts are injected directly through the bridge and the orchestrato
 
 The gate that matters: if the underlying run ended with an abort reason, the writer and reviewer are
 skipped and the result records "underlying simulation was unusable". A bad experiment never becomes a
-paper. Results land under `data/sim_reports/research_<id>/`, relative to the working directory, as
+paper. Results land under `<data home>/sim_reports/research_<id>/` (since 1.3.2; through 1.3.1 it was
+`data/sim_reports/` relative to the working directory), as
 `research_result.json`, `bus_history.json` and `paper.md`. The surface is marked experimental in the
 engine and can change within 1.x.
 

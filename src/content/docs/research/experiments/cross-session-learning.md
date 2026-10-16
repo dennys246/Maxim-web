@@ -24,9 +24,11 @@ model weights.
 > session and is **recalled in later sessions** as natural-language context, with **no
 > gradient updates** to the language model.
 
-**Recall is earned.** [Exp 10](/research/experiments/exp-10/) showed prior-session memories
-surfacing on resume (about three per turn), re-validated in August 2026 and maintained,
-narrowly, in a one-turn-per-phase re-run for 1.3.1, and
+**Recall is earned, narrowly, on current code.** [Exp 63](/research/experiments/exp-63/)
+(2026-10-04) showed carried memories reloading exactly and taking part in recall on every resume
+turn; it superseded [Exp 10](/research/experiments/exp-10/), whose September re-run was too thin
+to back a status. Exp 10 had shown prior-session memories surfacing on resume (about three per
+turn) and re-validated in August 2026, and
 [Exp 12](/research/experiments/exp-12/) reproduced cross-session recall with every scaffold
 removed. The LLM that runs session two is byte-for-byte the LLM that ran session one; what
 changes is the context assembled around it from the [Hippocampus](/systems/hippocampus/),
@@ -66,8 +68,9 @@ Newest first. Each experiment's page links its record and how to reproduce it; t
 | Exp | Date | Status | n per arm | Result |
 |---|---|---|---|---|
 | [37](/research/experiments/exp-37-graduation/) | 2026-05-30 | stale since 2026-10-02 (was partial) | 5 trials, four models | Behavioural delta only at ≥32B; independence from the prior not isolated (Arm C); magnitudes did not reproduce in August (L8) |
+| [63](/research/experiments/exp-63/) | 2026-10-04 | earned (narrow) | one run, 8 resume turns, mistral-7b | 84 carried memories reload unchanged and take part in recall on 8 of 8 turns, exactly as the shipped ranker dictates |
 | [12](/research/experiments/exp-12/) | 2026-04-30 | earned | one session pair per phase, 7 phases | Substrate alone recalls a planted token across sessions, 7 of 7 phases |
-| [10](/research/experiments/exp-10/) | 2026-04-25 | proof of concept (the persistence claim is maintained, narrow, in the graduation ledger, 2026-09-27) | single three-phase run, re-run August and September 2026 | Prior-session memories surface on resume, 3 per turn |
+| [10](/research/experiments/exp-10/) | 2026-04-25 | superseded by Exp 63 (2026-10-04) | single three-phase run, re-run August and September 2026 | Prior-session memories surface on resume, 3 per turn |
 | [B4](/research/experiments/behavioral-convergence-exp4-tier3/) | 2026-04-17 | earned | one run per session, four sessions | Teal-vial selection 0% → 25% → 100% across sessions; fresh control 0% |
 | [B3](/research/experiments/behavioral-convergence-exp3-tier2/) | 2026-04-17 | earned | 10 per condition | Experienced agent picks the antidote 10/10; fresh agent 0/10 |
 | [B2](/research/experiments/behavioral-convergence-exp2/) | 2026-04-17 | earned | experienced vs control agents | Energy-driven valences persist to disk and reload |
@@ -114,6 +117,22 @@ These are the strongest LLM-path behavioural results in the record, with the cav
 carry themselves: they run at 14B, where Exp 37 later found the prior *too weak* for its
 fire scenario, and none has a peaceful-prior control.
 
+### Carried memory in recall (Experiment 63)
+
+Exp 63 re-tested the persistence claim as a new pre-registered experiment on current code, after
+Exp 10's September re-runs aborted. One run on mistral-7b, two phases of 8 turns each, run
+2026-10-03 UTC and earned 2026-10-04. The carried store reloaded exactly: 84 memories, none
+missing, no field changed. On every resume turn the carried memories were full candidates for
+recall, and the memories shown matched a recomputation with the frozen ranker on 8 of 8 turns;
+that ranker reads no memory's origin or age except a recency tiebreak. On the first resume turn
+all three memories shown were carried ones.
+
+What it does not show: anything about behaviour (that is Exp 37's question), recall
+reconsolidation, or negative transfer. The ranker matches goal keywords, not meaning
+([#1064](https://github.com/dennys246/Maxim/issues/1064)), and a fix there is one of the row's
+re-run triggers. It ran with the narrator defect [#1260](https://github.com/dennys246/Maxim/issues/1260);
+its agent never spoke. It was earned before the floor rule, so its floor is not measured.
+
 ### Exp 10 — cross-session enrichment
 
 On 2026-04-25 a resumed session first surfaced prior-session memories in the LLM prompt: after
@@ -126,7 +145,9 @@ row's cleanest pass: phase 2 opened at exactly phase 1's closing store (108), hi
 turn on 8 of 8 turns, and grew the store to 535. The original April raw logs were written to
 `/tmp` and are lost; the surviving raw records are that re-run and the next.
 
-The 1.3.1 re-run (2026-09-27) is **maintained, narrow**. The persistence changes in 1.3.1
+The 1.3.1 re-run (2026-09-27) was first recorded as **maintained, narrow**; on 2026-09-30 the
+engine marked the row stale, because a run that ends in a typed abort cannot back a status, and
+Exp 63 superseded it on 2026-10-04. The persistence changes in 1.3.1
 fired the row's re-run trigger. Both resumes reloaded the saved store exactly (100
 memories), the new persistence fields round-tripped unchanged on all 100, and 3 memories
 surfaced on every resume turn observed. But every run stopped early on a known planning

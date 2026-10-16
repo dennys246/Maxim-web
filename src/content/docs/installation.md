@@ -88,6 +88,94 @@ maxim --mode exploration
 
 From here, configure your instance with [`maxim config`](/configuration/) and explore the rest of the command surface in the [CLI Reference](/reference/cli/).
 
+## Upgrading to 1.3.2
+
+```sh
+pip install --upgrade pymaxim
+```
+
+1.3.2 turns several silent losses into errors. If you use the Python memory API, load past
+runs, keep an internet policy file, or give the agent host tools, check these first.
+
+**Memory stores**
+
+- **A store will not save over a file it never read.** `Hippocampus.save()`, `ATL.save()`,
+  and the NAc, EC, SCN, AngularGyrus and cross-layer graph saves raise
+  `StoreOverwriteRefused` (a `FileExistsError`, exported from `maxim`) when the file exists
+  and this instance neither read nor created it. To keep the memories, open the store with
+  `maxim.load.hippocampus(path)` (or `load.atl`, `load.nac`) and save it back with that path:
+  `hippo.save(path)`. A store from `load.*` has no path of its own, so a bare `save()` raises
+  `ValueError`. To replace the file on purpose, pass `save(overwrite=True)` or call
+  `allow_overwrite()` first.
+- **`maxim.create.hippocampus` and `create.atl` refuse an existing store** when they are
+  built, not at the first save. Use `maxim.load.*` to keep it, or `overwrite=True` to replace
+  it. `maxim.create.agent(name)` raises `FileExistsError` if that agent already has state; use
+  `maxim.load.agent(name)`.
+- **Loading is stricter.** `Hippocampus.load()` and `ATL.load()` raise `FileNotFoundError` on a
+  missing file (`load(missing_ok=True)` keeps the old behaviour), and `maxim.load.*` raises
+  `MemoryCorruptionError` for an unreadable file. An unreadable file is kept as
+  `<name>.corrupt-<UTC time>` before a store starts fresh.
+- **`~` is expanded** in every store path, so `"~/..."` now means your home directory. Before,
+  it wrote a directory literally named `~` and `load.hippocampus("~/...")` returned an empty
+  store.
+- **`export_memories()["memory_summaries"]`** items no longer carry `valence` (it was always 0).
+  Read `outcome` instead: `success`, `failure` or `unknown`.
+
+**Runs and data**
+
+- **`maxim.load.session(id)`** resolves an exact id or a path first. A prefix that matches more
+  than one run raises `maxim.RunDirAmbiguous`; before, it silently loaded the newest. An id
+  that also names a directory in your working directory is refused as ambiguous, so pass a
+  path to be exact.
+- **The Python API follows `MAXIM_DATA_HOME`.** `maxim.run`, `maxim.observe` and `maxim.recall`
+  default to the data home, not a literal `~/.maxim`. `maxim.run(learning=True)` keeps its agent
+  in `<data home>/agents/api_agent/`; the first run moves the old files there once.
+- **`--sim research`** writes under `<data home>/sim_reports/`, not `./data/sim_reports/` in
+  the directory you ran it from.
+
+**Configuration**
+
+- **`maxim config set` pins a value** even when it equals the default, and `maxim config unset
+  <field>` returns it to the default.
+- **`maxim config set` refuses a file written by a newer Maxim.** `maxim config downgrade` keeps
+  the settings this build knows and sets the rest aside in `config.preserved.json`; after
+  upgrading again, `maxim config restore-preserved` offers them back, one field at a time.
+
+**Internet**
+
+The internet policy turns the internet **off**, and says why, when:
+
+- `util/internet_policy.json` has a key this build does not know (a typo such as
+  `block_domain` used to be ignored, which dropped the block list);
+- `util/internet_access.json` is unreadable, or its `enabled` is not a real boolean;
+- an entry is a wildcard (`*.example.com`; a domain already covers its subdomains), or a symbol
+  or emoji domain that IDNA 2008 rejects (rewrite it in its `xn--` form).
+
+A robots.txt that cannot be read (a 5xx, a 429, a timeout) now refuses the fetch instead of
+allowing it; a missing one (a 4xx) still means no restrictions.
+
+**Modes and host tools**
+
+- **The agent can only lower its own capability.** Its `mode_switch` tool refuses any switch
+  that gains capability, including passive → active, which 1.3.1 still allowed, and a mode
+  request from the robot runtime must lower capability. The operator's grant is the new launch
+  flag `--operational-mode passive|active|singularity`, which needs an explicit `--mode` and is
+  refused with `--sim`, `--research`, `--benchmark` and `--foundry`. `singularity` is reachable
+  only this way. See [operating modes](/concepts/operating-modes/#since-132-capability-goes-down-not-up).
+- **Host tools get a clean environment.** `bash`, `execute_file`, `run_tests`, `git_diff` and
+  `git_commit` no longer see your API keys, `MAXIM_*`, `SSH_AUTH_SOCK` or `GIT_*` variables, so
+  SSH signing and git over SSH stop working from them, and they run inside the mode's allowed
+  directories. `git_commit` is now opt-in, like `git_diff`: set `MAXIM_ALLOW_GIT_COMMIT=1`.
+
+**Internals that moved.** `agent_loop`'s helpers moved to `maxim.runtime.loop_setup`,
+`maxim.runtime.substrate_proposal` and `maxim.runtime.loop_gates`, with no re-export. A custom
+tool registry must provide `tool_descriptions()`.
+
+The engine's
+[1.3.2 notes](https://github.com/dennys246/Maxim/blob/main/docs/announcements/release_1_3_2.md#upgrading)
+and [changelog](https://github.com/dennys246/Maxim/blob/main/CHANGELOG.md) have the complete
+list, including entity file format 1.1, which 1.3.1 cannot read.
+
 ## Upgrading to 1.3.1
 
 ```sh

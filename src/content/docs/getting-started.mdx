@@ -22,13 +22,43 @@ such as the Reachy robot.
 pip install pymaxim
 ```
 
-That resolves to the current stable release, **1.3.1 "Hardening"** (published
-2026-09-27 UTC) —
-[release notes](https://github.com/dennys246/Maxim/blob/main/docs/announcements/release_1_3_1.md) ·
+That resolves to the current stable release, **1.3.2 "TODO-1.3.2-NAME"** (published
+TODO-1.3.2-DATE UTC) —
+[release notes](https://github.com/dennys246/Maxim/blob/main/docs/announcements/release_1_3_2.md) ·
 [changelog](https://github.com/dennys246/Maxim/blob/main/CHANGELOG.md) ·
-[GitHub release](https://github.com/dennys246/Maxim/releases/tag/v1.3.1) ·
-[PyPI](https://pypi.org/project/pymaxim/1.3.1/).
+[GitHub release](https://github.com/dennys246/Maxim/releases/tag/v1.3.2) ·
+[PyPI](https://pypi.org/project/pymaxim/1.3.2/).
 
+1.3.2 makes **no new behavioural claim**, and it ships with three of its earlier claims
+narrowed (below). What changes for you:
+
+- **Memory stores refuse to lose memories.** A store no longer saves over a file it never
+  read, `maxim.create.*` refuses a store that already exists, and `~` in a path is expanded.
+  Each of these used to be a silent loss; each is now an error that names the fix.
+- **Runs are found the same way everywhere.** The Python API follows `MAXIM_DATA_HOME`,
+  and a session id that matches more than one run is refused instead of loading the
+  newest.
+- **The Console can open past runs** (contract 0.6.0): run history, each run's actions
+  with the credit they booked, and health, including a check for a planning turn that
+  is stuck.
+- **The internet policy fails closed** in more places: an unreadable robots.txt, an
+  unknown key in the policy file, and a domain IDNA 2008 rejects.
+- **The agent can lower its own mode but not raise it.** Raising is the operator's call,
+  with the new `--operational-mode` launch flag; host tools also lose your API keys and
+  other secrets from their environment.
+
+Read [upgrading to 1.3.2](/installation/#upgrading-to-132) before you upgrade: several
+Python calls that used to succeed silently now raise.
+
+**What 1.3.2 says about the evidence.** Three survival-fear results moved from earned to
+partial after the project compared them with a learner that has no bio layers
+([the floors](/research/evidence/#the-floors-the-first-comparison-with-a-no-bio-learner)).
+Exp 37's cross-session result ships stale under a one-release exception, and its re-run
+is planned for 1.4.
+
+### 1.3.1 "Hardening"
+
+Published 2026-09-27 UTC ([notes](https://github.com/dennys246/Maxim/blob/main/docs/announcements/release_1_3_1.md)).
 1.3.1 makes **no new behavioural claim**. It fixes what a review of 1.3.0 found, and
 each fix ships with the guard that holds it — a test, a lint, a CI lane or a required
 check. What it hardens:
