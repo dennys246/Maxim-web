@@ -234,8 +234,8 @@ maxim hive contribute bundle.zip --to <name> [--api-key <key>]
 - **Trust defaults to Queen-only.** `hive trust --allow-unsigned` disables signature
   verification for that Oasis's release stream — it is the check itself, off, not a
   lower tier. Contradictory flags error rather than granting the looser setting.
-- **`oasis serve` fails closed.** Binding a non-loopback interface without a bearer
-  key is refused unless you pass `--insecure`.
+- **`oasis serve` fails closed.** Since 1.3.2, serving without a bearer key is refused on
+  any interface, loopback included, unless you pass `--insecure`.
 - **Nothing promotes a contribution.** `hive contribute` writes into an experimental
   tier that no shipped verb promotes to Queen tier; that gate is
   [deliberately not shipped in 1.2](/guides/oasis/#what-isnt-shipped).
@@ -257,13 +257,13 @@ maxim serve --rotate-token                   # mint a NEW token, logging every d
 maxim serve --dump-openapi [PATH]            # write the OpenAPI schema and exit
 ```
 
-- **Bearer auth, always on, fail-closed (since 1.1.4; console contract 0.5.0 since
-  1.2.0).** At
+- **Bearer auth, always on, fail-closed (since 1.1.4; console contract 0.6.0 since
+  1.3.2).** At
   start the server prints a one-time sign-in URL of the form
   `http://127.0.0.1:8765/#token=…`; open it once and that browser is signed in.
   Every `/api/*` route, `/docs`, `/openapi.json` and `/ws` require the token;
   `GET /api/hello` is the one tokenless probe and answers
-  `{"contract_version": "0.5.0", "auth": "bearer", "pairing": "none"}`. A token passed as a query
+  `{"contract_version": "0.6.0", "auth": "bearer", "pairing": "none"}`. A token passed as a query
   parameter is refused. The token is an `mxc_`-prefixed secret in
   `~/.config/maxim/console_token`, re-read on every request, so `--rotate-token`
   takes effect without a restart.
@@ -274,6 +274,18 @@ maxim serve --dump-openapi [PATH]            # write the OpenAPI schema and exit
     http://127.0.0.1:8765/api/identity
   ```
 
+- **Run history and health (contract 0.6.0, since 1.3.2).** Five read-only routes open past
+  runs: `GET /api/runs` (newest first, paged), `/api/runs/{session_id}` (the run's report),
+  `/api/runs/{session_id}/actions` (its actions in order, with the credit each one booked, for
+  runs written by 1.3.2 or later), `/api/health` and `/api/health/degraded`. `session_id` is the
+  simulation's session id, the directory name under `sim_reports/`. While it serves, `maxim serve`
+  samples health into `<data home>/console/health.jsonl` (kept 7 days or 50 MB). Health
+  includes **stall detection**: a planning turn outstanding past its threshold with no live model
+  call. Waiting for a human, a long tool or quiet perception never counts as a stall, and with no
+  agent loop running `/api/health` reports `stall_detection: false`, which means unknown, not
+  healthy. Two optional `/ws` kinds, `health` and `health_stall`, arrive only on a connection that
+  asks for them. The per-run event trail is not in this release. All of these are refused under
+  sandbox mode. The change is additive: a 0.5.0 client keeps working.
 - **Sandbox mode is the exception.** With `MAXIM_CONSOLE_SANDBOX=1` authentication is
   the fronting proxy's job, and the engine instead closes `/api/probe` (the `url`
   form), `/api/setup/mesh` and `/api/diagnose`, refuses `/ws` upgrades whose Origin
@@ -286,7 +298,9 @@ maxim serve --dump-openapi [PATH]            # write the OpenAPI schema and exit
   warned at start ("parts of the UI may not work") and the UI drew a banner on every
   screen. 1.2.1 vendors the maxim-pulse v0.3.0 bundle, which speaks 0.5.0: both the
   warning and the banner are gone. The API surface was never affected by the
-  mismatch. `--ui-dist` still points the server at a bundle you built yourself.
+  mismatch. 1.3.2 vendors maxim-pulse v0.4.0, which speaks contract 0.6.0 (checked in the
+  1.3.2 wheel's bundle manifest). `--ui-dist` still points the server at a bundle you built
+  yourself.
 - **Spoken-code device pairing (A9.1): the pieces ship, the composition does not.** The
   idea is that a device with a speaker — a Reachy Mini is the case it was built for —
   signs its owner in by *saying* a six-digit code aloud instead of handing over a URL.
@@ -307,6 +321,14 @@ maxim serve --dump-openapi [PATH]            # write the OpenAPI schema and exit
   is a functional failure, not a cosmetic one), and whether synthesis plus a
   digit-by-digit repeat fits inside the code's 120-second lifetime on hardware as slow
   as a Pi. The endpoints are refused under sandbox mode regardless.
+
+  **Since 1.3.2, the voice can be provisioned, still with no shipped caller.** Every Piper voice
+  is pinned to one commit of `rhasspy/piper-voices` with a sha256 per file, and a download is
+  verified before it is used. `ensure_tts_voice` and a background `VoiceProvisioner` fetch and
+  load the voice, and `build_app(pairing_ready=...)` lets a device offer spoken-code pairing only
+  once its voice actually loads (until then `/api/hello` reports `"pairing": "none"` and
+  `/api/pair/*` answers 409). Nothing in pymaxim calls these yet: wiring them is owed in the
+  maxim-pulse Reachy app. A plain `maxim serve` never downloads a voice.
 
 ## Common Recipes
 

@@ -49,7 +49,7 @@ config = HippocampusConfig(
     indexed_keys=frozenset({"goal", "tool", "object", "person"}),
 )
 
-hippo = Hippocampus(config)  # starts EMPTY, even if the file exists (see below)
+hippo = Hippocampus(config)  # starts empty; it does not read an existing file (see below)
 
 perception = Perception(
     observations={"scene": "office", "confidence": 0.95},
@@ -75,23 +75,25 @@ honest declaration that you measured none of them. Under the default retention s
 the record changes nothing (see [what 1.3.1 records](#what-131-records-and-does-not-yet-use)).
 
 :::caution[Opening an existing store]
-`Hippocampus(config)` does **not** read the file at `persistence_path`. It starts empty,
-and its next `save()` overwrites what was there — on 1.3.1, three saved memories, reopened
-this way, are gone after the next save; only what the new instance captured is kept. `maxim.create.hippocampus(persistence_path=...)` does
-the same (engine issue [#939](https://github.com/dennys246/Maxim/issues/939), open). To
-reopen a store, load it:
+`Hippocampus(config)` does **not** read the file at `persistence_path`; it starts empty. Since
+1.3.2 it also will not overwrite that file: run the example above a second time and `save()`
+raises `StoreOverwriteRefused`, because this instance never read what is there. (Through 1.3.1
+the save went ahead and the earlier memories were lost.) `maxim.create.hippocampus(persistence_path=...)`
+refuses an existing file as soon as it is called. To reopen a store and add to it, load it, and
+save it back to the same path:
 
 ```python
 import maxim
 
 hippo = maxim.load.hippocampus(str(store))
+print(len(hippo))  # the memories already in the file
+hippo.capture(perception, encoding=EncodingSignals.unmeasured("api"))
+hippo.save(str(store))  # a loaded store has no path of its own: pass it
 ```
 
-Check `len(hippo)` before you save: given a `"~/..."` path, `load.hippocampus` returns an
-empty store instead of raising. Paths are used as written, so pass absolute ones — a
-`persistence_path` of `"~/..."` is not expanded either, and saves into a directory named
-`~` under your working directory. And do not point an example at `~/.maxim/memory/hippocampus.json`, which is
-the running agent's own store.
+To replace a store on purpose, pass `save(overwrite=True)` or `create.hippocampus(..., overwrite=True)`.
+A `"~/..."` path is expanded since 1.3.2. Even so, do not point an example at
+`~/.maxim/memory/hippocampus.json`, which is the running agent's own store.
 :::
 
 In the live agent loop, capture happens through `capture_from_loop()` (and its

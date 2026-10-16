@@ -34,8 +34,10 @@ The NAc biases choices by informing them, not by making them.
 
 Two runtime sources feed it:
 
-- **Tool outcomes.** Every tool execution in the agent loop
-  (`runtime/agent_loop.py`) calls `nac.observe()` through `_record_outcome()`.
+- **Tool outcomes.** Every tool execution in the agent loop goes through one
+  dispatch path (`runtime/tool_dispatch.py`), which calls `nac.observe()` through
+  `record_outcome()`. Since 1.3.2 a failure is booked once; where the tool-pain bridge is present, the bridge
+  books it.
   This is how the NAc learns "tool X in context Y → success/failure."
 - **Pain events.** The PainBus publishes pain signals to an NAc subscriber
   (`proprioception/pain_bus.py:create_pain_nac_subscriber`). This is how it

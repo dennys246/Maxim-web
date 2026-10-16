@@ -52,10 +52,10 @@
     {
       "slug": "cross-session",
       "title": "Cross-session recall",
-      "period": "Apr–Jun 2026",
-      "intro": "The headline claim at its base: memory persists across sessions and can shift behavior. The 1.0 graduation gate came back partial.",
+      "period": "Apr–Oct 2026",
+      "intro": "The headline claim at its base: memory persists across sessions and takes part in recall (re-earned narrowly in Exp 63). Whether it shifts behavior is a separate claim; its 1.0 gate came back partial and is now stale.",
       "walkthrough": "/research/experiments/cross-session-learning/",
-      "best": "exp-12"
+      "best": "exp-63"
     },
     {
       "slug": "foundations",
@@ -791,11 +791,11 @@
       "file": "10_cross_session_enrichment.md",
       "title": "Cross-session enrichment",
       "date": "2026-04-25",
-      "status": "poc",
+      "status": "superseded",
       "line": "cross-session",
       "headline": false,
-      "summary": "Resumed sessions surface prior-session memories and behave measurably differently from a fresh start. The persistence claim is maintained, narrowly, after a 2026-09-27 re-run.",
-      "finding": "Prior-session memories injected into the prompt produce measurably different behavior. The graduation ledger records a clean August re-validation (the resumed session opened with the prior store, 108 episodes, and surfaced 3 memories per turn on 8 of 8 turns) and a 2026-09-27 re-run for 1.3.1, MAINTAINED (narrow): both resumes reloaded the store exactly (100 memories), the new persistence fields round-tripped on all 100, and 3 memories surfaced on every resume turn observed; but each resumed phase ran one turn, because every run stopped early on a known planning defect (D13, #935), and link accumulation was not re-shown.",
+      "summary": "Resumed sessions surfaced prior-session memories. Its ledger claim went stale in September 2026 and was superseded on 2026-10-04 by Exp 63, run on current code.",
+      "finding": "Prior-session memories were injected into the prompt on resume. The graduation ledger records a clean August re-validation (the resumed session opened with the prior store, 108 episodes, and surfaced 3 memories per turn on 8 of 8 turns) and a 2026-09-27 re-run for 1.3.1, MAINTAINED (narrow): both resumes reloaded the store exactly (100 memories), the new persistence fields round-tripped on all 100, and 3 memories surfaced on every resume turn observed; but each resumed phase ran one turn, because every run stopped early on a known planning defect (D13, #935), and link accumulation was not re-shown. SUPERSEDED 2026-10-04: the row went STALE on 2026-09-30 (every session of the September re-run ended planning_failed, a typed abort that cannot back a status), and the claim was re-tested as a new pre-registered experiment on current code, Exp 63, which replaces it.",
       "walkthrough": "/research/experiments/cross-session-learning/#exp-10--cross-session-enrichment"
     },
     {
@@ -1285,6 +1285,22 @@
       "summary": "Null. The game's drives don't move behavior toward eating or healing; the survival loop has three breaks, which became the 1.3 build list.",
       "finding": "PREMISE-NULL. The minecraft_player world-owned drives (health homeostatic, food entropic, both drift_rate 0.0 — the game drains them, not the model) do not measurably move behaviour toward the corrective affordances, and the survival loop has three specific breaks. Per the rung's own pre-registered stop rule the dependent survival rungs R3/R4 do not run in 1.2; the three breaks become the 1.3 build list rather than a benchmark back-fitted onto a premise that does not hold. A null shipped as a null.",
       "walkthrough": "/research/experiments/world-seam/#r2--the-premise-null-that-became-the-13-build-list"
+    },
+    {
+      "slug": "exp-63",
+      "id": "63",
+      "file": "exp63_carried_recall_prereg.md",
+      "title": "Carried memory takes part in recall across sessions",
+      "date": "2026-10-04",
+      "status": "earned",
+      "line": "cross-session",
+      "headline": true,
+      "summary": "Earned, narrow: 84 carried memories reloaded unchanged and took part in recall on every resume turn, ranked exactly as the shipped ranker dictates. One run, mistral-7b.",
+      "finding": "EARNED 2026-10-04 (narrow: storage persistence into recall on the current goal-keyword ranker; one run, mistral-7b), pre-registered (#1060) and run 2026-10-03 UTC. The carried store was saved and reloaded exactly: 84 memories, none missing, 0 changed fields. On every resume turn (8 of 8) the carried memories took part in recall as full candidates: the surfaced ids equal a recomputation with the frozen ranker, which reads no memory's origin or age except its recency tiebreak. On the first resume turn all 3 surfaced memories were carried ones; on turns 2-8 a shown carried memory ranked strictly above a visible new one in every tie ordering. It replaces Exp 10's claim on current code. NOT claimed: recall reconsolidation, negative transfer, or any behavioural difference from carried memory (that is Exp 37's question). The ranker is a goal-keyword overlap, not a semantic one (#1064). Narrator-driven, so it ran with the #1260 defect; its agent never spoke, and the #1299 walk found none of its re-run triggers touched. Earned before the floor rule (BF2), so its floor is not measured.",
+      "supersedes": [
+        "exp-10"
+      ],
+      "walkthrough": "/research/experiments/cross-session-learning/#carried-memory-in-recall-experiment-63"
     },
     {
       "slug": "b1-exp60-floor",

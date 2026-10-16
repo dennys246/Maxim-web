@@ -1,5 +1,5 @@
 {
-	"source_label": "pymaxim 1.3.1 (PyPI wheel)",
+	"source_label": "pymaxim 1.3.2 (PyPI wheel)",
 	"registry_path": "src/maxim/_data/components/**/*.yaml",
 	"count": 97,
 	"categories": [
@@ -331,7 +331,7 @@
 				"chilled infant",
 				"cold cradle infant"
 			],
-			"description": "Cold variant of infant_humanoid for the Exp 41 substrate-primary\ncounter-prior experiment (docs/plans/archive/substrate_exploration_policy.md /\ndocs/experiments/41_substrate_primary_exploration.md). It starts and\nSTAYS cold — core_temperature well below set_point with a slow warm-back\ndrift — so warmth-seeking is a SUSTAINED, drive-relevant temptation. The\nsubstrate's drive-affinity heuristic (via the derived \"cold\" need in\nruntime/agent_loop._read_drive_states) then surfaces the deceptive\nhearth's warm_self as a high-value action; the experiment measures whether\nthe agent learns to AVOID it despite the cold pull, because warm_self\nbreaches the arms' thermal comfort band (pain).\n\nDeliberately a SEPARATE body so the shared infant_humanoid (Exp 37/38\nLLM-AUT calibration: initial -0.15, comfort_band 0.25, pain_scale 1.5)\nis untouched. entity.name is inherited from the parent (infant_humanoid)\nso tool names stay identical to a normal cradle run.",
+			"description": "Cold variant of infant_humanoid for the Exp 41 substrate-primary\ncounter-prior experiment (docs/plans/archive/substrate_exploration_policy.md /\ndocs/experiments/41_substrate_primary_exploration.md). It starts and\nSTAYS cold — core_temperature well below set_point with a slow warm-back\ndrift — so warmth-seeking is a SUSTAINED, drive-relevant temptation. The\nsubstrate's drive-affinity heuristic (via the derived \"cold\" need in\nruntime/substrate_proposal._read_drive_states) then surfaces the deceptive\nhearth's warm_self as a high-value action; the experiment measures whether\nthe agent learns to AVOID it despite the cold pull, because warm_self\nbreaches the arms' thermal comfort band (pain).\n\nDeliberately a SEPARATE body so the shared infant_humanoid (Exp 37/38\nLLM-AUT calibration: initial -0.15, comfort_band 0.25, pain_scale 1.5)\nis untouched. entity.name is inherited from the parent (infant_humanoid)\nso tool names stay identical to a normal cradle run.",
 			"archetype": "humanoid",
 			"extends": "bodies/infant_humanoid",
 			"entity_type": "",

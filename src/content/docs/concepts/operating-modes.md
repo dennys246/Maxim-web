@@ -184,7 +184,9 @@ unchanged.
 
 - **`mode_switch`** — switch between operational modes. Logs switches with
   timestamps and reasoning. Since 1.3.1 it refuses a switch into any mode that can
-  execute code (today, singularity), and records the refusal.
+  execute code (today, singularity). Since 1.3.2 it refuses **any** switch that gains
+  capability, passive → active included, and still allows lowering. No shipped runtime
+  registers this tool yet.
 - **`autonomy_level`** — request autonomy changes. Dropping to a more
   restrictive level is always allowed. Requesting *more* autonomy needs a human
   approver, and no shipped runtime attaches one yet: since 1.3.1
@@ -214,12 +216,14 @@ does not:
   [#828](https://github.com/dennys246/Maxim/issues/828)). The mode tool and the CLI
   refuse a self-requested switch into any mode that can execute code, and so does the
   spoken phrase.
-- **The honest limit: passive → active is not gated**
-  ([#924](https://github.com/dennys246/Maxim/issues/924), open). Active mode runs shell
+- **The honest limit in 1.3.1: passive → active was not gated**
+  ([#924](https://github.com/dennys246/Maxim/issues/924); the agent's side is closed in
+  1.3.2, [below](#since-132-capability-goes-down-not-up)). Active mode runs shell
   and sandbox tools under approval, and a non-interactive run answers every
-  confirmation "yes", so an unattended passive agent can still switch itself to active
-  and act. Treat passive as a default, not a boundary, until #924 and the approval
-  surface (#922) land.
+  confirmation "yes", so an unattended passive agent could switch itself to active and
+  act. #924 closed the agent's side in 1.3.2. What remains: a non-interactive run still
+  answers every confirmation "yes", and the in-session approval surface
+  ([#922](https://github.com/dennys246/Maxim/issues/922)) is still open.
 - **The sandbox runs what was approved, and only inside the sandbox**
   ([#800](https://github.com/dennys246/Maxim/issues/800)–[#802](https://github.com/dennys246/Maxim/issues/802)).
   Python scripts now run at all (the restricted wrapper used to block its own imports);
@@ -237,6 +241,43 @@ does not:
   ([#823](https://github.com/dennys246/Maxim/issues/823)), so a fetched page's own
   "instructions" no longer look like the prompt's. Fencing cannot stop a model from
   choosing to follow injected text.
+
+## Since 1.3.2: capability goes down, not up
+
+- **The agent cannot raise its own capability**
+  ([#924](https://github.com/dennys246/Maxim/issues/924),
+  [#829](https://github.com/dennys246/Maxim/issues/829)). The `mode_switch` tool refuses any
+  switch that gains capability, and a mode request from the robot runtime is honoured only
+  if it lowers capability. A mode name with no definition is enforced as passive. One gap is
+  recorded: in the robot runtime, a spoken or typed "Maxim active" still sets the state
+  manager's mode to active without a capability check, and any audio in the room can say
+  it. Tool dispatch enforces the launch grant or the run mode, which that phrase does not
+  change.
+- **`--operational-mode passive|active|singularity` is the launch grant.** It needs an explicit
+  `--mode` and is refused with `--sim`, `--research`, `--benchmark` and `--foundry`.
+  Singularity, the mode that executes code, is reachable only this way, and the grant is
+  announced on stderr and in the log.
+- **Host tools run with a clean environment**
+  ([#949](https://github.com/dennys246/Maxim/issues/949)). `bash`, `execute_file`,
+  `run_tests`, `git_diff` and `git_commit` see an allowlisted environment (no API keys, no
+  `MAXIM_*`, no `SSH_AUTH_SOCK`, no `GIT_*`, no proxies) and run inside the mode's allowed
+  directories, with git hooks, fsmonitor and signing disabled. `git_commit` is now opt-in with
+  `MAXIM_ALLOW_GIT_COMMIT=1`, like `git_diff` with `MAXIM_ALLOW_GIT_DIFF=1`. The limit:
+  these are host tools, not a sandbox. Files you can read stay readable, and a model that can
+  write a repository's `.git/config` can still make git run code through its filters
+  ([#957](https://github.com/dennys246/Maxim/issues/957)), which is why both git tools are
+  opt-in.
+- **The internet policy fails closed in more places**
+  ([#832](https://github.com/dennys246/Maxim/issues/832),
+  [#966](https://github.com/dennys246/Maxim/issues/966)–[#968](https://github.com/dennys246/Maxim/issues/968),
+  [#921](https://github.com/dennys246/Maxim/issues/921)). Web search now obeys the policy's
+  allow and block lists and its rate limit. An unknown key, an unreadable toggle, a wildcard
+  entry, or a domain IDNA 2008 rejects turns the internet off until fixed. A robots.txt that
+  cannot be read refuses the fetch, and its redirects are followed for up to five hops with the
+  private-address check on each. Downloads check the address they actually dial on every
+  redirect. Shared-address space (100.64.0.0/10, used by Tailscale) now counts as private.
+  The limit: a download or backend URL carried by a configured proxy is not
+  address-checked (the agent's own web fetch never uses a proxy).
 
 ## See also
 

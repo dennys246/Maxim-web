@@ -53,7 +53,8 @@ See [Memory Management](/reference/cli/#memory-management) for clearing learned 
 ```sh
 # maxim config — quick start
 
-maxim config set role leader                       # leader / peer / solo
+maxim config set role leader                       # leader / peer / solo (default solo since 1.3.2)
+maxim config set proxy.allow_remote_update true    # leader: allow peer update/restart/llm (1.3.2, default false)
 maxim config set llm.profile qwen2.5-32b-instruct  # default model
 maxim config set llm.n_ctx 16384                   # context window
 maxim config set llm.auto_download true            # download GGUFs on first run
@@ -66,8 +67,20 @@ maxim config get                                   # all fields + sources
 maxim config get llm.profile                       # one field
 maxim config edit                                  # opens $EDITOR
 maxim config path                                  # print the file path
+maxim config unset llm.n_ctx                       # back to the default (since 1.3.2)
+maxim config downgrade                             # on a file a newer Maxim wrote (since 1.3.2)
+maxim config restore-preserved                     # get those settings back after upgrading (since 1.3.2)
 maxim doctor                                       # "Resolved Config" section
 ```
+
+**Since 1.3.2 the file holds exactly the settings you chose** (config format 1.3). `config set`
+pins a value even when it equals the default, so it reads back with source `config`, and
+`config unset <field>` (or `set <field> null`) returns it to the default. An older full-dump file
+reads as before until its first write, which keeps only its non-default values. `config set` refuses
+a file written by a newer Maxim instead of silently dropping the settings it does not know:
+`maxim config downgrade` keeps what this build knows and sets the rest aside in an owner-only
+`config.preserved.json`, and `maxim config restore-preserved` offers them back one field at a time,
+at an interactive terminal only.
 
 ## Environment Variables (per-session overrides)
 
