@@ -91,7 +91,7 @@ behavior.
   shifted behavior.
 - **That Wire-A generally carries the effect.** One ablation passed in one model; the three
   head-on Wire-A tests (Exp 30, 33, 34) returned 0.
-- **That +1.43 SD is a stable number.** Same commit, same seeds: 0.42 in June, 0.71 in August (L8).
+- **That +1.43 SD is a stable number.** Same commit, same seeds: 0.42 in June, 0.71 in August (L8). The Goldilocks map is unverifiable, not refuted, and its row has been stale since 2026-10-02.
 - **That the cloud models were tested on the prior-aligned task.** Claude Sonnet 4.6, GPT-4o and
   DeepSeek-V3 were deferred from Exp 37's cross-model comparison and appear only in the
   counter-prior test. Llama 3.3 70B was never run.
@@ -242,6 +242,12 @@ evidence for the scaffold. What closed is a recognition gap in the EC. Whether i
 was left as the next question, and no Roy iteration ran after.
 
 ### Exp 37 (cross-model) — the Goldilocks zone
+
+**Cite with L8's caveat: unverifiable, not refuted.** The anchor fire did not reproduce on
+its own commit and seeds, and the run records cannot say why
+([L8](/research/limits/)). Stale since 2026-10-02: a prompt-construction change fired the row's re-run trigger, and the
+re-run, with language-model floors beside it, is planned for 1.4 (Stage B4 of the
+[baseline floors plan](https://github.com/dennys246/Maxim/blob/main/docs/plans/baseline_floors.md)).
 
 Exp 37's graduation claim is on the
 [cross-session learning](/research/experiments/cross-session-learning/) page and

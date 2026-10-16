@@ -5,7 +5,7 @@
       "slug": "survival",
       "title": "Survival and learned fear",
       "period": "Sep 2026 · 1.3",
-      "intro": "Learning from the world's own pain rather than a teacher's credit: a drowning fear learned in Minecraft, shared between agents, carried to a second pool, and priced in a survival benchmark.",
+      "intro": "Learning from the world's own pain rather than a teacher's credit: a drowning fear learned in Minecraft, shared between agents, carried to a second pool, priced in a survival benchmark, and then matched by a no-bio floor.",
       "walkthrough": "/research/experiments/world-seam/",
       "best": "exp-62"
     },
@@ -367,7 +367,7 @@
       "line": "prior",
       "headline": false,
       "summary": "Partial. Four open-model runs complete; the cloud arm was deferred. Substrate visibility depends on prior headroom; R1-Distill gave the first clean Wire-A ablation.",
-      "finding": "PARTIAL (pymaxim audit 2026-09-13): four open-source-model fires complete; the cloud-model arm was deferred and is not a result. Substrate visibility is Goldilocks-dependent; the R1 variant produced the first clean Wire-A attribution. The NAc-bias-off ablation arm is void (#889, 2026-09-25): it left the reward bias on, so the Wire-A and Wire-1 arms are the only valid ablations.",
+      "finding": "PARTIAL (pymaxim audit 2026-09-13), part of a row STALE since 2026-10-02: four open-source-model fires complete; the cloud-model arm was deferred and is not a result. Substrate visibility looked Goldilocks-dependent, but that map is unverifiable, not refuted (L8: the anchor fire did not reproduce on its own commit and seeds). The R1 variant produced the first clean Wire-A attribution. The NAc-bias-off ablation arm is void (#889, 2026-09-25): it left the reward bias on, so the Wire-A and Wire-1 arms are the only valid ablations.",
       "follows": [
         "exp-37-graduation"
       ],
@@ -398,8 +398,8 @@
       "status": "partial",
       "line": "cross-session",
       "headline": true,
-      "summary": "Partial. A cross-session behavioral shift appears at ≥32B, but the isolation arm failed wherever the primary passed, and the magnitudes did not reproduce later (L8).",
-      "finding": "PARTIAL, an investigation gate: the cross-session behavioral delta appears at >=32B scale but the Arm C isolation test failed on every model where the primary metric passed, so independence from the LLM prior is not established. Limit L8 (2026-08-22): the identical commit on the identical seeds does not reproduce its own June result (0.42 then, 0.71 now) — the recorded magnitudes are readings taken at one time, not constants.",
+      "summary": "Partial, then stale since 2026-10-02 (a prompt change fired its re-run). A ≥32B cross-session shift; isolation failed; magnitudes did not reproduce (L8).",
+      "finding": "STALE since 2026-10-02: a prompt-construction change fired its re-run trigger, and the owed re-run (with the language-model floors beside it) is baseline-floors Stage B4, planned for 1.4; until then the row carries no current claim. Before that, PARTIAL, an investigation gate: the cross-session behavioral delta appears at >=32B scale but the Arm C isolation test failed on every model where the primary metric passed, so independence from the LLM prior is not established. Limit L8 (2026-08-22): the identical commit on the identical seeds does not reproduce its own June result (0.42 then, 0.71 now) — the recorded magnitudes are readings taken at one time, not constants.",
       "walkthrough": "/research/experiments/cross-session-learning/#cross-session-graduation-experiment-37"
     },
     {
@@ -769,8 +769,9 @@
       "status": "earned",
       "line": "cross-session",
       "headline": true,
-      "finding": "Clean pass: Phase A (substrate-only) recalls a token across sessions.",
-      "walkthrough": "/research/experiments/cross-session-learning/#substrate-recall-isolated-experiment-12"
+      "finding": "Clean pass: Phase A (substrate-only) recalls a token across sessions. Caveat (2026-10-15): every phase ran with two simulator defects since fixed — the narrator saw delivery receipts instead of the agent's words (#1261, fixed by #1289), and the agent was told `respond` was unavailable, drawing a follow-up each time it used it anyway (#1260, fixed by #1299). The recall headline was scored from tool arguments in actions.jsonl, so the receipts do not decide it, but those files were never committed and the headline cannot be re-derived from the repository. The Acting Coach count (Phase C vs A, 3 respond hits vs 1) is confounded by #1260. Re-assessment open: #1301.",
+      "walkthrough": "/research/experiments/cross-session-learning/#substrate-recall-isolated-experiment-12",
+      "summary": "Substrate alone recalled a planted token across sessions, 7 of 7 phases. Ran with two simulator defects fixed in October 2026; re-assessment open (#1301)."
     },
     {
       "slug": "exp-11",
@@ -1286,16 +1287,32 @@
       "walkthrough": "/research/experiments/world-seam/#r2--the-premise-null-that-became-the-13-build-list"
     },
     {
+      "slug": "b1-exp60-floor",
+      "id": "B1",
+      "file": "b1_exp60_floor_prereg.md",
+      "title": "The Exp 60 floor: the drowning fear against a no-bio learner",
+      "date": "2026-10-14",
+      "status": "reference",
+      "line": "survival",
+      "headline": true,
+      "summary": "The first floor run. FEAR 8/8, a tabular Q-learner 8/8, random 2/8 at the first post placement: FEAR beat random, not the Q-learner. Exp 60 moved to partial.",
+      "finding": "FLOOR_MATCHED_Q, 2026-10-14 — the first comparison of a ledger row with an agent that lacks the bio layers (owner rule BF2: a claim earns only over a no-bio floor). Exp 60's drowning task, pre-registered and frozen (v5) before any gated data; seeds 11-18 x five arms (FEAR, RANDOM, and a tabular Q-learner keyed on the agent's own situation clusters, armed only in water: as specified, with the same defensive prior, and on raw sensor keys); 40/40 arm-seeds clean on their first attempt. Surfaced before the pain at the first post placement: FEAR 8/8, Q-learner 8/8 (8/8 in every variant), RANDOM 2/8. H1 FEAR > RANDOM shown (exact permutation, one-sided p = 0.0035). H2 FEAR > Q-learner NOT shown (difference 0, p = 1.0; a tie is reported as not shown, never as equivalent). Efficiency: the Q-learner executed a median of 31 actions (23-46) before its first escape, 16 with the same prior; FEAR executed none during training. Consequence: Exp 60 (T1-13) PARTIAL (narrow: floor matched); Exp 61 and 62 followed by argument on 2026-10-15. The FEAR-vs-ABLATED result is not tested here and stands.",
+      "follows": [
+        "exp-60"
+      ],
+      "walkthrough": "/research/evidence/#the-floors-the-first-comparison-with-a-no-bio-learner"
+    },
+    {
       "slug": "exp-60",
       "id": "60",
       "file": "exp60_drowning_avoidance_prereg.md",
       "title": "Drowning avoidance: learned, anticipatory fear from the game's own pain",
       "date": "2026-09-16",
-      "status": "earned",
+      "status": "partial",
       "line": "survival",
       "headline": true,
-      "summary": "An agent held underwater until it hurt learned to leave the water before the pain: 1.0 vs 0.0 for its yoked twin without the fear wire (5 seeds/arm, p = 1/252).",
-      "finding": "EARNED — the Wire-4 situation-fear mechanism's behavioural graduation, and the first Maxim result whose learning signal is the WORLD's rather than a teacher's. An agent held underwater until air-hunger pain, then rescued, books a fear keyed to the underwater situation and on later submersions leaves the water BEFORE the pain would fire; its yoked twin with the same pain exposure but the fear subscriber detached never does. Live Paper 1.20.4 water classroom, substrate-primary (no LLM in the action path), 5 seeds/arm, 6 pain-free placements per probe. All five frozen gates PASS: FEAR post P(surface) median 1.0 (from 0.0 pre, every seed) vs ABLATED 0.0 (zero executor calls in 30/30), exact permutation p = 1/252 (the floor for 5 v 5), specificity water fear -1.0 vs shore 0.0 on every seed. Latency to air median 1.72 s, inside the 4.34 s US-free window. Caveat recorded: after a seed's first escape the action also carries a positive causal link, so the fear-only read is the FIRST post placement per seed (5/5 surfaced, 2.9-3.3 s). Planned as 'dark = danger' and BLOCKED at the instrument (Exp 58) — the cue was swapped to water, which separates.",
+      "summary": "Learned to leave the water before the pain (1.0 vs 0.0 for the ablated twin). Partial since 2026-10-14: a tabular Q-learner on the same keys matched it (B1).",
+      "finding": "PARTIAL (narrow: floor matched), 2026-10-14. EARNED 2026-09-16 against its ablation, and that result stands: an agent held underwater until air-hunger pain, then rescued, books a fear keyed to the underwater situation and on later submersions leaves the water BEFORE the pain would fire; its yoked twin with the same pain exposure but the fear subscriber detached never does. Live Paper 1.20.4 water classroom, substrate-primary (no LLM in the action path), 5 seeds/arm, 6 pain-free placements per probe. All five frozen gates PASS: FEAR post P(surface) median 1.0 (from 0.0 pre, every seed) vs ABLATED 0.0 (zero executor calls in 30/30), exact permutation p = 1/252 (the floor for 5 v 5), specificity water fear -1.0 vs shore 0.0 on every seed; re-run at a pinned commit 2026-10-12, all five gates pass again. Caveat recorded: after a seed's first escape the action also carries a positive causal link, so the fear-only read is the FIRST post placement per seed (5/5 surfaced, 2.9-3.3 s). THE FLOOR (B1, 2026-10-14, verdict FLOOR_MATCHED_Q): at the first post placement FEAR 8/8, a tabular Q-learner on the same state keys 8/8, random 2/8. FEAR > random shown (p = 0.0035); FEAR > Q-learner not shown (p = 1.0; a tie is not an equivalence). The Q-learner needed a median of 31 executed actions; FEAR executed none during training. What Exp 60 shows is that a live embodied loop runs a context-conditioned fear learner correctly, learning WHEN to act from passive pain; WHICH act comes from a built-in defensive prior. Not behaviour beyond a no-bio learner. Planned as 'dark = danger' and BLOCKED at the instrument (Exp 58) — the cue was swapped to water, which separates.",
       "follows": [
         "exp-58"
       ],
@@ -1307,11 +1324,11 @@
       "file": "exp61_shared_fear_prereg.md",
       "title": "Shared survival fear: a learned fear transfers between independent agents",
       "date": "2026-09-17",
-      "status": "earned",
+      "status": "partial",
       "line": "survival",
       "headline": true,
-      "summary": "A learned drowning fear, shared as a bundle, sent receivers out of the water on first contact: 12/12 vs 0/24 isolated (p = 8e-10). One donor, one campaign.",
-      "finding": "EARNED — the 1.3 \"Oasis-2\" headline. A donor learns the drowning fear the hard way, exports its substrate through the shipped export and ingest path (unsigned: corrected 2026-09-27 — the 1.3.0 notes said \"signed-bundle path\"), and a fresh receiver ingests it (discounted x0.75 at the ingest bound — vicarious fear is real and weaker than direct), reboots, and leaves the water on its FIRST loop-live submersion having never felt the pain. One campaign at one code hash, 121 rows, zero refusals: 12/12 transferred receivers vs 0/24 isolated, 0/12 cluster-not-fear (the ablated donor's cluster and percept valence shipped, the fear did not) and 0/24 dangling (fear dropped at ingest for want of its world node); Fisher one-sided p = 8.0e-10; all six frozen gates PASS. The loop-OFF representation gate read the discounted fear (-0.75) exactly on every receiver before any loop ran. NOT earned: extinction, scaling past one donor, a received fear's reach to another pool (Exp 62 tested only the agent's own fear), hive-side promotion.",
+      "summary": "A learned fear, shared as a bundle, sent receivers out of the water: 12/12 vs 0/24 isolated. Partial since 2026-10-15: a no-bio floor matches by construction.",
+      "finding": "PARTIAL (narrow: floor matched, analytical), 2026-10-15, by owner decision after B1 and without a rig run. EARNED 2026-09-17 against its ablations, the 1.3 \"Oasis-2\" headline, and those results stand. A donor learns the drowning fear the hard way, exports its substrate through the shipped export and ingest path (unsigned: corrected 2026-09-27 — the 1.3.0 notes said \"signed-bundle path\"), and a fresh receiver ingests it (discounted x0.75 at the ingest bound), reboots, and leaves the water on its FIRST loop-live submersion having never felt the pain. One campaign at one code hash, 121 rows, zero refusals: 12/12 transferred receivers vs 0/24 isolated, 0/12 cluster-not-fear and 0/24 dangling; Fisher one-sided p = 8.0e-10; all six frozen gates PASS. THE FLOOR, argued: a tabular learner the harness arms in water, given the same defensive prior, escaped on its first-ever submersion with zero experience in B1 (8/8); the fair floor for learning WHEN from passive pain is a state-value learner, which with the same prior is Maxim's fear mechanism by construction. What the row shows beyond its controls is the TRANSPORT — a learned fear surviving export, ingest, re-keying and the discount between independent agents — not behaviour beyond a no-bio learner. NOT shown: extinction, scaling past one donor, a received fear's reach to another pool, hive-side promotion.",
       "follows": [
         "exp-60"
       ],
@@ -1340,12 +1357,12 @@
       "file": "exp62_pressure_interoception_prereg.md",
       "title": "Cross-pool readout: a learned fear carries to a second pool on the shipped body",
       "date": "2026-09-20",
-      "status": "earned",
+      "status": "partial",
       "phase": "rung A",
       "line": "survival",
       "headline": true,
-      "summary": "Rung A: a fear learned in one pool carried to a second pool, 12/12 (lower bound 0.758) vs ablated 0/3. Invariance to place, not to a changed situation.",
-      "finding": "Rung A EARNED, the day after 1.3.0 shipped, on the shipped minecraft_player body with no mechanism change, no new sensor and no ingest. An agent that learned the drowning fear in pool 1 left the water on its first live submersion in pool 2 (different altitude and spawn distance): cross-pool 12/12 (Wilson lower bound 0.758 — the interval is the number, not 100%), same-pool 12/12, fear-ablated 0/3 with zero executor calls; five frozen gates PASS; Fisher one-sided cross v ablated p = 0.0022. The ablated agents resolve to the SAME node with fear 0, so the contrast is the fear alone. NOT a general generalization result: one discriminating world sensor (is_in_water, binary), a two-point situation space; what carried is invariance to place, not to a changed situation. The context wall stands and was measured: a lit pond reads 0.588 against the 0.85 threshold. The 0.799 'night pool' reading was corrected 2026-09-25 to the time_of_day wrap (#899): midnight reads 0.903, and the fear misses only in roughly the last 5% of each in-game day. Bounded to the sealed-shell, frozen-day pool class. The agent's OWN fear — a received fear's reach to another pool is untested. Rung B is designed, not built.",
+      "summary": "Rung A: a fear learned in one pool carried to a second, 12/12 (lower bound 0.758) vs ablated 0/3. Partial since 2026-10-15: the transfer lives in a key the floors share.",
+      "finding": "Rung A PARTIAL (floor matched, analytical), 2026-10-15, by owner decision after B1 and without a rig run. EARNED 2026-09-20 against its ablation, the day after 1.3.0 shipped, and that result stands: on the shipped minecraft_player body with no mechanism change, no new sensor and no ingest, an agent that learned the drowning fear in pool 1 left the water on its first live submersion in pool 2 (different altitude and spawn distance): cross-pool 12/12 (Wilson lower bound 0.758 — the interval is the number, not 100%), same-pool 12/12, fear-ablated 0/3 with zero executor calls; five frozen gates PASS; Fisher one-sided cross v ablated p = 0.0022. THE FLOOR, argued: the cross-pool transfer is a property of the situation key, which the no-bio floors share, so what the row shows is that the key carries the situation across pools — not behaviour beyond a no-bio learner. NOT a general generalization result: one discriminating world sensor (is_in_water, binary), a two-point situation space; what carried is invariance to place, not to a changed situation. The context wall stands: a lit pond reads 0.588 against the 0.85 threshold. The 0.799 'night pool' reading was corrected 2026-09-25 to the time_of_day wrap (#899): the fear misses only in roughly the last 5% of each in-game day. The agent's OWN fear — a received fear's reach to another pool is untested. Its different-reader pass is not yet recorded. Rung B is designed, not built.",
       "follows": [
         "exp-60"
       ],

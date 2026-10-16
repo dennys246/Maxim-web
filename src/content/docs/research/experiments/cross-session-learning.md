@@ -32,7 +32,8 @@ removed. The LLM that runs session two is byte-for-byte the LLM that ran session
 changes is the context assembled around it from the [Hippocampus](/systems/hippocampus/),
 [Nucleus Accumbens](/systems/nucleus-accumbens/) and
 [Anterior Temporal Lobe](/systems/anterior-temporal-lobe/) after they were saved and
-reloaded. **Behavioural change is partial:** the pre-registered 1.0 gate,
+reloaded. **Behavioural change was partial, and is stale since 2026-10-02** (its re-run is
+planned for 1.4, with floors): the pre-registered 1.0 gate,
 [Exp 37](/research/experiments/exp-37-graduation/), found a shift only at ≥32B and could not
 separate it from the LLM's prior.
 
@@ -50,8 +51,8 @@ separate it from the LLM's prior.
   August 2026 where June gave 0.42; its magnitudes are readings taken at one time
   ([L8](/research/limits/)).
 - **Small N.** Exp 37 arms are 5 trials each; B3 is N = 10 per condition; the interference
-  runs are single observational runs. Effects are model- and scenario-dependent, inside a
-  narrow "Goldilocks" headroom band.
+  runs are single observational runs. Effects looked model- and scenario-dependent, inside a
+  narrow "Goldilocks" headroom band; that map is unverifiable, not refuted (L8).
 - **No Arm-C-style control in B2–B4**, and they run at 14B, where Exp 37 found the prior too
   weak for its own scenario. The 14B wins and the 14B graduation FAIL use different scenarios
   with different prior strength — read them together, not as a contradiction.
@@ -64,7 +65,7 @@ Newest first. Each experiment's page links its record and how to reproduce it; t
 
 | Exp | Date | Status | n per arm | Result |
 |---|---|---|---|---|
-| [37](/research/experiments/exp-37-graduation/) | 2026-05-30 | partial | 5 trials, four models | Behavioural delta only at ≥32B; independence from the prior not isolated (Arm C); magnitudes did not reproduce in August (L8) |
+| [37](/research/experiments/exp-37-graduation/) | 2026-05-30 | stale since 2026-10-02 (was partial) | 5 trials, four models | Behavioural delta only at ≥32B; independence from the prior not isolated (Arm C); magnitudes did not reproduce in August (L8) |
 | [12](/research/experiments/exp-12/) | 2026-04-30 | earned | one session pair per phase, 7 phases | Substrate alone recalls a planted token across sessions, 7 of 7 phases |
 | [10](/research/experiments/exp-10/) | 2026-04-25 | proof of concept (the persistence claim is maintained, narrow, in the graduation ledger, 2026-09-27) | single three-phase run, re-run August and September 2026 | Prior-session memories surface on resume, 3 per turn |
 | [B4](/research/experiments/behavioral-convergence-exp4-tier3/) | 2026-04-17 | earned | one run per session, four sessions | Teal-vial selection 0% → 25% → 100% across sessions; fresh control 0% |
@@ -146,6 +147,21 @@ cross-session recall reproduces with none of the five scaffolds present. Memory 
 `memory_recall` and then answering with the token — retrieval, not hallucination. This is the
 cleanest evidence for the recall half of the claim: a **clean pass**.
 
+**Caveat, 2026-10-15.** Every phase ran with two simulator defects that have since been
+fixed. The narrator saw delivery receipts rather than the agent's words
+([#1261](https://github.com/dennys246/Maxim/issues/1261), fixed by
+[#1289](https://github.com/dennys246/Maxim/pull/1289)), and the agent was told `respond` was
+unavailable, drawing a follow-up each time it used it anyway
+([#1260](https://github.com/dennys246/Maxim/issues/1260), fixed by
+[#1299](https://github.com/dennys246/Maxim/pull/1299)). The recall headline was scored from
+the agent's tool arguments, so the receipts do not decide it; but those files were never
+committed, so it cannot be re-derived from the repository. The phase comparison for the
+Acting Coach ("3 respond hits against 1") counted `respond` calls by an agent told `respond`
+was unavailable, so it reflects that contradiction and the extra follow-ups, not only the
+coach. A re-assessment of
+every claim resting on these runs is open
+([#1301](https://github.com/dennys246/Maxim/issues/1301)).
+
 ### Cross-session graduation (Experiment 37)
 
 The pre-registered "1.0 gate" (2026-05-30): a paired fresh-vs-resume measurement in the
@@ -202,7 +218,10 @@ run. The provisional SCN temporal-coupling tag rests on nothing here.
 - **[L8](/research/limits/)** — Exp 37's magnitudes are not reproducible across time; a
   re-fire needs the matching git hash and should gate on `B − C` rather than `B − A`.
 - **Headroom is a property of the (model, task, apparatus) triple**, not of the model, so a
-  per-model Goldilocks map has a shelf life (L8 amends L6).
+  per-model Goldilocks map has a shelf life (L8 amends L6). Cite it only as unverifiable,
+  not refuted. Stale since 2026-10-02: a prompt-construction change fired the row's re-run trigger, and the
+  re-run, with language-model floors beside it, is planned for 1.4 (Stage B4 of the
+  [baseline floors plan](https://github.com/dennys246/Maxim/blob/main/docs/plans/baseline_floors.md)).
 - **Re-run triggers** (graduation ledger): the persistence row re-runs on an encoder swap, a
   hippocampus persistence schema change, or a minor-version heartbeat; Exp 37 re-runs on an
   encoder swap, a prompt-construction change, or a Wire-A / Wire-1 / NAc-bias refactor.

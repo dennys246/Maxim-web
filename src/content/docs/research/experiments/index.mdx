@@ -14,9 +14,13 @@ The status on each entry is load-bearing, and uses the verdicts from the noteboo
 status audit:
 
 - **Earned** — the run met its stated gates. Scope is still whatever the entry says it is.
+  Since 2026-10-10 a new behavioural claim must also beat a **floor**, an agent with no bio
+  layers, not only Maxim's own ablation ([how a claim is earned](/research/evidence/#how-a-claim-is-earned)).
 - **Partial** — it ran and some gates failed. Exp 57 is the deliberate example: pooling
   passed its primary scaling gate and failed its total-experience gate, so it ships as a
-  named partial rather than rounded up to a win.
+  named partial rather than rounded up to a win. A result that beats its ablation but only
+  matches its floor is also partial, marked *floor matched*: Exp 60, 61 and 62 are the
+  examples.
 - **Null** — it ran and the answer was no. A null is a result, not a failure to report.
 - **Proof of concept**, **infrastructure**, **diagnostic** — the pipeline worked, the tooling
   shipped, or a cause was traced. None of these is a behavioral claim.

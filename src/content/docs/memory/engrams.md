@@ -30,7 +30,7 @@ scorecard does. If they disagree, the engine is right.
 
 | Family | Forms | Specific | Recalled from a cue | Changes behaviour | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| **Situation** | Yes | Partly | Yes | **Yes, no LLM** | EARNED ×7 |
+| **Situation** | Yes | Partly | Yes | **Yes, no LLM** | EARNED ×4, PARTIAL ×3 |
 | **Recognition** | Yes | Partly | Text only | LLM text; small nudge | PARTIAL |
 | **Episodic** | Yes | Yes | Yes; result unused | LLM text only | Exp 10 |
 | **Semantic** | By name | n/a | By name | LLM text only | None |
@@ -44,7 +44,9 @@ What each row is, and what its short cells mean:
   recalled by EC pattern completion, and the substrate chooses the action. It is
   specific only when a sensor swings from neutral to an extreme, and it has one
   boundary a day ([#899](https://github.com/dennys246/Maxim/issues/899)). Evidence:
-  seven EARNED rows (Exp 45, 52, 53b, 56, 60, 61, 62 rung A).
+  four EARNED rows (Exp 45, 52, 53b, 56) and three PARTIAL ones (Exp 60, 61, 62 rung A),
+  which beat their ablations but matched a no-bio floor
+  ([the floors](/research/evidence/#the-floors-the-first-comparison-with-a-no-bio-learner)).
 - **Recognition**: an EC text node carrying a node-keyed `reward_bias`. Its centroid
   is a running mean that drifts, and reward widening adds to the drift
   ([#911](https://github.com/dennys246/Maxim/issues/911)). It reaches behaviour as
@@ -65,7 +67,8 @@ What each row is, and what its short cells mean:
 
 Only the **situation engram** scores on all four counts without the LLM. The
 [ledger](https://github.com/dennys246/Maxim/blob/main/docs/plans/behavioral_graduation_candidates.md)
-earns it in seven rows. It is only as specific as the world channel's geometry allows
+earns it in four rows, and three more beat their ablations but not a no-bio floor. It is
+only as specific as the world channel's geometry allows
 (see [its limits](#its-two-limits)).
 
 The episodic and semantic families are real traces that form and come back, but they
@@ -117,15 +120,20 @@ re-keyed onto another agent's own clusters (see [The Oasis](/guides/oasis/)).
 
 ## The evidence
 
-These are the three most recent EARNED rows, quoted from the
+These are the three most recent rows, quoted from the
 [graduation ledger](https://github.com/dennys246/Maxim/blob/main/docs/plans/behavioral_graduation_candidates.md).
+Each was EARNED against its ablation in September 2026. Each is **PARTIAL since
+2026-10-14/15**: a tabular learner with no bio layers, on the same situation keys, matches
+it (measured for Exp 60, argued for Exp 61 and 62). The ablation results below still
+stand; what is gone is any claim of behaviour beyond a no-bio learner
+([the floors](/research/evidence/#the-floors-the-first-comparison-with-a-no-bio-learner)).
 Each one was pre-registered and run live in a Minecraft water classroom on Paper
 1.20.4. Minecraft is the instrument here, not the product. Each row is substrate-primary:
 no LLM in the action path.
 
 **Exp 60: a fear learned from the game's own pain**
 ([prereg](/research/experiments/exp-60/),
-EARNED 2026-09-16). An agent that felt air-hunger pain underwater later left the water
+earned 2026-09-16; PARTIAL, floor matched, 2026-10-14). An agent that felt air-hunger pain underwater later left the water
 before the pain arrived. Its yoked twin had the same pain with the fear detached, and
 never left. Five frozen seeds per arm; all five gates passed.
 
@@ -144,7 +152,7 @@ never left. Five frozen seeds per arm; all five gates passed.
 
 **Exp 61: the fear transfers to an agent that never felt it**
 ([prereg](/research/experiments/exp-61/),
-EARNED 2026-09-17). A receiver ingested a donor's exported fear through the real CLI
+earned 2026-09-17; PARTIAL, floor matched by argument, 2026-10-15). A receiver ingested a donor's exported fear through the real CLI
 and left the water on its first loop-live submersion. All six frozen gates passed.
 
 - Transferred **12/12** (Wilson **[0.758, 1.0]**), against **0/24** isolated receivers
@@ -160,7 +168,7 @@ and left the water on its first loop-live submersion. All six frozen gates passe
 
 **Exp 62, rung A: the fear carries to a second pool**
 ([prereg](/research/experiments/exp-62/),
-EARNED 2026-09-20). An agent that learned the fear in pool 1 left the water on its
+earned 2026-09-20; PARTIAL, floor matched by argument, 2026-10-15). An agent that learned the fear in pool 1 left the water on its
 first submersion in pool 2, at a different altitude and spawn distance. There was no
 mechanism change, no new sensor and no ingest. All five frozen gates passed.
 
@@ -177,7 +185,7 @@ mechanism change, no new sensor and no ingest. All five frozen gates passed.
   changed situation. A lit pond reads **0.588** against the 0.85 threshold, so the
   context wall still stands there.
 
-The tracker counts four earlier EARNED rows for this family: Exp 45, 52, 53b and 56.
+The tracker counts four earlier rows for this family, all still EARNED: Exp 45, 52, 53b and 56.
 [Evidence](/research/evidence/) summarizes each one.
 
 ## Its two limits
@@ -193,7 +201,7 @@ it be. The engine's account is
 `time_of_day` as a straight line from 0 to 1, but the in-game clock is a circle. So
 the moments just before and just after the wrap sit at opposite ends of the sensor.
 Measured against the 0.85 threshold, the drowning pool reads 0.903 at midnight
-(0.75), 0.847 at 0.95 and **0.799 at 0.99**. The earned drowning fear therefore holds
+(0.75), 0.847 at 0.95 and **0.799 at 0.99**. The drowning fear therefore holds
 through the night and **misses in roughly the last 5% of each in-game day**
 ([#899](https://github.com/dennys246/Maxim/issues/899)). The experiments hold the
 in-game day frozen, which hides this. Earlier write-ups called the 0.799 reading

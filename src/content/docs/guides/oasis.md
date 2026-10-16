@@ -126,7 +126,8 @@ because a fear received second-hand is real but weaker than one the agent felt. 
 whose world node did not survive the merge is dropped rather than left dangling, and the
 ingest report says which. This is the path the
 [shared-fear result](/research/evidence/#a-survival-fear-transfers-between-agents) ran
-through. Pair 1.3 exporters with 1.3 receivers.
+through; since 2026-10-15 that result stands for the transport, not for behaviour beyond a
+no-bio learner. Pair 1.3 exporters with 1.3 receivers.
 
 This is the path Exp 56 ran through, with an unsigned bundle. It is worth being precise about what that
 bought: a bias key whose representation is missing is **dropped and reported**, not
@@ -210,7 +211,7 @@ fails loudly instead of degrading to permissive.
 - **Generalization across worlds.** A shared want is keyed on an exact cluster, so
   it fires where it was taught and not at a materially different layout. That is a
   [pre-registered null](/research/evidence/#where-it-didnt-hold-up), not a bug. Exp 62,
-  earned the day after 1.3.0 shipped, is consistent with it: an agent's own fear carried to a
+  run the day after 1.3.0 shipped (partial since 2026-10-15), is consistent with it: an agent's own fear carried to a
   second pool because that pool reads as the same situation in a different place, and it
   misses in roughly the last 5% of each in-game day, where the clock's wrap makes the
   situation read differently
@@ -221,7 +222,9 @@ fails loudly instead of degrading to permissive.
   moving between agents: a receiver that never felt the pain left the water on its
   first loop-live submersion
   ([Exp 61](/research/evidence/#a-survival-fear-transfers-between-agents)). That is
-  one pool, one world layout, substrate-primary. A *received* fear's reach to a
+  one pool, one world layout, substrate-primary, and since 2026-10-15 a partial result:
+  what it shows is that the fear survives transport between agents, not behaviour a no-bio
+  learner could not produce ([the floors](/research/evidence/#the-floors-the-first-comparison-with-a-no-bio-learner)). A *received* fear's reach to a
   different pool, its extinction, scaling to more donors, and hive-side promotion of a
   shared fear are all untested. (Exp 62 measured an agent's *own* fear crossing pools, with
   no sharing involved; it says nothing about a fear that arrived in a bundle.)
