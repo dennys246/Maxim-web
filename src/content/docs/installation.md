@@ -94,6 +94,35 @@ From here, configure your instance with [`maxim config`](/configuration/) and ex
 pip install --upgrade pymaxim
 ```
 
+### Leaders first: the security fix
+
+If any machine you run is a **leader** (it hosts a model for peers), do this before anything
+else, **on that machine**, and then stop and start Maxim there. That includes a machine that
+became a leader by default, which the Python API (`maxim.run`, `maxim.create.router`) also did
+on any host with a GPU, Apple Silicon included ([advisory](https://github.com/dennys246/Maxim/security/advisories/GHSA-7qh4-mp34-88v9)):
+
+0. On the leader itself, `pip install --upgrade pymaxim`.
+1. Run `maxim doctor` on it. It now fails a leader that could not start, and shows whether
+   remote admin is on.
+2. If it was a leader only because no role was set, make that explicit:
+   `maxim config set role leader`. The default role is now `solo`.
+3. If it has no mesh key, create one with `maxim tunnel key rotate`, then give it to each peer
+   with `maxim peer key set <key>`. If the key file is readable by others, fix it with
+   `chmod 600 ~/.config/maxim/api_key`. A leader without a usable key exits with code 2 and names
+   the path and the fix.
+4. If you use `maxim peer update`, `install`, `restart` or `llm`, opt in on the leader:
+   `maxim config set proxy.allow_remote_update true`. The old `MAXIM_ALLOW_REMOTE_UPDATE`
+   variable is ignored now, because older leaders set it themselves.
+5. Peers that called the leader at `http://<leader>:8100` directly must use `:8099`. The model
+   server now listens on `127.0.0.1` only.
+
+A machine that now stays `solo` by default, with a cloud API key in its environment and no
+`llm.profile` set, may auto-select a cloud model.
+
+**Do not upgrade a leader with `maxim peer update && maxim peer restart`.** A remote restart
+reuses the old process's environment, and a leader that now refuses to start leaves you no
+remote way back.
+
 1.3.2 turns several silent losses into errors. If you use the Python memory API, load past
 runs, keep an internet policy file, or give the agent host tools, check these first.
 
@@ -104,8 +133,9 @@ runs, keep an internet policy file, or give the agent host tools, check these fi
   `StoreOverwriteRefused` (a `FileExistsError`, exported from `maxim`) when the file exists
   and this instance neither read nor created it. To keep the memories, open the store with
   `maxim.load.hippocampus(path)` (or `load.atl`, `load.nac`) and save it back with that path:
-  `hippo.save(path)`. A store from `load.*` has no path of its own, so a bare `save()` raises
-  `ValueError`. To replace the file on purpose, pass `save(overwrite=True)` or call
+  `hippo.save(path)`. A store from `load.*` has no path of its own: a bare `save()` raises
+  `ValueError` for Hippocampus and NAc, and silently does nothing for ATL, so always pass the
+  path. To replace the file on purpose, pass `save(overwrite=True)` or call
   `allow_overwrite()` first.
 - **`maxim.create.hippocampus` and `create.atl` refuse an existing store** when they are
   built, not at the first save. Use `maxim.load.*` to keep it, or `overwrite=True` to replace
@@ -172,7 +202,7 @@ allowing it; a missing one (a 4xx) still means no restrictions.
 tool registry must provide `tool_descriptions()`.
 
 The engine's
-[1.3.2 notes](https://github.com/dennys246/Maxim/blob/main/docs/announcements/release_1_3_2.md#upgrading)
+[1.3.2 release notes](https://github.com/dennys246/Maxim/releases/tag/v1.3.2)
 and [changelog](https://github.com/dennys246/Maxim/blob/main/CHANGELOG.md) have the complete
 list, including entity file format 1.1, which 1.3.1 cannot read.
 

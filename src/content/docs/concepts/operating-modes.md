@@ -220,9 +220,10 @@ does not:
   ([#924](https://github.com/dennys246/Maxim/issues/924); the agent's side is closed in
   1.3.2, [below](#since-132-capability-goes-down-not-up)). Active mode runs shell
   and sandbox tools under approval, and a non-interactive run answers every
-  confirmation "yes", so an unattended passive agent can still switch itself to active
-  and act. Treat passive as a default, not a boundary, until #924 and the approval
-  surface (#922) land.
+  confirmation "yes", so an unattended passive agent could switch itself to active and
+  act. #924 closed the agent's side in 1.3.2. What remains: a non-interactive run still
+  answers every confirmation "yes", and the in-session approval surface
+  ([#922](https://github.com/dennys246/Maxim/issues/922)) is still open.
 - **The sandbox runs what was approved, and only inside the sandbox**
   ([#800](https://github.com/dennys246/Maxim/issues/800)–[#802](https://github.com/dennys246/Maxim/issues/802)).
   Python scripts now run at all (the restricted wrapper used to block its own imports);
@@ -247,8 +248,11 @@ does not:
   ([#924](https://github.com/dennys246/Maxim/issues/924),
   [#829](https://github.com/dennys246/Maxim/issues/829)). The `mode_switch` tool refuses any
   switch that gains capability, and a mode request from the robot runtime is honoured only
-  if it lowers capability. A mode name with no definition is enforced as passive. A human
-  can still say or type "Maxim active" in the CLI loop.
+  if it lowers capability. A mode name with no definition is enforced as passive. One gap is
+  recorded: in the robot runtime, a spoken or typed "Maxim active" still sets the state
+  manager's mode to active without a capability check, and any audio in the room can say
+  it. Tool dispatch enforces the launch grant or the run mode, which that phrase does not
+  change.
 - **`--operational-mode passive|active|singularity` is the launch grant.** It needs an explicit
   `--mode` and is refused with `--sim`, `--research`, `--benchmark` and `--foundry`.
   Singularity, the mode that executes code, is reachable only this way, and the grant is
@@ -272,7 +276,8 @@ does not:
   cannot be read refuses the fetch, and its redirects are followed for up to five hops with the
   private-address check on each. Downloads check the address they actually dial on every
   redirect. Shared-address space (100.64.0.0/10, used by Tailscale) now counts as private.
-  The limit: a URL fetched through a proxy is not address-checked.
+  The limit: a download or backend URL carried by a configured proxy is not
+  address-checked (the agent's own web fetch never uses a proxy).
 
 ## See also
 

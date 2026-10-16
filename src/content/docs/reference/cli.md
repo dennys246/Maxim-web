@@ -234,8 +234,8 @@ maxim hive contribute bundle.zip --to <name> [--api-key <key>]
 - **Trust defaults to Queen-only.** `hive trust --allow-unsigned` disables signature
   verification for that Oasis's release stream — it is the check itself, off, not a
   lower tier. Contradictory flags error rather than granting the looser setting.
-- **`oasis serve` fails closed.** Binding a non-loopback interface without a bearer
-  key is refused unless you pass `--insecure`.
+- **`oasis serve` fails closed.** Since 1.3.2, serving without a bearer key is refused on
+  any interface, loopback included, unless you pass `--insecure`.
 - **Nothing promotes a contribution.** `hive contribute` writes into an experimental
   tier that no shipped verb promotes to Queen tier; that gate is
   [deliberately not shipped in 1.2](/guides/oasis/#what-isnt-shipped).
@@ -298,7 +298,9 @@ maxim serve --dump-openapi [PATH]            # write the OpenAPI schema and exit
   warned at start ("parts of the UI may not work") and the UI drew a banner on every
   screen. 1.2.1 vendors the maxim-pulse v0.3.0 bundle, which speaks 0.5.0: both the
   warning and the banner are gone. The API surface was never affected by the
-  mismatch. `--ui-dist` still points the server at a bundle you built yourself.
+  mismatch. 1.3.2 vendors maxim-pulse v0.4.0, which speaks contract 0.6.0 (checked in the
+  1.3.2 wheel's bundle manifest). `--ui-dist` still points the server at a bundle you built
+  yourself.
 - **Spoken-code device pairing (A9.1): the pieces ship, the composition does not.** The
   idea is that a device with a speaker — a Reachy Mini is the case it was built for —
   signs its owner in by *saying* a six-digit code aloud instead of handing over a URL.

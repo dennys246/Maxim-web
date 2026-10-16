@@ -16,7 +16,7 @@ directory name equals the `session_id` on every log event of that run.
 :::note[`~/.maxim/sessions/` is not where sessions go]
 No simulation writes there. Through 1.3.1, `maxim.run(learning=True)` kept its agent's files there;
 since 1.3.2 that agent lives in `<data home>/agents/api_agent/`, and the first 1.3.2 run moves the old
-files once. If a tool or doc points you at `sessions/` for a simulation, it is stale.
+files once (never across data homes, and never over an agent already there). If a tool or doc points you at `sessions/` for a simulation, it is stale.
 :::
 
 Two things a run writes **outside** the session directory. The full simulation trace lands at
@@ -83,7 +83,8 @@ Line one is a header; skip any line whose `_record_kind` is `header` before read
 older runs or when the entity could not be derived from the parameters; that is normal.
 
 **Since 1.3.2 (format 1.2)** each record also carries the credit the action booked: `rpe` (the reward
-surprise), `pain`, and `nac_failure_booked` (whether the failure was booked as a learned link). Each is
+surprise), `pain`, and `nac_failure_booked` (the signature the tool-pain bridge booked the failure under, such as
+`tool:X:negative`). Each is
 `null` where the action carried none. A file with a `1.1` header predates them: read it as "credit not
 recorded", not "no credit".
 

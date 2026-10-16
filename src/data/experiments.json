@@ -53,7 +53,7 @@
       "slug": "cross-session",
       "title": "Cross-session recall",
       "period": "Apr–Oct 2026",
-      "intro": "The headline claim at its base: memory persists across sessions and takes part in recall (re-earned on current code in Exp 63), and whether it shifts behavior (the 1.0 gate came back partial, now stale).",
+      "intro": "The headline claim at its base: memory persists across sessions and takes part in recall (re-earned narrowly in Exp 63). Whether it shifts behavior is a separate claim; its 1.0 gate came back partial and is now stale.",
       "walkthrough": "/research/experiments/cross-session-learning/",
       "best": "exp-63"
     },
@@ -795,7 +795,7 @@
       "line": "cross-session",
       "headline": false,
       "summary": "Resumed sessions surfaced prior-session memories. Its ledger claim went stale in September 2026 and was superseded on 2026-10-04 by Exp 63, run on current code.",
-      "finding": "Prior-session memories injected into the prompt produce measurably different behavior. The graduation ledger records a clean August re-validation (the resumed session opened with the prior store, 108 episodes, and surfaced 3 memories per turn on 8 of 8 turns) and a 2026-09-27 re-run for 1.3.1, MAINTAINED (narrow): both resumes reloaded the store exactly (100 memories), the new persistence fields round-tripped on all 100, and 3 memories surfaced on every resume turn observed; but each resumed phase ran one turn, because every run stopped early on a known planning defect (D13, #935), and link accumulation was not re-shown. SUPERSEDED 2026-10-04: the row went STALE on 2026-09-30 (every session of the September re-run ended planning_failed, a typed abort that cannot back a status), and the claim was re-tested as a new pre-registered experiment on current code, Exp 63, which replaces it.",
+      "finding": "Prior-session memories were injected into the prompt on resume. The graduation ledger records a clean August re-validation (the resumed session opened with the prior store, 108 episodes, and surfaced 3 memories per turn on 8 of 8 turns) and a 2026-09-27 re-run for 1.3.1, MAINTAINED (narrow): both resumes reloaded the store exactly (100 memories), the new persistence fields round-tripped on all 100, and 3 memories surfaced on every resume turn observed; but each resumed phase ran one turn, because every run stopped early on a known planning defect (D13, #935), and link accumulation was not re-shown. SUPERSEDED 2026-10-04: the row went STALE on 2026-09-30 (every session of the September re-run ended planning_failed, a typed abort that cannot back a status), and the claim was re-tested as a new pre-registered experiment on current code, Exp 63, which replaces it.",
       "walkthrough": "/research/experiments/cross-session-learning/#exp-10--cross-session-enrichment"
     },
     {

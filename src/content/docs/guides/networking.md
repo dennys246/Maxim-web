@@ -25,7 +25,7 @@ Every Maxim instance resolves to exactly one of three roles at startup:
 
 | Role | What it does | Runs |
 | --- | --- | --- |
-| **Leader** | Hosts the model for the mesh. Binds `0.0.0.0` so peers can reach it. | `llama-cpp-server` + LeaderProxy + `cloudflared` + its own agent loop |
+| **Leader** | Hosts the model for the mesh. The LeaderProxy (:8099) is its one network entry point, and it refuses to start without a mesh key. | `llama-cpp-server` (on `127.0.0.1`) + LeaderProxy + `cloudflared` + its own agent loop |
 | **Peer** | Borrows a leader's model. Its large lane points at the leader's URL. | agent loop only (large lane is remote) |
 | **Solo** | Standalone, no networking. The default. | `llama-cpp-server` + agent loop, bound to loopback |
 
@@ -41,7 +41,9 @@ Role is decided by a **seven-rank priority order** (first match wins). You rarel
 4. `~/.cloudflared/config.{yml,yaml}` or `/etc/cloudflared/config.{yml,yaml}` exists → **leader**
 5. `~/.config/maxim/peer.yml` exists → **peer**
 6. `--llm <local-profile>` flag with no other signal → **solo**
-7. Default fallback → **leader**
+7. Default fallback → **solo** (since 1.3.2; through 1.3.1 it was **leader**, the root of
+   [advisory GHSA-7qh4-mp34-88v9](https://github.com/dennys246/Maxim/security/advisories/GHSA-7qh4-mp34-88v9)). A machine that lands on the default while holding a
+   mesh key logs `role_default_with_mesh_key`.
 
 Note that cloudflared detection (rank 4) sits **above** `peer.yml` (rank 5) on purpose: a stale `peer.yml` left over from when a box was a peer will not silently override a machine that is now a real leader. To force a role regardless, set `MAXIM_ROLE` before starting the daemon. `maxim doctor` reports a `role_divergence` warning when env and config disagree.
 
@@ -64,7 +66,9 @@ The transport is deliberately boring: plain HTTPS speaking the OpenAI-compatible
                                             └──────────────────────────────┘
 ```
 
-Requests enter at the LeaderProxy on **port 8099**, which authenticates and logs them, then forwards to `llama-cpp-server` on **port 8100**. The tunnel must point at 8099, never 8100 — routing the tunnel straight at 8100 bypasses auth entirely.
+Requests enter at the LeaderProxy on **port 8099**, which authenticates and logs them, then forwards to `llama-cpp-server` on **port 8100**. Since 1.3.2 the model server listens on `127.0.0.1` only, with its key passed in its environment rather than on its command line, and the leader checks from outside that it is not reachable without the key. The tunnel must point at 8099; peers use `:8099` too.
+
+**A leader fails closed since 1.3.2.** Without a usable key (missing, empty, too short, or readable by others) it refuses to start and exits with code 2, naming the key path and the fix. Loopback is never treated as authentication, so a tunnelled leader no longer serves its debug routes to the internet. The remote admin routes behind `maxim peer update`, `install`, `restart` and `llm` need the key **and** an opt-in on the leader: `maxim config set proxy.allow_remote_update true` (or `MAXIM_PROXY_ALLOW_REMOTE_UPDATE=1`). The old `MAXIM_ALLOW_REMOTE_UPDATE` is ignored.
 
 ### 1. On the leader: provision the tunnel
 
@@ -173,7 +177,7 @@ curl -s -H "Authorization: Bearer $MAXIM_API_KEY" \
   https://maxim.yourdomain.com/v1/debug/metrics | python -m json.tool
 ```
 
-Companion debug endpoints (all Bearer-gated or localhost-only) include `/v1/debug/status`, `/v1/debug/heartbeat`, `/v1/debug/vram`, `/v1/debug/last-requests`, and `/v1/debug/version`. A local heartbeat thread (enable with `MAXIM_HEARTBEAT=1`, sampled every 10s) prints a one-line hardware + runtime summary: `[heartbeat] gpu=72% vram=5.1/8.0GB cpu=2.4 ram=61% disk=42GB loop=+0.8s lanes=3/0/1`.
+Companion debug endpoints (all Bearer-gated; since 1.3.2 a localhost caller needs the key too) include `/v1/debug/status`, `/v1/debug/heartbeat`, `/v1/debug/vram`, `/v1/debug/last-requests`, and `/v1/debug/version`. A local heartbeat thread (enable with `MAXIM_HEARTBEAT=1`, sampled every 10s) prints a one-line hardware + runtime summary: `[heartbeat] gpu=72% vram=5.1/8.0GB cpu=2.4 ram=61% disk=42GB loop=+0.8s lanes=3/0/1`.
 
 Expect roughly **65–94 ms** of added latency per short completion over the tunnel (Cloudflare hop plus inference); on a LAN it's ~5–20 ms. That's fine for planning and review lanes but tight for real-time motor control — keep a **local** backend on any lane driving actuators. See the [Reachy Mini guide](/guides/reachy-mini/) for the robot side of that tradeoff.
 
@@ -224,6 +228,8 @@ Work top-down: is the leader healthy, is the tunnel up, does auth pass, is the p
 | Peer "works" but never hits the leader | Lane fell back to local (peer config loaded after lane init), or a stale probe cache | Start with `MAXIM_LANE_TRACE=1` and confirm `backend=remote`; `peer connect`/`forget` clears the probe cache at `~/.maxim/util/last_probe_status.json` |
 | Requests hit the cloud API instead of the peer leader | Cloud provider outranks the local/peer provider in routing | Ensure the peer endpoint is `local`-class and ranks above cloud in your routing config |
 | Server accepts *any* key | Tunnel is bypassing the LeaderProxy | Route the tunnel through port 8099, not 8100 |
+| Leader exits with code 2 at start (1.3.2+) | No usable mesh key | Follow the message: `maxim tunnel key rotate`, or `chmod 600 ~/.config/maxim/api_key` |
+| `maxim peer update` / `restart` refused (1.3.2+) | Remote admin is off by default | On the leader: `maxim config set proxy.allow_remote_update true` |
 
 For a deeper bisection ladder, see the repo troubleshooting docs linked below.
 
@@ -235,7 +241,7 @@ These are **not shipped** — they describe where the mesh is going, not what it
 - **An InferenceRouter for per-request backend selection.** Today a peer's large lane is statically wired to one leader. The planned router picks the best backend *per request* — local GPU vs. peer leader vs. cloud — from live lane metrics, cost constraints, and model compatibility.
 - **Operator-visibility surface.** Cluster-key rotation as a first-class verb and a fuller admin/trace API are partly landed and partly still specified; treat the routing design doc as the target contract, not a description of today's code.
 
-> **Already shipped, despite older write-ups calling them future work:** remote peer management (`maxim peer update`, `maxim peer restart`, `maxim peer llm <model>` for a hot model swap), multi-node mesh config (`mesh.yml` with `maxim peer add-node` / `drain` / `resume`), and cloud-provider integration all exist on `main`. If a page mixes these into a roadmap, prefer the repo docs.
+> **Already shipped, despite older write-ups calling them future work:** remote peer management (`maxim peer update`, `maxim peer restart`, `maxim peer llm <model>` for a hot model swap; since 1.3.2 opt-in on the leader), multi-node mesh config (`mesh.yml` with `maxim peer add-node` / `drain` / `resume`), and cloud-provider integration all exist on `main`. If a page mixes these into a roadmap, prefer the repo docs.
 
 ## Going deeper
 
