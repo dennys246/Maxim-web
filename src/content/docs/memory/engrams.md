@@ -106,9 +106,10 @@ becomes that cluster's prototype and never changes, so these engrams do not drif
 Later matches only raise the cluster's count.
 
 **It carries valence.** Pain from low oxygen or low health books a fear on the world
-cluster that was active when the pain arrived. Fear does not decay tick by tick. Only a
-slow wall-clock decay applies, when saved state is loaded. Unlearning it would take new
-learning, and no code writes that yet. A want is booked the same way from relief or
+cluster that was active when the pain arrived. Fear does not decay tick by tick, and since
+1.3.3 it does not decay while the agent is switched off either (through 1.3.2 a slow
+wall-clock decay applied when saved state was loaded). So a learned fear never fades.
+Unlearning it would take new learning, and no code writes that yet. A want is booked the same way from relief or
 success, and it decays as the agent runs.
 
 **It acts without the LLM.** When a later reading completes into the same cluster,

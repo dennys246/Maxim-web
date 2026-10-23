@@ -216,8 +216,10 @@ no-bio learner ([the floors](/research/evidence/#the-floors-the-first-comparison
 - **Behaviour beyond a no-bio learner.** A tabular learner on the same situation keys
   matched Exp 60, and matches Exp 61 and 62 by construction (above).
 
-- **Extinction.** Nothing writes fear back down. Fear has no per-tick decay and decays by
-  wall clock only when saved state is loaded. The record states this as a mechanism gap.
+- **Extinction.** Nothing writes fear back down. Fear has no per-tick decay, and when these
+  experiments ran it decayed by wall clock only when saved state was loaded; since pymaxim
+  1.3.3 it does not decay on load either, so a learned or imported fear never fades. The record
+  states this as a mechanism gap.
   No experiment here tests unlearning.
 - **Scaling past one donor.** Each Exp 61 receiver ingested one donor's bundle, in one
   campaign. Folding several donors' fears is untested.
@@ -477,7 +479,8 @@ Rung B — the context wall and what crossing it would take — is **designed, n
   roughly the last 5% of each in-game day. Encoding the clock without a wrap is owned by
   the 1.4 keying work.
 - **No fear extinction mechanism.** Nothing writes fear down. A received fear holds
-  unchanged for the session and decays by wall clock only on load.
+  unchanged for the session. It decayed by wall clock on load when these experiments ran;
+  since pymaxim 1.3.3 it does not, so it never fades.
 - **Sample sizes.** Exp 60 had 5 seeds per arm. Exp 61 and Exp 62 had 12 in the claim
   arm, and their ceiling results should be read by the Wilson lower bound (0.758).
 - **Re-run triggers named in the records.** Exp 56 and 57 re-run on any change to the

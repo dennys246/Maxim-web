@@ -144,9 +144,12 @@ reward-bias surfaces keyed per agent, per goal and per cluster, Pavlovian `perce
 variance per event, a `saved_at` stamp and a `_format_version`. The `version: "1.0"` inside it is a
 tombstoned legacy string, not the format version.
 
-One behaviour to know before loading one yourself: `NAc.load()` **ages every bias by the wall-clock time
-since `saved_at`** by default and prunes what decayed, logging a warning. The read-only loaders and the
-resume path pass `apply_decay=False` so disk truth survives; a hand-rolled load does not.
+Since 1.3.3, `NAc.load()` restores the snapshot without any offline decay, however much time has passed
+(values are still clamped to range). Through
+1.3.2 it **aged every bias by the wall-clock time since `saved_at`** by default and pruned what decayed,
+so a hand-rolled load on 1.3.2 did not see disk truth. The old behaviour is the opt-in
+`NACConfig(offline_wall_decay=True)`; `load(apply_decay=...)` is deprecated and removed in 1.5.0. A
+loaded file's values are now clamped to range, with a warning.
 
 `aut_ec.json` carries the entorhinal substrate nodes with their embeddings, the LSH tables and inverted
 index, a `hash_scheme` of `stable-sha256-v1` (files without it predate the stable-hash fix and their

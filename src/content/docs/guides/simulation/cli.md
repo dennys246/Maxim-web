@@ -71,7 +71,7 @@ A directory path globs its YAML files but runs only the first.
 | Flag | What it does |
 |---|---|
 | `--language-model NAME` | The LLM profile, persisted for later runs. Exits with a `pip install` hint if the backend package is missing |
-| `--auto-download` | Skip the download prompt for a missing GGUF; same as `MAXIM_AUTO_DOWNLOAD_MODELS=1` |
+| `--auto-download` | Consent to download a missing GGUF without asking; same as `MAXIM_AUTO_DOWNLOAD_MODELS=1`. Since 1.3.3 a missing model never downloads without consent, here or in `config.json` (`llm.auto_download`) |
 | `--llm-n-ctx N` | Override the computed llama.cpp context window |
 | `--cloud-fallback MODEL` | Add a cloud model as fallback on the inference lane; validates the profile, its API key variable and the SDK, then enables cloud dispatch with the standard redaction policy |
 | `--cloud-lane LANE MODEL` | Assign a cloud model to one lane |
@@ -96,7 +96,7 @@ The rest are environment only:
 | `MAXIM_LOG_FILE_MAX_BYTES`, `MAXIM_LOG_FILE_BACKUP_COUNT` | 100 MB, 3 | Rotation; `0` disables |
 | `MAXIM_BACKEND_TRACE` | | `1` raises per-call peer-backend records to INFO: tokens and latency per LLM call |
 | `MAXIM_REPORT_JSON` | | What `--report-json` sets; consumed once per run |
-| `MAXIM_AUTO_DOWNLOAD_MODELS` | | `1` skips the download prompt; mirrors `llm.auto_download` |
+| `MAXIM_AUTO_DOWNLOAD_MODELS` | | `1` consents to downloading a missing GGUF; when set, it overrides `llm.auto_download`, so `0` refuses even with a config `true` |
 | `MAXIM_SIM_HARD_ABORT` | on | Opt-out for the wedged-LLM hard abort: 20 seconds after a wedge is detected the process exits 4 |
 | `MAXIM_SIM_PLANNING_LIVENESS` | on | Opt-out for the planning-liveness abort; off reproduces the bug it fixed |
 | `MAXIM_SIM_STALL_CHECK_INTERVAL_S` | 3.0 | Stall-detector poll cadence |
@@ -144,7 +144,10 @@ actions.
 | 4 | An abort: `aborted`, `aut_died`, `cancel`, `llm_wedged`, `planning_failed`, `stuck`, `worker_unavailable`. `cancel` is in this set, so typing `/cancel` exits like an infrastructure failure. The wedged-LLM backstop also exits 4 from a watchdog thread twenty seconds after detection |
 
 Two paths use a different contract: `--benchmark` exits 0 or 1 on pass or fail, and a curriculum exits 0
-or 1 on whether every stage ran.
+or 1 on whether every stage ran. Since 1.3.3 a benchmark passes only strictly: it exits 1 unless at least
+one scoring threshold was applied, every applied threshold held, every expectation was met and no run
+errored
+([benchmarks](/guides/benchmarks/#scoring-and-thresholds)).
 
 ## Related
 

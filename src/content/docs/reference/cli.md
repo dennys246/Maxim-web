@@ -58,7 +58,8 @@ Audio / TTS
 Maintenance
 
 --clear-cache                Remove __pycache__ directories
---clear-memory [TYPE]        Clear persistent memory and exit
+--clear-memory [TYPE]        Clear persistent memory in the data home and exit (asks first)
+--yes                        Confirm --clear-memory without asking
 --log-level 0|1|2            Logging level (alias: --verbosity, deprecated)
 --display bio|clean|debug    Output detail (DEFAULT: bio)
 --no-agentic-console         Suppress agentic event output
@@ -298,9 +299,13 @@ maxim serve --dump-openapi [PATH]            # write the OpenAPI schema and exit
   warned at start ("parts of the UI may not work") and the UI drew a banner on every
   screen. 1.2.1 vendors the maxim-pulse v0.3.0 bundle, which speaks 0.5.0: both the
   warning and the banner are gone. The API surface was never affected by the
-  mismatch. 1.3.2 vendors maxim-pulse v0.4.0, which speaks contract 0.6.0 (checked in the
-  1.3.2 wheel's bundle manifest). `--ui-dist` still points the server at a bundle you built
-  yourself.
+  mismatch. 1.3.2 vendored maxim-pulse v0.4.0. 1.3.3 bundles v0.4.2 (commit `bcd0d1e`), with
+  the API contract unchanged at 0.6.0, and the build refuses any bundle but the pinned, newest
+  pulse release; typed payloads (contract 0.7.0) are planned for 1.3.4. `--ui-dist` still points the
+  server at a bundle you built yourself.
+- **The live stream works from a clean install since 1.3.3.** `pymaxim[console]` now installs
+  `websockets`, so `/ws` (the activity and thinking panels, live health, turn status) upgrades.
+  In 1.3.2 the extra installed none, and `/ws` answered 404.
 - **Spoken-code device pairing (A9.1): the pieces ship, the composition does not.** The
   idea is that a device with a speaker — a Reachy Mini is the case it was built for —
   signs its owner in by *saying* a six-digit code aloud instead of handing over a URL.
@@ -322,13 +327,21 @@ maxim serve --dump-openapi [PATH]            # write the OpenAPI schema and exit
   digit-by-digit repeat fits inside the code's 120-second lifetime on hardware as slow
   as a Pi. The endpoints are refused under sandbox mode regardless.
 
-  **Since 1.3.2, the voice can be provisioned, still with no shipped caller.** Every Piper voice
-  is pinned to one commit of `rhasspy/piper-voices` with a sha256 per file, and a download is
-  verified before it is used. `ensure_tts_voice` and a background `VoiceProvisioner` fetch and
-  load the voice, and `build_app(pairing_ready=...)` lets a device offer spoken-code pairing only
-  once its voice actually loads (until then `/api/hello` reports `"pairing": "none"` and
-  `/api/pair/*` answers 409). Nothing in pymaxim calls these yet: wiring them is owed in the
-  maxim-pulse Reachy app. A plain `maxim serve` never downloads a voice.
+  **Since 1.3.2 the voice can be provisioned, and since 1.3.3 it can speak; still no shipped
+  caller.** Every Piper voice is pinned to one commit of `rhasspy/piper-voices` with a sha256 per
+  file, and a download is verified before it is used. `ensure_tts_voice` and a background
+  `VoiceProvisioner` fetch and load the voice, and `build_app(pairing_ready=...)` lets a device
+  offer spoken-code pairing only once its voice is ready (until then `/api/hello` reports
+  `"pairing": "none"` and `/api/pair/*` answers 409). Nothing in pymaxim calls these yet: wiring
+  them is owed in the maxim-pulse Reachy app. A plain `maxim serve` never downloads a voice.
+
+  **A correction to 1.3.2.** 1.3.2's notes called this "verified Piper voice provisioning". That
+  overclaimed: 1.3.2 verified the voice's files and that the voice loaded, not that it could
+  speak, and it could not. Every synthesis failed on every installable piper version
+  ([#1332](https://github.com/dennys246/Maxim/issues/1332)). 1.3.3 fixes synthesis, and
+  `pairing_ready` now means the voice has synthesized non-silent audio once, not that it loaded
+  ([#1334](https://github.com/dennys246/Maxim/issues/1334)). A voice that loads but cannot speak
+  keeps the device on the paste sign-in.
 
 ## Common Recipes
 
@@ -401,6 +414,24 @@ maxim --clear-memory focus,bounds    # Movement learning only
 maxim --clear-memory nac,hippo       # Decision learning + episodes
 maxim --clear-memory pain,fear       # Safety learning only
 ```
+
+Since 1.3.3 ([#1337](https://github.com/dennys246/Maxim/issues/1337)) it works in the data home,
+`~/.maxim` (or `$MAXIM_DATA_HOME`), and an agent store you name (`hippo`, `nac`, `ec`, `atl`
+and the like; all types with no `TYPE`) is cleared in every agent's home under it, so a script's `--clear-memory nac --yes` now clears every
+agent's NAc. It
+no longer clears `./data` in the directory you run it from; that directory is cleared only when
+you pass `--home-dir` explicitly, and otherwise a `./data` holding memory is named in a warning
+and left alone. `sim_reports/` is a run archive and is never cleared.
+
+It lists every path it will delete, then asks y/N. When stdin is not a terminal it refuses with
+exit 2 unless you pass `--yes`:
+
+```sh
+maxim --clear-memory nac --yes      # in a script or CI
+```
+
+Exit codes: 0 done or nothing found, 1 declined or a deletion failed (declining used to exit 0),
+2 an unknown type or a refusal, in which case nothing is deleted.
 
 ### Available Memory Types
 

@@ -57,7 +57,7 @@ maxim config set role leader                       # leader / peer / solo (defau
 maxim config set proxy.allow_remote_update true    # leader: allow peer update/restart/llm (1.3.2, default false)
 maxim config set llm.profile qwen2.5-32b-instruct  # default model
 maxim config set llm.n_ctx 16384                   # context window
-maxim config set llm.auto_download true            # download GGUFs on first run
+maxim config set llm.auto_download true            # consent to download a missing GGUF (read on every path since 1.3.3)
 maxim config set llm.max_response_tokens 256       # per-call max_tokens + prompt reserve (engine main, after 1.1.4)
 maxim config set llm.deliberation_max_cycles 1     # PFC deliberation cap; 1 = one LLM call per turn (same)
 maxim config set auto_spawn.llm_server true        # spawn llama-cpp-server
@@ -81,6 +81,14 @@ a file written by a newer Maxim instead of silently dropping the settings it doe
 `maxim config downgrade` keeps what this build knows and sets the rest aside in an owner-only
 `config.preserved.json`, and `maxim config restore-preserved` offers them back one field at a time,
 at an interactive terminal only.
+
+**Since 1.3.3 a missing local model downloads only with consent, on every path**
+([#1343](https://github.com/dennys246/Maxim/issues/1343)). `llm.auto_download` is now that consent
+on every path; before, some paths ignored it. Where Maxim cannot ask (a
+notebook, CI), nothing downloads without it, so a first `maxim.run()` in a notebook no longer
+downloads a model silently. Set `maxim config set llm.auto_download true`, or call
+`maxim.download_model(name)`. An explicit `MAXIM_AUTO_DOWNLOAD_MODELS=0` overrides a config
+`true`.
 
 ## Environment Variables (per-session overrides)
 
@@ -122,7 +130,7 @@ MAXIM_PROXY_RATE_LIMIT_RPM=0           # Per-peer rate limit (0=unlimited)
 MAXIM_LLM_N_CTX=4096                   # Override auto-computed llama.cpp n_ctx (P4c)
 MAXIM_LLM_MAX_RESPONSE_TOKENS=256      # Agent-loop max_tokens + budget reserve in one field (engine main after 1.1.4; read at loop start)
 MAXIM_LLM_DELIBERATION_MAX_CYCLES=1    # Deliberation cycles per turn, default 3 in sim / 2 live (same)
-MAXIM_AUTO_DOWNLOAD_MODELS=1           # Skip the download prompt (P5) — same as --auto-download
+MAXIM_AUTO_DOWNLOAD_MODELS=1           # Consent to download a missing GGUF — same as --auto-download; when set, it overrides llm.auto_download (0 refuses)
 MAXIM_DATA_BUDGET_GB=50                # Optional soft cap on ~/.maxim disk usage
 MAXIM_SKIP_REMOTE_PROBE=1              # Bypass the P6 remote-URL probe (CI escape hatch)
 MAXIM_REMOTE_PROBE_CACHE_TTL_S=60      # Probe-cache freshness window (clamped 0-600)

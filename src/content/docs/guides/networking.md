@@ -107,7 +107,7 @@ maxim                    # auto-detects leader (cloudflared config present),
 
 With `~/.cloudflared/config.yml` present, Maxim promotes itself to leader, binds the spawned server to `0.0.0.0`, and — if no `cloudflared` daemon is already running — launches one as a managed subprocess. Opt out of the tunnel auto-spawn with `MAXIM_AUTO_SPAWN_TUNNEL=0`. To keep the tunnel up independently of Maxim, install it as a service: `sudo cloudflared service install`.
 
-The model itself **auto-downloads on first run** — the first launch with a given profile prompts to fetch the GGUF (set `MAXIM_AUTO_DOWNLOAD_MODELS=1` to skip the prompt). Bundled profiles run up to `llama-3.1-70b`; register anything else with `maxim model add`. See [LLM setup](https://github.com/dennys246/Maxim/blob/main/docs/user/llm-setup.md) for model choice and hardware tiers.
+The model itself downloads on first run, **only with your consent** (since 1.3.3, on every path). The interactive CLI asks at a terminal; a server started in the background never asks, so on a leader grant it ahead of time with `maxim config set llm.auto_download true` (or `MAXIM_AUTO_DOWNLOAD_MODELS=1`), or fetch it with `python -m maxim.models.download --llm <profile>`. Bundled profiles run up to `llama-3.1-70b`; register anything else with `maxim model add`. See [LLM setup](https://github.com/dennys246/Maxim/blob/main/docs/user/llm-setup.md) for model choice and hardware tiers.
 
 ### 3. Verify the leader is healthy *before* touching the peer
 

@@ -22,12 +22,56 @@ such as the Reachy robot.
 pip install pymaxim
 ```
 
-That resolves to the current stable release, **1.3.2 "Decomposition"** (published
-2026-10-16 UTC) —
-[release notes](https://github.com/dennys246/Maxim/releases/tag/v1.3.2) ·
-[changelog](https://github.com/dennys246/Maxim/blob/main/CHANGELOG.md) ·
-[security advisory](https://github.com/dennys246/Maxim/security/advisories/GHSA-7qh4-mp34-88v9) ·
-[PyPI](https://pypi.org/project/pymaxim/1.3.2/).
+That resolves to the current stable release, **1.3.3 "Release pipeline"** (published
+TODO-1.3.3-DATE UTC) —
+[release notes](https://github.com/dennys246/Maxim/releases/tag/v1.3.3) ·
+[changelog](https://github.com/dennys246/Maxim/blob/v1.3.3/CHANGELOG.md) ·
+[PyPI](https://pypi.org/project/pymaxim/1.3.3/).
+**Read [upgrading to 1.3.3](/installation/#upgrading-to-133) before you upgrade.**
+
+:::caution[1.3.3: upgrade every maxim on a host together]
+Every local model server (`llama-cpp-server`) that Maxim starts now requires a key, a solo
+machine's included. Through 1.3.2 only a leader's server had one, so any other process or user
+on a shared machine could use a solo's model. An older maxim on the same machine gets a 401 on
+every call to the new keyed server, and 1.3.3 refuses to use a server an older maxim started
+without a key. So upgrade every maxim on the machine at once, and stop any model server an older
+one left running. The steps are in [upgrading to 1.3.3](/installation/#security-every-local-model-server-has-a-key).
+:::
+
+1.3.3 makes **no new behavioural claim**: it adds no new research result about how agents
+behave. It does change how the software behaves, in places on purpose. It ships three things:
+
+- **The Console fixes the [maxim-pulse](https://github.com/dennys246/maxim-pulse) app found.**
+  Piper text-to-speech works (in 1.3.2 every synthesis failed). A robot offers sign-in by a
+  spoken code only after its voice has actually spoken. The Console's chat view, Talk, is
+  offered only the tools it may use, and one message in Talk is now one memory, not a new
+  memory every half second.
+- **The Console's live stream from a clean install.** `pip install 'pymaxim[console]'` now
+  brings what `/ws` needs, so the activity, thinking and live-health panels work. In 1.3.2
+  `/ws` answered 404.
+- **The first pymaxim release CI publishes from a signed tag**
+  ([release integrity](/installation/#release-integrity)).
+
+Other security changes: the agent can no longer turn the operator's internet switch on, the
+file tools refuse to write git configuration, sim reports keep only an endpoint's
+`scheme://host[:port]`, and an unusable leader key now refuses to serve instead of serving without
+auth. Several behaviours change on purpose: `--clear-memory` now reaches every agent in the data
+home (asking first), an agent's saved reward and fear learning no longer fades while it is
+switched off, a missing model downloads only with consent, and a benchmark passes only strictly. Each is listed with
+what to do in [upgrading to 1.3.3](/installation/#upgrading-to-133).
+
+**What 1.3.3 says about the evidence.** No result changed status. Exp 37's cross-session
+result is still stale: a code change triggered a re-run that has not happened yet. 1.3.2 and
+1.3.3 each shipped with it stale by an explicit, recorded owner decision, and 1.4.0 will not
+ship until it is re-run, as a new dose-response experiment. Its cross-model "Goldilocks" map
+can be cited only with [its caveat](/research/limits/) (the identical setup did not reproduce
+its own magnitudes). The three survival-fear results stay partial, as 1.3.2 left them
+([evidence](/research/evidence/#carried-memory-shifts-an-llm-driven-agents-behaviour)).
+
+### 1.3.2 "Decomposition"
+
+Published 2026-10-16 UTC ([notes](https://github.com/dennys246/Maxim/releases/tag/v1.3.2) ·
+[security advisory](https://github.com/dennys246/Maxim/security/advisories/GHSA-7qh4-mp34-88v9)).
 
 :::danger[1.3.2 is a security release for anyone running a leader]
 Through 1.3.1, a machine with no role set became a **leader** listening on every interface,
@@ -67,10 +111,10 @@ that work is done. What changes for you:
   with the new `--operational-mode` launch flag; host tools also lose your API keys and
   other secrets from their environment.
 
-Read [upgrading to 1.3.2](/installation/#upgrading-to-132) before you upgrade: several
-Python calls that used to succeed silently now raise.
+If you are coming from 1.3.1, read [upgrading to 1.3.2](/installation/#upgrading-to-132) as
+well: several Python calls that used to succeed silently now raise.
 
-**What 1.3.2 says about the evidence.** Three survival-fear results moved from earned to
+**What 1.3.2 said about the evidence.** Three survival-fear results moved from earned to
 partial after the project compared them with a learner that has no bio layers
 ([the floors](/research/evidence/#the-floors-the-first-comparison-with-a-no-bio-learner)).
 Cross-session memory was re-earned, narrowly, on current code: carried memories take part in

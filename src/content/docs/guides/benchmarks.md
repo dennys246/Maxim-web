@@ -7,7 +7,7 @@ The benchmark harness runs the same scenarios against several LLM profiles and s
 
 ## What a run does
 
-Each scenario sends a scripted sequence of percepts through an agent under test (AUT) running the full pipeline — perception, memory, executive, goal, statistician — and then reads the bio-systems: memory formation, causal learning, concept clustering, pain signals, temporal indexing. The result is a per-model, per-scenario score card, a composite score, pass/fail against the suite's thresholds, and, if you supplied one, deltas against a previous run.
+Each scenario sends a scripted sequence of percepts through an agent under test (AUT) running the full pipeline — perception, memory, executive, goal, statistician — and then reads the bio-systems: memory formation, causal learning, concept clustering, pain signals, temporal indexing. The result is a per-model, per-scenario score card, a composite score, a strict pass/fail against the suite's thresholds and expectations, and, if you supplied one, deltas against a previous run.
 
 ## Quick start
 
@@ -21,6 +21,8 @@ maxim --sim benchmark \
   --models mistral-7b,qwen2.5-14b \
   --campaign scenarios/benchmarks/cognitive_suite.yaml
 ```
+
+Expect `cognitive_suite` to report FAIL on 1.3.3 for any model ([why](#scoring-and-thresholds)).
 
 `--models` and `--campaign` are both required in this form. The scenario files live in `scenarios/benchmarks/` of a **source checkout** — the wheel does not bundle them — so run from the repository root or pass absolute paths.
 
@@ -165,10 +167,14 @@ suite:
 
 Two separate things come out of a run:
 
-- **Pass/fail** against `scoring`. Each entry names a metric and a `pass_above` (for metrics where higher is better, such as recall) or `pass_below` (for `hallucination_rate` and the like) threshold. A suite with no `scoring` block passes automatically.
+- **Pass/fail.** Each `scoring` entry names a metric and a `pass_above` (for metrics where higher is better, such as recall) or `pass_below` (for `hallucination_rate` and the like) threshold. Since 1.3.3 ([#1310](https://github.com/dennys246/Maxim/issues/1310)) a model passes only when **at least one threshold was applied, every applied threshold held, every expectation was met, and no run errored**. A suite with no threshold applied no longer passes, and `maxim --sim benchmark` exits 1 for it. A scenario run on its own may carry its own thresholds under `benchmark.scoring`. Through 1.3.2 a suite with no `scoring` block passed automatically.
 - **A composite score** in 0–1 for ranking models. The runner normalises every metric it collected for that model — rates as-is, lower-is-better rates (`hallucination_rate`, `alias_redirect_rate`, `cost_per_turn`) inverted, counts capped — and takes the mean.
 
-Two things a suite file invites you to expect do **not** happen in 1.1.2: a scenario's `weight` is parsed and then never read again, and there is no per-scenario score for weights to compose from — the composite is a flat mean over one model's aggregated metrics. Read `_compute_composite_score` in `src/maxim/simulation/benchmark.py` before attaching meaning to the number. It ranks; it does not measure. Pass/fail against `scoring` thresholds is the part that behaves as written.
+Two things a suite file invites you to expect do **not** happen in 1.1.2: a scenario's `weight` is parsed and then never read again, and there is no per-scenario score for weights to compose from — the composite is a flat mean over one model's aggregated metrics. Read `_compute_composite_score` in `src/maxim/simulation/benchmark.py` before attaching meaning to the number. It ranks; it does not measure.
+
+**Expectations were never checked against the run before 1.3.3.** Through 1.3.2 every scenario's expectations were validated against an empty record, with no memory store and no emitted tags, so `memory_formed`, `action_count_range` and `pipeline_continued` could not pass for any model. 1.3.3 hands the run's actions, memory store and delivered tags to the checks. A 1.3.2 "0 of 3 expectations met" therefore says nothing about the model.
+
+**The shipped `cognitive_suite` cannot pass yet, for any model, and its runs now report FAIL instead of passing on empty inputs.** Campaign delivery drops the pain percepts, so nothing feeds the agent's pain detector ([#1393](https://github.com/dennys246/Maxim/issues/1393)), and some scenarios name a tool by its class (`RespondTool`) where the run records `respond` ([#1394](https://github.com/dennys246/Maxim/issues/1394)). `pipeline_continued` still passes on any action, not only one after its tag ([#1391](https://github.com/dennys246/Maxim/issues/1391)). The summary leads with the verdict, for example `m: FAIL — expectations 2/3 met · thresholds PASS`, and `benchmark_report.json` records the threshold result on its own as `thresholds_passed`.
 
 ## Baseline comparison
 
