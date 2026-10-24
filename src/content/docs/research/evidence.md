@@ -425,9 +425,11 @@ pre-registration merge. One ladder on live Minecraft, 4 rungs × 3 conditions ×
 
 **Stale since 2026-10-02; partial before that.** A change to how the agent's prompt is built
 fired this row's re-run trigger, and the re-run has not happened, so the row carries no
-current claim. Its re-run, with the language-model floors beside it, is Stage B4 of the
+current claim. 1.3.2 and 1.3.3 each shipped with the row stale under a recorded owner
+exception that covers that one release (for 1.3.3, `release-1.3.3-T1-2`). Its re-run is a new
+dose-response experiment, with the language-model floors beside it, Stage B4 of the
 [baseline floors plan](https://github.com/dennys246/Maxim/blob/main/docs/plans/baseline_floors.md),
-planned for 1.4.
+planned before 1.4.0; 1.4.0 waits for it.
 
 [Exp 37](/research/experiments/exp-37-graduation/), the pre-registered 1.0 gate,
 found a cross-session behavioural shift only at ≥32B, and only where the model's prior left

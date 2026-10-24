@@ -279,6 +279,26 @@ does not:
   The limit: a download or backend URL carried by a configured proxy is not
   address-checked (the agent's own web fetch never uses a proxy).
 
+## Since 1.3.3: the operator owns the internet switch
+
+- **The agent can only lower internet, and only for its own session**
+  ([#1345](https://github.com/dennys246/Maxim/issues/1345)). Through 1.3.2,
+  `internet_access_toggle` wrote the operator's saved setting, so an agent running at
+  `--autonomy autonomous` could turn internet back on after the operator turned it off, or turn
+  it off for every later session. Now the tool can only lower internet for the session it runs
+  in, and never writes the setting to disk; asking it to turn internet on is refused unless
+  internet is already on. Only the operator turns internet on, with
+  `maxim.utils.set_internet_access(True)`. If an agent on 1.3.2 or earlier turned internet off
+  in the saved setting, the startup warning names it. The limit
+  ([#1399](https://github.com/dennys246/Maxim/issues/1399), open): after the agent turns
+  internet off for its session, the prompt still lists the internet tools, and calling them is
+  refused.
+- **The file tools refuse to write git configuration**
+  ([#957](https://github.com/dennys246/Maxim/issues/957)). `write_file`, `edit_file` and the
+  sandbox's file writers refuse anything under `.git`, a git directory under another name, and
+  your user- and system-level git config. That narrows the git-filter route described above;
+  it does not close it, because `bash`, and any code the model runs, can still write there.
+
 ## See also
 
 - [Architecture](/concepts/architecture/) — how the agent loop and Default

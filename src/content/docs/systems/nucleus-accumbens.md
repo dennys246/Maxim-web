@@ -91,11 +91,17 @@ the rest of the system reads.
 
 ### Decay
 
-Links that stop being observed lose strength. `NACConfig.decay_interval_hours`
-(default `24.0`) sets the window: links not re-observed within it weaken, so
-stale predictions from old experience fade rather than persisting at full
-confidence forever. The repo documents the behaviour and the knob, not the exact
-decay curve.
+Links lose strength at the end of each session: the memory hub calls
+`NAc.decay_all(factor=0.95)`, which weakens every link, so predictions that stop
+being re-observed fade rather than persisting at full confidence. The reward biases decay per tick
+too (see [reward-modulated recognition](#reward-modulated-recognition)). Fear
+(`cluster_fear`) is the exception: it has no in-session decay by design.
+`NACConfig.decay_interval_hours` looks like the knob for this but nothing reads
+it; 1.3.3 marks it dead and keeps it only so existing `NACConfig(...)` calls stay
+valid.
+
+All of this is decay in experience time. Since 1.3.3 nothing decays while the
+agent is switched off ([across sessions](#across-sessions)).
 
 ### Context matching
 
@@ -181,6 +187,34 @@ when the substrate path was enabled with `MAXIM_SUBSTRATE_PATH=1`.
 
 To carry a learned substrate into a new run, `--resume-sim <session_id>` restores
 `aut_hippocampus.json` and `aut_nac.json` before the session starts.
+
+**A saved NAc no longer decays while the agent is switched off (since 1.3.3).**
+`NAc.load()` restores every map with no offline decay, however long the agent was
+off (values are still clamped to range; see below).
+Through 1.3.2 a load aged the biases by the wall-clock time since `saved_at`
+(`cluster_reward_bias` halved per day offline; the others, `cluster_fear`
+included, per week). What follows from that:
+
+- **A learned fear never fades**, and neither does one imported in a bundle. Fear
+  has no in-session decay by design, and now no offline decay either; nothing in
+  Maxim unlearns a fear yet.
+- **The old behaviour is an opt-in:** `NACConfig(offline_wall_decay=True)`.
+  `saved_at` is still written, as a diagnostic and as that opt-in's clock.
+- **`NAc.load(apply_decay=...)` is deprecated** (and `load_safe`'s), and is
+  removed in 1.5.0. Until then it decides that one load. `--resume-sim` still
+  passes it internally, so ignore that one warning.
+- **Restored values are clamped to range, with a warning**
+  ([#1102](https://github.com/dennys246/Maxim/issues/1102)). A hand-edited,
+  corrupt or pre-clamp `nac.json` used to load out-of-range biases; each map is
+  now clamped to the range its writer uses, and a non-finite value is dropped.
+- **An agent id containing `:` is refused when the agent is named**, with
+  `InvalidAgentIdError`, by `maxim.create.agent`, `maxim.load.agent` and the
+  agent builders. NAc stores `reward_bias` under `"<agent_id>:<node_id>"`, so on
+  1.3.2 such an agent's learning was filed under the wrong agent when it
+  reloaded. To keep one, rename its directory under `~/.maxim/agents/` to a name
+  without `:` and load it by the new name.
+- NAc's credit methods raise `ValueError` on a NaN or infinite input; a NaN used
+  to be stored as full aversion.
 
 Be careful about what that proves. Persistence and recall are the earned claims:
 the links carry over and the resumed agent demonstrably recalls the prior

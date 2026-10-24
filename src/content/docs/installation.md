@@ -40,16 +40,21 @@ RTX 50-series (Blackwell) GPUs have a known GStreamer/CUDA incompatibility. Maxi
    pip install 'pymaxim[llm-openai]'
    ```
 
-3. **Pick a model** — no separate download step needed.
+3. **Pick a model.**
 
-   **Local model** — Maxim auto-downloads the GGUF on first run and caches it in `~/.maxim/`:
+   **Local model** — Maxim downloads the GGUF and caches it in `~/.maxim/`, but since 1.3.3
+   only with your consent, on every path:
 
    ```sh
    maxim --list-models              # see available models + download status
-   maxim --llm mistral-7b           # auto-downloads on first use (~4GB for Mistral 7B Q4_K_M)
+   maxim --llm mistral-7b           # at a terminal, asks before downloading (~4GB for Mistral 7B Q4_K_M)
    ```
 
-   In a non-interactive shell (CI, headless), the download prompt is skipped — set `MAXIM_AUTO_DOWNLOAD_MODELS=1` or pass `--auto-download`. If you ever need to fetch one by hand, the fallback is `python -m maxim.models.download --llm <profile>`.
+   Anywhere it cannot ask (a notebook, CI, a headless box) nothing downloads until you grant it.
+   `maxim config set llm.auto_download true` is a standing grant that every path reads;
+   `--auto-download` or `MAXIM_AUTO_DOWNLOAD_MODELS=1` grants it for one run. An explicit
+   `MAXIM_AUTO_DOWNLOAD_MODELS=0` overrides a config `true`. To fetch one yourself, call
+   `maxim.download_model(name)` or run `python -m maxim.models.download --llm <profile>`.
 
    **Cloud model** — export a provider key and Maxim auto-enables cloud dispatch; no extra flags required:
 
@@ -64,12 +69,12 @@ RTX 50-series (Blackwell) GPUs have a known GStreamer/CUDA incompatibility. Maxi
 
 | Extra | Install Command | What It Enables |
 | --- | --- | --- |
-| TTS | `pip install 'pymaxim[tts]'` | Text-to-speech (Piper TTS) |
+| TTS | `pip install 'pymaxim[tts]'` | Text-to-speech (Piper TTS; synthesis works since 1.3.3, not in 1.3.2) |
 | Semantic | `pip install 'pymaxim[semantic]'` | Neural similarity (SentenceTransformer) |
 | Torch LLM | `pip install 'pymaxim[llm-torch]'` | PyTorch transformers backend |
 | YOLOv8 | `pip install 'pymaxim[yolo]'` | YOLOv8 vision engine via Ultralytics (AGPL-3.0). Default engine is RTMDet-m (Apache 2.0) |
 | Reachy | `pip install 'pymaxim[reachy]'` | Reachy Mini robot support — see the [Reachy Mini guide](/guides/reachy-mini/) |
-| Console | `pip install 'pymaxim[console]'` | The local Console backend, `maxim serve` — see the [CLI reference](/reference/cli/#console-server) |
+| Console | `pip install 'pymaxim[console]'` | The local Console backend, `maxim serve`, with its live stream (`/ws`) since 1.3.3 — see the [CLI reference](/reference/cli/#console-server) |
 | Sign | `pip install 'pymaxim[sign]'` | Signing and verifying substrate bundles — see [the Oasis](/guides/oasis/#signing-a-release) |
 
 ## First Run (No Robot)
@@ -87,6 +92,152 @@ maxim --mode exploration
 ```
 
 From here, configure your instance with [`maxim config`](/configuration/) and explore the rest of the command surface in the [CLI Reference](/reference/cli/).
+
+## Upgrading to 1.3.3
+
+1.3.3 adds no new research claim about how agents behave, but it does change how the software
+behaves, and some changes break existing setups on purpose. Do the security steps first.
+
+### Security: every local model server has a key
+
+Every `llama-cpp-server` that Maxim starts now requires a key, a solo machine's included
+([#1314](https://github.com/dennys246/Maxim/issues/1314)). Through 1.3.2 only a leader's server
+had one, so any other process or user on a shared machine could use a solo's model. A leader's
+server still uses the mesh key. Every other server uses a key file,
+`~/.config/maxim/llm_server_key` (owner-only, 0600; `%APPDATA%\maxim\llm_server_key` on
+Windows), which Maxim creates the first time it starts one.
+
+1. **Upgrade every maxim on the machine together.** Run `pip install --upgrade pymaxim` in every
+   virtualenv, notebook kernel and service that runs Maxim, then restart each one. An older
+   maxim reuses the new keyed server and gets a 401 on every call.
+2. **Stop any model server an older maxim started.** It runs as `llama_cpp.server`, on port 8100
+   by default; on macOS or Linux, `pkill -f llama_cpp.server` stops it. 1.3.3 refuses a server
+   that answers without a key, so if you skip this step the next start fails and tells you; once
+   the old server is gone, the next start spawns a keyed one. Nothing is stopped for you.
+3. **Only if you set a lane URL yourself.** A lane is one of Maxim's model connections, by
+   tier (`LARGE`, `MEDIUM`, `SMALL`; see [networking](/guides/networking/)). If you pointed one
+   at a server on this machine with `MAXIM_LANE_<TIER>_REMOTE_URL`, Maxim attaches no key to it:
+   set `MAXIM_LANE_<TIER>_REMOTE_API_KEY`. `maxim doctor` (its "Loopback lane auth" check)
+   prints the command, naming the key file but never the key. If you never set a lane URL, skip
+   this.
+4. **In a container with a read-only home**, make `~/.config/maxim` writable, or Maxim cannot
+   create the key file and refuses to start the server.
+
+To replace the key, delete `llm_server_key`; the next start creates a new one.
+
+The other security changes:
+
+- **The agent can no longer change the operator's internet switch**
+  ([#1345](https://github.com/dennys246/Maxim/issues/1345)). Its `internet_access_toggle` can
+  only turn internet off, only for its own session, and never writes the setting to disk. Only
+  the operator turns internet on, with `maxim.utils.set_internet_access(True)`. If an agent on
+  1.3.2 or earlier turned internet off in your saved setting, the startup warning names it.
+  Still open ([#1399](https://github.com/dennys246/Maxim/issues/1399)): after the agent turns
+  internet off for its session, the prompt still lists the internet tools, and calling them is
+  refused.
+- **The file tools refuse to write git configuration**
+  ([#957](https://github.com/dennys246/Maxim/issues/957)): anything under `.git`, a git
+  directory under another name, and your user- and system-level git config
+  (`~/.gitconfig` and the like). `.gitignore`, `.gitattributes` and `.github/` stay writable. A
+  workflow that had the agent edit `.git/config` or `~/.gitconfig` breaks. This narrows a way
+  to make git run code; it does not close it, because `bash` can still write there.
+- **Sim reports no longer record an endpoint's credentials, path or query**
+  ([#997](https://github.com/dennys246/Maxim/issues/997)). In `report.json`,
+  `language_endpoint` and `aut_endpoint` keep `scheme://host[:port]` only, such as
+  `http://127.0.0.1:8100` rather than `http://127.0.0.1:8100/v1`. If a script read `/v1` or
+  another path part from those fields, take it from your own configuration instead.
+- **An unusable leader key is a clear refusal**, never a traceback or a silent "no key"
+  ([#1311](https://github.com/dennys246/Maxim/issues/1311)). `maxim oasis serve --insecure`
+  with a key file that exists but cannot be used now exits 2; it used to serve without auth.
+
+### Behaviour changes and what to do
+
+- **`maxim --clear-memory` now reaches every agent in your data home**
+  ([#1337](https://github.com/dennys246/Maxim/issues/1337)). It used to clear `./data` in the
+  directory you ran it from. Now it works in `~/.maxim` (or `$MAXIM_DATA_HOME`), and an agent
+  store you name (`hippo`, `nac` and the like; all types with no `TYPE`) is cleared in every
+  agent's home there. **Check any script that passes
+  `--clear-memory` before you upgrade.** It lists every path it will delete before asking. Off a
+  terminal it refuses with exit 2 unless you pass `--yes`, and with `--yes` it deletes across
+  all agents. Declining exits 1 (it used to exit 0). A `./data` that holds memory is named in a
+  warning and left alone; pass `--home-dir` to clear it too. `sim_reports/` is never cleared.
+- **An agent's saved reward and fear learning (the [NAc](/systems/nucleus-accumbens/)) no
+  longer fades while it is switched off.** A saved agent resumes with its learning intact,
+  however long it was off. So a learned fear, including one imported in a bundle, never fades:
+  nothing in Maxim unlearns a fear yet. To restore the old offline decay from Python, build the
+  NAc with `NACConfig(offline_wall_decay=True)`; there is no CLI or config switch for it.
+  `NAc.load(apply_decay=...)` is deprecated and is removed in 1.5.0. `--resume-sim` still
+  passes it internally, so the `DeprecationWarning` it raises there is expected; ignore it. A loaded `nac.json` now has its values clamped to range, with a warning
+  ([#1102](https://github.com/dennys246/Maxim/issues/1102)).
+- **A missing local model downloads only with consent, on every path**
+  ([#1343](https://github.com/dennys246/Maxim/issues/1343)). A first `maxim.run()` in a
+  notebook no longer downloads a model silently. Grant it once with
+  `maxim config set llm.auto_download true`, or call `maxim.download_model(name)`.
+  `llm.auto_download` in `config.json` is now a grant on every path, and an explicit
+  `MAXIM_AUTO_DOWNLOAD_MODELS=0` overrides a config `true`.
+- **A benchmark passes only strictly** ([#1310](https://github.com/dennys246/Maxim/issues/1310)).
+  A model passes only when at least one scoring threshold was applied, every applied threshold
+  held, every expectation was met and no run errored; otherwise `maxim --sim benchmark` exits 1.
+  The shipped `cognitive_suite` cannot pass yet, for any model, and its runs now report FAIL
+  instead of passing on empty inputs. See [benchmarks](/guides/benchmarks/#scoring-and-thresholds).
+- **A refused tool call goes back to the model**
+  ([#1413](https://github.com/dennys246/Maxim/issues/1413)). An LLM-driven run can make up to
+  two extra model calls each time the model picks a tool it is not allowed, so action counts,
+  cost and blocked counts are not comparable to 1.3.2. The model is also no longer offered
+  `execute_file`, which was always refused; account for it when you compare prompts across
+  versions.
+- **One message in Console Talk is one observation**
+  ([#1414](https://github.com/dennys246/Maxim/issues/1414)). It used to become a new memory
+  every half second, so memory counts from Console sessions are not comparable to 1.3.2.
+- **An agent id containing `:` is refused when the agent is named**, with
+  `InvalidAgentIdError`, by `maxim.create.agent`, `maxim.load.agent` and the agent builders.
+  On 1.3.2 such an agent's learning was filed under the wrong agent when it reloaded. To keep
+  one, rename its directory under `~/.maxim/agents/` to a name without `:` and load it by the
+  new name.
+- **Python API.** `InternetAccessTool` no longer takes `set_internet_access_fn=`, and
+  `maxim.utils.set_internet_access` defaults to `source="operator"`. NAc's credit methods raise
+  `ValueError` on a NaN or infinite input.
+
+### The Console
+
+- **`pymaxim[console]` now installs `websockets`**, so `/ws` (the activity and thinking panels,
+  live health, turn status) works from a clean install. In 1.3.2 `/ws` answered 404
+  ([#1347](https://github.com/dennys246/Maxim/issues/1347)).
+- **Piper speaks again** ([#1332](https://github.com/dennys246/Maxim/issues/1332)). In 1.3.2
+  every synthesis failed on every installable piper version, so spoken-code pairing played
+  nothing. **A correction:** the 1.3.2 notes said "verified Piper voice provisioning". That
+  overclaimed: 1.3.2 verified the voice's files and that the voice loaded, not that it could
+  speak, and it could not.
+- **Talk, the Console's chat view, is offered only the tools it may use**
+  ([#1412](https://github.com/dennys246/Maxim/issues/1412)), and a refused tool call goes back
+  to the model instead of leaving the turn to time out
+  ([#1413](https://github.com/dennys246/Maxim/issues/1413)).
+- **Pairing arms only on a voice that has spoken**
+  ([#1334](https://github.com/dennys246/Maxim/issues/1334)). A robot whose voice loads but
+  cannot speak stays on the paste sign-in.
+- **The wheel bundles the maxim-pulse Console v0.4.2** (commit `bcd0d1e`; 1.3.2 bundled v0.4.0).
+  The Console's API contract is unchanged at 0.6.0; typed payloads (contract 0.7.0) are
+  planned for 1.3.4.
+- **A setup change made in the Console reaches the next talk without a restart**
+  ([#1411](https://github.com/dennys246/Maxim/issues/1411)). A `maxim config set` from another
+  process still needs one. `maxim serve` also no longer hangs up to 15 s on shutdown after a
+  Console tab closes.
+
+The engine's
+[1.3.3 release notes](https://github.com/dennys246/Maxim/releases/tag/v1.3.3)
+and [changelog](https://github.com/dennys246/Maxim/blob/v1.3.3/CHANGELOG.md) have the complete
+list, with the guard behind each fix.
+
+### Release integrity
+
+1.3.3 is the first pymaxim release that CI publishes. A signed tag starts the release, which
+requires a green nightly run on that exact commit, smoke-tests the exact wheel in a clean
+environment, waits for the owner's approval, and publishes through PyPI trusted publishing,
+with no stored token. The bundled
+Console must be the pinned, newest maxim-pulse release, and the build refuses any other. Two
+optional extras, `tts` and `console`, are tested nightly against their real libraries, at the
+lowest versions they declare and at the latest, and a release waits for those runs. The other
+extras are not tested this way yet.
 
 ## Upgrading to 1.3.2
 

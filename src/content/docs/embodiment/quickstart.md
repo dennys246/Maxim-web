@@ -15,12 +15,13 @@ pip install pymaxim
 ```
 
 Maxim needs a language model to drive the agent. The quickest path is a local model,
-which auto-downloads on first run (see [Installation](/installation/) for cloud keys and
-options):
+which downloads on first run once you consent: at a terminal it asks, and elsewhere you
+grant it with `maxim config set llm.auto_download true` (see [Installation](/installation/)
+for cloud keys and options):
 
 ```sh
 maxim --list-models          # see what's available
-maxim --llm mistral-7b       # auto-downloads on first use
+maxim --llm mistral-7b       # asks, then downloads on first use
 ```
 
 ## 2. Run with the default body
