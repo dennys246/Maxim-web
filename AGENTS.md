@@ -41,6 +41,25 @@ pnpm dev        # local preview
 pnpm build      # → dist/ (what Cloudflare Pages serves)
 ```
 
+## Release refreshes (the standard)
+
+When pymaxim ships a release, the site refresh follows this order:
+
+1. **Engine record first.** Add a "<version> refresh" section to the engine's
+   [`docs/announcements/pymaxim_bio_update_suggestions.md`](https://github.com/dennys246/Maxim/blob/main/docs/announcements/pymaxim_bio_update_suggestions.md).
+   It holds the framing, the sources read, a findings table (route → claim before → truth source → fix) and the
+   acceptance checks. Open it as its own engine PR, off `origin/main`.
+2. **The site PR can be prepared alongside it**, as a draft. Leave any date or version that can't be confirmed
+   yet as a visible placeholder.
+3. **The site claims no more than the engine's files do:** `docs/announcements/release_<x_y_z>.md`, the
+   CHANGELOG section and the graduation ledger. If they disagree with the site, they win. If a file is ambiguous,
+   ask; don't fill the gap from memory.
+4. **Verify against the artifact users install**: a clean venv with the PyPI wheel, not the repo. Have a
+   different reader check every changed claim before the PR.
+5. **Merge order:** the release is on PyPI, then the engine companion merges, then the site PR. The site never
+   goes live ahead of its engine record.
+6. **After deploy:** re-crawl the live sitemap and confirm the version line on the live site.
+
 ## Deploy
 
 Cloudflare Pages from this repo (build `astro build`, output `dist`), custom domains
