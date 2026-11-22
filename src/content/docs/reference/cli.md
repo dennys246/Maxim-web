@@ -302,7 +302,7 @@ maxim serve --dump-openapi [PATH]            # write the OpenAPI schema and exit
   mismatch. 1.3.2 vendored maxim-pulse v0.4.0 and 1.3.3 bundled v0.4.2 (commit `bcd0d1e`).
   1.3.4 bundles v0.4.4 (commit `9af8a57`), with the API contract unchanged at 0.6.0. Since 1.3.3
   the build refuses any bundle but the pinned, newest pulse release. Typed payloads (contract
-  0.7.0) are not in 1.3.4. `--ui-dist` still points the server at a bundle you built yourself.
+  0.7.0) did not come in 1.3.4; they wait for a pulse release built for 0.7.0. `--ui-dist` still points the server at a bundle you built yourself.
 - **The live stream works from a clean install since 1.3.3.** `pymaxim[console]` now installs
   `websockets`, so `/ws` (the activity and thinking panels, live health, turn status) upgrades.
   In 1.3.2 the extra installed none, and `/ws` answered 404.

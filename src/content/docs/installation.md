@@ -95,36 +95,140 @@ From here, configure your instance with [`maxim config`](/configuration/) and ex
 
 ## Upgrading to 1.3.4
 
-TODO-1.3.4-INTRO: one paragraph from `docs/announcements/release_1_3_4.md` (not yet written).
-If you are coming from 1.3.2 or earlier, read [upgrading to 1.3.3](#upgrading-to-133) as well.
+```bash
+pip install --upgrade pymaxim
+```
+
+1.3.4 ships the defects maxim-pulse found on a real Reachy Mini running 1.3.3, Talk's recall
+across sessions, and a stop that saves before it is killed. Some changes break on purpose, so
+read the breaking changes first. If you are coming from 1.3.2 or earlier, read
+[upgrading to 1.3.3](#upgrading-to-133) as well.
 
 ### Breaking changes
 
-TODO-1.3.4-BREAKING: each entry exactly as the CHANGELOG's `## [1.3.4]` Breaking section
-states it, with its migration line. At least these two:
+Each of these is marked breaking in the
+[changelog](https://github.com/dennys246/Maxim/blob/v1.3.4/CHANGELOG.md), with its migration.
 
-- A `ToolPolicy` is required on every executor
-  ([#1315](https://github.com/dennys246/Maxim/issues/1315)). TODO-1.3.4-MIGRATION.
-- The `TimeoutPolicy` pool change
-  ([#1715](https://github.com/dennys246/Maxim/issues/1715)). TODO-1.3.4-MIGRATION.
+- **Every executor now takes a required `ToolPolicy`; `permissions=` is removed**
+  ([#1315](https://github.com/dennys246/Maxim/issues/1315), the atonia gate).
+  `Executor(registry, *, policy=...)`, `build_executor(..., policy=...)` and
+  `AgentConfig(..., policy=...)` require a `maxim.runtime.tool_policy.ToolPolicy`. Passing
+  `None` or omitting it raises `TypeError`, and so do the old `permissions=` keyword, the
+  `AgentConfig.permissions` field and a positional argument after `Executor`'s registry.
+  Migrate:
+  - `build_executor(reg, pain_bus=..., permissions=None)` →
+    `build_executor(reg, pain_bus=..., policy=ToolPolicy.unrestricted(reason="..."))`;
+  - an `AgentPermissions` allow or deny list → `ToolPolicy.only(names, ceiling=Effect.ALL, reason=...)`
+    or `ToolPolicy.deny(names, reason=...)`;
+  - `AgentConfig(...)` for an agent with no executor (`create_agent`) → `policy=None`;
+  - `agents.permissions.tool_permissions_from_settings` →
+    `runtime.tool_policy.policy_from_tools_settings`.
 
-### Robot motion safety
+  None of these is in the stable API. The stable verbs (`maxim.run`, `create.*`, `load.*`)
+  build their own policy, so their signatures are unchanged.
+- **`maxim.run()`'s path-taking file tools reach only the run's workspace,
+  `<home>/.maxim_workspace`** ([#1342](https://github.com/dennys246/Maxim/issues/1342), first
+  half). `home_dir` defaults to `~/.maxim`. Before, `read_file`, `write_file`, `edit_file`,
+  `glob`, `search_code` and the git tools reached the process working directory. They no longer
+  reach it, nor the home's own stores, config or other agents' homes. `bash` and `execute_file`
+  now start in the workspace, but a shell command, or the file's code, can still reach any
+  absolute path; `maxim.run`'s passive mode refuses both. **Migrate:** put the files a run
+  should see in `<home_dir>/.maxim_workspace` (created on first run), or pass `home_dir=` to
+  choose the home.
+- **`maxim.utils.http.TimeoutPolicy.total_s` is renamed `pool_s`**
+  ([#1715](https://github.com/dennys246/Maxim/issues/1715)). It only ever bounded the wait for
+  a pooled connection, though nearly every caller set it as if it bounded the whole request. No
+  behaviour changes. **Migrate:** code that constructs `TimeoutPolicy(total_s=...)` gets a
+  `TypeError` and should pass `pool_s=` instead.
+- **`create.pool` needs an LLM router, and `create.router` raises instead of returning `None`**
+  ([#1338](https://github.com/dennys246/Maxim/issues/1338)). Both are stable surfaces.
+  `create.pool(..., llm_router=...)` raises `ConfigurationError` without the new keyword.
+  **Migrate:** pass `llm_router=maxim.create.router(<profile>)`. `create.router(model)` raises
+  `ConfigurationError` naming what is missing (a cloud profile's key, or a configured local
+  profile) when no backend could be built. **Migrate:** a caller that checked for `None`
+  catches `ConfigurationError`.
+- **Custom speakers** ([#1435](https://github.com/dennys246/Maxim/issues/1435)).
+  `ResponseOutput`'s `speaker_fn` is now called as `speaker_fn(samples, sample_rate=<tts rate>)`
+  and must return whether it played; a single-argument `speaker_fn` now fails and reports
+  `spoken: False`. `push_audio_to_device` requires `sample_rate`. **Embedders must call
+  `start_device_player(mini)` before speaking.**
 
-TODO-1.3.4-MOTION: the Reachy motion-safety changes as the release notes describe them
-(refusals before a motor moves, the path check, fresh readback), and nothing beyond that.
+**Hippocampus files move to `_format_version` 1.2.** 1.1 stores a tool result as data, not its
+Python repr; 1.2 keeps your words through compression. Older files load.
+
+### The robot
+
+- **It speaks, at the right speed.** The Reachy speaker sink no longer reports a silent drop
+  as played, resamples to the device's rate, and refuses loudly when the player is not started
+  ([#1435](https://github.com/dennys246/Maxim/issues/1435)). `maxim --tts` speaks, or refuses
+  at start ([#1437](https://github.com/dennys246/Maxim/issues/1437)).
+- **It hears again.** Voice input had been off since April behind one warning
+  ([#1436](https://github.com/dennys246/Maxim/issues/1436)).
+- **Motion safety.** No non-finite, out-of-range-duration or instant command reaches a motor
+  ([#1496](https://github.com/dennys246/Maxim/issues/1496)), and no too-fast,
+  wrongly-referenced or mid-path-unsafe one either: a turn that would sweep the neck through
+  about 180° mid-move is split or refused
+  ([#1499](https://github.com/dennys246/Maxim/issues/1499)). A move's outcome reaches the
+  model, not just "queued".
+- **Inbound comms reach the robot.** Every comms endpoint had answered 422, so no inbound SMS
+  reached it ([#1466](https://github.com/dennys246/Maxim/issues/1466)), and a message now
+  reaches the model framed as untrusted data
+  ([#1481](https://github.com/dennys246/Maxim/issues/1481)).
+- **The controller cleans up after itself.** It gives the daemon's camera and audio back after
+  a `no_media` connection and closes its SDK client on disconnect
+  ([#1704](https://github.com/dennys246/Maxim/issues/1704),
+  [#1712](https://github.com/dennys246/Maxim/issues/1712)), and a fresh pose read gets its full
+  deadline ([#1706](https://github.com/dennys246/Maxim/issues/1706)).
+- **Known oddity, under investigation.** On the project's test unit the head stops near 56° of
+  yaw, short of the ±65° clamp, and in later joint checks only about 50° on the negative side
+  ([#1707](https://github.com/dennys246/Maxim/issues/1707)). The motion code behind it is sound
+  by its tests: its clamp matches Pollen's documented ±65° limit, the SDK's default (analytical)
+  kinematics solve to 65°, and the clamp and path tests pass. Whether the shortfall is this
+  unit's mechanism (two of its six head motors were replaced, and the errors behave like
+  friction or weak holding torque) or the head's real range with the body held (Pollen's Placo
+  model caps head-to-body yaw at 55°) is an open question with Pollen. The full embodied run on
+  the robot is still owed ([#1708](https://github.com/dennys246/Maxim/issues/1708)).
 
 ### Recall
 
-TODO-1.3.4-RECALL: as the release notes describe it. Any evidence status is copied exactly,
-with its scope, from the graduation ledger.
+- **What you tell Talk is now stored, and a later question that shares a word with it can
+  recall it**, across a restart and past compression
+  ([#1444](https://github.com/dennys246/Maxim/issues/1444),
+  [#1163](https://github.com/dennys246/Maxim/issues/1163),
+  [#1064](https://github.com/dennys246/Maxim/issues/1064),
+  [#1447](https://github.com/dennys246/Maxim/issues/1447),
+  [#1137](https://github.com/dennys246/Maxim/issues/1137)). Recalled words are framed as
+  untrusted content, because text replayed into later prompts is a stored-injection channel.
+- **What this does not claim.** Recall matches words (stemmed keys), not meaning. A question
+  that shares no word with what was said, or only a spelling variant, recalls nothing
+  ([#1516](https://github.com/dennys246/Maxim/issues/1516)). The behavioural evidence is narrow:
+  see [cross-session memory persistence](/research/evidence/#cross-session-memory-persistence).
+
+### Stopping
+
+- **A stop saves memory first and finishes within the caller's deadline**, so a Reachy stop no
+  longer loses the session-end save to the daemon's ~20 s kill
+  ([#1438](https://github.com/dennys246/Maxim/issues/1438)).
+- **SIGTERM saves too**, and a forced stop kills every LLM server and tunnel maxim started and
+  nothing it did not ([#1344](https://github.com/dennys246/Maxim/issues/1344)).
+  `maxim llm reap` cleans up a leftover server, at a terminal only.
+
+### The atonia gate: first pieces, Experimental
+
+- `maxim.advisor`, an observer that judges a batch of events and proposes but cannot act;
+  every tool declares what it can cause; and every executor takes a required `ToolPolicy`
+  ([above](#breaking-changes); [#1315](https://github.com/dennys246/Maxim/issues/1315)).
+- **The gate is not complete.** The offline latch (`MAXIM_OFFLINE`) ships but is not yet safe
+  for operators (`MAXIM_OFFLINE=1 maxim doctor` crashes), and this release has no
+  `llm.offline` mode.
 
 ### The Console
 
 - **The wheel bundles the maxim-pulse Console v0.4.4** (commit `9af8a57`; 1.3.3 bundled
-  v0.4.2). The Console's API contract is unchanged at 0.6.0. Typed payloads (contract 0.7.0)
-  are not in 1.3.4.
-
-TODO-1.3.4-CONSOLE: any other Console changes the release notes list.
+  v0.4.2). The Console's API contract is unchanged at 0.6.0.
+- **Correction to the 1.3.3 notes:** they said typed payloads would come in 1.3.4. They did
+  not. Typed payloads ([#1336](https://github.com/dennys246/Maxim/issues/1336), contract 0.7.0)
+  wait for a maxim-pulse release built for 0.7.0.
 
 The engine's
 [1.3.4 release notes](https://github.com/dennys246/Maxim/releases/tag/v1.3.4)
@@ -255,7 +359,8 @@ The other security changes:
   cannot speak stays on the paste sign-in.
 - **The wheel bundles the maxim-pulse Console v0.4.2** (commit `bcd0d1e`; 1.3.2 bundled v0.4.0).
   The Console's API contract is unchanged at 0.6.0. Typed payloads (contract 0.7.0) were
-  planned for 1.3.4, but 1.3.4 ships without them and keeps the contract at 0.6.0.
+  planned for 1.3.4; they did not come in 1.3.4 and wait for a maxim-pulse release built for
+  0.7.0.
 - **A setup change made in the Console reaches the next talk without a restart**
   ([#1411](https://github.com/dennys246/Maxim/issues/1411)). A `maxim config set` from another
   process still needs one. `maxim serve` also no longer hangs up to 15 s on shutdown after a
