@@ -93,6 +93,44 @@ maxim --mode exploration
 
 From here, configure your instance with [`maxim config`](/configuration/) and explore the rest of the command surface in the [CLI Reference](/reference/cli/).
 
+## Upgrading to 1.3.4
+
+TODO-1.3.4-INTRO: one paragraph from `docs/announcements/release_1_3_4.md` (not yet written).
+If you are coming from 1.3.2 or earlier, read [upgrading to 1.3.3](#upgrading-to-133) as well.
+
+### Breaking changes
+
+TODO-1.3.4-BREAKING: each entry exactly as the CHANGELOG's `## [1.3.4]` Breaking section
+states it, with its migration line. At least these two:
+
+- A `ToolPolicy` is required on every executor
+  ([#1315](https://github.com/dennys246/Maxim/issues/1315)). TODO-1.3.4-MIGRATION.
+- The `TimeoutPolicy` pool change
+  ([#1715](https://github.com/dennys246/Maxim/issues/1715)). TODO-1.3.4-MIGRATION.
+
+### Robot motion safety
+
+TODO-1.3.4-MOTION: the Reachy motion-safety changes as the release notes describe them
+(refusals before a motor moves, the path check, fresh readback), and nothing beyond that.
+
+### Recall
+
+TODO-1.3.4-RECALL: as the release notes describe it. Any evidence status is copied exactly,
+with its scope, from the graduation ledger.
+
+### The Console
+
+- **The wheel bundles the maxim-pulse Console v0.4.4** (commit `9af8a57`; 1.3.3 bundled
+  v0.4.2). The Console's API contract is unchanged at 0.6.0. Typed payloads (contract 0.7.0)
+  are not in 1.3.4.
+
+TODO-1.3.4-CONSOLE: any other Console changes the release notes list.
+
+The engine's
+[1.3.4 release notes](https://github.com/dennys246/Maxim/releases/tag/v1.3.4)
+and [changelog](https://github.com/dennys246/Maxim/blob/v1.3.4/CHANGELOG.md) have the complete
+list.
+
 ## Upgrading to 1.3.3
 
 1.3.3 adds no new research claim about how agents behave, but it does change how the software
