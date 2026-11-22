@@ -21,6 +21,7 @@ export const STATUS = {
 	reference: 'reference',
 	exploratory: 'exploratory',
 	prereg: 'pre-registered',
+	draft: 'draft, not frozen',
 	stale: 'never run',
 	rerun: 'stale, re-run',
 	superseded: 'superseded',
@@ -31,7 +32,7 @@ export const STATUS = {
 export const RETIRED = new Set(['superseded', 'withdrawn', 'stale', 'rerun']);
 
 /** Statuses that are not results, so they never drive the "New" marker. */
-const NOT_NEWS = new Set(['reference', 'infra', 'diagnostic', 'stale']);
+const NOT_NEWS = new Set(['reference', 'infra', 'diagnostic', 'stale', 'draft']);
 
 export const SUMMARY_MAX = 200;
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -143,7 +144,7 @@ export function validate(raw = data) {
 		const b = all.get(l.best);
 		if (!b) err(`line ${l.slug}`, `best "${l.best}" is not an experiment`);
 		else if (b.line !== l.slug) err(`line ${l.slug}`, `best "${l.best}" belongs to line "${b.line}"`);
-		else if (RETIRED.has(b.status) || b.status === 'prereg') err(`line ${l.slug}`, `best "${l.best}" is ${b.status}`);
+		else if (RETIRED.has(b.status) || b.status === 'prereg' || b.status === 'draft') err(`line ${l.slug}`, `best "${l.best}" is ${b.status}`);
 	}
 	return errs;
 }
