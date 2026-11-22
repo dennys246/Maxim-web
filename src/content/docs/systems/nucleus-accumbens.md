@@ -220,7 +220,9 @@ Be careful about what that proves. Persistence and recall are the earned claims:
 the links carry over and the resumed agent demonstrably recalls the prior
 experience. Whether the recalled context *changes behaviour* is separate — a
 strong LLM prior can override the carried aversion, and the repo's own 1.0
-findings measured exactly that across four frontier models. Treat a drop in the
+findings measured exactly that (at GPT-4o, DeepSeek-V3 and R1, bounded; Sonnet on first contact
+alone, after a 2026-10-25 [re-assessment](/research/evidence/#nulls-retractions-and-corrections)
+withdrew its interaction values). Treat a drop in the
 `Pain:` count on resume as a measurement, not a guarantee.
 
 To wipe NAc state: `maxim --clear-memory nac`.

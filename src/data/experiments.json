@@ -170,7 +170,7 @@
       "line": "prior",
       "headline": false,
       "summary": "Pilot, one seed per arm — not a result. Found a name-mismatched control and non-independent axes, so the Exp 44 confirmatory campaign is not frozen.",
-      "finding": "PILOT, explicitly not a result — one seed per arm. The shakedown found the transplant control is name-mismatched and that the two reported axes encode the same entity/affordance pair rather than independent effects, so the Exp 44 confirmatory campaign is not frozen. S4 non-stationarity measurement (2026-08-24, descriptive, one seed per arm): the treatment is not stationary within a run — in every arm the non-target tools' reward bands fall from strongly to mildly rewarding by the second half while the target holds — and the free determinism probe found 0 flips on 11 identical-prompt pairs.",
+      "finding": "PILOT, explicitly not a result — one seed per arm. The shakedown found the transplant control is name-mismatched and that the two reported axes encode the same entity/affordance pair rather than independent effects, so the Exp 44 confirmatory campaign is not frozen. S4 non-stationarity measurement (2026-08-24, descriptive, one seed per arm): the treatment is not stationary within a run — in every arm the non-target tools' reward bands fall from strongly to mildly rewarding by the second half while the target holds — and the free determinism probe found 0 flips on 11 identical-prompt pairs. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): BOUNDED: every committed planning prompt, full and ablated, carries the leaked line, which the paired design cancels; the confirmatory must run on the fixed path.",
       "follows": [
         "exp-44"
       ],
@@ -202,7 +202,7 @@
       "line": "prior",
       "headline": false,
       "summary": "Exploratory: a counterbalanced positive at modest N, not a result. The 44b pilot then found flaws in the control, so the confirmatory run is not frozen.",
-      "finding": "EXPLORATORY, not a graduated result. Arm A and the counterbalance completed, but modest N and residual-color caveats stand, and the 44b pilot later found a name-mismatched transplant control and non-independent axes. Read alongside 44b; the confirmatory campaign is not frozen.",
+      "finding": "EXPLORATORY, not a graduated result. Arm A and the counterbalance completed, but modest N and residual-color caveats stand, and the 44b pilot later found a name-mismatched transplant control and non-independent axes. Read alongside 44b; the confirmatory campaign is not frozen. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): BOUNDED: the paired design cancels the leaked prompt line, but the base rates were set under it, so the confirmatory must run on the fixed path.",
       "walkthrough": "/research/experiments/roy-harness/#exp-43-44-and-44b--does-a-learned-substrate-steer-the-llm"
     },
     {
@@ -351,7 +351,7 @@
       "line": "prior",
       "headline": false,
       "summary": "Null. On the one model where a substrate effect had shown, a wrong prior still won: burned agents warmed at the deceptive hearth as readily as fresh ones.",
-      "finding": "Even in the one model where substrate effects were previously detected, the agent carrying cross-session burn memory warmed at the hearth as readily as a fresh agent, showing prior-dominance holds and substrate effects depend on task-prior alignment rather than model scale.",
+      "finding": "Even in the one model where substrate effects were previously detected, the agent carrying cross-session burn memory warmed at the hearth as readily as a fresh agent, showing prior-dominance holds and substrate effects depend on task-prior alignment rather than model scale. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): BOUNDED: the prompt defect was in every arm, with 45 respond calls spread near-uniformly; the first-contact index and turn bins shift with the follow-ups.",
       "follows": [
         "exp-38"
       ],
@@ -367,7 +367,7 @@
       "line": "prior",
       "headline": false,
       "summary": "Partial. Four open-model runs complete; the cloud arm was deferred. Substrate visibility depends on prior headroom; R1-Distill gave the first clean Wire-A ablation.",
-      "finding": "PARTIAL (pymaxim audit 2026-09-13), part of a row STALE since 2026-10-02: four open-source-model fires complete; the cloud-model arm was deferred and is not a result. Substrate visibility looked Goldilocks-dependent, but that map is unverifiable, not refuted (L8: the anchor fire did not reproduce on its own commit and seeds). The R1 variant produced the first clean Wire-A attribution. The NAc-bias-off ablation arm is void (#889, 2026-09-25): it left the reward bias on, so the Wire-A and Wire-1 arms are the only valid ablations.",
+      "finding": "PARTIAL (pymaxim audit 2026-09-13), part of a row STALE since 2026-10-02: four open-source-model fires complete; the cloud-model arm was deferred and is not a result. Substrate visibility looked Goldilocks-dependent, but that map is unverifiable, not refuted (L8: the anchor fire did not reproduce on its own commit and seeds). The R1 variant produced the first clean Wire-A attribution. The NAc-bias-off ablation arm is void (#889, 2026-09-25): it left the reward bias on, so the Wire-A and Wire-1 arms are the only valid ablations. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): BOUNDED: the prompt defect changed every arm's prompt and its respond bursts added actions unevenly across arms; a post hoc check leaves Qwen2.5-32B +1.43 -> +1.32 SD and R1 +2.11 -> +1.81 SD.",
       "follows": [
         "exp-37-graduation"
       ],
@@ -382,8 +382,8 @@
       "status": "null",
       "line": "prior",
       "headline": true,
-      "summary": "Null. Across four frontier models, agents carrying pain from a deceptive hearth kept the wrong fire→warm prior. Carried state did not override it.",
-      "finding": "Across four frontier models, agents carrying cross-session pain from a deceptive hearth kept the wrong fire->warm prior and continued engaging the harmful entity, showing substrate state transfer does not override deeply embedded LLM priors.",
+      "summary": "Null. Agents carrying pain from a deceptive hearth kept the wrong fire→warm prior. Bounded on re-assessment; Sonnet's interaction value withdrawn (2026-10-25).",
+      "finding": "Across four frontier models, agents carrying cross-session pain from a deceptive hearth kept the wrong fire->warm prior and continued engaging the harmful entity, showing substrate state transfer does not override deeply embedded LLM priors. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): BOUNDED at GPT-4o, DeepSeek-V3 and R1. Sonnet's interaction value (+0.40 SD) and its three ablation-shrinkage values are WITHDRAWN (two of its five arm-A deceptive trials are respond loops scored 0.0, a confound favouring dominance); Sonnet's verdict rests on first contact alone (A 0.67 over 3 of 5 trials, B 1.00).",
       "follows": [
         "exp-37-graduation"
       ],
@@ -399,7 +399,7 @@
       "line": "cross-session",
       "headline": true,
       "summary": "Partial, then stale since 2026-10-02 (a prompt change fired its re-run). A ≥32B cross-session shift; isolation failed; magnitudes did not reproduce (L8).",
-      "finding": "STALE since 2026-10-02: a prompt-construction change fired its re-run trigger, and the owed re-run (with the language-model floors beside it) is baseline-floors Stage B4, planned for 1.4; until then the row carries no current claim. Before that, PARTIAL, an investigation gate: the cross-session behavioral delta appears at >=32B scale but the Arm C isolation test failed on every model where the primary metric passed, so independence from the LLM prior is not established. Limit L8 (2026-08-22): the identical commit on the identical seeds does not reproduce its own June result (0.42 then, 0.71 now) — the recorded magnitudes are readings taken at one time, not constants.",
+      "finding": "STALE since 2026-10-02: a prompt-construction change fired its re-run trigger, and the owed re-run (with the language-model floors beside it) is baseline-floors Stage B4, planned for 1.4; until then the row carries no current claim. Before that, PARTIAL, an investigation gate: the cross-session behavioral delta appears at >=32B scale but the Arm C isolation test failed on every model where the primary metric passed, so independence from the LLM prior is not established. Limit L8 (2026-08-22): the identical commit on the identical seeds does not reproduce its own June result (0.42 then, 0.71 now) — the recorded magnitudes are readings taken at one time, not constants. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): BOUNDED: the prompt defect changed every arm's prompt and its respond bursts added actions unevenly across arms; a post hoc check leaves Qwen2.5-32B +1.43 -> +1.32 SD and R1 +2.11 -> +1.81 SD.",
       "walkthrough": "/research/experiments/cross-session-learning/#cross-session-graduation-experiment-37"
     },
     {
@@ -447,11 +447,12 @@
       "status": "null",
       "line": "roy",
       "headline": false,
-      "finding": "With fixes A and B applied, the failure mode narrows to a substrate-to-scene-entity semantic mismatch.",
+      "finding": "With fixes A and B applied, the failure mode narrows to a substrate-to-scene-entity semantic mismatch. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): the null stands, BOUNDED; don't cite the salience, episode or respond counts reported beside it.",
       "follows": [
         "exp-33"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#exp-29-to-34--the-bisect-and-getting-wire-a-into-the-prompt"
+      "walkthrough": "/research/experiments/roy-harness/#exp-29-to-34--the-bisect-and-getting-wire-a-into-the-prompt",
+      "summary": "Null. With fixes A and B, the failure narrows to a substrate-to-scene semantic mismatch. Bounded on re-assessment (2026-10-25)."
     },
     {
       "slug": "exp-33",
@@ -462,11 +463,12 @@
       "status": "null",
       "line": "roy",
       "headline": false,
-      "finding": "After fix A, Wire-A demonstrably reaches the LLM for the first time.",
+      "finding": "After fix A, Wire-A demonstrably reaches the LLM for the first time. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): the null stands, BOUNDED; don't cite the salience, episode or respond counts reported beside it.",
       "follows": [
         "exp-32"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#exp-29-to-34--the-bisect-and-getting-wire-a-into-the-prompt"
+      "walkthrough": "/research/experiments/roy-harness/#exp-29-to-34--the-bisect-and-getting-wire-a-into-the-prompt",
+      "summary": "Null. After fix A, Wire-A reaches the LLM for the first time; still 0 target calls. Bounded on re-assessment (2026-10-25)."
     },
     {
       "slug": "exp-32",
@@ -477,11 +479,12 @@
       "status": "null",
       "line": "roy",
       "headline": false,
-      "finding": "Result is ambiguous-with-wiring-bug: W1/W2 merges leave the outcome uninterpretable until the wiring bug is fixed.",
+      "finding": "Result is ambiguous-with-wiring-bug: W1/W2 merges leave the outcome uninterpretable until the wiring bug is fixed. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): its 'respond count tripled' finding is WITHDRAWN until re-run on the fixed path (#1461); the wiring-bug findings are structural and stand.",
       "follows": [
         "exp-31"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#exp-29-to-34--the-bisect-and-getting-wire-a-into-the-prompt"
+      "walkthrough": "/research/experiments/roy-harness/#exp-29-to-34--the-bisect-and-getting-wire-a-into-the-prompt",
+      "summary": "Null: ambiguous with a wiring bug. Its 'respond count tripled' finding is withdrawn (2026-10-25); the wiring-bug findings stand."
     },
     {
       "slug": "exp-31",
@@ -507,11 +510,12 @@
       "status": "null",
       "line": "roy",
       "headline": false,
-      "finding": "Null outcome: the primary Wire-A tau validation failed.",
+      "finding": "Null outcome: the primary Wire-A tau validation failed. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): the null stands, BOUNDED; don't cite the salience, episode or respond counts reported beside it.",
       "follows": [
         "exp-29"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#exp-29-to-34--the-bisect-and-getting-wire-a-into-the-prompt"
+      "walkthrough": "/research/experiments/roy-harness/#exp-29-to-34--the-bisect-and-getting-wire-a-into-the-prompt",
+      "summary": "Null: the primary Wire-A tau validation failed. Bounded on re-assessment (2026-10-25)."
     },
     {
       "slug": "exp-29",
@@ -610,11 +614,12 @@
       "status": "null",
       "line": "roy",
       "headline": false,
-      "finding": "Primary failed: zero sense_food_source calls were made.",
+      "finding": "Primary failed: zero sense_food_source calls were made. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): the null stands, BOUNDED; don't cite the salience, episode or respond counts reported beside it.",
       "follows": [
         "exp-22"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#exp-23--roy-3-the-annotation-that-never-rendered"
+      "walkthrough": "/research/experiments/roy-harness/#exp-23--roy-3-the-annotation-that-never-rendered",
+      "summary": "Null: zero sense_food_source calls. Bounded on re-assessment (2026-10-25)."
     },
     {
       "slug": "exp-22",
@@ -687,11 +692,12 @@
       "status": "partial",
       "line": "roy",
       "headline": false,
-      "finding": "Partial behavioral divergence is observed.",
+      "finding": "Partial behavioral divergence is observed. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): the respond half (Arm A 17 vs B 20, C 21) is WITHDRAWN until re-run on the fixed path (#1461); the A-vs-C tool-family shift is BOUNDED (the prompt defect was in every arm and its follow-ups added actions). The substrate_diff priming result is unaffected.",
       "follows": [
         "exp-17"
       ],
-      "walkthrough": "/research/experiments/roy-harness/#exp-18-to-20--roy-2-a-positive-control-and-the-gate"
+      "walkthrough": "/research/experiments/roy-harness/#exp-18-to-20--roy-2-a-positive-control-and-the-gate",
+      "summary": "Partial divergence. Its respond counts are withdrawn and its tool-family shift bounded (re-assessment, 2026-10-25)."
     },
     {
       "slug": "exp-17",
@@ -719,7 +725,7 @@
       "line": "roy",
       "headline": false,
       "summary": "Null. Priming wrote substrate state that carried forward, but the LLM-primary proposer never used it — a structural signal, not a behavioral one.",
-      "finding": "NULL (pymaxim audit 2026-09-13). Priming wrote readable substrate state that carried forward, but the llm-primary proposer never invoked the cluster wire, so it could not change behaviour — the structural-vs-behavioural gap. The salience divergence (KS = 0.879) is structural, not behavioural.",
+      "finding": "NULL (pymaxim audit 2026-09-13). Priming wrote readable substrate state that carried forward, but the llm-primary proposer never invoked the cluster wire, so it could not change behaviour — the structural-vs-behavioural gap. The salience divergence (KS = 0.879) is structural, not behavioural. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): the null stands on its non-respond primary, BOUNDED; don't cite the salience KS or the episode counts beside it.",
       "follows": [
         "exp-15"
       ],
@@ -769,9 +775,9 @@
       "status": "earned",
       "line": "cross-session",
       "headline": true,
-      "finding": "Clean pass: Phase A (substrate-only) recalls a token across sessions. Caveat (2026-10-15): every phase ran with two simulator defects since fixed — the narrator saw delivery receipts instead of the agent's words (#1261, fixed by #1289), and the agent was told `respond` was unavailable, drawing a follow-up each time it used it anyway (#1260, fixed by #1299). The recall headline was scored from tool arguments in actions.jsonl, so the receipts do not decide it, but those files were never committed and the headline cannot be re-derived from the repository. The Acting Coach count (Phase C vs A, 3 respond hits vs 1) is confounded by #1260. Re-assessment open: #1301.",
+      "finding": "Clean pass: Phase A (substrate-only) recalls a token across sessions. Caveat (2026-10-15): every phase ran with two simulator defects since fixed — the narrator saw delivery receipts instead of the agent's words (#1261, fixed by #1289), and the agent was told `respond` was unavailable, drawing a follow-up each time it used it anyway (#1260, fixed by #1299). The recall headline was scored from tool arguments in actions.jsonl, so the receipts do not decide it, but those files were never committed and the headline cannot be re-derived from the repository. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): the 7/7 is BOUNDED: 'recalled' meant the token appeared in any tool action, and each respond follow-up was one more chance to emit it; memory and link counts include follow-up episodes. The word-independent half stands: memory_recall output carried the token, so the substrate is the data path. Between-phase comparisons are confounded, and the Acting Coach count (Phase C vs A, 3 respond hits vs 1) is WITHDRAWN until re-run on the fixed path (#1461).",
       "walkthrough": "/research/experiments/cross-session-learning/#substrate-recall-isolated-experiment-12",
-      "summary": "Substrate alone recalled a planted token across sessions, 7 of 7 phases. Ran with two simulator defects fixed in October 2026; re-assessment open (#1301)."
+      "summary": "Substrate alone recalled a planted token across sessions, 7 of 7 phases; bounded on re-assessment (2026-10-25). Its Acting Coach count is withdrawn."
     },
     {
       "slug": "exp-11",
@@ -782,8 +788,9 @@
       "status": "poc",
       "line": "cradle",
       "headline": false,
-      "finding": "The developmental arc is confirmed structurally sound.",
-      "walkthrough": "/research/cradle/#11--cradle-sensorimotor-poc"
+      "finding": "The developmental arc is confirmed structurally sound. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): the infrastructure findings stand; the behavioural observations ran with the respond prompt defect (#1260).",
+      "walkthrough": "/research/cradle/#11--cradle-sensorimotor-poc",
+      "summary": "Infrastructure: the developmental arc is structurally sound. Its behavioural observations ran with the respond prompt defect."
     },
     {
       "slug": "exp-10",
@@ -795,7 +802,7 @@
       "line": "cross-session",
       "headline": false,
       "summary": "Resumed sessions surfaced prior-session memories. Its ledger claim went stale in September 2026 and was superseded on 2026-10-04 by Exp 63, run on current code.",
-      "finding": "Prior-session memories were injected into the prompt on resume. The graduation ledger records a clean August re-validation (the resumed session opened with the prior store, 108 episodes, and surfaced 3 memories per turn on 8 of 8 turns) and a 2026-09-27 re-run for 1.3.1, MAINTAINED (narrow): both resumes reloaded the store exactly (100 memories), the new persistence fields round-tripped on all 100, and 3 memories surfaced on every resume turn observed; but each resumed phase ran one turn, because every run stopped early on a known planning defect (D13, #935), and link accumulation was not re-shown. SUPERSEDED 2026-10-04: the row went STALE on 2026-09-30 (every session of the September re-run ended planning_failed, a typed abort that cannot back a status), and the claim was re-tested as a new pre-registered experiment on current code, Exp 63, which replaces it.",
+      "finding": "Prior-session memories were injected into the prompt on resume. The graduation ledger records a clean August re-validation (the resumed session opened with the prior store, 108 episodes, and surfaced 3 memories per turn on 8 of 8 turns) and a 2026-09-27 re-run for 1.3.1, MAINTAINED (narrow): both resumes reloaded the store exactly (100 memories), the new persistence fields round-tripped on all 100, and 3 memories surfaced on every resume turn observed; but each resumed phase ran one turn, because every run stopped early on a known planning defect (D13, #935), and link accumulation was not re-shown. SUPERSEDED 2026-10-04: the row went STALE on 2026-09-30 (every session of the September re-run ended planning_failed, a typed abort that cannot back a status), and the claim was re-tested as a new pre-registered experiment on current code, Exp 63, which replaces it. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): the August counts are BOUNDED: they include episodes the respond follow-ups created, and all 7 respond calls were LLM-outage fallbacks; not comparable across the fix.",
       "walkthrough": "/research/experiments/cross-session-learning/#exp-10--cross-session-enrichment"
     },
     {
@@ -818,7 +825,7 @@
       "status": "poc",
       "line": "foundations",
       "headline": false,
-      "finding": "Hypotheses H1-H5 all pass."
+      "finding": "Hypotheses H1-H5 all pass. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): the infrastructure findings stand; the behavioural observations ran with the respond prompt defect (#1260)."
     },
     {
       "slug": "exp-09-pfc-deliberation",
@@ -852,7 +859,8 @@
       "status": "poc",
       "line": "foundations",
       "headline": false,
-      "finding": "Proof of concept (pymaxim audit 2026-09-13). Universal sense + discover_tools + hybrid prompt mode; top-k affordance visibility on turn 1 confirmed. The S2 follow-up was never run."
+      "finding": "Proof of concept (pymaxim audit 2026-09-13). Universal sense + discover_tools + hybrid prompt mode; top-k affordance visibility on turn 1 confirmed. The S2 follow-up was never run. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): 'the AUT uses affordances from turn 1' is WITHDRAWN until re-run on the fixed path (#1461): it ran under a prompt that steered the agent away from respond, toward affordances. The infrastructure findings (the hybrid prompt mode's tool count) stand.",
+      "summary": "Proof of concept: affordance visibility on turn 1. Its 'uses affordances from turn 1' finding is withdrawn (2026-10-25)."
     },
     {
       "slug": "exp-08-deliberation",
@@ -896,7 +904,8 @@
       "status": "poc",
       "line": "foundations",
       "headline": false,
-      "finding": "The AUT receives SEM affordance tools plus the pain cascade in simulated embodiment."
+      "finding": "The AUT receives SEM affordance tools plus the pain cascade in simulated embodiment. Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): the infrastructure findings stand; the behavioural observations ran with the respond prompt defect (#1260).",
+      "summary": "Infrastructure: the agent receives SEM affordance tools and the pain cascade in simulation. Behavioural observations ran with the respond prompt defect."
     },
     {
       "slug": "b4-replanning-results",
@@ -1168,11 +1177,12 @@
       "status": "partial",
       "line": "cross-session",
       "headline": false,
-      "finding": "PARTIAL (pymaxim audit 2026-09-13). Direct-injection run (Qwen2.5-14B orchestrator, Mistral-7B agent), 7/7 turns delivered: the memory survives, but behavioural recall fails.",
+      "finding": "PARTIAL (pymaxim audit 2026-09-13). Direct-injection run (Qwen2.5-14B orchestrator, Mistral-7B agent), 7/7 turns delivered: the memory survives; behavioural recall was read as failing (see the re-assessment that follows). Re-assessed 2026-10-25 (#1301, narrator_defects_reassessment.md): the memory half stands; the behavioural half is WITHDRAWN until re-run on the fixed path (#1461): passing the door needed speech, and respond, the only speech channel then, was declared unavailable. Counter-evidence: the agent used respond on other turns, and Run #1's door turn was a research('miller') fixation, so the door failure may be independent of the defect; the run neither supports nor refutes behavioural recall.",
       "supersedes": [
         "hippocampal-recall-experiment"
       ],
-      "walkthrough": "/research/experiments/cross-session-learning/#memory-recall-under-interference-hippocampal-recall"
+      "walkthrough": "/research/experiments/cross-session-learning/#memory-recall-under-interference-hippocampal-recall",
+      "summary": "Partial: the memory survives. The behavioural half (recall at the door fails) is withdrawn on re-assessment (2026-10-25)."
     },
     {
       "slug": "hippocampal-recall-experiment",

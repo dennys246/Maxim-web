@@ -56,7 +56,7 @@ attempt was designed and never run, and the long-horizon harness it needed was n
   [42](/research/experiments/exp-42/), [42b](/research/experiments/exp-42b/),
   [43](/research/experiments/exp-43/), [44](/research/experiments/exp-44/),
   [44b](/research/experiments/exp-44b/).
-- Current as of 2026-09-26.
+- Current as of 2026-11-22 (the 2026-10-25 re-assessment folded in).
 :::
 
 ## The question
@@ -64,6 +64,22 @@ attempt was designed and never run, and the long-horizon harness it needed was n
 When an agent carries substrate from earlier experience, does it change what the agent does,
 or does the language model's prior decide while the substrate rides along? And if the prior
 wins, can the substrate drive behavior once the model is out of action selection?
+
+:::caution[Re-assessed 2026-10-25: the LLM-in-the-loop runs ran with a prompt defect]
+Every run on this page with a language model choosing actions, from April until the fixes of
+2026-10-15/16, told the agent `respond` was unavailable and drew a follow-up each time it used
+it anyway ([#1260](https://github.com/dennys246/Maxim/issues/1260)). The engine's [re-assessment](https://github.com/dennys246/Maxim/blob/main/docs/experiments/narrator_defects_reassessment.md) ([#1301](https://github.com/dennys246/Maxim/issues/1301)) changes no status, but:
+
+- **Withdrawn until re-run on the fixed path ([#1461](https://github.com/dennys246/Maxim/issues/1461)):** Exp 38's Sonnet interaction value
+  (+0.40 SD) and its three ablation-shrinkage values; Exp 18's `respond` counts; Exp 32's
+  `respond` count.
+- **Bounded:** Exp 37's cross-model map, Exp 38 at GPT-4o, DeepSeek-V3 and R1, Exp 40, Exp 44
+  and the 44b pilot, Exp 18's tool-family shift, and the Roy-1a, Roy-3 and Exp 30/33/34 nulls.
+  Each carries its caveat below.
+- **Unaffected:** the substrate-primary Roy iterations (Roy-0, 1b, 2pc, 2c, 4, 5a, 5b, and
+  Roy-3c's priming side) and Exp 41/42/42b, because an agent whose substrate chooses reads no
+  prompt.
+:::
 
 ## The claim, stated precisely
 
@@ -74,7 +90,7 @@ prior was right, a substrate effect appeared only where the prior left headroom 
 at +1.43 SD, and DeepSeek-R1-Distill-Qwen-32B at +2.11 SD with the first clean Wire-A ablation
 (+1.13 SD shrinkage) — and both passes failed the isolation check (**partial**); the Qwen
 reading has not reproduced since (L8). Under a counter-prior, all five models tested kept the
-wrong prior, and Qwen2.5-32B's signal collapsed to +0.16 SD, wrong sign (Exp 40, **null**).
+wrong prior (Sonnet's verdict now rests on its first-contact result alone), and Qwen2.5-32B's signal collapsed to +0.16 SD, wrong sign (Exp 40, **null**).
 With the language model removed from selection, [Exp 42](/research/experiments/exp-42/)
 **earned** a narrower claim: the substrate learned from embodied pain to prefer the safe one of
 two warmth sources (0.984 / 0.975, 10 seeds per arm) and followed a counterbalanced swap of
@@ -85,7 +101,8 @@ behavior.
 
 ## What it does not show
 
-- **That carried substrate overrides an LLM prior.** Tested directly; failed in all five models.
+- **That carried substrate overrides an LLM prior.** Tested directly; failed in all five models
+  (Sonnet on first contact alone, since its interaction value is withdrawn).
 - **That the Goldilocks effect is fire-specific learning.** Wherever the primary passed, the
   peaceful-prior control (Arm C) also rose above the fresh baseline: any resumed history
   shifted behavior.
@@ -122,7 +139,7 @@ arm (60 sub-simulations per model). "SD" is the pre-registered shift `(B − A) 
 | [42](/research/experiments/exp-42/) | 2026-06-23 | earned | 10 seeds | No LLM choosing: safe source preferred (0.984 / 0.975), swap tracked |
 | [41](/research/experiments/exp-41/) | 2026-06-19 | withdrawn | 10 seeds | Void: harm never tempting, metric floored |
 | [40](/research/experiments/exp-40/) | 2026-06-16 | null | 5 trials | Qwen2.5-32B under counter-prior: +0.16 SD, wrong sign |
-| [38](/research/experiments/exp-38/) | 2026-06-13 | null | 5 trials | Wrong fire→warm prior held in four frontier models |
+| [38](/research/experiments/exp-38/) | 2026-06-13 | null | 5 trials | Wrong fire→warm prior held in four frontier models (Sonnet's interaction withdrawn 2026-10-25) |
 | [39](/research/experiments/exp-39/) | 2026-06-13 | superseded | — | Pre-registered, never run; continued as Exp 41/42 |
 | [37 (cross-model)](/research/experiments/exp-37-cross-model/) | 2026-06-13 | partial | 5 trials | Visible only with prior headroom; isolation failed; cloud deferred |
 | [36](/research/experiments/exp-36/) | 2026-05-29 | earned | 1 seed | EC drift fix, not the naming scaffold, closed the recognition gap |
@@ -162,7 +179,9 @@ Roy-1a used the LLM-primary proposer on a held-out 10-percept fixture. The prime
 forward unchanged (2.45; six `sense_food_source` keys at the +1.0 cap), yet arm A made zero
 `sense_food_source` calls — the LLM proposer never reads that bias. Salience diverged: the
 primed Hippocampus rated test percepts less novel (KS = 0.879, p = 2.1e-9). Valence did not
-(KS = 0.283, p = 0.402; 665 priming episodes against 9). The 2026-09-13 audit classes the
+(KS = 0.283, p = 0.402; 665 priming episodes against 9). *Re-assessed 2026-10-25: the null
+stands on its non-`respond` primary and the priming-side bias, bounded; don't cite the salience KS
+or the episode counts beside it.* The 2026-09-13 audit classes the
 salience result as structural, not behavioral. Roy-1b switched to the substrate-primary
 proposer, which does read the bias: all three arms produced identical actions, because the
 held-out percepts never activated the EC clusters acquired in priming.
@@ -171,7 +190,9 @@ held-out percepts never activated the EC clusters acquired in priming.
 
 Roy-2 widened the priming arcs. Arms A and C now chose different tools, but through the LLM
 reading substrate context indirectly, not the cluster bias; valence reached significance
-cleanly for the first time (KS = 0.291, p = 0.023). Roy-2pc used a fixture built to overlap
+cleanly for the first time (KS = 0.291, p = 0.023). *Re-assessed 2026-10-25: the A-versus-C tool
+shift is bounded (the prompt defect was in every arm, and its follow-ups added actions), and the
+per-arm `respond` counts are withdrawn.* Roy-2pc used a fixture built to overlap
 priming's food theme: A ≈ B ≈ C, two failed `pick_up` calls each. Either the percepts never
 land on priming clusters (H1) or the `min_confidence` gate filters them (H2). Roy-2c removed
 the gate: actions rose from 2 to 5 per arm, all failed `pick_up`, none `sense_food_source`, on
@@ -196,7 +217,8 @@ the LLM prompt. Roy-3 was its validation, and arm A again made zero `sense_food_
 The first explanation — bias decayed below the rendering floor — was replaced by a retroactive
 correction (2026-05-27, from Exp 32): an agent-id mismatch left the annotation list empty, it
 rendered as `""`, and the LLM saw nothing. Roy-3 also found the priming bias map shrunk from six
-saturated keys to two partial ones.
+saturated keys to two partial ones. *Re-assessed 2026-10-25: the null stands, bounded; don't cite
+the salience, episode or `respond` counts reported beside it.*
 
 ### Exp 24 to 28 — EC centroid drift
 
@@ -220,7 +242,10 @@ had converged on the encoder verdict; the Wire-A cycle was diverging. Exp 32 fou
 bug. After Fix A (Exp 33) Wire-A reached the LLM for the first time, and arm A still made 0
 target calls. After Fix B (Exp 34) the scene-manifest LLM, shown `sense_food_source [strongly
 rewarding from prior experience]`, added a "blue toy car" and a "set of keys" to the scene. No
-food entity, so the rewarded tool was never callable.
+food entity, so the rewarded tool was never callable. *Re-assessed 2026-10-25: the Exp 30, 33
+and 34 nulls rest on non-`respond` primaries and stand, bounded; don't cite the salience, episode or `respond`
+counts reported beside them. Exp 32's `respond` count is withdrawn; its wiring-bug findings
+stand. Exp 29 is unaffected.*
 
 ### Exp 35 and 36 — Roy-5b and its confound isolation
 
@@ -248,6 +273,12 @@ its own commit and seeds, and the run records cannot say why
 ([L8](/research/limits/)). Stale since 2026-10-02: a prompt-construction change fired the row's re-run trigger, and the
 re-run, with language-model floors beside it, is planned for 1.4 (Stage B4 of the
 [baseline floors plan](https://github.com/dennys246/Maxim/blob/main/docs/plans/baseline_floors.md)).
+
+*Re-assessed 2026-10-25: bounded.* The primary reads no words, but the prompt defect
+([#1260](https://github.com/dennys246/Maxim/issues/1260)) changed every arm's prompt, and its `respond` bursts, each with a follow-up, added
+actions to single trials unevenly across arms, moving the turn bins and the first-contact
+index. A post hoc check leaves Qwen2.5-32B and R1 near where they were (+1.43 → +1.32 SD,
++2.11 → +1.81 SD). The owed re-fire, B4 ([#1354](https://github.com/dennys246/Maxim/issues/1354)), runs on the fixed path.
 
 Exp 37's graduation claim is on the
 [cross-session learning](/research/experiments/cross-session-learning/) page and
@@ -290,11 +321,17 @@ avoids warming at the hearth on first contact, before any pain in its own sessio
 
 | Model | Interaction (SD) | First-contact primary | Verdict |
 |---|---|---|---|
-| Claude Sonnet 4.6 | +0.40 | fail | dominance |
+| Claude Sonnet 4.6 | withdrawn (was +0.40) | fail (A 0.67 over 3 of 5 trials, B 1.00) | dominance, on first contact alone |
 | GPT-4o | −0.46 | pass (B 0.60 vs A 0.80) | dominance (primaries disagree) |
 | DeepSeek-V3 | −0.62 | fail | dominance |
 | DeepSeek-R1-Distill-Qwen-32B | +2.25 | fail (B 0.75 vs A 0.20) | dominance |
 | Qwen2.5-32B (Exp 40) | +0.16 | pass, on a one-trial margin | dominance (primaries disagree) |
+
+*Re-assessed 2026-10-25.* Sonnet's interaction value and its three ablation-shrinkage values
+are withdrawn: two of its five arm-A deceptive trials are `respond` loops with no hearth
+engagement, scored 0.0, a confound that favours dominance. The other models' values are
+bounded: the prompt defect was in every arm, and each follow-up before first contact shifts
+the first-contact index by one action.
 
 No model met both primaries — "B keeps warming the deceptive hearth." R1 is the sharpest case:
 its Wire-A and Wire-1 ablations cut hearth-warming from B's 0.60 to 0.40 and 0.34, below a
@@ -308,7 +345,9 @@ Exp 40 filled the last cell with Qwen2.5-32B, the one model with a positive Exp 
 sub-simulations, about 30 hours, local). Warming at the deceptive hearth: 0.50 fresh, 0.52
 resumed; at the safe fire, 0.31 and 0.29; Arm C 0.57. Interaction +0.04 (+0.16 SD), wrong sign.
 The +1.43 SD signal vanished once the prior was false. Prior agreement, not scale, gates what
-the substrate can show while an LLM chooses.
+the substrate can show while an LLM chooses. *Re-assessed 2026-10-25: bounded.* The prompt
+defect was in every arm, with 45 `respond` calls spread near-uniformly across trials; the
+first-contact index and turn bins shift with the follow-ups.
 
 ### Exp 39 and 41 — taking the LLM out of selection
 
@@ -365,6 +404,9 @@ metrics were chosen after pilot data. The Exp 44b pilot (one seed per arm) found
 control names tools absent from its world, so it cannot separate name-copying from following
 learned content, and that the annotation carries (entity, affordance) pairs, so the "direction"
 and "commitment" effects are not independent. The confirmatory run is not frozen.
+*Re-assessed 2026-10-25: bounded.* The paired design cancels the leaked prompt line, which is
+in every committed 44b planning prompt, full and ablated; but the base rates were set under it, so the
+confirmatory must run on the fixed path.
 
 ## Bounds
 
@@ -373,10 +415,13 @@ From the [measurement limits](/research/limits/):
 - **L4 — `safe_pref` saturation (binding).** Exp 42/42b detect breakage, not degradation.
   Re-measure when a degradation arm lands or the warmth sources or B8 change.
 - **L6 — ceiling voids (mitigated).** A fresh agent at ceiling (Mistral) makes a rise criterion
-  unattainable; the fail is a void.
+  unattainable; the fail is a void. Bounded by the prompt line only (re-assessed 2026-10-25):
+  measured on a fire that made no `respond` calls, so the follow-up channel never fired.
 - **L8 — Exp 37 not reproducible across time (binding).** Same commit, same seeds: 0.420 in June,
   0.710 on 2026-08-22; root cause not established. Before any re-fire the record requires
   stamping model, endpoint, context size, quantization and server build, and gating on `B − C`.
+  Its drift comparison is also bounded (re-assessed 2026-10-25): `respond` volume on Qwen2.5-32B
+  rose from 6 in June to 32 in August under the same prompt defect.
 - **L12 — a hand-written English prior in action selection.** It does not carry Exp 42's
   preference, but bodies whose tools are not twins get answers pre-installed. Re-measure on any
   edit to `_DRIVE_TOOL_AFFINITIES`.

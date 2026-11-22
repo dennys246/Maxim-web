@@ -8,7 +8,7 @@ description: Maxim's developmental-training harness — raising an agent's subst
 - **Dates:** 2026-04-26 to 2026-09-02.
 - **Releases:** 1.0 (infrastructure) and 1.1 "Sensorimotor".
 - **Experiments covered:** [Exp 52](/research/experiments/exp-52/) · [Exp 48](/research/experiments/exp-48/) · [Exp 47](/research/experiments/exp-47/) · [Exp 46](/research/experiments/exp-46/) · [Exp 13](/research/experiments/exp-13/) · [Exp 11](/research/experiments/exp-11/)
-- **Current as of 2026-09-26.**
+- **Current as of 2026-11-22** (the 2026-10-25 re-assessment folded in).
 :::
 
 The **Cradle** (also called the *crèche*) is Maxim's idea of a *developmental
@@ -325,7 +325,9 @@ earlier run logged **30 causal links formed, 20 enrichment traces, and 15
 episodic memories**. The verdict was explicitly narrow: infrastructure
 validated (drive parsing, entity acquisition, generative-mode auto-detection),
 but orchestrator sensor writes were still incomplete and no behavioral learning
-claim was made.
+claim was made. *Re-assessed 2026-10-25: the infrastructure findings stand; its behavioural
+observations ran with the `respond` prompt defect
+([#1260](https://github.com/dennys246/Maxim/issues/1260)).*
 
 ## How it connects
 

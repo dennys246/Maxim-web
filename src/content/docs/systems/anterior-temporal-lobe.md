@@ -35,8 +35,10 @@ ATL snapshots. What the project's own [cross-session learning
 guide](https://github.com/dennys246/Maxim/blob/main/docs/user/cross-session-learning.md)
 is careful to separate out is the next step: whether recalled context actually
 *changes what the agent does* is a different question, and the honest answer
-measured across four frontier models at 1.0 is that a strong LLM's prior often
-dominates the carried signal. The ATL guarantees that the knowledge is present
+measured at 1.0 is that a strong LLM's prior often dominates the carried signal (at GPT-4o,
+DeepSeek-V3 and R1, bounded; Sonnet on first contact alone, after a 2026-10-25
+[re-assessment](/research/evidence/#nulls-retractions-and-corrections) withdrew its interaction
+values). The ATL guarantees that the knowledge is present
 and retrievable. It does not guarantee the model acts on it.
 
 So: persistent, structured, retrievable knowledge that accumulates across runs —
