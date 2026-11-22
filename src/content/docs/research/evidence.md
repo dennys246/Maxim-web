@@ -51,7 +51,7 @@ learner.
 | [A taught want transfers between independent agents](#a-taught-want-transfers-between-independent-agents) | earned | not measured | [Exp 56](/research/experiments/exp-56/) | 50 receivers | [World seam](/research/experiments/world-seam/) |
 | [Caregiver-taught orienting through hunger relief](#caregiver-taught-orienting-through-hunger-relief) | earned, reproduced | not measured | [Exp 52](/research/experiments/exp-52/) | 12 seeds (embodied, run twice); 8 seeds (scripted) | [The Cradle](/research/cradle/) |
 | [Substrate-primary safe-vs-harm discrimination](#substrate-primary-safe-vs-harm-discrimination) | earned | not measured | [Exp 42](/research/experiments/exp-42/), [42b](/research/experiments/exp-42b/) | 10 seeds; 40 sub-sims on re-run | [Roy harness](/research/experiments/roy-harness/) |
-| [Cross-session memory persistence](#cross-session-memory-persistence) | earned (narrow), 2026-11-13 | not measured | [Exp 63c](/research/experiments/exp-63c/) (supersedes [Exp 63](/research/experiments/exp-63/)), [Exp 63b](/research/experiments/exp-63b/) | one scripted run, 8 resume turns, one model | [Cross-session recall](/research/experiments/cross-session-learning/) |
+| [Cross-session memory persistence](#cross-session-memory-persistence) | earned (narrow), 2026-11-13 | not measured | [Exp 63c](/research/experiments/exp-63c/), [Exp 63b](/research/experiments/exp-63b/) (re-runs of [Exp 63](/research/experiments/exp-63/), stale since 2026-10-25) | one scripted run, 8 resume turns, one model | [Cross-session recall](/research/experiments/cross-session-learning/) |
 | [Sensorimotor learning on real hardware](#sensorimotor-learning-on-real-hardware) | earned (merge arm downgraded) | not measured | [Exp 45](/research/experiments/exp-45/)–[45e](/research/experiments/exp-45e/) | mostly single hardware sessions; 45d three seeds | [Hardware orienting](/research/experiments/hardware-orienting/) |
 | [Cross-context readout on hardware](#cross-context-readout-on-hardware) | earned | not measured | [Exp 53b](/research/experiments/exp-53/) | 3 seeds, 180 trials | [Hardware orienting](/research/experiments/hardware-orienting/) |
 | [Two-joint centering](#two-joint-centering) (simulated) | earned | not measured | [Exp 49](/research/experiments/exp-49/) | 10 trials | [Hardware orienting](/research/experiments/hardware-orienting/) |
@@ -289,7 +289,7 @@ before the 5.09 s pain edge. That median includes placements 2–6, which are li
 
 **Claim.** Carried memory takes part in recall across sessions, on the cue path. After a
 resume, the earlier session's Hippocampus store is back with its content unchanged. Text
-arriving on the addressed path ranks carried and new memories alike, by how many of its
+arriving on the addressed path (here a fixed script's, not a person's) ranks carried and new memories alike, by how many of its
 content words (stemmed keys) each holds, then by recency, with no reading of a memory's
 origin. On at least one later turn a carried memory takes a place on the cue path, displacing
 a new memory, because it holds more of the cue's words outside the goal.

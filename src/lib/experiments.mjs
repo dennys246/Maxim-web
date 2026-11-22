@@ -22,12 +22,13 @@ export const STATUS = {
 	exploratory: 'exploratory',
 	prereg: 'pre-registered',
 	stale: 'never run',
+	rerun: 'stale, re-run',
 	superseded: 'superseded',
 	withdrawn: 'withdrawn',
 };
 
 /** Statuses that mean "don't read this as a current finding". */
-export const RETIRED = new Set(['superseded', 'withdrawn', 'stale']);
+export const RETIRED = new Set(['superseded', 'withdrawn', 'stale', 'rerun']);
 
 /** Statuses that are not results, so they never drive the "New" marker. */
 const NOT_NEWS = new Set(['reference', 'infra', 'diagnostic', 'stale']);

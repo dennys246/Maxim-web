@@ -56,7 +56,7 @@ What each row is, and what its short cells mean:
   what it was encoded with, and it keeps the situation it formed in. It can be
   recalled by that situation, but the result is **not yet used**. Evidence: Exp 63c
   (the trace persists across sessions and takes part in recall, earned narrow on word overlap
-  under a fixed script; it superseded Exp 63, which superseded Exp 10).
+  under a fixed script; a re-run of Exp 63, which is stale since 2026-10-25).
 - **Semantic**: an [ATL](/systems/anterior-temporal-lobe/) concept, formed and
   recalled by its name.
 - **Motor**: a [Cerebellum](/systems/cerebellum/) program linked to a Hippocampus

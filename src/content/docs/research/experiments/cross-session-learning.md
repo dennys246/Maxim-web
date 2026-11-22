@@ -27,8 +27,8 @@ model weights.
 **Recall is earned, narrowly, on current code.** [Exp 63c](/research/experiments/exp-63c/)
 (2026-11-13) showed carried memories reloading exactly and, under a fixed script, displacing new
 memories on the cue's words; it is EARNED (narrow), by an owner reading of BF2, and matches words,
-not meaning. It superseded [Exp 63](/research/experiments/exp-63/) (2026-10-04, on a ranker 1.3.4
-replaced), which had superseded [Exp 10](/research/experiments/exp-10/), whose September re-run
+not meaning. It is a re-run of [Exp 63](/research/experiments/exp-63/) (2026-10-04, on a ranker 1.3.4
+replaced; stale since 2026-10-25), which had superseded [Exp 10](/research/experiments/exp-10/), whose September re-run
 was too thin to back a status. Exp 10 had shown prior-session memories surfacing on resume (about three per
 turn) and re-validated in August 2026, and
 [Exp 12](/research/experiments/exp-12/) reproduced cross-session recall with every scaffold
@@ -72,7 +72,7 @@ Newest first. Each experiment's page links its record and how to reproduce it; t
 | [37](/research/experiments/exp-37-graduation/) | 2026-05-30 | stale since 2026-10-02 (was partial) | 5 trials, four models | Behavioural delta only at ≥32B; independence from the prior not isolated (Arm C); magnitudes did not reproduce in August (L8) |
 | [63c](/research/experiments/exp-63c/) | 2026-11-13 | earned (narrow) | one scripted run, 8 resume turns, mistral-7b | 16 carried memories reload unchanged; on all 4 cue turns a planted carried memory displaces a new one on the cue's words outside the goal |
 | [63b](/research/experiments/exp-63b/) | 2026-11-07 | not shown | one run, 8 resume turns, mistral-7b | Same store reload and ranker match, but no decisive turn under a language-model narrator |
-| [63](/research/experiments/exp-63/) | 2026-10-04 | superseded by Exp 63c (stale from 2026-10-25) | one run, 8 resume turns, mistral-7b | On the ranker of the time, which no longer ships: 84 carried memories reload unchanged and take part in recall on 8 of 8 turns |
+| [63](/research/experiments/exp-63/) | 2026-10-04 | stale since 2026-10-25, re-run by Exp 63b and 63c | one run, 8 resume turns, mistral-7b | On the ranker of the time, which no longer ships: 84 carried memories reload unchanged and take part in recall on 8 of 8 turns |
 | [12](/research/experiments/exp-12/) | 2026-04-30 | earned | one session pair per phase, 7 phases | Substrate alone recalls a planted token across sessions, 7 of 7 phases |
 | [10](/research/experiments/exp-10/) | 2026-04-25 | superseded by Exp 63 (2026-10-04) | single three-phase run, re-run August and September 2026 | Prior-session memories surface on resume, 3 per turn |
 | [B4](/research/experiments/behavioral-convergence-exp4-tier3/) | 2026-04-17 | earned | one run per session, four sessions | Teal-vial selection 0% → 25% → 100% across sessions; fresh control 0% |

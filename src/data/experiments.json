@@ -1292,10 +1292,10 @@
       "file": "exp63_carried_recall_prereg.md",
       "title": "Carried memory takes part in recall across sessions",
       "date": "2026-10-04",
-      "status": "superseded",
+      "status": "rerun",
       "line": "cross-session",
       "headline": false,
-      "summary": "Superseded by Exp 63c. First earned the recall row (narrow) on 2026-10-04, on a goal-keyword ranker that 1.3.4 replaced; stale from 2026-10-25.",
+      "summary": "Stale since 2026-10-25, re-run by Exp 63b and 63c. First earned the recall row (narrow) on 2026-10-04, on a goal-keyword ranker that 1.3.4 replaced.",
       "finding": "STALE 2026-10-25, re-run by Exp 63b and Exp 63c (T1-16 is now cited by the 63c row). Session R (1.3.4) replaced the ranker and the record shape. First earned 2026-10-04 (narrow) as storage persistence into recall on the then goal-keyword ranker, one run, mistral-7b. Historical: on the ranker of 2026-10-03, which no longer ships, all 84 carried memories reloaded unchanged, and on resumed turns 2-8, competing with new memories, the surfaced set matched that run's executed ranker and included carried memories every turn. Not shown: that recall changes behaviour. It superseded Exp 10.",
       "supersedes": [
         "exp-10"
@@ -1329,11 +1329,9 @@
       "headline": true,
       "summary": "Earned, narrow: under a fixed script, on all 4 cue turns a planted carried memory displaced a new one on the cue's words. Word overlap, not meaning; one run, one model.",
       "finding": "EARNED 2026-11-13 (narrow: cued by a fixed script whose phase-2 cues reuse words it planted in phase 1; content-key overlap, not meaning; one 8-turn resume, one model). Pre-registered and frozen 2026-11-10 before any data. One 8-turn resume, mistral-7b, with a fixed script as narrator: all 16 carried memories reload unchanged, the first resumed turn surfaces 3 carried memories, and every turn's surfaced set matched the executed ranker's pick (8 of 8). On all 4 cue turns the planted fact's own record displaced a new memory on the cue's words outside the goal (3 v 0, 3 v 0, 4 v 0, 3 v 0; none contested). The raise is an owner reading of BF2, not its letter (owner decision 2026-11-16): the row was stale, not earned, when 63c ran. Caveats: the 4 of 4 was close to guaranteed by design (each cue reuses its plant's words); phase-1 restatements by the agent also won on three cue turns; the agent's own model slot is not established. Floor: not measured, owed at B3. Not shown: recall from a paraphrase, selection of the right memory, a behavioural effect.",
-      "supersedes": [
-        "exp-63"
-      ],
       "follows": [
-        "exp-63b"
+        "exp-63b",
+        "exp-63"
       ],
       "walkthrough": "/research/experiments/cross-session-learning/#carried-memory-in-recall-experiments-63-63b-63c"
     },
