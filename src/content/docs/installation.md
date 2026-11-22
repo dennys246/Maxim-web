@@ -104,28 +104,6 @@ across sessions, and a stop that saves before it is killed. Some changes break o
 read the breaking changes first. If you are coming from 1.3.2 or earlier, read
 [upgrading to 1.3.3](#upgrading-to-133) as well.
 
-### Security
-
-**Upgrade to 1.3.4** if you route to a cloud model under the `strict` or `standard` cloud
-redaction policy. Two advisories, both rated medium, affect pymaxim 1.3.3 and earlier and are
-patched in 1.3.4:
-
-- [GHSA-8r36-g3rm-mf85](https://github.com/dennys246/Maxim/security/advisories/GHSA-8r36-g3rm-mf85): strict cloud redaction ended a private section at any header-shaped content line,
-  shipping the rest of that section to the cloud.
-- [GHSA-7xgg-5cm6-g46f](https://github.com/dennys246/Maxim/security/advisories/GHSA-7xgg-5cm6-g46f): strict redaction did not cover follow-up tool results or inbound messages; both
-  shipped to the cloud.
-
-Local-only routing and the `relaxed` policy are not affected. The fix
-([#1739](https://github.com/dennys246/Maxim/pull/1739)) renders private prompt sections by
-identity instead of by their text. Read the Security section of the
-[changelog](https://github.com/dennys246/Maxim/blob/v1.3.4/CHANGELOG.md) for the rest. In short:
-
-- **Sim records no longer keep a URL's credentials, path or query, and HTTP logs no longer keep
-  its username and password** ([#1404](https://github.com/dennys246/Maxim/issues/1404)).
-- **A page the model fetches can no longer hold the call open by sending slowly**: `fetch_url`
-  takes a whole-request deadline ([#1715](https://github.com/dennys246/Maxim/issues/1715)).
-- **Cloud redaction renders private prompt sections by identity.**
-
 ### Breaking changes
 
 Each of these is marked breaking in the
@@ -177,6 +155,29 @@ Each of these is marked breaking in the
 
 **Hippocampus files move to `_format_version` 1.2.** 1.1 stores a tool result as data, not its
 Python repr; 1.2 keeps your words through compression. Older files load.
+
+### Security
+
+**Upgrade to 1.3.4** if you route to a cloud model under the `strict` or `standard` cloud
+redaction policy. Two advisories, both rated medium, affect pymaxim 1.3.3 and earlier and are
+patched in 1.3.4:
+
+- [GHSA-8r36-g3rm-mf85](https://github.com/dennys246/Maxim/security/advisories/GHSA-8r36-g3rm-mf85): strict cloud redaction ended a private section at any header-shaped content line,
+  shipping the rest of that section to the cloud.
+- [GHSA-7xgg-5cm6-g46f](https://github.com/dennys246/Maxim/security/advisories/GHSA-7xgg-5cm6-g46f): strict redaction did not cover follow-up tool results, so they
+  shipped to the cloud. The advisory's second path, held inbound messages, exists only since
+  [#1481](https://github.com/dennys246/Maxim/issues/1481), which is new in 1.3.4, and 1.3.4
+  covers it.
+
+Local-only routing and the `relaxed` policy are not affected. 1.3.4 renders private prompt sections by
+identity instead of by their text. Read the Security section of the
+[changelog](https://github.com/dennys246/Maxim/blob/v1.3.4/CHANGELOG.md) for the rest. In short:
+
+- **Sim records no longer keep a URL's credentials, path or query, and HTTP logs no longer keep
+  its username and password** ([#1404](https://github.com/dennys246/Maxim/issues/1404)).
+- **A page the model fetches can no longer hold the call open by sending slowly**: `fetch_url`
+  takes a whole-request deadline ([#1715](https://github.com/dennys246/Maxim/issues/1715)).
+- **Cloud redaction renders private prompt sections by identity.**
 
 ### The robot
 
