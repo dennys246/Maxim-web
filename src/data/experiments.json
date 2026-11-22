@@ -52,10 +52,10 @@
     {
       "slug": "cross-session",
       "title": "Cross-session recall",
-      "period": "Apr–Oct 2026",
-      "intro": "The headline claim at its base: memory persists across sessions and takes part in recall (re-earned narrowly in Exp 63). Whether it shifts behavior is a separate claim; its 1.0 gate came back partial and is now stale.",
+      "period": "Apr–Nov 2026",
+      "intro": "The headline claim at its base: memory persists across sessions and takes part in recall (earned again, narrowly, in Exp 63c). Whether it shifts behavior is a separate claim; its 1.0 gate came back partial and is now stale.",
       "walkthrough": "/research/experiments/cross-session-learning/",
-      "best": "exp-63"
+      "best": "exp-63c"
     },
     {
       "slug": "foundations",
@@ -1292,15 +1292,48 @@
       "file": "exp63_carried_recall_prereg.md",
       "title": "Carried memory takes part in recall across sessions",
       "date": "2026-10-04",
-      "status": "earned",
+      "status": "rerun",
       "line": "cross-session",
-      "headline": true,
-      "summary": "Earned, narrow: 84 carried memories reloaded unchanged and took part in recall on every resume turn, ranked exactly as the shipped ranker dictates. One run, mistral-7b.",
-      "finding": "EARNED 2026-10-04 (narrow: storage persistence into recall on the current goal-keyword ranker; one run, mistral-7b), pre-registered (#1060) and run 2026-10-03 UTC. The carried store was saved and reloaded exactly: 84 memories, none missing, 0 changed fields. On every resume turn (8 of 8) the carried memories took part in recall as full candidates: the surfaced ids equal a recomputation with the frozen ranker, which reads no memory's origin or age except its recency tiebreak. On the first resume turn all 3 surfaced memories were carried ones; on turns 2-8 a shown carried memory ranked strictly above a visible new one in every tie ordering. It replaces Exp 10's claim on current code. NOT claimed: recall reconsolidation, negative transfer, or any behavioural difference from carried memory (that is Exp 37's question). The ranker is a goal-keyword overlap, not a semantic one (#1064). Narrator-driven, so it ran with the #1260 defect; its agent never spoke, and the #1299 walk found none of its re-run triggers touched. Earned before the floor rule (BF2), so its floor is not measured.",
+      "headline": false,
+      "summary": "Stale since 2026-10-25, re-run by Exp 63b and 63c. First earned the recall row (narrow) on 2026-10-04, on a goal-keyword ranker that 1.3.4 replaced.",
+      "finding": "STALE 2026-10-25, re-run by Exp 63b and Exp 63c (T1-16 is now cited by the 63c row). Session R (1.3.4) replaced the ranker and the record shape. First earned 2026-10-04 (narrow) as storage persistence into recall on the then goal-keyword ranker, one run, mistral-7b. Historical: on the ranker of 2026-10-03, which no longer ships, all 84 carried memories reloaded unchanged, and on resumed turns 2-8, competing with new memories, the surfaced set matched that run's executed ranker and included carried memories every turn. Not shown: that recall changes behaviour. It superseded Exp 10.",
       "supersedes": [
         "exp-10"
       ],
-      "walkthrough": "/research/experiments/cross-session-learning/#carried-memory-in-recall-experiment-63"
+      "walkthrough": "/research/experiments/cross-session-learning/#carried-memory-in-recall-experiments-63-63b-63c"
+    },
+    {
+      "slug": "exp-63b",
+      "id": "63b",
+      "file": "exp63b_carried_recall_prereg.md",
+      "title": "Exp 63b: carried memory in recall on the content-token ranker and the cue path",
+      "date": "2026-11-07",
+      "status": "null",
+      "line": "cross-session",
+      "headline": false,
+      "summary": "NOT SHOWN: the re-run of Exp 63 on the new ranker met every gate but found no decisive turn, so the recall row was not raised.",
+      "finding": "NOT SHOWN 2026-11-07, pre-registered 2026-11-02 (#1476): re-run of Exp 63 on the content-token ranker and cue path (complete; no decisive turn), so T1-16 was not raised (OD2). One 8-turn resume, mistral-7b: all 16 carried memories reload unchanged (the restore digest equals phase 1's saved bytes), the first resumed turn surfaces 3 carried memories, and every turn's surfaced set matched the executed ranker's pick (8 of 8). Not shown: a carried memory displacing a new one on the cue's words outside the goal (R3d): the carried memories shown on later turns matched only the goal's words. Exp 63c followed.",
+      "follows": [
+        "exp-63"
+      ],
+      "walkthrough": "/research/experiments/cross-session-learning/#carried-memory-in-recall-experiments-63-63b-63c"
+    },
+    {
+      "slug": "exp-63c",
+      "id": "63c",
+      "file": "exp63c_scripted_recall_prereg.md",
+      "title": "Exp 63c: carried memory displaces a new one on the cue path, under a scripted stimulus",
+      "date": "2026-11-13",
+      "status": "earned",
+      "line": "cross-session",
+      "headline": true,
+      "summary": "Earned, narrow: under a fixed script, on all 4 cue turns a planted carried memory displaced a new one on the cue's words. Word overlap, not meaning; one run, one model.",
+      "finding": "EARNED 2026-11-13 (narrow: cued by a fixed script whose phase-2 cues reuse words it planted in phase 1; content-key overlap, not meaning; one 8-turn resume, one model). Pre-registered and frozen 2026-11-10 before any data. One 8-turn resume, mistral-7b, with a fixed script as narrator: all 16 carried memories reload unchanged, the first resumed turn surfaces 3 carried memories, and every turn's surfaced set matched the executed ranker's pick (8 of 8). On all 4 cue turns the planted fact's own record displaced a new memory on the cue's words outside the goal (3 v 0, 3 v 0, 4 v 0, 3 v 0; none contested). The raise is an owner reading of BF2, not its letter (owner decision 2026-11-16): the row was stale, not earned, when 63c ran. Caveats: the 4 of 4 was close to guaranteed by design (each cue reuses its plant's words); phase-1 restatements by the agent also won on three cue turns; the agent's own model slot is not established. Floor: not measured, owed at B3. Not shown: recall from a paraphrase, selection of the right memory, a behavioural effect.",
+      "follows": [
+        "exp-63b",
+        "exp-63"
+      ],
+      "walkthrough": "/research/experiments/cross-session-learning/#carried-memory-in-recall-experiments-63-63b-63c"
     },
     {
       "slug": "b1-exp60-floor",

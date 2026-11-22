@@ -22,12 +22,80 @@ such as the Reachy robot.
 pip install pymaxim
 ```
 
-That resolves to the current stable release, **1.3.3 "Release pipeline"** (published
-2026-10-24 UTC) —
-[release notes](https://github.com/dennys246/Maxim/releases/tag/v1.3.3) ·
-[changelog](https://github.com/dennys246/Maxim/blob/v1.3.3/CHANGELOG.md) ·
-[PyPI](https://pypi.org/project/pymaxim/1.3.3/).
-**Read [upgrading to 1.3.3](/installation/#upgrading-to-133) before you upgrade.**
+That resolves to the current stable release, **1.3.4 "Robot and recall"** (published
+2026-11-22 UTC) —
+[release notes](https://github.com/dennys246/Maxim/releases/tag/v1.3.4) ·
+[changelog](https://github.com/dennys246/Maxim/blob/v1.3.4/CHANGELOG.md) ·
+[PyPI](https://pypi.org/project/pymaxim/1.3.4/).
+**Read [upgrading to 1.3.4](/installation/#upgrading-to-134) before you upgrade.**
+
+:::caution[1.3.4 breaks some Python calls on purpose]
+Every executor takes a required `ToolPolicy` (`permissions=` is removed). `maxim.run()`'s
+path-taking file tools reach only the run's workspace. `TimeoutPolicy.total_s` is renamed
+`pool_s`. `create.pool` needs an LLM router, and `create.router` raises `ConfigurationError`
+instead of returning `None`. Custom `ResponseOutput` speakers change too. Each break, with what
+to do, is in [upgrading to 1.3.4](/installation/#breaking-changes).
+:::
+
+:::danger[1.3.4 fixes two cloud-redaction advisories: upgrade to 1.3.4]
+If you route to a cloud model under the `strict` or `standard` cloud redaction policy, upgrade
+to 1.3.4. Both advisories are rated medium and affect pymaxim 1.3.3 and earlier:
+
+- [GHSA-8r36-g3rm-mf85](https://github.com/dennys246/Maxim/security/advisories/GHSA-8r36-g3rm-mf85): strict cloud redaction ended a private section at any header-shaped content line, so
+  the rest of that section could reach the cloud model.
+- [GHSA-7xgg-5cm6-g46f](https://github.com/dennys246/Maxim/security/advisories/GHSA-7xgg-5cm6-g46f): strict redaction did not cover follow-up tool results, so they could
+  reach the cloud model.
+
+Local-only routing and the `relaxed` policy are not affected. 1.3.4 redacts private prompt
+sections by section identity instead of by their text. Details are in
+[upgrading to 1.3.4](/installation/#security).
+:::
+
+1.3.4 ships the defects [maxim-pulse](https://github.com/dennys246/maxim-pulse) (the separate
+project that builds the Console and the Reachy app) found on a real Reachy Mini running 1.3.3,
+Talk's recall across sessions, and a stop that saves before it is killed:
+
+- **The robot speaks, at the right speed, and hears again.** The Reachy speaker sink no longer
+  reports a silent drop as played, resamples to the device's rate, and refuses loudly when the
+  player is not started. `maxim --tts` speaks, or refuses at start. Voice input had been off
+  since April behind one warning.
+- **Motion safety.** No non-finite, out-of-range-duration or instant command reaches a motor,
+  and no too-fast, wrongly-referenced or mid-path-unsafe one either: a turn that would sweep the
+  neck through about 180° mid-move is split or refused. A move's outcome reaches the model, not
+  just "queued", and a fresh pose read gets its full deadline.
+- **What you tell Talk is now stored, and a later question that shares a word with it can
+  recall it**, across a restart and past compression. Recall
+  matches words (stemmed keys), not meaning: a question that shares no word with what was said,
+  or only a spelling variant, recalls nothing.
+- **A stop saves memory first** and finishes within the caller's deadline, so a Reachy stop no
+  longer loses the session-end save to the daemon's ~20 s kill. SIGTERM saves too.
+- **The atonia gate's first pieces, Experimental and not complete:** `maxim.advisor`, an
+  observer that proposes but cannot act, and a declared effect for every tool. The offline latch
+  (`MAXIM_OFFLINE`) ships but is not yet safe for operators.
+
+**A known oddity, under investigation.** On the project's test unit the head stops near 56° of
+yaw, short of the ±65° clamp, and in later joint checks only about 50° on the negative side
+([#1707](https://github.com/dennys246/Maxim/issues/1707)). Whether that is this unit's
+mechanism or the head's real range with the body held is an open question with Pollen. The full
+embodied run on the robot is still owed
+([#1708](https://github.com/dennys246/Maxim/issues/1708)).
+
+**What 1.3.4 says about the evidence.** Cross-session recall (ledger row T1-16) moved from
+stale to **EARNED (narrow)** on 2026-11-13, on
+[Exp 63c](/research/evidence/#cross-session-memory-persistence): one scripted 8-turn resume on
+one model, whose cues reuse the words planted before it. The raise is an owner reading of the
+floor rule BF2, and the agent's own model slot is not machine-established. Under a language-model
+narrator (Exp 63b) no decisive turn occurred, and the bare-LLM floor for this row is not yet
+measured. Exp 37's cross-session result (T1-2) ships stale again under a committed one-release
+exception, and carries no earned claim. The three survival-fear results stay partial (floor
+matched under BF2).
+
+If you are coming from 1.3.2 or earlier, read [upgrading to 1.3.3](/installation/#upgrading-to-133)
+as well.
+
+### 1.3.3 "Release pipeline"
+
+Published 2026-10-24 UTC ([notes](https://github.com/dennys246/Maxim/releases/tag/v1.3.3)).
 
 :::caution[1.3.3: upgrade every maxim on a host together]
 Every local model server (`llama-cpp-server`) that Maxim starts now requires a key, a solo
@@ -60,7 +128,7 @@ home (asking first), an agent's saved reward and fear learning no longer fades w
 switched off, a missing model downloads only with consent, and a benchmark passes only strictly. Each is listed with
 what to do in [upgrading to 1.3.3](/installation/#upgrading-to-133).
 
-**What 1.3.3 says about the evidence.** No result changed status. Exp 37's cross-session
+**What 1.3.3 said about the evidence.** No result changed status. Exp 37's cross-session
 result is still stale: a code change triggered a re-run that has not happened yet. 1.3.2 and
 1.3.3 each shipped with it stale by an explicit, recorded owner decision, and 1.4.0 will not
 ship until it is re-run, as a new dose-response experiment. Its cross-model "Goldilocks" map

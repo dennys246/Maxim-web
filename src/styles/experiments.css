@@ -60,7 +60,8 @@
    full text contrast. */
 .exp-status--superseded,
 .exp-status--withdrawn,
-.exp-status--stale {
+.exp-status--stale,
+.exp-status--rerun {
 	border-style: dashed;
 }
 

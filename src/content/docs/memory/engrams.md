@@ -32,7 +32,7 @@ scorecard does. If they disagree, the engine is right.
 | --- | --- | --- | --- | --- | --- |
 | **Situation** | Yes | Partly | Yes | **Yes, no LLM** | EARNED ×4, PARTIAL ×3 |
 | **Recognition** | Yes | Partly | Text only | LLM text; small nudge | PARTIAL |
-| **Episodic** | Yes | Yes | Yes; result unused | LLM text only | Exp 63 |
+| **Episodic** | Yes | Yes | Yes; result unused | LLM text only | Exp 63c |
 | **Semantic** | By name | n/a | By name | LLM text only | None |
 | **Motor** | **Dormant** | — | — | No | None |
 | *Forward model* | Trains | — | — | No | None |
@@ -54,8 +54,9 @@ What each row is, and what its short cells mean:
   PARTIAL and was pulled from the 1.0 framing.
 - **Episodic**: a [Hippocampus](/systems/hippocampus/) trace. It records honestly
   what it was encoded with, and it keeps the situation it formed in. It can be
-  recalled by that situation, but the result is **not yet used**. Evidence: Exp 63
-  (the trace persists across sessions and takes part in recall; it superseded Exp 10).
+  recalled by that situation, but the result is **not yet used**. Evidence: Exp 63c
+  (the trace persists across sessions and takes part in recall, earned narrow on word overlap
+  under a fixed script; a re-run of Exp 63, which is stale since 2026-10-25).
 - **Semantic**: an [ATL](/systems/anterior-temporal-lobe/) concept, formed and
   recalled by its name.
 - **Motor**: a [Cerebellum](/systems/cerebellum/) program linked to a Hippocampus

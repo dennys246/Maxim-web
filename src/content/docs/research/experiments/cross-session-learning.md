@@ -7,8 +7,8 @@ description: The experiments behind Maxim's headline claim — that substrate pe
 - **Line status:** closed. Its open question moved to the [Roy harness](/research/experiments/roy-harness/) page.
 - **Dates:** 2026-04-06 to 2026-05-30 (Exp 37 re-fired 2026-08-21/22; Exp 10 re-run 2026-09-27).
 - **Releases:** the 1.0 research claim.
-- **Experiments covered:** [Exp 37](/research/experiments/exp-37-graduation/) · [Exp 12](/research/experiments/exp-12/) · [Exp 10](/research/experiments/exp-10/) · [B2](/research/experiments/behavioral-convergence-exp2/) · [B3](/research/experiments/behavioral-convergence-exp3-tier2/) · [B4](/research/experiments/behavioral-convergence-exp4-tier3/) · [Hippocampal recall](/research/experiments/hippocampal-recall-run-notes/) · [Temporal credit](/research/experiments/temporal-credit-validation/)
-- **Current as of 2026-09-27.**
+- **Experiments covered:** [Exp 63c](/research/experiments/exp-63c/) · [Exp 63b](/research/experiments/exp-63b/) · [Exp 63](/research/experiments/exp-63/) · [Exp 37](/research/experiments/exp-37-graduation/) · [Exp 12](/research/experiments/exp-12/) · [Exp 10](/research/experiments/exp-10/) · [B2](/research/experiments/behavioral-convergence-exp2/) · [B3](/research/experiments/behavioral-convergence-exp3-tier2/) · [B4](/research/experiments/behavioral-convergence-exp4-tier3/) · [Hippocampal recall](/research/experiments/hippocampal-recall-run-notes/) · [Temporal credit](/research/experiments/temporal-credit-validation/)
+- **Current as of 2026-11-22** (pymaxim 1.3.4).
 :::
 
 ## The question
@@ -24,10 +24,12 @@ model weights.
 > session and is **recalled in later sessions** as natural-language context, with **no
 > gradient updates** to the language model.
 
-**Recall is earned, narrowly, on current code.** [Exp 63](/research/experiments/exp-63/)
-(2026-10-04) showed carried memories reloading exactly and taking part in recall on every resume
-turn; it superseded [Exp 10](/research/experiments/exp-10/), whose September re-run was too thin
-to back a status. Exp 10 had shown prior-session memories surfacing on resume (about three per
+**Recall is earned, narrowly, on current code.** [Exp 63c](/research/experiments/exp-63c/)
+(2026-11-13) showed carried memories reloading exactly and, under a fixed script, displacing new
+memories on the cue's words; it is EARNED (narrow), by an owner reading of BF2, and matches words,
+not meaning. It is a re-run of [Exp 63](/research/experiments/exp-63/) (2026-10-04, on a ranker 1.3.4
+replaced; stale since 2026-10-25), which had superseded [Exp 10](/research/experiments/exp-10/), whose September re-run
+was too thin to back a status. Exp 10 had shown prior-session memories surfacing on resume (about three per
 turn) and re-validated in August 2026, and
 [Exp 12](/research/experiments/exp-12/) reproduced cross-session recall with every scaffold
 removed. The LLM that runs session two is byte-for-byte the LLM that ran session one; what
@@ -68,7 +70,9 @@ Newest first. Each experiment's page links its record and how to reproduce it; t
 | Exp | Date | Status | n per arm | Result |
 |---|---|---|---|---|
 | [37](/research/experiments/exp-37-graduation/) | 2026-05-30 | stale since 2026-10-02 (was partial) | 5 trials, four models | Behavioural delta only at ≥32B; independence from the prior not isolated (Arm C); magnitudes did not reproduce in August (L8) |
-| [63](/research/experiments/exp-63/) | 2026-10-04 | earned (narrow) | one run, 8 resume turns, mistral-7b | 84 carried memories reload unchanged and take part in recall on 8 of 8 turns, exactly as the shipped ranker dictates |
+| [63c](/research/experiments/exp-63c/) | 2026-11-13 | earned (narrow) | one scripted run, 8 resume turns, mistral-7b | 16 carried memories reload unchanged; on all 4 cue turns a planted carried memory displaces a new one on the cue's words outside the goal |
+| [63b](/research/experiments/exp-63b/) | 2026-11-07 | not shown | one run, 8 resume turns, mistral-7b | Same store reload and ranker match, but no decisive turn under a language-model narrator |
+| [63](/research/experiments/exp-63/) | 2026-10-04 | stale since 2026-10-25, re-run by Exp 63b and 63c | one run, 8 resume turns, mistral-7b | On the ranker of the time, which no longer ships: 84 carried memories reload unchanged and take part in recall on 8 of 8 turns |
 | [12](/research/experiments/exp-12/) | 2026-04-30 | earned | one session pair per phase, 7 phases | Substrate alone recalls a planted token across sessions, 7 of 7 phases |
 | [10](/research/experiments/exp-10/) | 2026-04-25 | superseded by Exp 63 (2026-10-04) | single three-phase run, re-run August and September 2026 | Prior-session memories surface on resume, 3 per turn |
 | [B4](/research/experiments/behavioral-convergence-exp4-tier3/) | 2026-04-17 | earned | one run per session, four sessions | Teal-vial selection 0% → 25% → 100% across sessions; fresh control 0% |
@@ -117,21 +121,36 @@ These are the strongest LLM-path behavioural results in the record, with the cav
 carry themselves: they run at 14B, where Exp 37 later found the prior *too weak* for its
 fire scenario, and none has a peaceful-prior control.
 
-### Carried memory in recall (Experiment 63)
+### Carried memory in recall (Experiments 63, 63b, 63c)
 
-Exp 63 re-tested the persistence claim as a new pre-registered experiment on current code, after
-Exp 10's September re-runs aborted. One run on mistral-7b, two phases of 8 turns each, run
-2026-10-03 UTC and earned 2026-10-04. The carried store reloaded exactly: 84 memories, none
-missing, no field changed. On every resume turn the carried memories were full candidates for
-recall, and the memories shown matched a recomputation with the frozen ranker on 8 of 8 turns;
-that ranker reads no memory's origin or age except a recency tiebreak. On the first resume turn
-all three memories shown were carried ones.
+Exp 63 re-tested the persistence claim as a new pre-registered experiment, after Exp 10's
+September re-runs aborted. One run on mistral-7b, run 2026-10-03 UTC and earned 2026-10-04: the
+carried store reloaded exactly (84 memories), and on every resume turn the carried memories were
+full candidates for recall, ranked by the goal-keyword ranker of the time. 1.3.4 replaced that
+ranker and the memory record shape, which fired the row's re-run trigger, so the row was stale
+from 2026-10-25.
 
-What it does not show: anything about behaviour (that is Exp 37's question), recall
-reconsolidation, or negative transfer. The ranker matches goal keywords, not meaning
-([#1064](https://github.com/dennys246/Maxim/issues/1064)), and a fix there is one of the row's
-re-run triggers. It ran with the narrator defect [#1260](https://github.com/dennys246/Maxim/issues/1260);
-its agent never spoke. It was earned before the floor rule, so its floor is not measured.
+[Exp 63b](/research/experiments/exp-63b/) re-ran it on the new content-word ranker and cue path
+(2026-11-07, a language-model narrator). The store reloaded exactly (16 memories), the first
+resume turn showed 3 carried memories, and every turn matched the executed ranker, but no turn
+was decisive: the carried memories shown later matched only the goal's words. It read NOT SHOWN,
+and the row was not raised.
+
+[Exp 63c](/research/experiments/exp-63c/) used a fixed script as narrator, whose phase-2 cues
+reuse words it planted in phase 1 (pre-registered and frozen 2026-11-10, run 2026-11-13 UTC on
+mistral-7b). On all 4 cue turns the planted fact's own record displaced a new memory on the cue's
+words outside the goal (3 v 0, 3 v 0, 4 v 0, 3 v 0). The row is **EARNED 2026-11-13** (narrow:
+cued by a fixed script whose phase-2 cues reuse words it planted in phase 1; 4 of 4 planted cues
+decisive, uncontested: every displaced record shared only the goal word; content-key overlap, not
+meaning; one 8-turn resume, one model. Under an LLM narrator, Exp 63b, no decisive turn
+occurred.) The raise is an owner reading of BF2, not its letter (owner decision 2026-11-16),
+because the row was stale, not earned, when 63c ran.
+
+What it does not show: recall from a paraphrase, selection of the right memory, or anything
+about behaviour (that is Exp 37's question). The 4 of 4 was close to guaranteed by design, since
+each cue reuses its plant's words. The floor is not measured (owed at Stage B3), and the agent's
+own model slot is not machine-established. See the
+[claim ledger](/research/evidence/#cross-session-memory-persistence).
 
 ### Exp 10 — cross-session enrichment
 
