@@ -29,6 +29,20 @@ That resolves to the current stable release, **1.3.4 "Robot and recall"** (publi
 [PyPI](https://pypi.org/project/pymaxim/1.3.4/).
 **Read [upgrading to 1.3.4](/installation/#upgrading-to-134) before you upgrade.**
 
+:::danger[1.3.4 fixes two cloud-redaction advisories: upgrade to 1.3.4]
+If you route to a cloud model under the `strict` or `standard` cloud redaction policy, upgrade
+to 1.3.4. Both advisories are rated medium and affect pymaxim 1.3.3 and earlier:
+
+- [GHSA-8r36-g3rm-mf85](https://github.com/dennys246/Maxim/security/advisories/GHSA-8r36-g3rm-mf85): strict cloud redaction ended a private section at any header-shaped content line, so
+  the rest of that section could reach the cloud model.
+- [GHSA-7xgg-5cm6-g46f](https://github.com/dennys246/Maxim/security/advisories/GHSA-7xgg-5cm6-g46f): strict redaction did not cover follow-up tool results or inbound messages, so both
+  could reach the cloud model.
+
+Local-only routing and the `relaxed` policy are not affected. 1.3.4 redacts private prompt
+sections by section identity instead of by their text. Details are in
+[upgrading to 1.3.4](/installation/#security).
+:::
+
 :::caution[1.3.4 breaks some Python calls on purpose]
 Every executor takes a required `ToolPolicy` (`permissions=` is removed). `maxim.run()`'s
 path-taking file tools reach only the run's workspace. `TimeoutPolicy.total_s` is renamed
