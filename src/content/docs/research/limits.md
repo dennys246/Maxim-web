@@ -42,7 +42,10 @@ unmeasured drift is how a mitigated entry silently rots.
 Several of these already bound results on the [evidence page](/research/evidence/):
 L4 caps what a passing re-run of the safe-vs-harm result can detect, L8 is why the
 cross-model numbers are readings taken at one time rather than constants, and L1
-and L2 shaped the cradle apparatus. The rest of this page is the entry that most
+and L2 shaped the cradle apparatus. A 2026-10-25 [re-assessment](https://github.com/dennys246/Maxim/blob/main/docs/experiments/narrator_defects_reassessment.md) of runs made with a
+prompt defect ([#1260](https://github.com/dennys246/Maxim/issues/1260)) bounds two entries: L6 by the prompt line only (it was measured on a
+fire that made no `respond` calls), and L8's drift comparison, because `respond` volume on
+Qwen2.5-32B rose from 6 in June to 32 in August under the same defect. The rest of this page is the entry that most
 belongs on an evidence site, because it is a ceiling on the substrate itself.
 
 ## L11 — the sensor-count discrimination ceiling

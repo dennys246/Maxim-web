@@ -47,7 +47,8 @@ separate it from the LLM's prior.
 - **Not a guarantee that recalled context changes behaviour.** This is the "1.0 finding":
   strong LLM priors often dominate the substrate signal. A recalled memory can sit in the
   prompt and change nothing, because the base model already had a strong opinion. The
-  hippocampal recall run shows it directly — memory survival 1.0, behavioural recall 0.
+  hippocampal recall run was once cited as showing this directly; its behavioural half is
+  withdrawn ([below](#memory-recall-under-interference-hippocampal-recall)).
 - **Not independent behavioural drive.** Exp 37's isolation arm failed on every model where
   the primary passed, so "the substrate changes behaviour independently of the LLM prior" is
   not established here.
@@ -73,12 +74,12 @@ Newest first. Each experiment's page links its record and how to reproduce it; t
 | [63c](/research/experiments/exp-63c/) | 2026-11-13 | earned (narrow) | one scripted run, 8 resume turns, mistral-7b | 16 carried memories reload unchanged; on all 4 cue turns a planted carried memory displaces a new one on the cue's words outside the goal |
 | [63b](/research/experiments/exp-63b/) | 2026-11-07 | not shown | one run, 8 resume turns, mistral-7b | Same store reload and ranker match, but no decisive turn under a language-model narrator |
 | [63](/research/experiments/exp-63/) | 2026-10-04 | stale since 2026-10-25, re-run by Exp 63b and 63c | one run, 8 resume turns, mistral-7b | On the ranker of the time, which no longer ships: 84 carried memories reload unchanged and take part in recall on 8 of 8 turns |
-| [12](/research/experiments/exp-12/) | 2026-04-30 | earned | one session pair per phase, 7 phases | Substrate alone recalls a planted token across sessions, 7 of 7 phases |
+| [12](/research/experiments/exp-12/) | 2026-04-30 | earned | one session pair per phase, 7 phases | Substrate alone recalls a planted token across sessions, 7 of 7 phases; bounded (2026-10-25) |
 | [10](/research/experiments/exp-10/) | 2026-04-25 | superseded by Exp 63 (2026-10-04) | single three-phase run, re-run August and September 2026 | Prior-session memories surface on resume, 3 per turn |
 | [B4](/research/experiments/behavioral-convergence-exp4-tier3/) | 2026-04-17 | earned | one run per session, four sessions | Teal-vial selection 0% → 25% → 100% across sessions; fresh control 0% |
 | [B3](/research/experiments/behavioral-convergence-exp3-tier2/) | 2026-04-17 | earned | 10 per condition | Experienced agent picks the antidote 10/10; fresh agent 0/10 |
 | [B2](/research/experiments/behavioral-convergence-exp2/) | 2026-04-17 | earned | experienced vs control agents | Energy-driven valences persist to disk and reload |
-| [Hippocampal recall](/research/experiments/hippocampal-recall-run-notes/) | 2026-04-06 | partial (run notes); the [plan](/research/experiments/hippocampal-recall-experiment/) is superseded | single runs | Memory survival 1.0; behavioural recall 0 |
+| [Hippocampal recall](/research/experiments/hippocampal-recall-run-notes/) | 2026-04-06 | partial (run notes); the [plan](/research/experiments/hippocampal-recall-experiment/) is superseded | single runs | Memory survival 1.0; behavioural half withdrawn (2026-10-25) |
 | [Temporal credit](/research/experiments/temporal-credit-validation/) | — | never run | — | Protocol and runner shipped; never executed. No result |
 
 ## The arc
@@ -96,8 +97,17 @@ The run notes (2026-04-06, orchestrator Qwen2.5-14B, AUT Mistral-7B, 7-turn camp
 1.0, behavioural recall 0.** Verath survived in the hippocampus and the agent recited it
 accurately in an epilogue reflection — but at the door itself it reached for `read_file`
 instead of speaking the word. The substrate remembered; the behaviour did not follow. This
-is the 1.0 finding observed directly: persistence and action are two claims, not one. The
+was read as the 1.0 finding observed directly: persistence and action are two claims, not one. The
 plan document stayed frozen at "ready to run" and is superseded by these notes.
+
+*Re-assessed 2026-10-25 ([record](https://github.com/dennys246/Maxim/blob/main/docs/experiments/narrator_defects_reassessment.md), [#1301](https://github.com/dennys246/Maxim/issues/1301)): the memory half stands; the behavioural
+half is withdrawn* until re-run on the fixed path ([#1461](https://github.com/dennys246/Maxim/issues/1461)). Passing the door needed speech,
+`say` did not exist yet, so `respond` was the speech channel, and the agent's prompt said it was
+not available ([#1260](https://github.com/dennys246/Maxim/issues/1260)). Counter-evidence is recorded beside the withdrawal: the headline rests
+on Run #2, where at the door the agent called `read_file`/`analyze_text`; in Run #1 it called
+`research("miller")`. Both runs injected turns directly, so the receipt defect ([#1261](https://github.com/dennys246/Maxim/issues/1261)) did
+not apply, and the agent used `respond` on other turns despite the defect. The door failure may
+be independent of #1260, and the run neither supports nor refutes behavioural recall.
 
 ### Consumable / affordance learning (Experiments B2–B4)
 
@@ -161,7 +171,10 @@ dominated by dungeon memories. Five scaffolds (prompt preambles, an acting coach
 text, a default persona and embodiment) were all active, so the result could not say which
 part was doing the recalling — Exp 12 answered that. The August 2026 heartbeat re-run is the
 row's cleanest pass: phase 2 opened at exactly phase 1's closing store (108), hit three per
-turn on 8 of 8 turns, and grew the store to 535. The original April raw logs were written to
+turn on 8 of 8 turns, and grew the store to 535. *Re-assessed 2026-10-25: bounded.* Persistence stands, but the
+counts include episodes the `respond` follow-ups created, and the agent's model was
+intermittently down (all 7 of its `respond` calls were canned outage fallbacks), so they are not
+comparable across the fix. The original April raw logs were written to
 `/tmp` and are lost; the surviving raw records are that re-run and the next.
 
 The 1.3.1 re-run (2026-09-27) was first recorded as **maintained, narrow**; on 2026-09-30 the
@@ -195,12 +208,14 @@ unavailable, drawing a follow-up each time it used it anyway
 ([#1260](https://github.com/dennys246/Maxim/issues/1260), fixed by
 [#1299](https://github.com/dennys246/Maxim/pull/1299)). The recall headline was scored from
 the agent's tool arguments, so the receipts do not decide it; but those files were never
-committed, so it cannot be re-derived from the repository. The phase comparison for the
-Acting Coach ("3 respond hits against 1") counted `respond` calls by an agent told `respond`
-was unavailable, so it reflects that contradiction and the extra follow-ups, not only the
-coach. A re-assessment of
-every claim resting on these runs is open
-([#1301](https://github.com/dennys246/Maxim/issues/1301)).
+committed, so it cannot be re-derived from the repository.
+
+*Re-assessed 2026-10-25 ([record](https://github.com/dennys246/Maxim/blob/main/docs/experiments/narrator_defects_reassessment.md), [#1301](https://github.com/dennys246/Maxim/issues/1301)).* The 7/7 is **bounded**. "Recalled" meant
+the token appeared in any tool action, and each `respond` follow-up was one more chance to emit
+it; the memory and link counts include follow-up episodes. The word-independent half stands:
+the `memory_recall` output carried the token, so the substrate is the data path. Comparisons
+between phases are confounded, and the Acting Coach count ("3 respond hits against 1") is
+**withdrawn** until re-run on the fixed path ([#1461](https://github.com/dennys246/Maxim/issues/1461)).
 
 ### Cross-session graduation (Experiment 37)
 
@@ -247,6 +262,12 @@ fires. Re-running the anchor fire's identical commit on its identical seeds then
 Arm A = 0.71 where June gave 0.42: the serving environment moved the whole distribution more
 than the code did, and nothing in the run records lets anyone reconstruct why. The Qwen-32B
 +1.43 SD pass cannot currently be re-derived — unverifiable, not refuted (limit L8).
+
+*Re-assessed 2026-10-25: bounded* ([record](https://github.com/dennys246/Maxim/blob/main/docs/experiments/narrator_defects_reassessment.md)). The primary reads no words, but the
+prompt defect ([#1260](https://github.com/dennys246/Maxim/issues/1260)) changed every arm's prompt, and its `respond` bursts, each with a
+follow-up, added actions unevenly across arms and shifted the first-contact index. A post hoc
+check leaves Qwen2.5-32B and R1 near where they were (+1.43 → +1.32 SD, +2.11 → +1.81 SD). The
+owed re-fire, B4, runs on the fixed path.
 
 ### Temporal credit validation (never run)
 

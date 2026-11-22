@@ -316,8 +316,9 @@ You can still drive a body cold yourself with a test sequence in
 :::caution[Known limitation: priors can override learned pain]
 The [deceptive-hearth counter-prior study](/research/experiments/exp-38/)
 exposes a real limit of the system today. An agent carries cross-session burn pain
-from a hearth that warms but then harms — yet across four frontier models, a strong
-LLM's baked-in `fire → warm` prior **dominated the freshly learned substrate**, and
+from a hearth that warms but then harms — yet across the frontier models tested, a strong
+LLM's baked-in `fire → warm` prior **dominated the freshly learned substrate** (bounded, with
+one model's interaction and ablation values withdrawn, by a 2026-10-25 [re-assessment](/research/evidence/#nulls-retractions-and-corrections)), and
 the agent re-engaged the harmful source anyway. In other words, having *felt* the
 consequence does not yet reliably change behavior when it contradicts what the model
 already believes.

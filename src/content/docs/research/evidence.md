@@ -61,7 +61,7 @@ learner.
 | [Pooling partial learners](#pooling-partial-learners--faster-per-participant-at-a-total-experience-cost) | partial | not measured | [Exp 57](/research/experiments/exp-57/) | 20 cohorts per rung | [World seam](/research/experiments/world-seam/) |
 | [Carried memory shifts an LLM-driven agent's behaviour](#carried-memory-shifts-an-llm-driven-agents-behaviour) | stale since 2026-10-02 (was partial) | not measured (owed in its re-run) | [Exp 37](/research/experiments/exp-37-graduation/) | 5 trials, four models | [Cross-session recall](/research/experiments/cross-session-learning/) |
 | [What a carried drive is worth](#what-a-carried-drive-is-worth-the-r3-benchmark) | reference (nothing graduated) | — | [R3](/research/experiments/r3/) | 12 agents × 5 arms | [World seam](/research/experiments/world-seam/) |
-| Carried substrate overrides a contrary LLM prior | null | — | [Exp 38](/research/experiments/exp-38/), [Exp 40](/research/experiments/exp-40/) | five models (four in Exp 38, one in Exp 40) | [Roy harness](/research/experiments/roy-harness/) |
+| Carried substrate overrides a contrary LLM prior | null | — | [Exp 38](/research/experiments/exp-38/), [Exp 40](/research/experiments/exp-40/) | five models (four in Exp 38, one in Exp 40); Sonnet's interaction withdrawn 2026-10-25 | [Roy harness](/research/experiments/roy-harness/) |
 | A shared want generalizes to a new layout | null | — | [R1](/research/experiments/r1/) | structural (no campaign) | [World seam](/research/experiments/world-seam/) |
 | The world's own drives move behaviour | null | — | [R2](/research/experiments/r2/) | premise check | [World seam](/research/experiments/world-seam/) |
 | "Dark means danger" can be learned | null (blocked at the instrument) | — | [Exp 58](/research/experiments/exp-58/) | dry run | [World seam](/research/experiments/world-seam/) |
@@ -343,9 +343,12 @@ row stale, since a typed abort cannot back a status, and Exp 63 replaced it
 
 **Earlier evidence.** The August 2026 heartbeat walk was the row's cleanest pass: phase 2
 opened at exactly phase 1's closing store, hit the three-per-turn bar on 8 of 8 turns, and
-grew the store; a third phase in a different setting showed no negative transfer.
+grew the store; a third phase in a different setting showed no negative transfer. Its counts
+are bounded by the 2026-10-25 re-assessment ([below](#nulls-retractions-and-corrections)).
 [Exp 12](/research/experiments/exp-12/) isolates recall to the substrate alone (7 of 7
-phases, including the one with every scaffold disabled).
+phases, including the one with every scaffold disabled; bounded on re-assessment, since
+the agent's `memory_recall` output carried the token but each `respond` follow-up was one
+more chance to emit it).
 
 ### Sensorimotor learning on real hardware
 
@@ -490,7 +493,10 @@ The most useful results here are the negative ones, and they bound the whole pro
 prior is *wrong* — a hearth whose warming action hurts — agents carrying cross-session pain
 from that exact hearth still warmed at it, across four frontier models with a matched
 safe-fire control ([Exp 38](/research/experiments/exp-38/)); it held again on the one model
-where a substrate effect had shown ([Exp 40](/research/experiments/exp-40/)). The
+where a substrate effect had shown ([Exp 40](/research/experiments/exp-40/)). Since the
+2026-10-25 re-assessment this reads: dominance at GPT-4o, DeepSeek-V3 and R1, bounded by the
+prompt defect; Sonnet's interaction value is withdrawn, and its verdict rests on first contact
+over 3 of 5 arm-A deceptive trials. The
 reasoning-trained model was sharpest and worst: its substrate was load-bearing, but it
 amplified the carried association rather than the corrective pain.
 
@@ -502,7 +508,8 @@ priors were too weak to use the substrate, another already solved the task. Thos
 are readings taken at one time, not constants: the serving environment moved the whole
 distribution more than the code did, and the run records cannot reconstruct why
 ([L8](/research/limits/)). The map is unverifiable, not refuted, and the row it belongs to has
-been stale since 2026-10-02.
+been stale since 2026-10-02. The 2026-10-25 re-assessment also bounds it: the prompt defect
+added actions unevenly across arms.
 
 **"Dark means danger" was blocked at the instrument.** On the shipped sensors the dark and
 safe situations never form distinct clusters, so a fear has nothing to key on — a dilution
@@ -547,7 +554,7 @@ with the LLM removed, is the separate and narrowly graduated result above.
 Every null, block, withdrawal and dated correction, oldest first. Each experiment's page
 carries its record.
 
-- **2026-04-06 — hippocampal recall, partial.** Memory survived (1.0) but behavioural recall was 0 ([run notes](/research/experiments/hippocampal-recall-run-notes/)).
+- **2026-04-06 — hippocampal recall, partial.** Memory survived (1.0) but behavioural recall was 0 ([run notes](/research/experiments/hippocampal-recall-run-notes/)); the behavioural half is withdrawn (2026-10-25, below).
 - **2026-04-15 — P4 mug test withdrawn.** The v1 test was tautological ([P4 mug test](/research/experiments/p4-mug-test-sweep/)).
 - **2026-04-16 — P4 bridge concepts, null.** Lift 0 across 10 seeds; option deferred ([P4 option 2](/research/experiments/p4-option2-measurement/)).
 - **Never run — temporal credit validation.** Protocol shipped, never executed; no result ([record](/research/experiments/temporal-credit-validation/)).
