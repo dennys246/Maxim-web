@@ -216,8 +216,8 @@ The other security changes:
   ([#1334](https://github.com/dennys246/Maxim/issues/1334)). A robot whose voice loads but
   cannot speak stays on the paste sign-in.
 - **The wheel bundles the maxim-pulse Console v0.4.2** (commit `bcd0d1e`; 1.3.2 bundled v0.4.0).
-  The Console's API contract is unchanged at 0.6.0; typed payloads (contract 0.7.0) are
-  planned for 1.3.4.
+  The Console's API contract is unchanged at 0.6.0. Typed payloads (contract 0.7.0) were
+  planned for 1.3.4, but 1.3.4 ships without them and keeps the contract at 0.6.0.
 - **A setup change made in the Console reaches the next talk without a restart**
   ([#1411](https://github.com/dennys246/Maxim/issues/1411)). A `maxim config set` from another
   process still needs one. `maxim serve` also no longer hangs up to 15 s on shutdown after a
